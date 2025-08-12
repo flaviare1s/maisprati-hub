@@ -21,6 +21,7 @@ import { NotFound } from "./pages/NotFound";
 import { SelectAccountType } from "./pages/SelectAccountType";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { FAQ } from "./pages/FAQ";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/location" element={<LocationFinder />} />
         <Route path="/ai" element={<AIAssistant />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/403" element={<Forbidden />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
