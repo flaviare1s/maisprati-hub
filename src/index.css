@@ -19,6 +19,7 @@
 
   --font-roboto: 'Roboto', sans-serif;
   --font-open-sans: 'Open Sans', sans-serif;
+  --font-inter: 'Inter', sans-serif;
 }
 
 body {
@@ -30,3 +31,23 @@ body {
   background-color: #1F1F1F;
   color: #F0E9E9;
 }
+
+.link-nav {
+  position: relative;
+}
+
+.link-nav::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-red-secondary);
+  transition: width 0.3s ease;
+}
+
+.link-nav:hover::after {
+  width: 100%;
+}
+
