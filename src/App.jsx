@@ -60,7 +60,7 @@ function App() {
           <Route path="/ai" element={<AIAssistant />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/403" element={<Forbidden />} />
+          <Route path="/401" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
