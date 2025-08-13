@@ -32,6 +32,11 @@ body {
   color: #F0E9E9;
 }
 
+.dark .menu-mobile {
+  background-color: #1F1F1F;
+  color: #F0E9E9;
+}
+
 .link-nav {
   position: relative;
 }
