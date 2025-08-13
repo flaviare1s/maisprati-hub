@@ -24,17 +24,16 @@
 
 body {
   background-color: #F0E9E9;
-  color: #1F1F1F;
+  color: #444;
 }
 
-.dark body {
-  background-color: #1F1F1F;
+.dark body, .dark .menu-mobile, .dark .chatbot {
+  background-color: #444;
   color: #F0E9E9;
 }
 
-.dark .menu-mobile {
-  background-color: #1F1F1F;
-  color: #F0E9E9;
+.dark .loader, .dark .about {
+  background-color: #444;
 }
 
 .link-nav {
