@@ -9,7 +9,7 @@ export const ThemeToggle = () => {
       onClick={() => setLightMode(!lightMode)}
       className="p-2 text-2xl rounded bg-transparent cursor-pointer"
     >
-      {lightMode ? <FaSun /> : <FaMoon />}
+      {lightMode ? <FaSun className="md:text-red-logo" /> : <FaMoon />}
     </button>
   );
 };
