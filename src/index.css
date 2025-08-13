@@ -19,14 +19,39 @@
 
   --font-roboto: 'Roboto', sans-serif;
   --font-open-sans: 'Open Sans', sans-serif;
+  --font-inter: 'Inter', sans-serif;
 }
 
 body {
   background-color: #F0E9E9;
-  color: #1F1F1F;
+  color: #444;
 }
 
-.dark body {
-  background-color: #1F1F1F;
+.dark body, .dark .menu-mobile, .dark .chatbot {
+  background-color: #444;
   color: #F0E9E9;
 }
+
+.dark .loader, .dark .about {
+  background-color: #444;
+}
+
+.link-nav {
+  position: relative;
+}
+
+.link-nav::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-red-secondary);
+  transition: width 0.3s ease;
+}
+
+.link-nav:hover::after {
+  width: 100%;
+}
+
