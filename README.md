@@ -24,18 +24,18 @@ npm run dev
 6. Abra a rota correspondente no navegador para começar o desenvolvimento.
 
 6. Estrutura de pastas
-src/ → código principal do projeto.
+- src/ → código principal do projeto.
 
-assets → imagens, ícones e outros arquivos.
+- assets → imagens, ícones e outros arquivos.
 
-components → componentes reutilizáveis (botões, menus, etc).
+- components → componentes reutilizáveis (botões, menus, etc).
 
-pages → páginas do aplicativo, possuem rota (Home, Login, About, etc).
+- pages → páginas do aplicativo, possuem rota (Home, Login, About, etc).
 
-contexts → contextos de estado global do React
+- contexts → contextos de estado global do React
 
-App.jsx → onde ficam as rotas que conectam as páginas.
+- App.jsx → onde ficam as rotas que conectam as páginas.
 
-main.jsx → ponto de entrada do React.
+- main.jsx → ponto de entrada do React.
 
-index.css → contém as variáveis de cores e fontes e configurações dos temas claro/escuro.
+- index.css → contém as variáveis de cores e fontes e configurações dos temas claro/escuro.
