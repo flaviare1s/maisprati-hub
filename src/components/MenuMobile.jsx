@@ -21,9 +21,9 @@ export const MenuMobile = () => {
 
       <nav
         className={` 
-          absolute top-[104px] right-0 w-full h-screen bg-light shadow-lg p-6 rounded-bl-md z-50 flex flex-col gap-4
+          absolute top-[78px] right-0 w-full h-screen bg-light shadow-lg p-6 rounded-bl-md z-50 flex flex-col gap-4
           transform transition-transform duration-300 ease-out menu-mobile
-          ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'}
+          ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none z-50'}
         `}
       >
         <Link to='/' onClick={handleLinkClick} className='uppercase font-lg text-red-logo font-bold hover:text-red-secondary link-nav'>Home</Link>
