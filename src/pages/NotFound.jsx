@@ -17,7 +17,7 @@ export const NotFound = () => {
       />
 
       {/* Título 2 */}
-      <h1 className="text-2xl md:text-4xl font-extrabold gray-muted mb-6">
+      <h1 className="text-2xl md:text-4xl font-extrabold gray-muted mb-6 text-center">
         Ops! Página não encontrada
       </h1>
 
@@ -25,7 +25,7 @@ export const NotFound = () => {
       {/* Botão */}
       <Link
         to="/"
-        className="bg-red-logo hover:bg-red-secondary-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        className="bg-red-logo hover:bg-red-secondary text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105"
       >
         Voltar ao Início
       </Link>
