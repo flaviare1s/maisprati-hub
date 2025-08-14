@@ -2,10 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { UserRegister } from "./pages/UserRegister";
-import { ClinicRegister } from "./pages/ClinicRegister";
+import { InstitutionRegister } from "./pages/InstitutionRegister";
 import { UserDashboard } from "./pages/UserDashboard";
-import { ClinicDashboard } from "./pages/ClinicDashboard";
 import { UserProfile } from "./pages/UserProfile";
 import { DonationHistory } from "./pages/DonationHistory";
 import { Appointments } from "./pages/Appointments";
@@ -26,6 +24,7 @@ import { ChatButton } from "./components/ChatButton";
 import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
 import { useState } from "react";
+import { DonatorRegister } from "./pages/DonatorRegister";
 
 Modal.setAppElement("#root")
 
@@ -45,10 +44,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SelectAccountType />} />
-          <Route path="/register/donator" element={<UserRegister />} />
-          <Route path="/register/institution" element={<ClinicRegister />} />
+          <Route path="/register/donator" element={<DonatorRegister />} />
+          <Route path="/register/institution" element={<InstitutionRegister />} />
           <Route path="/dashboard/user" element={<UserDashboard />} />
-          <Route path="/dashboard/institution" element={<ClinicDashboard />} />
+          <Route path="/dashboard/institution" element={<InstitutionRegister />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/donations" element={<DonationHistory />} />
           <Route path="/appointments" element={<Appointments />} />
