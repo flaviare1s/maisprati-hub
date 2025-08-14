@@ -6,7 +6,7 @@ export const NotFound = () => {
       
       {/* Título 1 */}
       <h1 className="text-2xl md:text-4xl font-extrabold gray-muted mb-6">
-        401
+        404
       </h1>
 
       {/* Imagem alta e fina */}
