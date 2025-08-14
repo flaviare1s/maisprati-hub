@@ -45,10 +45,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SelectAccountType />} />
-          <Route path="/register/user" element={<UserRegister />} />
-          <Route path="/register/clinic" element={<ClinicRegister />} />
+          <Route path="/register/donator" element={<UserRegister />} />
+          <Route path="/register/institution" element={<ClinicRegister />} />
           <Route path="/dashboard/user" element={<UserDashboard />} />
-          <Route path="/dashboard/clinic" element={<ClinicDashboard />} />
+          <Route path="/dashboard/institution" element={<ClinicDashboard />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/donations" element={<DonationHistory />} />
           <Route path="/appointments" element={<Appointments />} />
@@ -60,7 +60,7 @@ function App() {
           <Route path="/ai" element={<AIAssistant />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/403" element={<Forbidden />} />
+          <Route path="/401" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
