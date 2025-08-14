@@ -4,15 +4,17 @@ import { Testimonials } from "../components/Testimonials"
 
 export const FAQ = () => {
   return (
-    <div className="flex flex-col items-center justify-center mx-auto p-5">
-      <SectionTitle title="Dúvidas" />
-      <div className="mb-10">
-        <FaqItem question="Qual a idade mínima para doar sangue?" answer="18 anos" />
-        <FaqItem question="Qualo peso mínimo para doar sangue?" answer="50kg" />
-        <FaqItem question="Tem alguma contraindicação para doar sangue?" answer="Sim. Algumas doenças podem impedir a doação de sangue" />
+    <div className="flex flex-col mx-auto p-5 w-full">
+      <div className="flex flex-col justify-center items-center">
+        <SectionTitle title="Dúvidas" />
+        <div className="mb-10">
+          <FaqItem question="Qual a idade mínima para doar sangue?" answer="18 anos" />
+          <FaqItem question="Qualo peso mínimo para doar sangue?" answer="50kg" />
+          <FaqItem question="Tem alguma contraindicação para doar sangue?" answer="Sim. Algumas doenças podem impedir a doação de sangue" />
+        </div>
+        <SectionTitle title="Agradecimentos" />
       </div>
-      <SectionTitle title="Agradecimentos" />
-      <div>
+      <div className="">
         <Testimonials />
       </div>
     </div>
