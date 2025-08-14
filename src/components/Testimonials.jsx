@@ -14,6 +14,7 @@ export const Testimonials = () => {
     <section className="py-16 md:py-2">
       <div className="container mx-auto px-4 md:px-10">
         <Swiper
+        className="!overflow-visible"
           modules={[Navigation]}
           spaceBetween={24}
           slidesPerView={1}
