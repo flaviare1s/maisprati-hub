@@ -36,6 +36,10 @@ body {
   background-color: #444;
 }
 
+.dark .testimonial {
+  color: #1F1F1F;
+}
+
 .link-nav {
   position: relative;
 }
