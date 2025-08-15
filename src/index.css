@@ -36,6 +36,10 @@ body {
   background-color: #444;
 }
 
+.dark .testimonial {
+  color: #1F1F1F;
+}
+
 .link-nav {
   position: relative;
 }
@@ -55,3 +59,27 @@ body {
   width: 100%;
 }
 
+.swiper-button-next, .swiper-button-prev {
+  color: var(--color-light) !important;
+  background-color: var(--color-red-logo) !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  top: 50%;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px !important;
+}
+
+.swiper-button-next {
+  right: -25px !important;
+}
+
+.swiper-button-prev {
+  left: -25px !important;
+}

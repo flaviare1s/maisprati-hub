@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import img from "../assets/images/not_found.png";
+
 export const Forbidden = () => {
   return (
- <div className="flex flex-col items-center justify-center min-h-screen bg-light p-6">
+ <div className="flex flex-col items-center justify-center min-h-screen p-6">
       
       {/* Título 1 */}
       <h1 className="text-2xl md:text-4xl font-extrabold gray-muted mb-6">
