@@ -1,4 +1,9 @@
 import { CiUser } from "react-icons/ci";
+import { PiUserCheckBold } from "react-icons/pi";
+import { TbAlertTriangle } from "react-icons/tb";
+import { MdAccessTime } from "react-icons/md";
+import { FaBan, FaRegHospital } from "react-icons/fa";
+import { CgBandAid } from "react-icons/cg";
 import { FaqItem } from "../components/FaqItem"
 import { SectionTitle } from "../components/SectionTitle"
 import { Testimonials } from "../components/Testimonials"
@@ -8,7 +13,7 @@ const faqData = [
   {
     id: 1,
     question:"Quem pode doar?",
-    icon: <CiUser className="text-2xl font-bold"/>,
+    icon: <PiUserCheckBold className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>Estar em boas condições de saúde.</li>
@@ -23,6 +28,7 @@ const faqData = [
   {
     id: 2,
     question: "O que fazer no dia da doação?",
+    icon: <TbAlertTriangle className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>Dormir pelo menos 6 horas nas últimas 24 horas</li>
@@ -35,6 +41,7 @@ const faqData = [
   {
     id: 3,
     question: "Quais são os impedimentos temporários para doar?",
+    icon: <MdAccessTime className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>Gripe, resfriado ou febre: aguardar 15 dias após recuperação.</li>
@@ -50,6 +57,7 @@ const faqData = [
   {
     id: 4,
     question: "Quais são os impedimentos definitivos para doar? ",
+    icon: <FaBan className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>Hepatite após os 11 anos de idade.</li>
@@ -61,6 +69,7 @@ const faqData = [
   {
     id: 5,
     question: "O que acontece com o sangue doado?",
+    icon: <FaRegHospital className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>O sangue é processado, separado em componentes e enviado para pacientes que precisam, sempre com testes para garantir a segurança.</li>
@@ -70,6 +79,7 @@ const faqData = [
   {
     id: 6,
     question: "Existe algum cuidado após a doação?",
+    icon: <CgBandAid className="text-2xl font-bold"/>,
     answer: (
       <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
         <li>Evitar esforço físico nas próximas 12 horas.</li>
