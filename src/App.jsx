@@ -58,6 +58,7 @@ function App() {
           <Route path="/location" element={<LocationFinder />} />
           <Route path="/ai" element={<AIAssistant />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/401" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
