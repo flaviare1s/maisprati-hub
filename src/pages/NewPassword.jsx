@@ -15,9 +15,9 @@ export const NewPassword = () => {
   const password = watch("password");
 
   const onSubmit = (data) => {
+    // Substitua este console.log por uma requisição real ao backend
     console.log("Nova senha cadastrada:", data.password);
-    // Aqui você poderia fazer a requisição para salvar a senha
-    navigate("/login"); // redireciona para o login
+    navigate("/login"); // redireciona para o login após cadastrar
   };
 
   return (
@@ -27,7 +27,7 @@ export const NewPassword = () => {
 
       {/* Texto de instrução */}
       <h2 className="text-2xl mb-10 text-center text-gray-500 font-roboto">
-        Cadastre sua nova senha
+        Cadastre sua nova senha.
       </h2>
 
       {/* Formulário */}
@@ -50,13 +50,14 @@ export const NewPassword = () => {
               message: "A senha deve ter pelo menos 6 caracteres",
             },
           }}
+          autoComplete="new-password"
         />
 
         {/* Confirmar senha */}
         <InputField
           name="confirmPassword"
           type="password"
-          placeholder="Confirmar senha"
+          placeholder="Confirme sua senha"
           className="w-72"
           register={register}
           error={errors.confirmPassword?.message}
@@ -65,6 +66,7 @@ export const NewPassword = () => {
             validate: (value) =>
               value === password || "As senhas não coincidem",
           }}
+          autoComplete="new-password"
         />
 
         {/* Botão */}

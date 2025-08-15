@@ -27,7 +27,7 @@ body {
   color: #444;
 }
 
-.dark body, .dark .menu-mobile, .dark .chatbot, {
+.dark body, .dark .menu-mobile, .dark .chatbot {
   background-color: #444;
   color: #F0E9E9;
 }

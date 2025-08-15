@@ -14,6 +14,7 @@ import { CampaignForm } from "./pages/CampaignForm";
 import { LocationFinder } from "./pages/LocationFinder";
 import { AIAssistant } from "./pages/AIAssistant";
 import { ResetPassword } from "./pages/ResetPassword";
+import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
 import { NotFound } from "./pages/NotFound";
 import { SelectAccountType } from "./pages/SelectAccountType";
