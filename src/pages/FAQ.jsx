@@ -97,8 +97,7 @@ export const FAQ = () => {
     <div className="flex flex-col mx-auto p-5 w-full">
       <div className="flex flex-col justify-center items-center">
         <SectionTitle title="Dúvidas" />
-        <div className="mb-10 w-full md:w-2/3"> {/* Ajustei a largura para desktop */}
-          {/* Mapeie o array faqData para renderizar os itens do acordeão */}
+        <div className="mb-10 w-full md:w-2/3">
           {faqData.map(item => (
             <FaqItem key={item.id} question={item.question} answer={item.answer} icon={item.icon} />
           ))}
