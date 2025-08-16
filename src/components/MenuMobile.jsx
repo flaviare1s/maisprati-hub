@@ -42,11 +42,11 @@ export const MenuMobile = () => {
         </div>
 
         <nav className="p-6 flex flex-col gap-4">
-          <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Home</Link>
-          <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Sobre</Link>
-          <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Faq</Link>
-          <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Cadastrar</Link>
-          <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Entrar</Link>
+          <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:bg-red-secondary p-3 rounded-full text-center">Home</Link>
+          <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:bg-red-secondary p-3 rounded-full text-center">Sobre</Link>
+          <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:bg-red-secondary p-3 rounded-full text-center">Faq</Link>
+          <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:bg-red-secondary p-3 rounded-full text-center">Cadastrar</Link>
+          <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:bg-red-secondary p-3 rounded-full text-center">Entrar</Link>
         </nav>
       </div>
     </div>

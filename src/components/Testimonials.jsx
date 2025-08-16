@@ -36,21 +36,21 @@ export const Testimonials = () => {
             <Testimonial
               img={person1}
               name="Maria Conceição, 60 anos."
-              description="“Graças a uma doação anônima, pude passar por minha cirurgia com segurança. Nunca saberei quem foi, mas serei eternamente grata.”"
+              description="“Graças a uma doação anônima, pude passar por minha cirurgia com segurança. Serei eternamente grata.”"
             />
           </SwiperSlide>
           <SwiperSlide>
             <Testimonial
               img={person2}
               name="Pedro Cornelho, 5 anos."
-              description="“Meu filho recebeu transfusões durante meu tratamento contra o câncer. Cada bolsa de sangue foi um novo fôlego de vida. Obrigado a todos que doam! ”"
+              description="“Meu filho recebeu transfusões durante meu tratamento contra o câncer. Cada bolsa de sangue foi um novo fôlego de vida. ”"
             />
           </SwiperSlide>
           <SwiperSlide>
             <Testimonial
               img={person3}
               name="Debora Pereira, 35 anos."
-              description="“Tive um acidente de moto e precisei de sangue com urgência. Pessoas que eu nunca conheci me ajudaram. Hoje, sou doador também.”"
+              description="“Tive um acidente de moto e precisei de sangue com urgência. Pessoas que eu nunca conheci me ajudaram.”"
             />
           </SwiperSlide>
           <SwiperSlide>

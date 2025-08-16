@@ -12,8 +12,8 @@ export const SelectAccountType = () => {
           <img className="w-full" src={logo} alt="Logo" />
         </div>
         <div  className="my-4 w-[250px]">
-          <Link className="uppercase text-light font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-red-logo hover:bg-red-secondary block text-center" to="/register/donator">Quero ser doador</Link>
-          <Link className="uppercase font-medium text-sm py-2 px-4 transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary rounded-md shadow block text-center" to="/register/institution">Sou instituição</Link>
+          <Link className="uppercase font-medium text-sm py-2 px-4 transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-blue-logo text-light rounded-md shadow block text-center hover:bg-red-logo" to="/register/donator">Quero ser doador</Link>
+          <Link className="uppercase font-medium text-sm py-2 px-4 transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-blue-logo text-light rounded-md shadow block text-center hover:bg-red-logo" to="/register/institution">Sou instituição</Link>
         </div>
       </div>
     </div>
