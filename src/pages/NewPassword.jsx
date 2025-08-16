@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logo from "../assets/images/logo_conectavida_name.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
@@ -11,83 +12,144 @@ export const NewPassword = () => {
     watch,
     formState: { errors },
   } = useForm();
-
   const navigate = useNavigate();
   const password = watch("password");
+
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const onSubmit = (data) => {
     console.log("Nova senha cadastrada:", data.password);
     navigate("/login");
   };
 
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      navigate("/login");
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen p-4 pt-12 font-roboto">
-      {/* Logo */}
-      <img src={logo} alt="ConectaVida" className="w-80 mb-8" />
+    <div className="flex flex-col items-center justify-center m-auto w-full p-4">
 
-      {/* Texto de instrução */}
-      <h2 className="text-2xl font-semibold mb-10 text-center text-[var(--color-gray-muted)]">
-        Cadastre sua nova senha.
-      </h2>
-
-      {/* Formulário */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-6"
-      >
-        {/* Nova senha */}
-        <div className="flex flex-col w-72">
-          <label
-            htmlFor="password"
-            className="mb-1 text-sm font-medium text-[var(--color-text-secondary)]"
+      {!isDesktop && (
+        <div className="flex flex-col items-center justify-center w-full max-w-sm">
+          <button
+            type="button"
+            className="text-red-logo hover:text-red-secondary self-start mb-4"
+            onClick={() => navigate(-1)}
           >
-            Digite sua nova senha
-          </label>
-          <InputField
-            name="password"
-            type="password"
-            placeholder="Digite sua nova senha"
-            className="placeholder:text-gray-400 rounded-md border px-3 py-2 bg-[var(--color-bg-input)] border-[var(--color-border-input)]"
-            register={register}
-            error={errors.password?.message}
-            validation={{
-              required: "A senha é obrigatória",
-              minLength: {
-                value: 6,
-                message: "A senha deve ter pelo menos 6 caracteres",
-              },
-            }}
-            autoComplete="new-password"
-          />
-        </div>
+            ← Voltar
+          </button>
 
-        {/* Confirmar senha */}
-        <div className="flex flex-col w-72">
-          <label
-            htmlFor="confirmPassword"
-            className="mb-1 text-sm font-medium text-[var(--color-text-secondary)]"
+          <div>
+            <img src={logo} alt="ConectaVida" className="w-[180px] m-auto" />
+
+            <h2 className="text-xl mb-10 text-center text-gray-muted font-roboto">
+              Cadastre sua nova senha
+            </h2>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center w-full">
+              <InputField
+                name="password"
+                type="password"
+                placeholder="Digite sua nova senha"
+                register={register}
+                error={errors.password?.message}
+                validation={{
+                  required: "A senha é obrigatória",
+                  minLength: {
+                    value: 6,
+                    message: "A senha deve ter pelo menos 6 caracteres",
+                  },
+                }}
+                autoComplete="new-password"
+              />
+              <InputField
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirme sua senha"
+                register={register}
+                error={errors.confirmPassword?.message}
+                validation={{
+                  required: "Confirme sua senha",
+                  validate: (value) =>
+                    value === password || "As senhas não coincidem",
+                }}
+                autoComplete="new-password"
+              />
+              <SubmitButton label="Avançar" />
+            </form>
+          </div>
+        </div>
+      )}
+
+      {isDesktop && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 h-[100vh]"
+          onClick={handleBackdropClick}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 items-center relative h-[300px]"
+            onClick={(e) => e.stopPropagation()}
           >
-            Confirme sua senha
-          </label>
-          <InputField
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirme sua senha"
-            className="placeholder:text-gray-400 rounded-md border px-3 py-2 bg-[var(--color-bg-input)] border-[var(--color-border-input)]"
-            register={register}
-            error={errors.confirmPassword?.message}
-            validation={{
-              required: "Confirme sua senha",
-              validate: (value) =>
-                value === password || "As senhas não coincidem",
-            }}
-            autoComplete="new-password"
-          />
-        </div>
+            <div className="flex flex-col items-center">
+              <button
+                type="button"
+                className="text-red-logo hover:text-red-secondary absolute top-6 left-4"
+                onClick={() => navigate(-1)}
+              >
+                ← Voltar
+              </button>
+              <img src={logo} alt="ConectaVida" className="w-[180px] m-auto" />
+            </div>
 
-        {/* Botão reutilizável */}
-        <SubmitButton className="w-72" label="Avançar" />
-      </form>
+            <div className="flex flex-col items-center w-full">
+              <h2 className="text-xl mb-10 text-center text-gray-muted font-roboto">
+                Cadastre sua nova senha
+              </h2>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center w-full">
+                <InputField
+                  name="password"
+                  type="password"
+                  placeholder="Digite sua nova senha"
+                  register={register}
+                  error={errors.password?.message}
+                  validation={{
+                    required: "A senha é obrigatória",
+                    minLength: {
+                      value: 6,
+                      message: "A senha deve ter pelo menos 6 caracteres",
+                    },
+                  }}
+                  autoComplete="new-password"
+                />
+                <InputField
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Confirme sua senha"
+                  register={register}
+                  error={errors.confirmPassword?.message}
+                  validation={{
+                    required: "Confirme sua senha",
+                    validate: (value) =>
+                      value === password || "As senhas não coincidem",
+                  }}
+                  autoComplete="new-password"
+                />
+                <SubmitButton label="Avançar" />
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
