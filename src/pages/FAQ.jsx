@@ -15,7 +15,7 @@ const faqData = [
     question:"Quem pode doar?",
     icon: <PiUserCheckBold className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>Estar em boas condições de saúde.</li>
         <li>Pesar acima de 50 kg.</li>
         <li>Ter entre 16 e 69 anos (menores de 18 precisam estar acompanhados por um responsável).</li>

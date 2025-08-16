@@ -4,7 +4,7 @@ import { SubmitButton } from "../components/SubmitButton";
 import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../assets/images/logo_conectavida_name.png";
-
+import bg from "../assets/images/bg-login.png";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -25,10 +25,12 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      
-      <div className="bg-soft p-[30px] flex flex-col items-center justify-center w-[90%] sm:w-[500px] rounded-xs">
-        <div className="flex items-center justify-center w-[310px]">
+    <div className="flex flex-col md:flex-row items-center justify-center md:mx-10 lg:mx-0 m-auto">
+      <div className="max-w-[600px]">
+        <img className="hidden md:block w-full" src={bg} alt="" />
+      </div>
+      <div className="p-[20px] flex flex-col items-center justify-center rounded-2xl md:shadow-2xl md:w-[400px]">
+        <div className="flex items-center justify-center w-[180px]">
           <img className="w-full" src={logo} alt="Logo" />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="my-4 w-full">

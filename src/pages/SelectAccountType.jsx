@@ -6,15 +6,14 @@ import logo from "../assets/images/logo_conectavida_name.png";
 export const SelectAccountType = () => {
  
   return (
-    <div className="flex flex-col items-center justify-center">
-
-      <div className="bg-soft p-[30px] flex flex-col items-center justify-center w-[90%] sm:w-[500px] rounded-xs">
-        <div className="flex items-center justify-center w-[310px]">
+    <div className="flex flex-col items-center justify-center m-auto sm:shadow-2xl rounded-2xl">
+      <div className="bg-soft p-[30px] flex flex-col items-center justify-center rounded-xs">
+        <div className="flex items-center justify-center w-[180px]">
           <img className="w-full" src={logo} alt="Logo" />
         </div>
-        <div  className="my-4 w-full">
-          <Link className="uppercase bg-red-logo text-light block text-center font-bold py-2 px-4 hover:bg-red-secondary rounded-md mb-5" to="/register/donator">Quero ser doador</Link>
-          <Link className="uppercase block text-center font-bold py-2 px-4 bg-bg-input text-text-secondary rounded-md shadow" to="/register/institution">Sou instituição</Link>
+        <div  className="my-4 w-[250px]">
+          <Link className="uppercase font-medium text-sm py-2 px-4 transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-blue-logo text-light rounded-md shadow block text-center hover:bg-red-logo" to="/register/donator">Quero ser doador</Link>
+          <Link className="uppercase font-medium text-sm py-2 px-4 transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-blue-logo text-light rounded-md shadow block text-center hover:bg-red-logo" to="/register/institution">Sou instituição</Link>
         </div>
       </div>
     </div>
