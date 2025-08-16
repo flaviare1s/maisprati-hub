@@ -30,7 +30,7 @@ const faqData = [
     question: "O que fazer no dia da doação?",
     icon: <TbAlertTriangle className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>Dormir pelo menos 6 horas nas últimas 24 horas</li>
         <li>Alimentar-se bem (evitar comida gordurosa nas 4 horas anteriores).</li>
         <li>Não beber álcool nas últimas 12 horas.</li>
@@ -43,7 +43,7 @@ const faqData = [
     question: "Quais são os impedimentos temporários para doar?",
     icon: <MdAccessTime className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>Gripe, resfriado ou febre: aguardar 15 dias após recuperação.</li>
         <li>Gravidez.</li>
         <li>Pós-parto: 90 dias (normal) ou 180 dias (cesariana).</li>
@@ -59,7 +59,7 @@ const faqData = [
     question: "Quais são os impedimentos definitivos para doar? ",
     icon: <FaBan className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>Hepatite após os 11 anos de idade.</li>
         <li>Doenças transmissíveis pelo sangue: hepatite B/C, HIV/AIDS, HTLV I/II, Doença de Chagas.</li>
         <li>Uso de drogas ilícitas injetáveis.</li>
@@ -71,7 +71,7 @@ const faqData = [
     question: "O que acontece com o sangue doado?",
     icon: <FaRegHospital className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>O sangue é processado, separado em componentes e enviado para pacientes que precisam, sempre com testes para garantir a segurança.</li>
       </ul>
     )
@@ -81,7 +81,7 @@ const faqData = [
     question: "Existe algum cuidado após a doação?",
     icon: <CgBandAid className="text-2xl font-bold"/>,
     answer: (
-      <ul className="list-disc pl-6 text-gray-700 space-y-2 font-roboto font-bold">
+      <ul className="list-disc pl-6 space-y-2 font-roboto font-bold faq">
         <li>Evitar esforço físico nas próximas 12 horas.</li>
         <li>Beber bastante líquido.</li>
         <li>Não fumar por 2 horas.</li>
