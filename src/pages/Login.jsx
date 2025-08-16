@@ -68,7 +68,7 @@ export const Login = () => {
             label="Entrar"
             bgColor="verde-primario"
           />
-          <Link to="/register" className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-bg-menu-mobile">Cadastre-se</Link>
+          <Link to="/register" className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-inter focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-white">Cadastre-se</Link>
           <Link to="/reset-password" className="text-center text-sm text-blue-logo font-bold hover:text-orange-logo mt-5 block">Esqueci minha senha</Link>
         </form>
       </div>
