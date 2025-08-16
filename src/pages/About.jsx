@@ -7,17 +7,28 @@ import img3 from "../assets/images/about-img3.png"
 export const About = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 w-screen gap-[5px] bg-light py-[5px] about">
-      <AboutItemImg img={img1} alt="Imagem de uma pessoa doando sangue" />
-      <AboutItemContent title="Sobre o ConectaVida" description="ConectaVida é um aplicativo que veio para ajudar as instituições e hemocentros para se conectar com você!" />
+      <AboutItemImg img={img1} alt="Imagem de pessoas conectadas" />
+      <AboutItemContent
+        title="Sobre o Projeto +Prati"
+        description="O Gerenciador de Projetos da +PraTi foi desenvolvido para facilitar a organização dos trabalhos finais, conectando professores e alunos em um só lugar."
+      />
+
       <div className="md:order-4">
-        <AboutItemImg img={img2} alt="Imagem do mapa do Brasil e mãos de pessoas segurando um coração" />
+        <AboutItemImg img={img2} alt="Imagem de formulário digital sendo preenchido" />
       </div>
-      <AboutItemContent title="Como Funciona" description="O doador coloca seu CEP e após isso o aplicativo te direciona a instituição/hemocentro mais próximo para que você possa doar." />
-      <AboutItemImg img={img3} alt="Imagem de uma pessoa após doar sangue" />
+      <AboutItemContent
+        title="Como Funciona"
+        description="Os alunos preenchem um formulário com seu perfil. O professor, com base nessas informações, consegue montar os grupos de forma equilibrada e eficiente."
+      />
+
+      <AboutItemImg img={img3} alt="Imagem de dashboard de acompanhamento de projetos" />
       <div className="md:order-5">
-        <AboutItemContent title="Doação" description="Agende sua doação no horario e data que é melhor para voce. Doe e ajude um pessoa que precise do seu sangue! " />
+        <AboutItemContent
+          title="Acompanhamento"
+          description="O app permite que alunos e professores acompanhem o andamento de cada projeto, garantindo organização e transparência em todas as etapas."
+        />
       </div>
     </div>
-    
   )
 }
+
