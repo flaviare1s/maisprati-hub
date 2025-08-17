@@ -7,7 +7,7 @@ export const FaqItem = ({ question, answer, icon}) => {
   };
 
   return (
-    <div className="border-b border-gray-200 mb-4">
+    <div className="mb-4">
       <button
         className="flex justify-between items-center w-full p-4 text-left font-roboto font-bold bg-[#E6938B] rounded-lg shadow-md"
         onClick={toggleAccordion}
