@@ -1,10 +1,10 @@
-# ConectaVida
+# +PraTi Hub
 
 ## Guia para Desenvolvimento
 
 1. Clonar o repositório
 ```bash
-git clone https://github.com/flaviare1s/conectavida.git
+git clone https://github.com/flaviare1s/maisprati-hub.git
 ```
 
 2. Entrar na pasta do projeto e abir o VSCode
