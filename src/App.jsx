@@ -2,22 +2,14 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { InstitutionRegister } from "./pages/InstitutionRegister";
-import { UserDashboard } from "./pages/UserDashboard";
 import { UserProfile } from "./pages/UserProfile";
-import { DonationHistory } from "./pages/DonationHistory";
-import { Appointments } from "./pages/Appointments";
-import { AppointmentForm } from "./pages/AppointmentForm";
-import { AppointmentManager } from "./pages/AppointmentManager";
-import { CampaignList } from "./pages/CampaignList";
-import { CampaignForm } from "./pages/CampaignForm";
-import { LocationFinder } from "./pages/LocationFinder";
-import { AIAssistant } from "./pages/AIAssistant";
+import { Dashboard } from "./pages/Dashboard";
+import { StudentForm } from "./pages/StudentForm";
+import { StudentDashboard } from "./components/StudentDashboard";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
 import { NotFound } from "./pages/NotFound";
-import { SelectAccountType } from "./pages/SelectAccountType";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { FAQ } from "./pages/FAQ";
@@ -25,7 +17,9 @@ import { ChatButton } from "./components/ChatButton";
 import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
 import { useState } from "react";
-import { DonatorRegister } from "./pages/DonatorRegister";
+import { UserRegister } from "./pages/UserRegister";
+import { TeacherDashboard } from "./components/TeacherDashboard";
+import { Toaster } from 'react-hot-toast';
 
 Modal.setAppElement("#root")
 
@@ -44,20 +38,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<SelectAccountType />} />
-          <Route path="/register/donator" element={<DonatorRegister />} />
-          <Route path="/register/institution" element={<InstitutionRegister />} />
-          <Route path="/dashboard/user" element={<UserDashboard />} />
-          <Route path="/dashboard/institution" element={<InstitutionRegister />} />
+          <Route path="/register" element={<UserRegister />} />
+          <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/donations" element={<DonationHistory />} />
-          <Route path="/appointments" element={<Appointments />} />
-          <Route path="/appointment/form" element={<AppointmentForm />} />
-          <Route path="/appointment/manage" element={<AppointmentManager />} />
-          <Route path="/campaigns" element={<CampaignList />} />
-          <Route path="/campaign/form" element={<CampaignForm />} />
-          <Route path="/location" element={<LocationFinder />} />
-          <Route path="/ai" element={<AIAssistant />} />
+          <Route path="/student/form" element={<StudentForm />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
@@ -66,6 +50,30 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+            style: {
+              background: '#007DE3',
+              color: '#fff',
+            },
+          },
+          error: {
+            duration: 4000,
+            style: {
+              background: '#dc3545',
+              color: '#fff',
+            },
+          },
+        }}
+      />
     </div>
   );
 }
