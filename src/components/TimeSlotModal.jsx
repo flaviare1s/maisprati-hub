@@ -10,7 +10,7 @@ const getTimeSlots = () => {
 
   return slots.map(time => ({
     time,
-    available: Math.random() > 0.3 // 70% de chance de estar disponível
+    available: Math.random() > 0.3
   }));
 };
 
@@ -35,7 +35,7 @@ export const TimeSlotModal = ({ open, onClose, selectedDate }) => {
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] border-2 border-blue-logo overflow-hidden">
+      <div className="relative bg-light rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] border-2 border-blue-logo overflow-hidden">
 
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold">
@@ -74,16 +74,15 @@ export const TimeSlotModal = ({ open, onClose, selectedDate }) => {
             ))}
           </div>
 
-          {/* Legend */}
           <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full" />
-              <span className="text-xs text-gray-600">Disponível</span>
+              <div className="w-3 h-3 bg-blue-logo rounded-full" />
+              <span className="text-xs text-gray-muted">Disponível</span>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full" />
-              <span className="text-xs text-gray-600">Ocupado</span>
+              <div className="w-3 h-3 bg-red-secondary rounded-full" />
+              <span className="text-xs text-gray-muted">Ocupado</span>
             </div>
           </div>
         </div>
