@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const FaqItem = ({ question, answer, icon}) => {
+export const FaqItem = ({ question, answer, icon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -9,7 +9,7 @@ export const FaqItem = ({ question, answer, icon}) => {
   return (
     <div className="mb-4">
       <button
-        className="flex justify-between items-center w-full p-4 text-left font-roboto font-bold bg-[#E6938B] rounded-lg shadow-md"
+        className="flex justify-between items-center w-full p-4 text-left font-roboto font-bold bg-orange-logo rounded-lg shadow-md"
         onClick={toggleAccordion}
       >
         <div className="flex items-center gap-4">

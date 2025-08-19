@@ -33,7 +33,7 @@ export const InputField = ({
         </label>
       )}
       <input {...inputProps} />
-      {error && <small className="text-red-logo mt-1">{error}</small>}
+      {error && <small className="text-red-secondary mt-1">{error}</small>}
     </div>
   );
 };

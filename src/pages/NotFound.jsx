@@ -5,26 +5,25 @@ export const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6">
       {/* Título 1 */}
-      <h1 className="text-2xl md:text-4xl font-extrabold text-[var(--color-gray-muted)] mb-6">
+      <h2 className="text-5xl font-extrabold text-orange-logo mb-6">
         404
-      </h1>
+      </h2>
 
-      {/* Imagem */}
       <img
         src={img}
         alt="Página não encontrada"
-        className="w-32 h-48 md:w-40 md:h-64 mb-8 object-contain"
+        className="w-32 sm:w-64 mb-8"
       />
 
       {/* Título 2 */}
-      <h1 className="text-2xl md:text-4xl font-extrabold text-[var(--color-gray-muted)] mb-6 text-center">
+      <h3 className="text-2xl font-extrabold text-orange-logo mb-6 text-center">
         Ops! Página não encontrada
-      </h1>
+      </h3>
 
       {/* Botão */}
       <Link
         to="/"
-        className="bg-[var(--color-red-logo)] hover:bg-[var(--color-red-secondary)] text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        className="bg-blue-logo hover:bg-orange-logo text-light font-bold  px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105"
       >
         Voltar ao Início
       </Link>

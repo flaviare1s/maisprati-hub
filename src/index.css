@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-red-logo: #DB1627;
-  --color-blue-logo: #168282;
+  --color-blue-logo: #007DE3;
+  --color-orange-logo: #FE8C68;
   --color-red-secondary: #C0392B;
   --color-btn-home: #FE8822;
   --color-bg-menu-mobile: #E6938B;
@@ -61,7 +61,7 @@ body {
 
 .swiper-button-next, .swiper-button-prev {
   color: var(--color-light) !important;
-  background-color: var(--color-red-logo) !important;
+  background-color: var(--color-blue-logo) !important;
   border-radius: 50% !important;
   width: 40px !important;
   height: 40px !important;

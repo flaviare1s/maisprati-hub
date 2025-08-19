@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import logo from "../assets/images/logo_conectavida_name.png";
+import logo from "../assets/images/logo+prati.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
 
@@ -35,7 +35,7 @@ export const ResetPassword = () => {
         <div className="flex flex-col items-center w-full max-w-sm">
           <button
             type="button"
-            className="text-red-logo hover:text-red-secondary self-start mb-4"
+            className="text-blue-logo hover:text-orange self-start mb-4"
             onClick={() => navigate(-1)}
           >
             ← Voltar
@@ -81,7 +81,7 @@ export const ResetPassword = () => {
             <div className="flex flex-col items-center">
               <button
                 type="button"
-                className="text-red-logo hover:text-red-secondary self-start mb-4"
+                className="text-blue-logo hover:text-orange-logo self-start mb-4"
                 onClick={() => navigate(-1)}
               >
                 ← Voltar
