@@ -145,7 +145,7 @@ export const Calendar = () => {
                 color: 'text.primary',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                fontFamily: 'var(--font-roboto)',
+                fontFamily: 'var(--font-montserrat)',
               }}
             >
               Calendário
@@ -161,13 +161,13 @@ export const Calendar = () => {
                 sx={{
                   '& .MuiPickersCalendarHeader-root': {
                     color: 'text.primary',
-                    fontFamily: 'var(--font-roboto)',
+                    fontFamily: 'var(--font-montserrat)',
                   },
                   '& .MuiDayCalendar-header': {
                     '& .MuiTypography-root': {
                       color: 'text.secondary',
                       fontWeight: 'bold',
-                      fontFamily: 'var(--font-roboto)',
+                      fontFamily: 'var(--font-montserrat)',
                     },
                   },
                 }}
@@ -180,7 +180,7 @@ export const Calendar = () => {
                 marginTop: '12px',
                 color: getSelectedDateInfo().color,
                 textAlign: 'center',
-                fontFamily: 'var(--font-roboto)',
+                fontFamily: 'var(--font-montserrat)',
                 fontWeight: 'bold',
               }}
             >

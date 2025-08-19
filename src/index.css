@@ -5,8 +5,6 @@
   --color-orange-logo: #FE8C68;
   --color-red-secondary: #C0392B;
   --color-btn-home: #FE8822;
-  --color-bg-menu-mobile: #E6938B;
-  --color-bg-btn-menu-mobile: #EE7A6F;
 
   --color-gray-muted: #777777;
   --color-light: #F3F4F6;
@@ -17,14 +15,13 @@
   --color-bg-input: #ECF0F1;
   --color-border-input: #BDC3C7;
 
-  --font-roboto: 'Roboto', sans-serif;
-  --font-open-sans: 'Open Sans', sans-serif;
-  --font-inter: 'Inter', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
 }
 
 body {
   background-color: #F3F4F6;
   color: #444;
+  font-family: var(--font-montserrat);
 }
 
 .dark body, .dark .menu-mobile, .dark .chatbot, .dark .faq {
