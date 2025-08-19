@@ -6,25 +6,34 @@ export const InputField = ({
   error,
   validation,
   placeholder,
-  defaultValue,
   value,
 }) => {
+  const inputProps = {
+    type,
+    id: name,
+    name,
+    placeholder,
+    ...register(name, validation),
+    className:
+      "border border-border-input rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-logo placeholder:text-sm bg-bg-input",
+  };
+
+  if (value !== undefined) {
+    inputProps.value = value;
+  }
+
   return (
     <div className="flex flex-col w-full my-2">
-      <label htmlFor={name} className="text-sm font-medium mb-1 text-gray-muted">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        value={value}
-        {...register(name, validation)}
-        className="border border-border-input rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-logo placeholder:text-sm bg-bg-input"
-      />
-      {error && <small className="text-red-logo mt-1">{error}</small>}
+      {label && (
+        <label
+          htmlFor={name}
+          className="text-sm font-medium mb-1 text-gray-muted"
+        >
+          {label}
+        </label>
+      )}
+      <input {...inputProps} />
+      {error && <small className="text-red-secondary mt-1">{error}</small>}
     </div>
   );
 };

@@ -35,29 +35,29 @@ export const Testimonials = () => {
           <SwiperSlide>
             <Testimonial
               img={person1}
-              name="Maria Conceição, 60 anos."
-              description="“Graças a uma doação anônima, pude passar por minha cirurgia com segurança. Nunca saberei quem foi, mas serei eternamente grata.”"
+              name="Maria Conceição."
+              description="“O aplicativo facilitou a formação dos grupos e deixou tudo muito mais organizado durante o projeto.”"
             />
           </SwiperSlide>
           <SwiperSlide>
             <Testimonial
               img={person2}
-              name="Pedro Cornelho, 5 anos."
-              description="“Meu filho recebeu transfusões durante meu tratamento contra o câncer. Cada bolsa de sangue foi um novo fôlego de vida. Obrigado a todos que doam! ”"
+              name="Pedro Cornelho."
+              description="“Conseguimos acompanhar cada etapa do trabalho sem confusão. Isso ajudou todo o grupo a se manter focado.”"
             />
           </SwiperSlide>
           <SwiperSlide>
             <Testimonial
               img={person3}
-              name="Debora Pereira, 35 anos."
-              description="“Tive um acidente de moto e precisei de sangue com urgência. Pessoas que eu nunca conheci me ajudaram. Hoje, sou doador também.”"
+              name="Debora Pereira."
+              description="“Como professora, pude visualizar rapidamente o andamento de cada grupo e orientar melhor os alunos.”"
             />
           </SwiperSlide>
           <SwiperSlide>
             <Testimonial
               img={person4}
-              name="Luciano Costa, 42 anos."
-              description="“O sangue doado não salvou só a minha vida, mas também devolveu a esperança da minha familia”"
+              name="Luciano Costa."
+              description="“O sistema trouxe clareza no acompanhamento dos prazos e facilitou a comunicação entre todos.”"
             />
           </SwiperSlide>
         </Swiper>

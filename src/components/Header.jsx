@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo from '../assets/images/logo_conectavida.png'
+import logo from '../assets/images/logo+prati.png'
 import { MenuDesktop } from './MenuDesktop'
 import { MenuMobile } from './MenuMobile'
 import { ThemeToggle } from './ThemeToggle'
@@ -11,7 +11,6 @@ export const Header = () => {
         <div className='w-[70px]'>
           <img className='w-full' src={logo} alt="Logo" />
         </div>
-        <h1 className='font-inter text-2xl font-bold text-blue-logo hidden lg:block'>Conecta<span className='text-red-logo'>Vida</span></h1>
       </Link>
       <div className='flex items-center gap-1 md:gap-10'>
         <div className='hidden md:block'>

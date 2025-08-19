@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
-import logo from '../assets/images/logo_conectavida_name.png';
+import logo from '../assets/images/logo-menu.png';
 
 export const MenuMobile = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ export const MenuMobile = () => {
 
       <div
         className={`
-          fixed top-0 right-0 w-full h-screen bg-bg-menu-mobile shadow-lg p-6 rounded-bl-md z-50 flex flex-col gap-4
+          fixed top-0 right-0 w-full h-screen bg-blue-logo shadow-lg p-6 rounded-bl-md z-50 flex flex-col gap-4
           transform transition-transform duration-500 ease-out
           ${isOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0 pointer-events-none z-40'}
         `}
@@ -42,11 +42,11 @@ export const MenuMobile = () => {
         </div>
 
         <nav className="p-6 flex flex-col gap-4">
-          <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Home</Link>
-          <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Sobre</Link>
-          <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Faq</Link>
-          <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Cadastrar</Link>
-          <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-bg-btn-menu-mobile font-bold hover:text-red-logo p-3 rounded-full text-center">Entrar</Link>
+          <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Home</Link>
+          <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Sobre</Link>
+          <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Faq</Link>
+          <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Cadastrar</Link>
+          <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Entrar</Link>
         </nav>
       </div>
     </div>
