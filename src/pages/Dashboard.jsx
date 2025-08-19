@@ -30,7 +30,7 @@ export const Dashboard = () => {
           </div>
 
           <div className="flex-1 rounded-lg p-6 shadow-lg">
-            <h1 className="text-2xl font-bold font-roboto mb-4">
+            <h1 className="text-2xl font-bold mb-4">
               {user.type === 'student' ? 'Dashboard do Estudante' : 'Dashboard do Professor'}
             </h1>
             {renderDashboardContent()}

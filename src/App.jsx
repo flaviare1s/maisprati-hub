@@ -33,7 +33,7 @@ function App() {
         <ChatButton onClick={() => setIsOpen(true)} />
         <ChatBox isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <main className="font-roboto flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
+      <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

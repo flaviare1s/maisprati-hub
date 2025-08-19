@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 export const MenuDesktop = () => {
   return (
-    <nav className="flex items-center gap-4 md:gap-8 lg:gap-10 font-roboto">
+    <nav className="flex items-center gap-4 md:gap-8 lg:gap-10">
       <Link to='/' className='uppercase font-lg text-blue-logo font-bold hover:text-orange-logo link-nav'>Home</Link>
       <Link to='/about' className='uppercase font-lg text-blue-logo font-bold hover:text-orange-logo link-nav'>Sobre</Link>
       <Link to='/faq' className='uppercase font-lg text-blue-logo font-bold hover:text-orange-logo link-nav'>Faq</Link>

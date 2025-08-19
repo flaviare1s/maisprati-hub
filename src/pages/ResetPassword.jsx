@@ -44,7 +44,7 @@ export const ResetPassword = () => {
           <div className="flex flex-col items-center">
             <img src={logo} alt="ConectaVida" className="w-[180px] mb-8" />
             <div className="flex flex-col">
-              <h2 className="text-xl text-center text-gray-muted font-roboto mb-5">
+              <h2 className="text-xl text-center text-gray-muted font-montserrat mb-5">
                 Digite seu e-mail
               </h2>
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center w-full">
@@ -92,7 +92,7 @@ export const ResetPassword = () => {
             <div className="flex flex-col items-center w-full m-auto">
             
 
-              <h2 className="text-xl mb-10 text-center text-gray-muted font-roboto">
+              <h2 className="text-xl mb-10 text-center text-gray-muted font-montserrat">
                 Digite seu e-mail
               </h2>
 

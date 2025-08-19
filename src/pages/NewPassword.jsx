@@ -50,7 +50,7 @@ export const NewPassword = () => {
           <div>
             <img src={logo} alt="ConectaVida" className="w-[180px] m-auto" />
 
-            <h2 className="text-xl mb-10 text-center text-gray-muted font-roboto">
+            <h2 className="text-xl mb-10 text-center text-gray-muted font-montserrat">
               Cadastre sua nova senha
             </h2>
 
@@ -110,7 +110,7 @@ export const NewPassword = () => {
             </div>
 
             <div className="flex flex-col items-center w-full">
-              <h2 className="text-xl mb-10 text-center text-gray-muted font-roboto">
+              <h2 className="text-xl mb-10 text-center text-gray-muted font-montserrat">
                 Cadastre sua nova senha
               </h2>
 
