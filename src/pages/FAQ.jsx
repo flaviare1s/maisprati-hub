@@ -92,7 +92,7 @@ export const FAQ = () => {
           <FaqItem key={item.id} question={item.question} answer={item.answer} icon={item.icon} />
         ))}
       </div>
-      <SectionTitle title="Agradecimentos" />
+      <SectionTitle title="Depoimentos" />
       <div className="w-full">
         <Testimonials />
       </div>
