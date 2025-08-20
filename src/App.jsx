@@ -19,12 +19,12 @@ import Modal from "react-modal";
 import { useState } from "react";
 import { UserRegister } from "./pages/UserRegister";
 import { TeacherDashboard } from "./components/TeacherDashboard";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
-Modal.setAppElement("#root")
+Modal.setAppElement("#root");
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
@@ -50,9 +50,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <Toaster
-        position="top-center"
-      />
+      <Toaster position="top-center" />
     </div>
   );
 }
