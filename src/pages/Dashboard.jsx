@@ -5,7 +5,7 @@ import { TeacherDashboard } from '../components/TeacherDashboard';
 export const Dashboard = () => {
   const user = {
     name: 'João',
-    type: 'student'
+    type: 'teacher'
   }
 
   const renderDashboardContent = () => {

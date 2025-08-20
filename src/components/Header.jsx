@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <header className='h-[80px] md:h-[100px] w-screen flex items-center justify-between px-[25px] lg:px-[50px] xl:px-[100px] m-auto shadow-lg'>
       <Link to='/' className='flex items-center'>
-        <div className='w-[70px]'>
+        <div className='w-[90px] md:w-[100px]'>
           <img className='w-full' src={logo} alt="Logo" />
         </div>
       </Link>
