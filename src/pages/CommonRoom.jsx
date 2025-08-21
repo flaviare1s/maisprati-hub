@@ -6,7 +6,7 @@ import { FaCrown, FaComments, FaMagic, FaHeart, FaLightbulb } from "react-icons/
 import toast from 'react-hot-toast';
 import { fetchUsers } from "../api.js/users";
 import { NoTeamList } from "../components/NoTeamList";
-import { fetchPosts } from "../api.js/posts";
+import { fetchComments, fetchPosts } from "../api.js/posts";
 import { Forum } from "../components/Forum";
 
 export const CommonRoom = () => {
@@ -39,24 +39,39 @@ export const CommonRoom = () => {
       try {
         const [posts, users] = await Promise.all([fetchPosts(), fetchUsers()]);
 
-        const postsWithAvatars = posts.map((post) => {
-          const author = users.find((u) => u.id === post.authorId);
-          return {
-            ...post,
-            author: author?.username || "Desconhecido",
-            avatar: author?.avatar || "/src/assets/images/avatar/default.png",
-            tags: post.tags || [],
-          };
-        });
+        const postsWithAuthorsAndComments = await Promise.all(
+          posts.map(async (post) => {
+            const author = users.find((u) => u.id === post.authorId);
+            const commentsData = await fetchComments(post.id);
 
-        setForumPosts(postsWithAvatars);
+            const commentsWithAuthors = commentsData.map((c) => {
+              const commentAuthor = users.find((u) => u.id === c.authorId);
+              return {
+                ...c,
+                author: commentAuthor?.username || "Desconhecido",
+                avatar: commentAuthor?.avatar || "/src/assets/images/avatar/default.png",
+              };
+            });
+
+            return {
+              ...post,
+              author: author?.username || "Desconhecido",
+              avatar: author?.avatar || "/src/assets/images/avatar/default.png",
+              comments: commentsWithAuthors,
+            };
+          })
+        );
+
+        setForumPosts(postsWithAuthorsAndComments);
       } catch (error) {
         console.error("Erro ao buscar posts do fórum:", error);
         toast.error("Não foi possível carregar os posts do fórum.");
       }
     };
+
     loadForumPosts();
   }, []);
+
 
   const handleJoinTeam = () => {
     navigate('/team-select');

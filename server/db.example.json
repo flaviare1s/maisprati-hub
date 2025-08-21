@@ -475,37 +475,6 @@
       "createdAt": "2025-08-21T16:02:00Z"
     }
   ],
-  "teamInvitations": [
-    {
-      "id": "1",
-      "fromUserId": "3",
-      "toUserId": "2",
-      "teamId": "1",
-      "message": "Gostaríamos de te convidar para nosso time! Suas skills de React seriam perfeitas.",
-      "status": "pending",
-      "invitationType": "team_member",
-      "createdAt": "2025-08-21T16:15:00Z",
-      "expiresAt": "2025-08-28T16:15:00Z"
-    }
-  ],
-  "userPresence": [
-    {
-      "userId": "2",
-      "status": "looking_for_team",
-      "lastSeen": "2025-08-21T16:20:00Z",
-      "isOnline": true,
-      "currentActivity": "browsing_forum",
-      "id": "4641"
-    },
-    {
-      "userId": "3",
-      "status": "recruiting",
-      "lastSeen": "2025-08-21T16:18:00Z",
-      "isOnline": true,
-      "currentActivity": "common_room",
-      "id": "cef9"
-    }
-  ],
   "notifications": [
     {
       "id": "1",

@@ -1,15 +1,13 @@
 import api from "../services/api";
 
 export const fetchPosts = async () => {
-  const { data } = await api.get(
-    `/posts?_expand=user&_sort=createdAt&_order=desc`
-  );
-
-  return data.map((p) => ({
-    ...p,
-    tags: p.tags || [],
-    reactions: p.reactions || { fire: 0, heart: 0, lightbulb: 0 },
-    responses: p.responses || 0,
+  const { data: posts } = await api.get(`/posts?_sort=createdAt&_order=desc`);
+  return posts.map((p) => ({
+    id: p.id,
+    authorId: p.authorId,
+    title: p.title,
+    content: p.content,
+    createdAt: p.createdAt,
   }));
 };
 
@@ -28,18 +26,26 @@ export const createPost = async (userId, title, content, tags = []) => {
   return data;
 };
 
-export const reactToPost = async (postId, type) => {
-  const { data: post } = await api.get(`/posts/${postId}`);
-  if (!post) throw new Error("Post não encontrado");
+export const fetchComments = async (postId) => {
+  const { data } = await api.get(
+    `/comments?postId=${postId}&_expand=user&_sort=createdAt&_order=asc`
+  );
 
-  const updated = {
-    ...post,
-    reactions: {
-      ...post.reactions,
-      [type]: (post.reactions?.[type] || 0) + 1,
-    },
+  return data.map((c) => ({
+    ...c,
+    author: c.user || { username: "Desconhecido", avatar: "" },
+    createdAt: c.createdAt,
+  }));
+};
+
+export const addComment = async (postId, userId, content) => {
+  const newComment = {
+    postId,
+    userId,
+    content,
+    createdAt: new Date().toISOString(),
   };
 
-  const { data } = await api.patch(`/posts/${postId}`, updated);
+  const { data } = await api.post("/comments", newComment);
   return data;
 };
