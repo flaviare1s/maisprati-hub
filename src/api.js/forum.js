@@ -1,21 +1,21 @@
-import { api } from "../services/api";
+import api from "../services/api";
 
-// ============ POSTS DO FÓRUM ============
+export const fetchPosts = async () => {
+  const { data } = await api.get(
+    `/posts?_expand=user&_sort=createdAt&_order=desc`
+  );
 
-// Buscar todos os posts do fórum
-export const fetchForumPosts = async () => {
-  try {
-    const response = await api.get(
-      "/forumPosts?_expand=author&_embed=forumComments&_embed=forumReactions"
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao buscar posts do fórum:", error);
-    throw new Error("Erro ao carregar posts");
-  }
+  return data.map((p) => ({
+    ...p,
+    author: p.user.username,
+    avatar: p.user.avatar,
+    tags: p.tags || [],
+    reactions: p.reactions || { fire: 0, heart: 0, lightbulb: 0 },
+    responses: p.responses || 0,
+  }));
 };
 
-// Criar novo post
+
 export const createForumPost = async (postData) => {
   try {
     const newPost = {
@@ -33,7 +33,6 @@ export const createForumPost = async (postData) => {
   }
 };
 
-// Deletar post
 export const deleteForumPost = async (postId) => {
   try {
     await api.patch(`/forumPosts/${postId}`, { isActive: false });
@@ -44,18 +43,13 @@ export const deleteForumPost = async (postId) => {
   }
 };
 
-// ============ REAÇÕES ============
-
-// Adicionar reação a um post
 export const addReaction = async (postId, userId, reactionType) => {
   try {
-    // Verificar se já existe reação do usuário para este post
     const existingReactions = await api.get(
       `/forumReactions?postId=${postId}&userId=${userId}`
     );
 
     if (existingReactions.data.length > 0) {
-      // Se já existe, atualizar tipo de reação
       const reactionId = existingReactions.data[0].id;
       const response = await api.patch(`/forumReactions/${reactionId}`, {
         reactionType,
@@ -63,7 +57,6 @@ export const addReaction = async (postId, userId, reactionType) => {
       });
       return response.data;
     } else {
-      // Se não existe, criar nova reação
       const newReaction = {
         postId,
         userId,
@@ -79,7 +72,6 @@ export const addReaction = async (postId, userId, reactionType) => {
   }
 };
 
-// Remover reação
 export const removeReaction = async (postId, userId) => {
   try {
     const reactions = await api.get(
@@ -97,9 +89,7 @@ export const removeReaction = async (postId, userId) => {
   }
 };
 
-// ============ COMENTÁRIOS ============
 
-// Buscar comentários de um post
 export const fetchPostComments = async (postId) => {
   try {
     const response = await api.get(
@@ -112,7 +102,6 @@ export const fetchPostComments = async (postId) => {
   }
 };
 
-// Adicionar comentário
 export const addComment = async (postId, authorId, content) => {
   try {
     const newComment = {
@@ -131,9 +120,6 @@ export const addComment = async (postId, authorId, content) => {
   }
 };
 
-// ============ ESTATÍSTICAS ============
-
-// Buscar estatísticas de um post (reações e comentários)
 export const getPostStatistics = async (postId) => {
   try {
     const [reactions, comments] = await Promise.all([
@@ -141,7 +127,6 @@ export const getPostStatistics = async (postId) => {
       api.get(`/forumComments?postId=${postId}&isActive=true`),
     ]);
 
-    // Contar reações por tipo
     const reactionCounts = reactions.data.reduce((acc, reaction) => {
       acc[reaction.reactionType] = (acc[reaction.reactionType] || 0) + 1;
       return acc;

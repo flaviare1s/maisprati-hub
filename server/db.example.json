@@ -443,13 +443,12 @@
       "createdAt": "2025-08-21T16:00:00Z"
     }
   ],
-  "forumPosts": [
+  "posts": [
     {
       "id": "1",
       "authorId": "2",
       "title": "Procurando Front-end para projeto React! 🚀",
       "content": "Estou montando uma equipe para desenvolver uma plataforma de e-learning. Preciso de alguém forte em React e CSS!",
-      "tags": ["React", "Frontend", "Urgente"],
       "postType": "team_formation",
       "isActive": true,
       "createdAt": "2025-08-21T15:55:00Z",
@@ -460,30 +459,13 @@
       "authorId": "8",
       "title": "Dica: Como estruturar APIs REST eficientes 💡",
       "content": "Vou compartilhar algumas práticas que aprendi para organizar rotas e middlewares de forma mais limpa...",
-      "tags": ["Backend", "API", "Dicas"],
       "postType": "knowledge_sharing",
       "isActive": true,
       "createdAt": "2025-08-21T15:45:00Z",
       "updatedAt": "2025-08-21T15:45:00Z"
     }
   ],
-  "forumReactions": [
-    {
-      "id": "1",
-      "postId": "1",
-      "userId": "3",
-      "reactionType": "fire",
-      "createdAt": "2025-08-21T16:00:00Z"
-    },
-    {
-      "id": "2",
-      "postId": "1",
-      "userId": "4",
-      "reactionType": "heart",
-      "createdAt": "2025-08-21T16:01:00Z"
-    }
-  ],
-  "forumComments": [
+  "comments": [
     {
       "id": "1",
       "postId": "1",
