@@ -83,7 +83,7 @@ export const Dashboard = () => {
 
   return (
     <div className="p-4 md:px-6 my-auto overflow-x-hidden">
-      <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
+      <div className="flex flex-col-reverse sm:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[280px] order-2 md:order-1">
           <Calendar />
         </div>

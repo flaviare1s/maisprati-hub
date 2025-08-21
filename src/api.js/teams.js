@@ -42,7 +42,6 @@ export const addMemberToTeam = async (teamId, memberData) => {
     throw new Error("Time já está cheio");
   }
 
-  // Verificar se o usuário já é membro
   const isAlreadyMember = team.members.some(
     (member) => member.userId === memberData.userId
   );
@@ -65,10 +64,8 @@ export const addMemberToTeam = async (teamId, memberData) => {
     currentMembers: team.members.length + 1,
   };
 
-  // Atualizar o time
   const teamResponse = await api.put(`/teams/${teamId}`, updatedTeam);
 
-  // Atualizar o usuário para marcar que não é mais primeiro login
   const userResponse = await api.get(`/users/${memberData.userId}`);
   const userData = userResponse.data;
 

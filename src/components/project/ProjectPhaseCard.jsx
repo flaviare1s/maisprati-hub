@@ -60,16 +60,43 @@ export const ProjectPhaseCard = ({ phase, userTeam }) => {
         <div className="flex items-center gap-1">
           <FaUsers />
           <span>{userTeam.name}</span>
-        </div>        {phase.status === "done" && (
-          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
+        </div>
+
+        {phase.assignedTo && (
+          <div className="text-blue-600 font-medium">
+            Responsável: {phase.assignedTo}
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2 flex justify-between items-center">
+        {phase.status === "done" && (
+          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium text-xs">
             Concluído
           </span>
         )}
 
         {phase.status === "in_progress" && (
-          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium text-xs">
             Em Andamento
           </span>
+        )}
+
+        {phase.status === "todo" && (
+          <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full font-medium text-xs">
+            A Fazer
+          </span>
+        )}
+
+        {(phase.startedAt || phase.completedAt) && (
+          <div className="text-xs text-gray-500">
+            {phase.completedAt
+              ? `Concluído em ${new Date(phase.completedAt).toLocaleDateString()}`
+              : phase.startedAt
+                ? `Iniciado em ${new Date(phase.startedAt).toLocaleDateString()}`
+                : ''
+            }
+          </div>
         )}
       </div>
     </div>

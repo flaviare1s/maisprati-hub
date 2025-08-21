@@ -189,7 +189,6 @@ export const TeamSelect = () => {
       <h1 className="text-2xl font-bold mb-4">Selecionar Time</h1>
       <p className="mb-4">Escolha seu time para continuar:</p>
 
-      {/* Lista de times */}
       <div className="space-y-3">
         {teams.length > 0 ? (
           teams.map((team) => (
@@ -207,7 +206,7 @@ export const TeamSelect = () => {
             </button>
           ))
         ) : (
-          <div className="text-center text-gray-500 py-4">
+          <div className="text-center text-gray-muted py-4">
             Carregando times...
           </div>
         )}

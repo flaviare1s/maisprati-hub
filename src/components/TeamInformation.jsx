@@ -16,15 +16,6 @@ export const TeamInformation = ({ userTeam }) => {
             {userTeam.currentMembers}/{userTeam.maxMembers}
           </p>
         </div>
-        <div>
-          <p className="text-sm ">Status:</p>
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${userTeam.isActive
-            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-            }`}>
-            {userTeam.isActive ? 'Cheio de garra! 💪' : 'Devagar! 🐢'}
-          </span>
-        </div>
       </div>
 
       <div>
