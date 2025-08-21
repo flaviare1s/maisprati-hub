@@ -60,7 +60,8 @@ export const StudentDashboard = () => {
             <p className="font-medium">{user.turma}</p>
           </div>
           <div>
-            <p className="text-xl text-blue-logo">{userTeam.name}</p>
+            <p className="text-sm">Grupo:</p>
+            <p className="text-xl text-blue-logo">{userTeam?.name || '-'}</p>
           </div>
         </div>
       </div>
@@ -68,7 +69,7 @@ export const StudentDashboard = () => {
       {user.hasGroup ? (
         <div className="rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-3">
-            Informações do <span className='font-semibold text-blue-logo'>{userTeam.name}</span>
+            Informações do <span className='font-semibold text-blue-logo'>{userTeam?.name || '-'}</span>
           </h3>
 
           {userTeam && (

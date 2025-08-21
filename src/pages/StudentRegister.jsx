@@ -22,9 +22,11 @@ export const StudentRegister = () => {
         username: data.username,
         email: data.email,
         password: data.password,
+        whatsapp: data.whatsapp,
         type: "student",
         turma: data.turma,
         hasGroup: data.hasGroup === "sim",
+        wantsGroup: data.wantsGroup === "sim",
         isFirstLogin: true
       };
 
@@ -93,6 +95,22 @@ export const StudentRegister = () => {
           }}
         />
 
+        <InputField
+          name="whatsapp"
+          type="tel"
+          placeholder="(11) 99999-9999"
+          label="WhatsApp *"
+          register={register}
+          error={errors.whatsapp?.message}
+          validation={{
+            required: "WhatsApp é obrigatório",
+            pattern: {
+              value: /^\(\d{2}\)\s\d{4,5}-\d{4}$/,
+              message: "Formato: (11) 99999-9999",
+            },
+          }}
+        />
+
         <SelectField
           name="turma"
           label="Turma"
@@ -108,7 +126,7 @@ export const StudentRegister = () => {
         <InputField
           name="hasGroup"
           type="radio"
-          label="Possui grupo? *"
+          label="Já possui grupo? *"
           register={register}
           error={errors.hasGroup?.message}
           validation={{
@@ -117,6 +135,21 @@ export const StudentRegister = () => {
           options={[
             { value: "sim", label: "Sim" },
             { value: "nao", label: "Não" }
+          ]}
+        />
+
+        <InputField
+          name="wantsGroup"
+          type="radio"
+          label="Deseja trabalhar em grupo? *"
+          register={register}
+          error={errors.wantsGroup?.message}
+          validation={{
+            required: "Selecione uma opção"
+          }}
+          options={[
+            { value: "sim", label: "Sim, quero trabalhar em equipe" },
+            { value: "nao", label: "Não, prefiro trabalhar sozinho" }
           ]}
         />
         <InputField

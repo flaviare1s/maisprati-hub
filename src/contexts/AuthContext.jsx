@@ -30,14 +30,8 @@ export const AuthProvider = ({ children }) => {
       } else if (userData.type === 'student') {
         // Verificar se é primeiro acesso
         if (userData.isFirstLogin) {
-          // Primeiro acesso: redirecionar baseado no grupo
-          if (userData.hasGroup) {
-            // Estudantes com grupo vão para seleção de time
-            navigate("/team-select");
-          } else {
-            // Estudantes sem grupo vão para escolher nome de guerra
-            navigate("/warname");
-          }
+          // Todos os estudantes vão primeiro escolher nome de guerra
+          navigate("/warname");
         } else {
           // Não é primeiro acesso: direto para dashboard
           navigate("/dashboard");
