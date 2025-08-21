@@ -57,7 +57,6 @@ export const CommonRoom = () => {
   const [activeTab, setActiveTab] = useState('forum');
   const [newPost, setNewPost] = useState('');
   const [showNewPost, setShowNewPost] = useState(false);
-  const [userLevel] = useState(3);
 
   const handleJoinTeam = () => {
     navigate('/team-select');

@@ -1,3 +1,5 @@
+import { CustomLoader } from "./CustomLoader";
+
 export const SubmitButton = ({ label, isLoading = false, disabled = false }) => {
   return (
     <button
@@ -8,7 +10,7 @@ export const SubmitButton = ({ label, isLoading = false, disabled = false }) => 
           : 'bg-blue-logo hover:text-orange-logo cursor-pointer'
         }`}
     >
-      {isLoading ? 'Carregando...' : label}
+      {isLoading ? <CustomLoader /> : label}
     </button>
   );
 };
