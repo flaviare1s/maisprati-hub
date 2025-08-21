@@ -70,8 +70,8 @@ export const StudentRegister = () => {
           validation={{
             required: "WhatsApp é obrigatório",
             pattern: {
-              value: /^\(\d{2}\)\s\d{4,5}-\d{4}$/,
-              message: "Formato: (11) 99999-9999",
+              value: /^\d{10,11}$/,
+              message: "Digite apenas números, ex: 11999999999",
             },
           }}
         />
