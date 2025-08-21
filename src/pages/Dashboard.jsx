@@ -41,7 +41,7 @@ export const Dashboard = () => {
       <div>
         <div className="w-full">
           <div className="border-b mb-6">
-            <nav className="-mb-px flex space-x-8">
+            <nav className="-mb-px flex sm:flex-row flex-col w-full overflow-x-auto space-x-0 sm:space-x-8">
               <DashboardStudentTab
                 icon={<FaRegUser />}
                 title="Perfil"

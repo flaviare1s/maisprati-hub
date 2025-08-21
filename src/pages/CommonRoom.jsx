@@ -1,19 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineUserGroup, HiOutlineChat, HiOutlineFire } from "react-icons/hi";
-import { FaCrown, FaComments, FaMagic, FaGamepad, FaHeart, FaLightbulb, FaWhatsapp} from "react-icons/fa";
+import { FaCrown, FaComments, FaMagic, FaHeart, FaLightbulb } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import { MdGroupAdd } from "react-icons/md";
-
-// Mock data para demonstração - em produção viria de uma API
-const HEROES_ONLINE = [
-  { id: 1, codename: "Frontend Ninja", avatar: "/src/assets/images/avatar/avatares 1.png", specialty: "React", status: "looking", whatsapp: "(11) 99999-1111" },
-  { id: 2, codename: "Backend Wizard", avatar: "/src/assets/images/avatar/avatares 2.png", specialty: "Node.js", status: "available", whatsapp: "(11) 99999-2222" },
-  { id: 3, codename: "Design Guru", avatar: "/src/assets/images/avatar/avatares 4.png", specialty: "UI/UX", status: "chatting", whatsapp: "(11) 99999-3333" },
-  { id: 4, codename: "FullStack Master", avatar: "/src/assets/images/avatar/avatares 5.png", specialty: "React + Node", status: "looking", whatsapp: "(11) 99999-4444" },
-  { id: 5, codename: "DevOps Legend", avatar: "/src/assets/images/avatar/avatares 7.png", specialty: "Docker", status: "available", whatsapp: "(11) 99999-5555" }
-];
+import { fetchUsers } from "../api.js/users";
+import { NoTeamList } from "../components/NoTeamList";
 
 const FORUM_POSTS = [
   {
@@ -57,6 +50,23 @@ export const CommonRoom = () => {
   const [activeTab, setActiveTab] = useState('forum');
   const [newPost, setNewPost] = useState('');
   const [showNewPost, setShowNewPost] = useState(false);
+  const [heroes, setHeroes] = useState([]);
+
+  useEffect(() => {
+    const loadHeroes = async () => {
+      try {
+        const users = await fetchUsers();
+        const filtered = users.filter(
+          (u) => !u.hasGroup && u.wantsGroup
+        );
+        setHeroes(filtered);
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+        toast.error("Não foi possível carregar os heróis.");
+      }
+    };
+    loadHeroes();
+  }, []);
 
   const handleJoinTeam = () => {
     navigate('/team-select');
@@ -156,7 +166,7 @@ export const CommonRoom = () => {
                     }`}
                 >
                   <HiOutlineUserGroup className="inline mr-2" />
-                  Hérois sem Guilda ({HEROES_ONLINE.length})
+                  Hérois sem Guilda ({heroes.length})
                 </button>
               </div>
 
@@ -264,52 +274,7 @@ export const CommonRoom = () => {
                 )}
 
                 {activeTab === 'heroes' && (
-                  <div>
-                    <div className="mb-4 text-center">
-                      <p className="text-gray-muted">
-                        Conecte-se com outros hérois e forme sua equipe dos sonhos!
-                      </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {HEROES_ONLINE.map((hero) => (
-                        <div key={hero.id} className="bg-gradient-to-r from-white to-blue-50 border rounded-lg p-4 hover:shadow-md transition-all">
-                          <div className="flex items-center gap-3 mb-3">
-                            <img
-                              src={hero.avatar}
-                              alt={hero.codename}
-                              className="w-12 h-12 rounded-full object-cover border-2 border-blue-200"
-                              onError={(e) => e.target.style.display = 'none'}
-                            />
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gray-800">{hero.codename}</h4>
-                              <p className="text-sm text-blue-logo">{hero.specialty}</p>
-                            </div>
-                            <div className={`w-3 h-3 rounded-full ${hero.status === 'looking' ? 'bg-green-400' :
-                              hero.status === 'available' ? 'bg-yellow-400' : 'bg-red-400'
-                              }`}></div>
-                          </div>
-
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleStartChat(hero.whatsapp)}
-                              className="flex items-center gap-2 bg-green-500 text-white py-2 px-3 rounded text-sm hover:bg-green-600 transition-colors justify-center cursor-pointer"
-                            >
-                              <FaWhatsapp />
-                              WhatsApp
-                            </button>
-                            <button
-                              onClick={() => handleSendInvite()}
-                              className="flex items-center gap-2 bg-blue-logo text-white py-2 px-3 rounded text-sm hover:bg-blue-600 transition-colors cursor-pointer"
-                            >
-                              <MdGroupAdd />
-                              Convidar
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <NoTeamList heroes={heroes} handleStartChat={handleStartChat} handleSendInvite={handleSendInvite} />
                 )}
               </div>
             </div>

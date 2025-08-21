@@ -148,7 +148,7 @@ export const StudentRegister = () => {
             required: "Selecione uma opção"
           }}
           options={[
-            { value: "sim", label: "Sim, quero trabalhar em equipe" },
+            { value: "sim", label: "Sim" },
             { value: "nao", label: "Não, prefiro trabalhar sozinho" }
           ]}
         />

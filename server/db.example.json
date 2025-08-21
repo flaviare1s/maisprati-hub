@@ -104,102 +104,6 @@
       "isFirstLogin": false,
       "codename": "BugHunter Persistente",
       "avatar": "/src/assets/images/avatar/avatares 9.png"
-    },
-    {
-      "id": "a6e5",
-      "username": "Creuza",
-      "email": "creuzinha@testemail.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0008",
-      "type": "student",
-      "turma": "T2",
-      "hasGroup": false,
-      "wantsGroup": false,
-      "isFirstLogin": false,
-      "codename": "404 Solitário",
-      "avatar": "/src/assets/images/avatar/avatares 10.png"
-    },
-    {
-      "id": "1d5e",
-      "username": "Zé",
-      "email": "ze@gmail.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0009",
-      "type": "student",
-      "turma": "T1",
-      "hasGroup": false,
-      "wantsGroup": true,
-      "isFirstLogin": false,
-      "codename": "ReactMaster Curioso",
-      "avatar": "/src/assets/images/avatar/avatares 11.png"
-    },
-    {
-      "id": "3525",
-      "username": "Cris",
-      "email": "cris@teste.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0010",
-      "type": "student",
-      "turma": "T1",
-      "hasGroup": false,
-      "wantsGroup": true,
-      "isFirstLogin": false,
-      "codename": "CSSWizard Motivado",
-      "avatar": "/src/assets/images/avatar/avatares 12.png"
-    },
-    {
-      "id": "eec9",
-      "username": "Paula",
-      "email": "paulinha@gm.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0011",
-      "type": "student",
-      "turma": "T1",
-      "hasGroup": true,
-      "wantsGroup": true,
-      "isFirstLogin": false,
-      "codename": "JavaScriptGuru Produtivo",
-      "avatar": "/src/assets/images/avatar/avatares 13.png"
-    },
-    {
-      "id": "100d",
-      "username": "Flávia",
-      "email": "flavia@gmail.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0012",
-      "type": "student",
-      "turma": "T2",
-      "hasGroup": false,
-      "wantsGroup": false,
-      "isFirstLogin": false,
-      "codename": "PythonSage Independente",
-      "avatar": "/src/assets/images/avatar/avatares 15.png"
-    },
-    {
-      "id": "c793",
-      "username": "Flávia2",
-      "email": "testetetet@teste.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-0013",
-      "type": "student",
-      "turma": "T1",
-      "hasGroup": false,
-      "wantsGroup": true,
-      "isFirstLogin": false,
-      "codename": "GitMage Inovador",
-      "avatar": "/src/assets/images/avatar/avatares 17.png"
-    },
-    {
-      "id": "f4be",
-      "username": "Zezim",
-      "email": "zer@gmail.com",
-      "password": "123456",
-      "whatsapp": "(11) 99999-9999",
-      "type": "student",
-      "turma": "T1",
-      "hasGroup": false,
-      "wantsGroup": true,
-      "isFirstLogin": true
     }
   ],
   "teams": [
@@ -209,7 +113,7 @@
       "securityCode": "TEAM001",
       "description": "Vamos fazer um aplicativo de gerenciamento de tarefas",
       "maxMembers": 10,
-      "currentMembers": 3,
+      "currentMembers": 4,
       "members": [
         {
           "userId": "3",
@@ -332,18 +236,18 @@
         {
           "id": 1,
           "title": "Frontend",
-          "status": "todo",
-          "assignedTo": null,
-          "startedAt": null,
-          "completedAt": null,
+          "status": "done",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T18:08:55.855Z",
+          "completedAt": "2025-08-21T18:08:57.110Z",
           "notes": ""
         },
         {
           "id": 2,
           "title": "Backend",
-          "status": "todo",
-          "assignedTo": null,
-          "startedAt": null,
+          "status": "in_progress",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T18:14:06.349Z",
           "completedAt": null,
           "notes": ""
         },
@@ -393,7 +297,7 @@
           "notes": ""
         }
       ],
-      "lastUpdated": "2025-08-21T16:00:00Z",
+      "lastUpdated": "2025-08-21T18:14:06.572Z",
       "createdAt": "2025-08-21T16:00:00Z"
     },
     {
@@ -589,34 +493,6 @@
       "createdAt": "2025-08-21T16:02:00Z"
     }
   ],
-  "chatRooms": [
-    {
-      "id": "1",
-      "type": "direct",
-      "participants": ["2", "3"],
-      "name": null,
-      "isActive": true,
-      "createdAt": "2025-08-21T16:05:00Z",
-      "lastActivity": "2025-08-21T16:10:00Z"
-    }
-  ],
-  "chatMessages": [
-    {
-      "id": "1",
-      "chatRoomId": "1",
-      "senderId": "2",
-      "content": "Oi! Vi seu interesse no post sobre React. Quer conversar sobre formar uma equipe?",
-      "messageType": "text",
-      "isActive": true,
-      "createdAt": "2025-08-21T16:05:30Z",
-      "readBy": [
-        {
-          "userId": "2",
-          "readAt": "2025-08-21T16:05:30Z"
-        }
-      ]
-    }
-  ],
   "teamInvitations": [
     {
       "id": "1",
@@ -686,32 +562,6 @@
       },
       "isRead": true,
       "createdAt": "2025-08-21T15:30:00Z"
-    }
-  ],
-  "userAchievements": [
-    {
-      "id": "1",
-      "userId": "2",
-      "achievementId": "first_post",
-      "unlockedAt": "2025-08-21T15:55:00Z"
-    }
-  ],
-  "achievements": [
-    {
-      "id": "first_post",
-      "name": "Primeiro Post",
-      "description": "Criou seu primeiro post no fórum",
-      "icon": "💬",
-      "xpReward": 50,
-      "category": "social"
-    },
-    {
-      "id": "team_joiner",
-      "name": "Membro de Equipe",
-      "description": "Entrou em sua primeira equipe",
-      "icon": "👥",
-      "xpReward": 100,
-      "category": "teamwork"
     }
   ]
 }
