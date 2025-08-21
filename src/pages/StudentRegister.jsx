@@ -1,63 +1,132 @@
 import { useForm } from 'react-hook-form';
 import logo from '../assets/images/logo+prati.png'
 import { InputField } from '../components/InputField';
+import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { createUser } from '../api.js/users';
+import { useAuth } from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 export const StudentRegister = () => {
-  const navigate = useNavigate ()
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const onSubmit = (data) => {  
-    console.log (data)
-    navigate ('/dashboard')
-  }
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+
+    try {
+      const formattedData = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        type: "student",
+        turma: data.turma,
+        hasGroup: data.hasGroup === "sim",
+        isFirstLogin: true
+      };
+
+      console.log("Dados para cadastro:", formattedData);
+
+      const createdUser = await createUser(formattedData);
+
+      console.log("Usuário criado:", createdUser);
+      toast.success("Cadastro realizado com sucesso!");
+
+      // Fazer login automático após cadastro
+      login(createdUser);
+
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      toast.error("Erro ao realizar cadastro. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <div className='flex flex-col justify-center items-center m-auto'>
-      <div className='w-[180px] mb-14'> 
+    <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto mt-5'>
+      <div className='w-[180px] mb-14'>
         <img src={logo} alt="logo da +prati" className='w-full' />
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <InputField 
+      <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
+        <InputField
           name='username'
           type='text'
           placeholder='Username'
-          register={register} 
-          error= {errors.name?.message}
+          label="Nome de usuário *"
+          register={register}
+          error={errors.name?.message}
           validation={{
-            required:'Nome de usuário é obrigatório'
+            required: 'Nome de usuário é obrigatório'
           }}
         />
         <InputField
-            name="email"
-            type="email"
-            placeholder="Email"
-            register={register}
-            error={errors.email?.message}
-            validation={{
-              required: "Email é obrigatório",
-              pattern: {
-                value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                message: "Email inválido",
-              },
-            }}
-          />
+          name="email"
+          type="email"
+          placeholder="Email"
+          label="Email *"
+          register={register}
+          error={errors.email?.message}
+          validation={{
+            required: "Email é obrigatório",
+            pattern: {
+              value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+              message: "Email inválido",
+            },
+          }}
+        />
+        <InputField
+          name="password"
+          type="password"
+          placeholder="Senha"
+          label="Senha *"
+          register={register}
+          error={errors.password?.message}
+          validation={{
+            required: "Senha é obrigatória",
+            minLength: {
+              value: 6,
+              message: "A senha deve ter pelo menos 6 caracteres",
+            },
+          }}
+        />
 
-          <InputField
-            name="password"
-            type="password"
-            placeholder="Senha"
-            register={register}
-            error={errors.password?.message}
-            validation={{
-              required: "Senha é obrigatória",
-              minLength: {
-                value: 6,
-                message: "A senha deve ter pelo menos 6 caracteres",
-              },
-            }}
-          />
-          <SubmitButton label='Registrar' />
-          <Link to="/login" className="text-center text-sm text-blue-logo font-bold hover:text-orange-logo mt-5 block">Já tem conta? Acesse aqui</Link>
+        <SelectField
+          name="turma"
+          label="Turma"
+          register={register}
+          error={errors.turma}
+          required={true}
+          options={[
+            { value: "T1", label: "T1" },
+            { value: "T2", label: "T2" }
+          ]}
+        />
+
+        <InputField
+          name="hasGroup"
+          type="radio"
+          label="Possui grupo? *"
+          register={register}
+          error={errors.hasGroup?.message}
+          validation={{
+            required: "Selecione uma opção"
+          }}
+          options={[
+            { value: "sim", label: "Sim" },
+            { value: "nao", label: "Não" }
+          ]}
+        />
+        <InputField
+          name="type"
+          type="hidden"
+          value="student"
+          register={register}
+        />
+        <SubmitButton label='Registrar' isLoading={isLoading} />
+        <Link to="/login" className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block">Já tem conta? Acesse aqui</Link>
       </form>
     </div>
   )
