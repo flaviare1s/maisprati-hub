@@ -4,7 +4,7 @@ import { InputField } from '../components/InputField';
 import { SubmitButton } from '../components/SubmitButton';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const UserRegister = () => {
+export const StudentRegister = () => {
   const navigate = useNavigate ()
   const { register, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = (data) => {  

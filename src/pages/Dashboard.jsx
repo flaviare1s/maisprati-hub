@@ -5,7 +5,7 @@ import { TeacherDashboard } from '../components/TeacherDashboard';
 export const Dashboard = () => {
   const user = {
     name: 'João',
-    type: 'teacher'
+    type: 'student'
   }
 
   const renderDashboardContent = () => {
@@ -18,14 +18,14 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="p-4 my-auto">
+    <div className="p-4 md:px-6 my-auto overflow-x-hidden">
   
         <div className="mb-6 flex gap-4 justify-center">
           
       
         </div>
         <div className="flex gap-6 h-full">
-          <div className="w-1/5 min-w-[280px]">
+          <div className="w-[280px]">
             <Calendar />
           </div>
 

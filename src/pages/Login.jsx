@@ -17,7 +17,7 @@ export const Login = () => {
   const onSubmit = async (data) => {
     try {
       console.log(data);
-      navigate("/");
+      navigate("/dashboard");
 
     } catch (error) {
       console.error("Erro ao fazer login:", error);

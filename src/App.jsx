@@ -2,10 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { UserProfile } from "./pages/UserProfile";
 import { Dashboard } from "./pages/Dashboard";
 import { StudentForm } from "./pages/StudentForm";
-import { StudentDashboard } from "./components/StudentDashboard";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
@@ -17,9 +15,12 @@ import { ChatButton } from "./components/ChatButton";
 import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
 import { useState } from "react";
-import { UserRegister } from "./pages/UserRegister";
-import { TeacherDashboard } from "./components/TeacherDashboard";
+
 import { Toaster } from "react-hot-toast";
+import { StudentRegister } from "./pages/StudentRegister";
+import { StudentProfile } from "./pages/StudentProfile";
+import { TeamSelect } from "./pages/TeamSelect";
+import { CommonRoom } from "./pages/CommonRoom";
 
 Modal.setAppElement("#root");
 
@@ -38,10 +39,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<UserRegister />} />
-          <Route path="/dashboard/" element={<Dashboard />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/register" element={<StudentRegister />} />
           <Route path="/student/form" element={<StudentForm />} />
+          <Route path="/profile" element={<StudentProfile />} />
+          <Route path="/dashboard/" element={<Dashboard />} />
+          <Route path="/warname/" element={<TeamSelect />} />
+          <Route path="/team-select/" element={<TeamSelect />} />
+          <Route path="/common-room/" element={<CommonRoom />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
