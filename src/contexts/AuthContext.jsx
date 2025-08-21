@@ -11,7 +11,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      return storedUser ? JSON.parse(storedUser) : null;
+      if (!storedUser) return null;
+
+      const parsedUser = JSON.parse(storedUser);
+
+      return {
+        hasGroup: false,
+        wantsGroup: false,
+        ...parsedUser
+      };
     } catch (error) {
       console.error("Erro ao carregar dados do usuário:", error);
       localStorage.removeItem("user");

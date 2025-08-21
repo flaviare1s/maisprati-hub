@@ -52,15 +52,15 @@ export const StudentDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p className="text-sm">Username:</p>
-            <p className="font-medium">{user.username}</p>
+            <p className="font-semibold">{user.username}</p>
           </div>
           <div>
             <p className="text-sm">Email:</p>
-            <p className="font-medium">{user.email}</p>
+            <p className="font-semibold">{user.email}</p>
           </div>
           <div>
             <p className="text-sm">Turma:</p>
-            <p className="font-medium">{user.turma}</p>
+            <p className="font-semibold">{user.turma}</p>
           </div>
           <div>
             <p className="text-sm">Grupo:</p>
@@ -69,15 +69,13 @@ export const StudentDashboard = () => {
         </div>
       </div>
 
-      {user.hasGroup ? (
+      {userTeam ? (
         <div className="rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-3">
-            Informações do <span className='font-semibold text-blue-logo'>{userTeam?.name || '-'}</span>
+            Informações do <span className='font-semibold text-blue-logo'>{userTeam.name}</span>
           </h3>
 
-          {userTeam && (
-            <TeamInformation userTeam={userTeam} />
-          )}
+          <TeamInformation userTeam={userTeam} />
         </div>
       ) : null}
     </div>

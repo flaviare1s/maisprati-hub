@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react';
 import { Calendar } from '../components/Calendar';
 import { StudentDashboard } from '../components/StudentDashboard';
 import { TeacherDashboard } from '../components/TeacherDashboard';
@@ -6,14 +7,36 @@ import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
 import { Meetings } from '../components/Meetings';
 import { TbLayoutKanban } from 'react-icons/tb';
-import { FaRegCalendarAlt, FaRegUser, FaBell, FaCrown } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardStudentTab } from '../components/DashboardStudentTab';
 import { ProjectBoard } from '../components/project/ProjectBoard';
 import { NotificationsPanel } from '../components/NotificationsPanel';
+import { fetchTeams, isUserInActiveTeam } from '../api.js/teams';
 
 export const Dashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('perfil');
+  const [teams, setTeams] = useState([]);
+  const [userInTeam, setUserInTeam] = useState(false);
+  const [loadingTeams, setLoadingTeams] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const loadTeams = async () => {
+      try {
+        const allTeams = await fetchTeams();
+        setTeams(allTeams);
+        setUserInTeam(isUserInActiveTeam(user, allTeams));
+      } catch (error) {
+        console.error("Erro ao carregar times:", error);
+      } finally {
+        setLoadingTeams(false);
+      }
+    };
+
+    loadTeams();
+  }, [user]);
 
   if (!user) {
     return (
@@ -37,6 +60,10 @@ export const Dashboard = () => {
       );
     }
 
+    if (loadingTeams) {
+      return <p>Carregando informações do time...</p>;
+    }
+
     return (
       <div>
         <div className="w-full">
@@ -49,8 +76,7 @@ export const Dashboard = () => {
                 setActiveTab={setActiveTab}
               />
 
-              {/* Mostrar aba Projeto apenas para quem tem grupo ou trabalha sozinho */}
-              {(user.hasGroup || !user.wantsGroup) && (
+              {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
                 <DashboardStudentTab
                   icon={<TbLayoutKanban />}
                   title="Projeto"
@@ -59,12 +85,14 @@ export const Dashboard = () => {
                 />
               )}
 
-              <DashboardStudentTab
-                icon={<FaRegCalendarAlt />}
-                title="Reuniões"
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-              />
+              {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
+                <DashboardStudentTab
+                  icon={<FaRegCalendarAlt />}
+                  title="Reuniões"
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
+              )}
 
               <DashboardStudentTab
                 icon={<FaBell />}
@@ -77,8 +105,8 @@ export const Dashboard = () => {
 
           <div>
             {activeTab === 'perfil' && <StudentDashboard />}
-            {activeTab === 'projeto' && (user.hasGroup || !user.wantsGroup) && <ProjectBoard />}
-            {activeTab === 'reuniões' && <Meetings />}
+            {activeTab === 'projeto' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <ProjectBoard />}
+            {activeTab === 'reuniões' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <Meetings />}
             {activeTab === 'notificações' && <NotificationsPanel />}
           </div>
         </div>
@@ -95,15 +123,11 @@ export const Dashboard = () => {
 
         <div className="w-full md:flex-1 rounded-lg p-6 shadow-lg order-1 md:order-2">
           <h1 className="text-2xl font-bold mb-4">
-            {isAdmin(user)
-              ? 'Dashboard (Administrador)'
-              : `Dashboard`
-            }
+            {isAdmin(user) ? 'Dashboard (Administrador)' : 'Dashboard'}
           </h1>
           {renderDashboardContent()}
         </div>
       </div>
-
     </div>
   );
 };
