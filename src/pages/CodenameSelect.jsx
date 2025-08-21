@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { SubmitButton } from "../components/SubmitButton";
 import logo from '../assets/images/logo+prati.png';
 import toast from 'react-hot-toast';
+import { createUser } from "../api.js/users";
 
 const importAvatars = () => {
   const avatars = [];
@@ -90,18 +91,28 @@ const LAST_NAMES = [
   'Solucionador',
   'Otimista',
   'Realista'
-]; export const CodenameSelect = () => {
+]; 
+
+
+export const CodenameSelect = () => {
   const navigate = useNavigate();
-  const { updateUserData, user } = useAuth();
+  const { login } = useAuth();
   const [selectedFirstName, setSelectedFirstName] = useState('');
   const [selectedLastName, setSelectedLastName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const location = useLocation();
   const avatars = importAvatars();
+  const formData = location.state;
 
   const handleCodenameSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData) {
+      toast.error("Dados do cadastro não encontrados. Volte e preencha o formulário.");
+      navigate("/register");
+      return;
+    }
 
     if (!selectedFirstName || !selectedLastName || !selectedAvatar) {
       toast.error('Por favor, selecione um nome, sobrenome e avatar');
@@ -113,25 +124,34 @@ const LAST_NAMES = [
     try {
       const codename = `${selectedFirstName} ${selectedLastName}`;
 
-      updateUserData({
+      const formattedData = {
+        ...formData,
+        hasGroup: formData.hasGroup === "sim",
+        wantsGroup: formData.wantsGroup === "sim",
         codename,
         avatar: selectedAvatar,
+        type: "student",
         isFirstLogin: false
-      });
+      };
 
-      toast.success(`Bem-vindo, ${codename}!`);
+      const createdUser = await createUser(formattedData);
 
-      // Redirecionar baseado no status do grupo
-      if (user.hasGroup) {
+      console.log("Usuário criado:", createdUser);
+      toast.success("Cadastro realizado com sucesso!");
+
+      login(createdUser);
+
+      if (createdUser.hasGroup) {
         navigate("/team-select");
-      } else if (user.wantsGroup) {
+      } else if (createdUser.wantsGroup) {
         navigate("/common-room");
       } else {
         navigate("/dashboard");
       }
+
     } catch (error) {
-      console.error('Erro ao salvar codename:', error);
-      toast.error('Erro ao salvar dados');
+      console.error("Erro ao cadastrar usuário:", error);
+      toast.error("Erro ao realizar cadastro. Tente novamente.");
     } finally {
       setIsLoading(false);
     }

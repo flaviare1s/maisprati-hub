@@ -97,7 +97,7 @@ export const Dashboard = () => {
           <h1 className="text-2xl font-bold mb-4">
             {isAdmin(user)
               ? 'Dashboard (Administrador)'
-              : `Dashboard - ${user.codename || user.username}`
+              : `Dashboard`
             }
           </h1>
           {renderDashboardContent()}

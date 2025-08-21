@@ -48,8 +48,8 @@ export const MenuMobile = () => {
           {!user && <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Sobre</Link>}
           {!user && <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Faq</Link>}
           {!user && <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Cadastrar</Link>}
-          {user && <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Dasboarh</Link>}
-          {user && <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Taverna dos Heróis</Link>}
+          {user && <Link to="/dashboard" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Dasboarh</Link>}
+          {user && <Link to="/common-room" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Taverna dos Heróis</Link>}
           {!user ? <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Entrar</Link> :
           <button onClick={logout} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center cursor-pointer">Sair</button>}
         </nav>

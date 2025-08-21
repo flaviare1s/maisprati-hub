@@ -183,51 +183,6 @@
       "createdAt": "2024-02-01"
     }
   ],
-  "roles": [
-    {
-      "id": "1",
-      "name": "leader",
-      "displayName": "Líder",
-      "description": "Responsável por liderar e coordenar o time",
-      "permissions": ["manage_team", "assign_roles", "view_reports"]
-    },
-    {
-      "id": "2",
-      "name": "subleader",
-      "displayName": "Sub-líder",
-      "description": "Auxilia o líder e tem responsabilidades específicas",
-      "permissions": ["assist_leader", "manage_tasks", "view_reports"]
-    },
-    {
-      "id": "3",
-      "name": "member",
-      "displayName": "Membro",
-      "description": "Membro ativo do time",
-      "permissions": ["participate", "view_tasks"]
-    }
-  ],
-  "subLeaderTypes": [
-    {
-      "id": "1",
-      "name": "Frontend"
-    },
-    {
-      "id": "2",
-      "name": "Backend"
-    },
-    {
-      "id": "3",
-      "name": "DevOps"
-    },
-    {
-      "id": "4",
-      "name": "Design"
-    },
-    {
-      "id": "5",
-      "name": "QA"
-    }
-  ],
   "projectProgress": [
     {
       "id": "1",
@@ -236,68 +191,61 @@
         {
           "id": 1,
           "title": "Frontend",
-          "status": "done",
+          "status": "todo",
           "assignedTo": "3",
-          "startedAt": "2025-08-21T18:08:55.855Z",
-          "completedAt": "2025-08-21T18:08:57.110Z",
-          "notes": ""
+          "startedAt": null,
+          "completedAt": null
         },
         {
           "id": 2,
           "title": "Backend",
-          "status": "in_progress",
+          "status": "done",
           "assignedTo": "3",
           "startedAt": "2025-08-21T18:14:06.349Z",
-          "completedAt": null,
-          "notes": ""
+          "completedAt": "2025-08-21T19:58:13.791Z"
         },
         {
           "id": 3,
           "title": "Design",
-          "status": "todo",
-          "assignedTo": null,
-          "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "status": "in_progress",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T19:47:16.373Z",
+          "completedAt": "2025-08-21T19:58:12.237Z"
         },
         {
           "id": 4,
           "title": "Banco de Dados",
           "status": "todo",
-          "assignedTo": null,
+          "assignedTo": "3",
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 5,
           "title": "Testes",
-          "status": "todo",
-          "assignedTo": null,
-          "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "status": "in_progress",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T19:58:18.536Z",
+          "completedAt": "2025-08-21T19:58:10.563Z"
         },
         {
           "id": 6,
           "title": "Deploy",
-          "status": "todo",
-          "assignedTo": null,
+          "status": "done",
+          "assignedTo": "3",
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": "2025-08-21T19:58:07.939Z"
         },
         {
           "id": 7,
           "title": "Documentação",
-          "status": "todo",
-          "assignedTo": null,
+          "status": "done",
+          "assignedTo": "3",
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": "2025-08-21T19:47:19.004Z"
         }
       ],
-      "lastUpdated": "2025-08-21T18:14:06.572Z",
+      "lastUpdated": "2025-08-21T19:58:18.536Z",
       "createdAt": "2025-08-21T16:00:00Z"
     },
     {
@@ -310,8 +258,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 2,
@@ -319,8 +266,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 3,
@@ -328,8 +274,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 4,
@@ -337,8 +282,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 5,
@@ -346,8 +290,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 6,
@@ -355,8 +298,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 7,
@@ -364,8 +306,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         }
       ],
       "lastUpdated": "2025-08-21T16:00:00Z",
@@ -381,8 +322,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 2,
@@ -390,8 +330,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 3,
@@ -399,8 +338,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 4,
@@ -408,8 +346,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 5,
@@ -417,8 +354,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 6,
@@ -426,8 +362,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         },
         {
           "id": 7,
@@ -435,8 +370,7 @@
           "status": "todo",
           "assignedTo": null,
           "startedAt": null,
-          "completedAt": null,
-          "notes": ""
+          "completedAt": null
         }
       ],
       "lastUpdated": "2025-08-21T16:00:00Z",

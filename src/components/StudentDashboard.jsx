@@ -38,9 +38,12 @@ export const StudentDashboard = () => {
 
   return (
     <div className="w-full p-0">
-      <h2 className="text-2xl font-bold mb-6">
-        Dashboard de {user.username}
-      </h2>
+      <div className='flex justify-start items-center gap-2 mb-5'>
+        <img className='w-10 h-10' src={user.avatar} alt="Avatar" />
+        <h2 className="text-2xl font-bold">
+          {user.codename}
+        </h2>
+      </div>
 
       <div className="rounded-lg shadow-md p-4 mb-6">
         <h3 className="text-lg font-semibold mb-3">
