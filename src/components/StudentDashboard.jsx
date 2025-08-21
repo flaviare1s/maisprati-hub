@@ -37,7 +37,7 @@ export const StudentDashboard = () => {
   }
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-0">
       <h2 className="text-2xl font-bold mb-6">
         Dashboard de {user.username}
       </h2>
