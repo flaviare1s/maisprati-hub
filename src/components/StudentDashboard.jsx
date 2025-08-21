@@ -15,7 +15,7 @@ export const StudentDashboard = () => {
         try {
           const teams = await fetchTeams();
           const team = teams.find(team =>
-            team.members.some(member => member.userId === user.id)
+            team.members.some(member => member.userId.toString() === user.id.toString())
           );
 
           if (team) {
@@ -60,18 +60,7 @@ export const StudentDashboard = () => {
             <p className="font-medium">{user.turma}</p>
           </div>
           <div>
-            <p className="text-sm">Grupo:</p>
-            {userTeam ? (
-              <div>
-                <p className="font-medium text-blue-logo text-lg">{userTeam.name}</p>
-                <p className="text-sm">{userTeam.description}</p>
-                <p className="text-xs mt-1">
-                  {userTeam.currentMembers}/{userTeam.maxMembers} membros
-                </p>
-              </div>
-            ) : (
-              <p className="font-medium text-gray-500">Carregando...</p>
-            )}
+            <p className="text-xl text-blue-logo">{userTeam.name}</p>
           </div>
         </div>
       </div>
@@ -79,7 +68,7 @@ export const StudentDashboard = () => {
       {user.hasGroup ? (
         <div className="rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-3">
-            Informações do Time
+            Informações do <span className='font-semibold text-blue-logo'>{userTeam.name}</span>
           </h3>
 
           {userTeam && (

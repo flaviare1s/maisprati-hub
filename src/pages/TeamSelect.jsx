@@ -48,28 +48,23 @@ export const TeamSelect = () => {
     setIsLoading(true);
 
     try {
-      // Validar código de segurança
       await validateTeamCode(selectedTeam.id, data.securityCode);
 
-      // Adicionar usuário ao time como membro
       await addMemberToTeam(selectedTeam.id, {
         userId: user.id,
         role: "member",
-        specialization: "Desenvolvedor" // Pode ser personalizado depois
+        specialization: "Desenvolvedor"
       });
 
       console.log("Código válido! Entrando no time:", selectedTeam.name);
       toast.success(`Bem-vindo ao ${selectedTeam.name}!`);
 
-      // Atualizar dados do usuário no contexto (apenas isFirstLogin)
       updateUserData({
         isFirstLogin: false
       });
 
-      // Marcar que o primeiro login foi completado
       completeFirstLogin();
 
-      // Redirecionar para o dashboard
       navigate('/dashboard');
 
     } catch (error) {

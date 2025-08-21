@@ -120,7 +120,9 @@ export const getTeamWithMembers = async (teamId) => {
   ]);
 
   const membersWithUserData = team.members.map((member) => {
-    const userData = users.find((user) => user.id === member.userId);
+    const userData = users.find(
+      (user) => user.id.toString() === member.userId.toString()
+    );
     return {
       ...member,
       user: userData,

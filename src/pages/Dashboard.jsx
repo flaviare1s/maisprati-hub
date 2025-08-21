@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Calendar } from '../components/Calendar';
 import { StudentDashboard } from '../components/StudentDashboard';
 import { TeacherDashboard } from '../components/TeacherDashboard';
-import { Kanban } from '../components/Kanban';
 import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
 import { Meetings } from '../components/Meetings';
@@ -10,10 +9,11 @@ import { Forbidden } from './Forbidden';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser } from 'react-icons/fa';
 import { DashboardStudentTab } from '../components/DashboardStudentTab';
+import { ProjectBoard } from '../components/project/ProjectBoard';
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('info');
+  const [activeTab, setActiveTab] = useState('perfil');
 
   if (!user) {
     return (
@@ -58,7 +58,7 @@ export const Dashboard = () => {
               />
               <DashboardStudentTab
                 icon={<TbLayoutKanban />}
-                title="Kanban"
+                title="Projeto"
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
               />
@@ -73,8 +73,8 @@ export const Dashboard = () => {
 
           <div>
             {activeTab === 'perfil' && <StudentDashboard />}
-            {activeTab === 'kanban' && <Kanban />}
-            {activeTab === 'meetings' && <Meetings />}
+            {activeTab === 'projeto' && <ProjectBoard />}
+            {activeTab === 'reuniões' && <Meetings />}
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export const Dashboard = () => {
 
   return (
     <div className="p-4 md:px-6 my-auto overflow-x-hidden">
-      <div className="flex flex-col md:flex-row gap-6 justify-center items-start">
+      <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[280px] order-2 md:order-1">
           <Calendar />
         </div>

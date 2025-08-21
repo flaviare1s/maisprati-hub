@@ -221,28 +221,23 @@
   "subLeaderTypes": [
     {
       "id": 1,
-      "name": "Frontend",
-      "description": "Especializado em desenvolvimento Frontend"
+      "name": "Frontend"
     },
     {
       "id": 2,
-      "name": "Backend",
-      "description": "Especializado em desenvolvimento Backend"
+      "name": "Backend"
     },
     {
       "id": 3,
-      "name": "DevOps",
-      "description": "Especializado em DevOps e infraestrutura"
+      "name": "DevOps"
     },
     {
       "id": 4,
-      "name": "Design",
-      "description": "Especializado em UI/UX Design"
+      "name": "Design"
     },
     {
       "id": 5,
-      "name": "QA",
-      "description": "Especializado em Quality Assurance"
+      "name": "QA"
     }
   ],
   "kanbanBoards": [

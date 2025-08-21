@@ -2,14 +2,10 @@ import { useAuth } from "../hooks/useAuth";
 
 export const TeamInformation = ({ userTeam }) => {
   const { user } = useAuth();
- 
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div>
-          <p className="text-sm ">Nome do Time:</p>
-          <p className="font-medium text-blue-logo text-lg">{userTeam.name}</p>
-        </div>
         <div>
           <p className="text-sm ">Descrição:</p>
           <p className="font-medium">{userTeam.description}</p>
@@ -26,7 +22,7 @@ export const TeamInformation = ({ userTeam }) => {
             ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
             : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
             }`}>
-            {userTeam.isActive ? 'Ativo' : 'Inativo'}
+            {userTeam.isActive ? 'Cheio de garra! 💪' : 'Devagar! 🐢'}
           </span>
         </div>
       </div>
@@ -37,7 +33,7 @@ export const TeamInformation = ({ userTeam }) => {
         </h4>
         <div className="space-y-2">
           {userTeam.members.map((member) => {
-            const currentUserMember = member.userId === user.id;
+            const currentUserMember = member.userId.toString() === user.id.toString();
             return (
               <div
                 key={member.userId}
