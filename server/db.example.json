@@ -1,0 +1,452 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@admin.com",
+      "password": "admin123",
+      "type": "admin"
+    },
+    {
+      "id": "2",
+      "username": "student",
+      "email": "student@student.com",
+      "password": "student123",
+      "whatsapp": "(11) 99999-0001",
+      "type": "student",
+      "turma": "T1",
+      "hasGroup": false,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "Frontend Esforçado",
+      "avatar": "/src/assets/images/avatar/avatares 1.png"
+    },
+    {
+      "id": "3",
+      "username": "student2",
+      "email": "student2@example.com",
+      "password": "student123",
+      "whatsapp": "(11) 99999-0002",
+      "type": "student",
+      "turma": "T1",
+      "hasGroup": true,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "Backend Refatorador",
+      "avatar": "/src/assets/images/avatar/avatares 2.png"
+    },
+    {
+      "id": "4",
+      "username": "João",
+      "email": "joao@teste.com",
+      "password": "123456",
+      "whatsapp": "(11) 99999-0003",
+      "type": "student",
+      "turma": "T1",
+      "hasGroup": true,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "FullStack Determinado",
+      "avatar": "/src/assets/images/avatar/avatares 5.png"
+    },
+    {
+      "id": "5",
+      "username": "Maria",
+      "email": "maria@teste.com",
+      "password": "123456",
+      "whatsapp": "(11) 99999-0004",
+      "type": "student",
+      "turma": "T2",
+      "hasGroup": true,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "Designer Criativo",
+      "avatar": "/src/assets/images/avatar/avatares 4.png"
+    },
+    {
+      "id": "6",
+      "username": "Pedro",
+      "email": "pedro@teste.com",
+      "password": "123456",
+      "whatsapp": "(11) 99999-0005",
+      "type": "student",
+      "turma": "T2",
+      "hasGroup": true,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "DevOps Focado",
+      "avatar": "/src/assets/images/avatar/avatares 7.png"
+    },
+    {
+      "id": "7",
+      "username": "Ana",
+      "email": "ana@teste.com",
+      "password": "123456",
+      "whatsapp": "(11) 99999-0006",
+      "type": "student",
+      "turma": "T1",
+      "hasGroup": true,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "Console.Log Debugador",
+      "avatar": "/src/assets/images/avatar/avatares 8.png"
+    },
+    {
+      "id": "8",
+      "username": "Carlos",
+      "email": "carlos@teste.com",
+      "password": "123456",
+      "whatsapp": "(11) 99999-0007",
+      "type": "student",
+      "turma": "T2",
+      "hasGroup": false,
+      "wantsGroup": true,
+      "isFirstLogin": false,
+      "codename": "BugHunter Persistente",
+      "avatar": "/src/assets/images/avatar/avatares 9.png"
+    }
+  ],
+  "teams": [
+    {
+      "id": "1",
+      "name": "Time A",
+      "securityCode": "TEAM001",
+      "description": "Vamos fazer um aplicativo de gerenciamento de tarefas",
+      "maxMembers": 10,
+      "currentMembers": 4,
+      "members": [
+        {
+          "userId": "3",
+          "role": "leader",
+          "specialization": "Tech Lead",
+          "subLeaderType": null,
+          "joinedAt": "2024-01-15",
+          "isActive": true
+        },
+        {
+          "userId": "4",
+          "role": "subleader",
+          "specialization": "Frontend Developer",
+          "subLeaderType": "Frontend",
+          "joinedAt": "2024-01-16",
+          "isActive": true
+        },
+        {
+          "userId": "7",
+          "role": "member",
+          "specialization": "UI/UX Designer",
+          "subLeaderType": null,
+          "joinedAt": "2024-01-17",
+          "isActive": true
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2024-01-15"
+    },
+    {
+      "id": "2",
+      "name": "Time B",
+      "securityCode": "TEAM002",
+      "description": "Time especializado em Backend",
+      "maxMembers": 10,
+      "currentMembers": 2,
+      "members": [
+        {
+          "userId": "5",
+          "role": "leader",
+          "specialization": "Backend Lead",
+          "subLeaderType": null,
+          "joinedAt": "2024-01-20",
+          "isActive": true
+        },
+        {
+          "userId": "6",
+          "role": "subleader",
+          "specialization": "DevOps Engineer",
+          "subLeaderType": "DevOps",
+          "joinedAt": "2024-01-21",
+          "isActive": true
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2024-01-20"
+    },
+    {
+      "id": "3",
+      "name": "Time C",
+      "securityCode": "TEAM003",
+      "description": "Time especializado em Fullstack",
+      "maxMembers": 10,
+      "currentMembers": 0,
+      "members": [],
+      "isActive": true,
+      "createdAt": "2024-02-01"
+    }
+  ],
+  "projectProgress": [
+    {
+      "id": "1",
+      "teamId": "1",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "assignedTo": "3",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "done",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T18:14:06.349Z",
+          "completedAt": "2025-08-21T19:58:13.791Z"
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "in_progress",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T19:47:16.373Z",
+          "completedAt": "2025-08-21T19:58:12.237Z"
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "assignedTo": "3",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "in_progress",
+          "assignedTo": "3",
+          "startedAt": "2025-08-21T19:58:18.536Z",
+          "completedAt": "2025-08-21T19:58:10.563Z"
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "done",
+          "assignedTo": "3",
+          "startedAt": null,
+          "completedAt": "2025-08-21T19:58:07.939Z"
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "done",
+          "assignedTo": "3",
+          "startedAt": null,
+          "completedAt": "2025-08-21T19:47:19.004Z"
+        }
+      ],
+      "lastUpdated": "2025-08-21T19:58:18.536Z",
+      "createdAt": "2025-08-21T16:00:00Z"
+    },
+    {
+      "id": "2",
+      "teamId": "2",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-21T16:00:00Z",
+      "createdAt": "2025-08-21T16:00:00Z"
+    },
+    {
+      "id": "3",
+      "teamId": "3",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "assignedTo": null,
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-21T16:00:00Z",
+      "createdAt": "2025-08-21T16:00:00Z"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "authorId": "2",
+      "title": "Procurando Front-end para projeto React! 🚀",
+      "content": "Estou montando uma equipe para desenvolver uma plataforma de e-learning. Preciso de alguém forte em React e CSS!",
+      "postType": "team_formation",
+      "isActive": true,
+      "createdAt": "2025-08-21T15:55:00Z",
+      "updatedAt": "2025-08-21T15:55:00Z"
+    },
+    {
+      "id": "2",
+      "authorId": "8",
+      "title": "Dica: Como estruturar APIs REST eficientes 💡",
+      "content": "Vou compartilhar algumas práticas que aprendi para organizar rotas e middlewares de forma mais limpa...",
+      "postType": "knowledge_sharing",
+      "isActive": true,
+      "createdAt": "2025-08-21T15:45:00Z",
+      "updatedAt": "2025-08-21T15:45:00Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "postId": "1",
+      "authorId": "3",
+      "content": "Interessante! Tenho experiência com React. Podemos conversar?",
+      "isActive": true,
+      "createdAt": "2025-08-21T16:02:00Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "userId": "2",
+      "type": "team_invitation",
+      "title": "Convite para Time A",
+      "message": "Você recebeu um convite para se juntar ao Time A!",
+      "data": {
+        "invitationId": "1",
+        "teamId": "1"
+      },
+      "isRead": false,
+      "createdAt": "2025-08-21T16:15:00Z"
+    },
+    {
+      "id": "2",
+      "userId": "8",
+      "type": "team_invitation",
+      "title": "Convite para Time B",
+      "message": "O Time B gostaria de te convidar para integrar a equipe!",
+      "data": {
+        "invitationId": "2",
+        "teamId": "2"
+      },
+      "isRead": false,
+      "createdAt": "2025-08-21T16:10:00Z"
+    },
+    {
+      "id": "3",
+      "userId": "1d5e",
+      "type": "forum_reply",
+      "title": "Nova resposta no fórum",
+      "message": "Alguém respondeu seu post sobre React",
+      "data": {
+        "postId": "1"
+      },
+      "isRead": true,
+      "createdAt": "2025-08-21T15:30:00Z"
+    }
+  ]
+}

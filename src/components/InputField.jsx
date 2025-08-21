@@ -7,7 +7,35 @@ export const InputField = ({
   validation,
   placeholder,
   value,
+  options,
 }) => {
+  if (type === "radio" && options) {
+    return (
+      <div className="flex flex-col w-full my-2">
+        {label && (
+          <label className="text-sm font-medium mb-2 text-gray-muted">
+            {label}
+          </label>
+        )}
+        <div className="flex gap-6">
+          {options.map((option) => (
+            <label key={option.value} className="flex items-center cursor-pointer">
+              <input
+                type="radio"
+                value={option.value}
+                {...register(name, validation)}
+                className="mr-2 text-blue-logo focus:ring-blue-logo"
+              />
+              <span className="text-gray-muted">{option.label}</span>
+            </label>
+          ))}
+        </div>
+        {error && <small className="text-red-secondary mt-1">{error}</small>}
+      </div>
+    );
+  }
+
+  // Input padrão para outros tipos
   const inputProps = {
     type,
     id: name,

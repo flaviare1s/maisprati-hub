@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import logo from '../assets/images/logo-menu.png';
+import { useAuth } from '../hooks/useAuth';
 
 export const MenuMobile = () => {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLinkClick = () => {
@@ -42,11 +44,14 @@ export const MenuMobile = () => {
         </div>
 
         <nav className="p-6 flex flex-col gap-4">
-          <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Home</Link>
-          <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Sobre</Link>
-          <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Faq</Link>
-          <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Cadastrar</Link>
-          <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Entrar</Link>
+          {!user && <Link to="/" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Home</Link>}
+          {!user && <Link to="/about" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Sobre</Link>}
+          {!user && <Link to="/faq" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Faq</Link>}
+          {!user && <Link to="/register" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Cadastrar</Link>}
+          {user && <Link to="/dashboard" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Dasboarh</Link>}
+          {user && <Link to="/common-room" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Taverna dos Heróis</Link>}
+          {!user ? <Link to="/login" onClick={handleLinkClick} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center">Entrar</Link> :
+          <button onClick={logout} className="uppercase font-lg text-light bg-orange-logo font-bold hover:text-blue-logo p-3 rounded-full text-center cursor-pointer">Sair</button>}
         </nav>
       </div>
     </div>

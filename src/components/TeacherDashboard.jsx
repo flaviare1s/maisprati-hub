@@ -1,6 +1,6 @@
 export const TeacherDashboard = () => {
   return (
-    <div>
+    <div className="w-full">
       Dashboard do professor
     </div>
   )
