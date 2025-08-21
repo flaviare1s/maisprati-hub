@@ -54,7 +54,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
           <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/dashboard/" element={<PrivateRoute requireGroup={true}><Dashboard /></PrivateRoute>} />
+          <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
           <Route path="/common-room/" element={<CommonRoom />} />

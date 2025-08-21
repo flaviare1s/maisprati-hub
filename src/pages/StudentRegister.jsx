@@ -3,47 +3,14 @@ import logo from '../assets/images/logo+prati.png'
 import { InputField } from '../components/InputField';
 import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
-import { Link } from 'react-router-dom';
-import { createUser } from '../api.js/users';
-import { useAuth } from '../hooks/useAuth';
-import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const StudentRegister = () => {
-  const { login } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-
-    try {
-      const formattedData = {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        type: "student",
-        turma: data.turma,
-        hasGroup: data.hasGroup === "sim",
-        isFirstLogin: true
-      };
-
-      console.log("Dados para cadastro:", formattedData);
-
-      const createdUser = await createUser(formattedData);
-
-      console.log("Usuário criado:", createdUser);
-      toast.success("Cadastro realizado com sucesso!");
-
-      // Fazer login automático após cadastro
-      login(createdUser);
-
-    } catch (error) {
-      console.error("Erro ao cadastrar usuário:", error);
-      toast.error("Erro ao realizar cadastro. Tente novamente.");
-    } finally {
-      setIsLoading(false);
-    }
+    navigate('/warname', { state: { ...data } });
   };
   return (
     <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto mt-5'>
@@ -93,6 +60,22 @@ export const StudentRegister = () => {
           }}
         />
 
+        <InputField
+          name="whatsapp"
+          type="tel"
+          placeholder="(11) 99999-9999"
+          label="WhatsApp *"
+          register={register}
+          error={errors.whatsapp?.message}
+          validation={{
+            required: "WhatsApp é obrigatório",
+            pattern: {
+              value: /^\(\d{2}\)\s\d{4,5}-\d{4}$/,
+              message: "Formato: (11) 99999-9999",
+            },
+          }}
+        />
+
         <SelectField
           name="turma"
           label="Turma"
@@ -108,7 +91,7 @@ export const StudentRegister = () => {
         <InputField
           name="hasGroup"
           type="radio"
-          label="Possui grupo? *"
+          label="Já possui grupo? *"
           register={register}
           error={errors.hasGroup?.message}
           validation={{
@@ -119,13 +102,28 @@ export const StudentRegister = () => {
             { value: "nao", label: "Não" }
           ]}
         />
+
+        <InputField
+          name="wantsGroup"
+          type="radio"
+          label="Deseja trabalhar em grupo? *"
+          register={register}
+          error={errors.wantsGroup?.message}
+          validation={{
+            required: "Selecione uma opção"
+          }}
+          options={[
+            { value: "sim", label: "Sim" },
+            { value: "nao", label: "Não, prefiro trabalhar sozinho" }
+          ]}
+        />
         <InputField
           name="type"
           type="hidden"
           value="student"
           register={register}
         />
-        <SubmitButton label='Registrar' isLoading={isLoading} />
+        <SubmitButton label='Registrar' />
         <Link to="/login" className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block">Já tem conta? Acesse aqui</Link>
       </form>
     </div>

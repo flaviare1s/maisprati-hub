@@ -30,14 +30,9 @@ export const Header = () => {
             <MenuDesktop user={null} onLogout={logout} />
           )}
         </div>
-        {!user &&
-        <div className='block md:hidden'>
-          <MenuMobile user={user} />
-        </div>}
-        {user &&
-        <div className='block md:hidden'>
-          <button onClick={logout} className="uppercase font-lg text-light font-bold bg-blue-logo hover:text-orange-logo py-2 px-6 rounded-lg cursor-pointer">LOGOUT</button>
-        </div>}
+          <div className='md:hidden'>
+            <MenuMobile user={user} onLogout={logout} />
+          </div>
         <ThemeToggle />
       </div>
     </header>

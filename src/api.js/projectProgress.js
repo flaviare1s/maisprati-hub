@@ -11,71 +11,56 @@ export const fetchProjectProgress = async (teamId) => {
   }
 };
 
-// Criar progresso inicial para um time
 export const createProjectProgress = async (teamId) => {
   const initialPhases = [
     {
       id: 1,
       title: "Frontend",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 2,
       title: "Backend",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 3,
       title: "Design",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 4,
       title: "Banco de Dados",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 5,
       title: "Testes",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 6,
       title: "Deploy",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
     {
       id: 7,
       title: "Documentação",
       status: "todo",
-      assignedTo: null,
       startedAt: null,
-      completedAt: null,
-      notes: "",
+      completedAt: null
     },
   ];
 

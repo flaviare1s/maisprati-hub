@@ -1,40 +1,62 @@
 import api from "../services/api.js";
 
+// Buscar todos os times
 export const fetchTeams = async () => {
-  const response = await api.get("/teams");
-  return response.data;
+  try {
+    const response = await api.get("/teams");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar times:", error);
+    return [];
+  }
 };
 
+// Buscar time pelo ID
 export const fetchTeamById = async (teamId) => {
-  const response = await api.get(`/teams/${teamId}`);
-  return response.data;
+  try {
+    const response = await api.get(`/teams/${teamId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar time pelo ID:", error);
+    throw new Error("Time não encontrado");
+  }
 };
 
+// Buscar roles
 export const fetchRoles = async () => {
-  const response = await api.get("/roles");
-  return response.data;
+  try {
+    const response = await api.get("/roles");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar roles:", error);
+    return [];
+  }
 };
 
+// Buscar tipos de subliderança
 export const fetchSubLeaderTypes = async () => {
-  const response = await api.get("/subLeaderTypes");
-  return response.data;
+  try {
+    const response = await api.get("/subLeaderTypes");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar tipos de subliderança:", error);
+    return [];
+  }
 };
 
+// Validar código de segurança do time
 export const validateTeamCode = async (teamId, securityCode) => {
   const teams = await fetchTeams();
   const team = teams.find((t) => t.id === teamId);
 
-  if (!team) {
-    throw new Error("Time não encontrado");
-  }
-
-  if (team.securityCode !== securityCode) {
+  if (!team) throw new Error("Time não encontrado");
+  if (team.securityCode !== securityCode)
     throw new Error("Código de segurança inválido");
-  }
 
   return team;
 };
 
+// Adicionar membro ao time
 export const addMemberToTeam = async (teamId, memberData) => {
   const team = await fetchTeamById(teamId);
 
@@ -64,21 +86,19 @@ export const addMemberToTeam = async (teamId, memberData) => {
     currentMembers: team.members.length + 1,
   };
 
-  const teamResponse = await api.put(`/teams/${teamId}`, updatedTeam);
+  await api.put(`/teams/${teamId}`, updatedTeam);
 
+  // Atualizar usuário
   const userResponse = await api.get(`/users/${memberData.userId}`);
   const userData = userResponse.data;
 
-  const updatedUserData = {
-    ...userData,
-    isFirstLogin: false,
-  };
-
+  const updatedUserData = { ...userData, isFirstLogin: false };
   await api.put(`/users/${memberData.userId}`, updatedUserData);
 
-  return teamResponse.data;
+  return updatedTeam;
 };
 
+// Atualizar role de membro
 export const updateMemberRole = async (
   teamId,
   userId,
@@ -90,9 +110,7 @@ export const updateMemberRole = async (
   const memberIndex = team.members.findIndex(
     (member) => member.userId === userId
   );
-  if (memberIndex === -1) {
-    throw new Error("Membro não encontrado no time");
-  }
+  if (memberIndex === -1) throw new Error("Membro não encontrado no time");
 
   const updatedMembers = [...team.members];
   updatedMembers[memberIndex] = {
@@ -101,15 +119,12 @@ export const updateMemberRole = async (
     subLeaderType: newRole === "subleader" ? subLeaderType : null,
   };
 
-  const updatedTeam = {
-    ...team,
-    members: updatedMembers,
-  };
-
+  const updatedTeam = { ...team, members: updatedMembers };
   const response = await api.put(`/teams/${teamId}`, updatedTeam);
   return response.data;
 };
 
+// Buscar time com dados completos dos membros
 export const getTeamWithMembers = async (teamId) => {
   const [team, users] = await Promise.all([
     fetchTeamById(teamId),
@@ -118,16 +133,23 @@ export const getTeamWithMembers = async (teamId) => {
 
   const membersWithUserData = team.members.map((member) => {
     const userData = users.find(
-      (user) => user.id.toString() === member.userId.toString()
+      (u) => u.id.toString() === member.userId.toString()
     );
-    return {
-      ...member,
-      user: userData,
-    };
+    return { ...member, user: userData || null };
   });
 
-  return {
-    ...team,
-    members: membersWithUserData,
-  };
+  return { ...team, members: membersWithUserData };
+};
+
+// Verificar se usuário está em algum time ativo
+export const isUserInActiveTeam = (user, teams) => {
+  if (!user || !teams) return false;
+
+  return teams.some(
+    (team) =>
+      team.isActive &&
+      team.members.some(
+        (member) => member.userId === user.id && member.isActive
+      )
+  );
 };

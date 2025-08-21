@@ -23,45 +23,53 @@ export const ProjectBoard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadUserTeam = async () => {
-      if (user && user.hasGroup) {
-        try {
+    const loadProject = async () => {
+      try {
+        let progress = null;
+        let team = null;
+
+        if (user.hasGroup) {
           const teams = await fetchTeams();
-          const team = teams.find(team =>
-            team.members.some(member => member.userId.toString() === user.id.toString())
+          team = teams.find(t =>
+            t.members.some(member => member.userId.toString() === user.id.toString())
           );
 
           if (team) {
             const teamWithDetails = await getTeamWithMembers(team.id);
             setUserTeam(teamWithDetails);
 
-            // Buscar progresso do projeto da API
-            let progress = await fetchProjectProgress(team.id);
-
-            // Se não existir progresso, criar um novo
-            if (!progress) {
-              progress = await createProjectProgress(team.id);
-            }
-
-            setProjectProgress(progress);
-            setProjectPhases(progress.phases || []);
+            progress = await fetchProjectProgress(team.id);
+            if (!progress) progress = await createProjectProgress(team.id);
           }
-        } catch (error) {
-          console.error('Erro ao carregar time do usuário:', error);
-          toast.error('Erro ao carregar dados do projeto');
+        } else {
+          // Usuário solo
+          progress = await fetchProjectProgress(`solo-${user.id}`); // usar chave única para solo
+          if (!progress) progress = await createProjectProgress(`solo-${user.id}`);
+
+          setUserTeam({
+            id: `solo-${user.id}`,
+            name: `${user.codename} (Trabalho Solo)`,
+            members: [user],
+          });
         }
+
+        setProjectProgress(progress);
+        setProjectPhases(progress?.phases || []);
+      } catch (error) {
+        console.error("Erro ao carregar projeto:", error);
+        toast.error("Erro ao carregar dados do projeto");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    loadUserTeam();
+    loadProject();
   }, [user]);
 
   const handleDropPhase = async (phaseId, newStatus) => {
     if (!projectProgress) return;
 
     try {
-      // Atualizar na API
       const updatedProgress = await updatePhaseStatus(
         projectProgress.id,
         phaseId,
@@ -69,7 +77,6 @@ export const ProjectBoard = () => {
         user.id
       );
 
-      // Atualizar estado local
       setProjectProgress(updatedProgress);
       setProjectPhases(updatedProgress.phases);
 
