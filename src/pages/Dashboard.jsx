@@ -72,7 +72,7 @@ export const Dashboard = () => {
           </div>
 
           <div>
-            {activeTab === 'info' && <StudentDashboard />}
+            {activeTab === 'perfil' && <StudentDashboard />}
             {activeTab === 'kanban' && <Kanban />}
             {activeTab === 'meetings' && <Meetings />}
           </div>

@@ -79,7 +79,7 @@ export const StudentDashboard = () => {
       {user.hasGroup ? (
         <div className="rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-3">
-            Informações do Seu Time
+            Informações do Time
           </h3>
 
           {userTeam && (
