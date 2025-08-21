@@ -261,7 +261,7 @@ export const CodenameSelect = () => {
 
           <div className="text-center">
             <SubmitButton
-              label="Continuar para a Sala Comum"
+              label="Continuar"
               isLoading={isLoading}
               disabled={!selectedFirstName || !selectedLastName || !selectedAvatar}
             />
