@@ -450,16 +450,6 @@
     }
   ],
   "timeSlots": [
-    {
-      "id": 1,
-      "teacherId": 1,
-      "date": "2025-08-22",
-      "slots": [
-        { "time": "08:00", "available": true },
-        { "time": "09:00", "available": true },
-        { "time": "10:00", "available": false }
-      ]
-    }
   ],
   "appointments": [
     {

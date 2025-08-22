@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { Calendar } from '../components/Calendar';
-import { StudentDashboard } from '../components/StudentDashboard';
-import { TeacherDashboard } from '../components/TeacherDashboard';
+import { TeacherDashboard } from '../components/teacher-dashboard/TeacherDashboard';
 import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
-import { Meetings } from '../components/Meetings';
+import { StudentMeetingsTab } from '../components/student-dashboard/StudentMeetingsTab';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
 import { ProjectBoard } from '../components/project/ProjectBoard';
-import { NotificationsPanel } from '../components/NotificationsPanel';
+import { StudentNotificationsPanel } from '../components/student-dashboard/StudentNotificationsPanel';
 import { fetchTeams, isUserInActiveTeam } from '../api.js/teams';
+import { StudentDashboard } from '../components/student-dashboard/StudentDashboard';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -101,8 +101,8 @@ export const Dashboard = () => {
           <div>
             {activeTab === 'perfil' && <StudentDashboard />}
             {activeTab === 'projeto' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <ProjectBoard />}
-            {activeTab === 'reuniões' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <Meetings />}
-            {activeTab === 'notificações' && <NotificationsPanel />}
+            {activeTab === 'reuniões' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <StudentMeetingsTab />}
+            {activeTab === 'notificações' && <StudentNotificationsPanel />}
           </div>
         </div>
       </div>
@@ -116,8 +116,8 @@ export const Dashboard = () => {
           <Calendar />
         </div>
 
-        <div className="w-full md:flex-1 rounded-lg p-6 shadow-lg order-1 md:order-2">
-          <h1 className="text-2xl font-bold mb-4">
+        <div className="w-full md:flex-1 rounded-lg p-6 shadow-lg order-1 md:order-2 bg-light">
+          <h1 className="text-2xl font-bold mb-4 text-dark">
             {isAdmin(user) ? 'Dashboard (Administrador)' : 'Dashboard'}
           </h1>
           {renderDashboardContent()}
