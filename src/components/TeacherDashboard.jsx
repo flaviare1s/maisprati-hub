@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { CustomLoader } from './CustomLoader';
-import { DashboardStudentTab } from './DashboardStudentTab';
+import { DashboardTab } from './DashboardTab';
 import { FaRegUser, FaUsers, FaRegCalendarAlt, FaBell, FaPlus, FaEye, FaEdit, FaTrash, FaCopy, FaCheck } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { fetchTeams } from '../api.js/teams';
@@ -88,7 +88,7 @@ export const TeacherDashboard = () => {
         <h3 className="text-lg font-semibold">Gerenciar Times</h3>
         <Link
           to="/teams/create"
-          className="bg-blue-logo hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          className="bg-blue-logo hover:bg-blue-600 text-light px-4 py-2 rounded-md flex items-center gap-2"
         >
           <FaPlus /> Criar Novo Time
         </Link>
@@ -157,7 +157,7 @@ export const TeacherDashboard = () => {
 
       {selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-light rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-blue-logo">{selectedTeam.name}</h3>
@@ -238,10 +238,10 @@ export const TeacherDashboard = () => {
     <div className="w-full">
       <div className="border-b mb-6">
         <nav className="-mb-px flex sm:flex-row flex-col w-full overflow-x-auto space-x-0 sm:space-x-8">
-          <DashboardStudentTab icon={<FaRegUser />} title="Perfil" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaUsers />} title="Times" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaRegCalendarAlt />} title="Reuniões" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaRegUser />} title="Perfil" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaUsers />} title="Times" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaRegCalendarAlt />} title="Reuniões" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
         </nav>
       </div>
 

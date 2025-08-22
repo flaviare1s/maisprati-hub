@@ -8,8 +8,10 @@ import { fetchUsers } from "../api.js/users";
 import { NoTeamList } from "../components/NoTeamList";
 import { fetchComments, fetchPosts } from "../api.js/posts";
 import { Forum } from "../components/Forum";
+import { useTeam } from "../contexts/TeamContext";
 
 export const CommonRoom = () => {
+  const { userInTeam } = useTeam();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('forum');
@@ -117,9 +119,9 @@ export const CommonRoom = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+         <div className="grid lg:grid-cols-4 gap-6">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 border-2 border-purple-200">
+            <div className="bg-light rounded-2xl shadow-xl p-6 mb-6 border-2 border-purple-200">
               <div className="text-center mb-4">
                 {user?.avatar && (
                   <img
@@ -135,18 +137,18 @@ export const CommonRoom = () => {
                 </div>
               </div>
 
-              <button
+              {user.type === 'student' && !userInTeam && <button
                 onClick={handleJoinTeam}
-                className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-white font-bold py-3 px-4 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mb-4"
+                className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-light font-bold py-3 px-4 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mb-4"
               >
                 Entrar em Guilda
-              </button>
+              </button>}
             </div>
           </div>
 
           <div className="lg:col-span-3">
 
-            <div className="bg-white rounded-lg shadow-md mb-6">
+            <div className="bg-light rounded-lg shadow-md mb-6">
               <div className="flex border-b">
                 <button
                   onClick={() => setActiveTab('forum')}

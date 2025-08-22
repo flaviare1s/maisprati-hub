@@ -91,7 +91,7 @@ const LAST_NAMES = [
   'Solucionador',
   'Otimista',
   'Realista'
-]; 
+];
 
 
 export const CodenameSelect = () => {
@@ -171,7 +171,7 @@ export const CodenameSelect = () => {
         </div>
 
         <form onSubmit={handleCodenameSubmit} className="space-y-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Primeiro Nome
             </h2>
@@ -182,8 +182,8 @@ export const CodenameSelect = () => {
                   type="button"
                   onClick={() => setSelectedFirstName(name)}
                   className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm font-medium cursor-pointer ${selectedFirstName === name
-                    ? 'border-blue-logo bg-blue-logo text-white'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                    ? 'border-blue-logo bg-blue-logo text-light'
+                    : 'border-gray-200 bg-light text-gray-700 hover:border-blue-300'
                     }`}
                 >
                   {name}
@@ -192,7 +192,7 @@ export const CodenameSelect = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Sobrenome
             </h2>
@@ -203,8 +203,8 @@ export const CodenameSelect = () => {
                   type="button"
                   onClick={() => setSelectedLastName(name)}
                   className={`p-3 rounded-lg border-2 transition-all duration-200 text-sm font-medium cursor-pointer ${selectedLastName === name
-                    ? 'border-orange-logo bg-orange-logo text-white'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-orange-300'
+                    ? 'border-orange-logo bg-orange-logo text-light'
+                    : 'border-gray-200 bg-light text-gray-700 hover:border-orange-300'
                     }`}
                 >
                   {name}
@@ -213,7 +213,7 @@ export const CodenameSelect = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Avatar
             </h2>
@@ -242,7 +242,7 @@ export const CodenameSelect = () => {
           </div>
 
           {selectedFirstName && selectedLastName && selectedAvatar && (
-            <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <div className="bg-light rounded-lg shadow-md p-6 text-center">
               <h2 className="text-xl font-semibold mb-4 text-blue-logo">
                 Preview
               </h2>

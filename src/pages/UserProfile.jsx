@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { 
-  getUserProfile, 
-  getUserMissions, 
-  getUserAchievements, 
+import {
+  getUserProfile,
+  getUserMissions,
+  getUserAchievements,
   getUserStats,
-  getUserRanking 
+  getUserRanking
 } from '../services/profile';
 import { CustomLoader } from '../components/CustomLoader';
 
@@ -23,7 +23,7 @@ export default function UserProfile() {
     const loadUserData = async () => {
       try {
         setLoading(true);
-        
+
         const [
           profileData,
           missionsData,
@@ -63,7 +63,7 @@ export default function UserProfile() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-light mb-4">
             Perfil não encontrado
           </h2>
         </div>
@@ -79,22 +79,22 @@ export default function UserProfile() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header do Perfil */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
+        <div className="bg-light dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               <div className="relative">
                 <img
                   src={profile.avatar}
                   alt={profile.codename}
-                  className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
+                  className="w-24 h-24 rounded-full border-4 border-light shadow-lg"
                 />
-                <div className="absolute -bottom-2 -right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                <div className="absolute -bottom-2 -right-2 bg-yellow-500 text-light text-xs font-bold px-2 py-1 rounded-full">
                   Nv. {profile.gamification?.level || 1}
                 </div>
               </div>
 
               <div className="flex-1 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-light mb-2">
                   {profile.codename}
                 </h1>
                 <p className="text-blue-100 text-lg mb-2">
@@ -103,20 +103,20 @@ export default function UserProfile() {
                 <p className="text-blue-200 mb-4">
                   {profile.profile?.bio}
                 </p>
-                
+
                 <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                  <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
-                    <span className="text-white text-sm">
+                  <div className="bg-light/20 backdrop-blur px-3 py-1 rounded-full">
+                    <span className="text-light text-sm">
                       🏆 {ranking.userPosition ? `#${ranking.userPosition}` : 'Sem rank'}
                     </span>
                   </div>
-                  <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
-                    <span className="text-white text-sm">
+                  <div className="bg-light/20 backdrop-blur px-3 py-1 rounded-full">
+                    <span className="text-light text-sm">
                       ⚡ {profile.gamification?.xp || 0} XP
                     </span>
                   </div>
-                  <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
-                    <span className="text-white text-sm">
+                  <div className="bg-light/20 backdrop-blur px-3 py-1 rounded-full">
+                    <span className="text-light text-sm">
                       🔥 {profile.gamification?.streak || 0} dias
                     </span>
                   </div>
@@ -132,7 +132,7 @@ export default function UserProfile() {
                   {profile.gamification?.xp || 0} / {(profile.gamification?.xp || 0) + (profile.gamification?.xpToNextLevel || 250)} XP
                 </span>
               </div>
-              <div className="w-full bg-white/20 rounded-full h-3">
+              <div className="w-full bg-light/20 rounded-full h-3">
                 <div
                   className="bg-yellow-400 h-3 rounded-full transition-all duration-300"
                   style={{
@@ -145,7 +145,7 @@ export default function UserProfile() {
         </div>
 
         {/* Navegação por Abas */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg mb-8">
+        <div className="bg-light dark:bg-gray-800 rounded-xl shadow-lg mb-8">
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="flex space-x-8 px-6">
               {[
@@ -157,11 +157,10 @@ export default function UserProfile() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === tab.id
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
                       ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                       : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-                  }`}
+                    }`}
                 >
                   <span className="mr-2">{tab.icon}</span>
                   {tab.name}
@@ -175,7 +174,7 @@ export default function UserProfile() {
             {activeTab === 'overview' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-2">
                     Informações Pessoais
                   </h3>
                   <div className="space-y-2 text-sm">
@@ -187,7 +186,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-2">
                     Progresso Atual
                   </h3>
                   <div className="space-y-2 text-sm">
@@ -199,7 +198,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-2">
                     Habilidades
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -220,7 +219,7 @@ export default function UserProfile() {
             {activeTab === 'missions' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-light mb-4">
                     Missões em Progresso
                   </h3>
                   {inProgressMissions.length > 0 ? (
@@ -230,7 +229,7 @@ export default function UserProfile() {
                           <div className="flex items-center gap-3 mb-2">
                             <span className="text-2xl">{mission.icon}</span>
                             <div>
-                              <h4 className="font-semibold text-gray-900 dark:text-white">
+                              <h4 className="font-semibold text-gray-900 dark:text-light">
                                 {mission.title}
                               </h4>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -255,7 +254,7 @@ export default function UserProfile() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-light mb-4">
                     Missões Concluídas
                   </h3>
                   {completedMissions.length > 0 ? (
@@ -265,7 +264,7 @@ export default function UserProfile() {
                           <div className="flex items-center gap-3 mb-2">
                             <span className="text-2xl">{mission.icon}</span>
                             <div>
-                              <h4 className="font-semibold text-gray-900 dark:text-white">
+                              <h4 className="font-semibold text-gray-900 dark:text-light">
                                 {mission.title}
                               </h4>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -297,16 +296,15 @@ export default function UserProfile() {
                 {achievements.map((achievement) => (
                   <div
                     key={achievement.id}
-                    className={`rounded-lg p-4 ${
-                      achievement.isUnlocked
+                    className={`rounded-lg p-4 ${achievement.isUnlocked
                         ? 'bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-300'
                         : 'bg-gray-50 dark:bg-gray-800 opacity-50'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-3xl">{achievement.icon}</span>
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">
+                        <h4 className="font-semibold text-gray-900 dark:text-light">
                           {achievement.name}
                         </h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -315,9 +313,8 @@ export default function UserProfile() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className={`text-sm font-medium ${
-                        achievement.isUnlocked ? 'text-yellow-600' : 'text-gray-400'
-                      }`}>
+                      <span className={`text-sm font-medium ${achievement.isUnlocked ? 'text-yellow-600' : 'text-gray-400'
+                        }`}>
                         {achievement.isUnlocked ? '🏆 Desbloqueada' : '🔒 Bloqueada'}
                       </span>
                       <span className="text-sm font-medium text-yellow-600">
@@ -333,7 +330,7 @@ export default function UserProfile() {
             {activeTab === 'stats' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-4">
                     Atividade Social
                   </h3>
                   <div className="space-y-3">
@@ -353,7 +350,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-4">
                     Produtividade
                   </h3>
                   <div className="space-y-3">
@@ -373,7 +370,7 @@ export default function UserProfile() {
                 </div>
 
                 <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-4">
                     Liderança
                   </h3>
                   <div className="space-y-3">

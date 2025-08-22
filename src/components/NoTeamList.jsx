@@ -14,7 +14,7 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
         {heroes.map((hero) => (
           <div
             key={hero.id}
-            className="bg-gradient-to-r from-white to-blue-50 border rounded-lg p-4 hover:shadow-md transition-all"
+            className="bg-gradient-to-r from-light to-blue-50 border rounded-lg p-4 hover:shadow-md transition-all"
           >
             <div className="flex items-center gap-3 mb-3">
               <img
@@ -28,27 +28,26 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 <p className="text-sm text-blue-logo">{hero.specialty}</p>
               </div>
               <div
-                className={`w-3 h-3 rounded-full ${
-                  hero.status === "looking"
+                className={`w-3 h-3 rounded-full ${hero.status === "looking"
                     ? "bg-green-400"
                     : hero.status === "available"
-                    ? "bg-yellow-400"
-                    : "bg-red-400"
-                }`}
+                      ? "bg-yellow-400"
+                      : "bg-red-400"
+                  }`}
               ></div>
             </div>
 
             <div className="flex gap-2">
               <button
                 onClick={() => handleStartChat(hero.whatsapp)}
-                className="flex items-center gap-2 bg-green-500 text-white py-2 px-3 rounded text-sm hover:bg-green-600 transition-colors justify-center cursor-pointer"
+                className="flex items-center gap-2 bg-green-500 text-light py-2 px-3 rounded text-sm hover:bg-green-600 transition-colors justify-center cursor-pointer"
               >
                 <FaWhatsapp />
                 WhatsApp
               </button>
               <button
                 onClick={() => handleSendInvite()}
-                className="flex items-center gap-2 bg-blue-logo text-white py-2 px-3 rounded text-sm hover:bg-blue-600 transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-blue-logo text-light py-2 px-3 rounded text-sm hover:bg-blue-600 transition-colors cursor-pointer"
               >
                 <MdGroupAdd />
                 Convidar

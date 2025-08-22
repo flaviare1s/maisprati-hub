@@ -8,7 +8,7 @@ export const StudentProfile = () => {
   }
 
   return (
-    <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-8">
+    <div className="max-w-xl mx-auto bg-light dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-8">
       <div className="flex items-center gap-4 mb-4">
         <img
           src={user.avatar}
@@ -16,7 +16,7 @@ export const StudentProfile = () => {
           className="w-20 h-20 rounded-full border-4 border-blue-400"
         />
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{user.codename}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-light">{user.codename}</h2>
           <p className="text-gray-600 dark:text-gray-300">{user.username}</p>
         </div>
       </div>

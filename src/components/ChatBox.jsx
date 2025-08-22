@@ -10,7 +10,7 @@ export const ChatBox = ({ isOpen, setIsOpen }) => {
       className="p-4 rounded-lg shadow-lg w-[90%] max-w-md outline-none"
     >
       <div className="flex flex-col border-b mb-4 h-[80vh] bg-light rounded-2xl">
-        <header className="text-base md:text-lg font-bold bg-blue-logo w-full h-[60px] rounded-t-2xl text-white text-center py-2 flex items-center justify-between p-4">
+        <header className="text-base md:text-lg font-bold bg-blue-logo w-full h-[60px] rounded-t-2xl text-light text-center py-2 flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <img className="w-[40px]" src={chatIcon} alt="Ícone do chat" />
             <h2 className="text-center">ConectaBot: <span className="font-normal">Assistente Virtual</span></h2>
