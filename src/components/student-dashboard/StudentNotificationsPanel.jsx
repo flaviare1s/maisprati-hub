@@ -7,15 +7,15 @@ import {
   deleteNotification,
   createNotification,
 } from "../../api.js/notifications";
+import { SendNotificationModal } from "./SendNotificationModal";
 
 export const StudentNotificationsPanel = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      loadNotifications();
-    }
+    if (user) loadNotifications();
   }, [user]);
 
   const loadNotifications = async () => {
@@ -36,20 +36,20 @@ export const StudentNotificationsPanel = () => {
     }
   };
 
-  const handleSendNotificationToTeacher = async () => {
+  const handleSendNotification = async (message) => {
     try {
-      // supondo que o professor seja user.type === 'admin'
       const newNotification = {
-        userId: 1, // ID do professor (admin)
-        title: "Nova mensagem do aluno",
-        message: "Um aluno enviou uma notificação para você!",
+        userId: 1,
+        title: `Nova mensagem do aluno ${user.username}`,
+        message: `${user.username}: ${message}`,
         createdAt: new Date().toISOString(),
         isRead: false,
       };
+
       await createNotification(newNotification);
-      alert("Notificação enviada ao professor!");
+      setModalOpen(false);
     } catch (error) {
-      console.error("Erro ao enviar notificação:", error);
+      console.error(error);
     }
   };
 
@@ -58,7 +58,7 @@ export const StudentNotificationsPanel = () => {
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
         <h2 className="text-xl font-semibold mb-2">Notificações</h2>
         <button
-          onClick={handleSendNotificationToTeacher}
+          onClick={() => setModalOpen(true)}
           className="bg-blue-logo text-light px-4 py-2 rounded text-sm hover:bg-blue-600 cursor-pointer"
         >
           Enviar notificação ao Professor
@@ -71,7 +71,6 @@ export const StudentNotificationsPanel = () => {
             key={notification.id}
             className="relative p-4 rounded-lg border bg-blue-50"
           >
-            {/* Botão de deletar (X) */}
             <button
               onClick={() => handleDelete(notification.id)}
               className="absolute top-2 right-2 text-gray-muted hover:text-red-primary cursor-pointer"
@@ -80,7 +79,10 @@ export const StudentNotificationsPanel = () => {
             </button>
 
             <h3 className="font-medium text-gray-900">{notification.title}</h3>
-            <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+            <p className="text-sm text-gray-600 mt-1">
+              {notification.senderName ? `${notification.senderName}: ` : ""}
+              {notification.message}
+            </p>
             <span className="text-xs text-gray-500">
               {new Date(notification.createdAt).toLocaleString("pt-BR")}
             </span>
@@ -94,6 +96,12 @@ export const StudentNotificationsPanel = () => {
           </div>
         )}
       </div>
+
+      <SendNotificationModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSend={handleSendNotification}
+      />
     </div>
   );
 };

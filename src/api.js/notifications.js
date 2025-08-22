@@ -37,3 +37,22 @@ export const deleteNotification = async (notificationId) => {
     throw error;
   }
 };
+
+// Criar notificação para o professor com (ID 1)
+export const sendNotificationToTeacher = async (studentName, message) => {
+  try {
+    const notification = {
+      userId: 1, // ID do professor
+      title: `Nova mensagem do aluno ${studentName}`,
+      message: `${studentName}: ${message}`,
+      createdAt: new Date().toISOString(),
+      isRead: false,
+    };
+
+    const response = await api.post("/notifications", notification);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao enviar notificação para o professor:", error);
+    throw error;
+  }
+};
