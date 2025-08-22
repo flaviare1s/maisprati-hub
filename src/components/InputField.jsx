@@ -35,7 +35,6 @@ export const InputField = ({
     );
   }
 
-  // Input padrão para outros tipos
   const inputProps = {
     type,
     id: name,
