@@ -153,3 +153,23 @@ export const isUserInActiveTeam = (user, teams) => {
       )
   );
 };
+
+// Criar um novo time
+export const createTeam = async (teamData) => {
+  try {
+    const newTeam = {
+      ...teamData,
+      members: [],
+      currentMembers: 0,
+      isActive: true,
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+
+    const response = await api.post('/teams', newTeam);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao criar time:', error);
+    throw new Error('Não foi possível criar o time');
+  }
+};
+
