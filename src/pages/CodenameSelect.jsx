@@ -22,7 +22,7 @@ const importAvatars = () => {
 
       avatars.push({
         id: i,
-        src: new URL(`../assets/images/avatar/${filename}`, import.meta.url).href,
+        src: `/images/avatar/${filename}`,
         alt: `Avatar ${i}`
       });
     } catch {

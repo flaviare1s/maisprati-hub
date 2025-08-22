@@ -19,7 +19,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Frontend Esforçado",
-      "avatar": "/src/assets/images/avatar/avatares 1.png"
+      "avatar": "/images/avatar/avatares 1.png"
     },
     {
       "id": "3",
@@ -33,7 +33,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Backend Refatorador",
-      "avatar": "/src/assets/images/avatar/avatares 2.png"
+      "avatar": "/images/avatar/avatares 2.png"
     },
     {
       "id": "4",
@@ -47,7 +47,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "FullStack Determinado",
-      "avatar": "/src/assets/images/avatar/avatares 5.png"
+      "avatar": "/images/avatar/avatares 5.png"
     },
     {
       "id": "5",
@@ -61,7 +61,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Designer Criativo",
-      "avatar": "/src/assets/images/avatar/avatares 4.png"
+      "avatar": "/images/avatar/avatares 4.png"
     },
     {
       "id": "6",
@@ -75,7 +75,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "DevOps Focado",
-      "avatar": "/src/assets/images/avatar/avatares 7.png"
+      "avatar": "/images/avatar/avatares 7.png"
     },
     {
       "id": "7",
@@ -89,7 +89,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Console.Log Debugador",
-      "avatar": "/src/assets/images/avatar/avatares 8.png"
+      "avatar": "/images/avatar/avatares 8.png"
     },
     {
       "id": "8",
@@ -103,7 +103,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "BugHunter Persistente",
-      "avatar": "/src/assets/images/avatar/avatares 9.png"
+      "avatar": "/images/avatar/avatares 9.png"
     }
   ],
   "teams": [
