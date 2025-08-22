@@ -3,109 +3,27 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { TimeSlotModal } from './TimeSlotModal';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { useAuth } from '../hooks/useAuth';
 
 dayjs.locale('pt-br');
 
-const CustomPickersDay = (props) => {
-  const { day, outsideCurrentMonth, ...other } = props;
-  const today = dayjs();
-  const isToday = day.isSame(today, 'day');
-  const isPast = day.isBefore(today, 'day');
-  const isFuture = day.isAfter(today, 'day');
-  const isWeekend = day.day() === 0 || day.day() === 6; // Domingo ou Sábado
-
-  let color = '#444444'; // Preto padrão
-  let isClickable = true;
-
-  if (outsideCurrentMonth) {
-    color = '#ccc';
-    isClickable = false;
-  } else if (isPast) {
-    color = '#999'; // Cinza para dias passados
-    isClickable = false;
-  } else if (isToday) {
-    // Para o dia atual: azul se dia de semana, preto se fim de semana
-    color = isWeekend ? '#000' : '#007DE3';
-  } else if (isWeekend) {
-    color = '#000'; // Preto para fins de semana
-  } else if (isFuture) {
-    color = '#007DE3'; // Azul para dias futuros
-  }
-
-  return (
-    <PickersDay
-      {...other}
-      day={day}
-      sx={{
-        borderRadius: '50%',
-        width: '36px',
-        height: '36px',
-        color,
-        fontWeight: 'bold',
-        backgroundColor: 'transparent',
-        '&:hover': {
-          backgroundColor: 'transparent !important',
-        },
-        '&.Mui-selected': {
-          backgroundColor: '#FE8822',
-          color: isToday ? (isWeekend ? '#000' : '#007DE3') : '#fff',
-        },
-        '&.MuiPickersDay-today': {
-          border: '2px solid #FE8822',
-          backgroundColor: 'transparent',
-          color: isWeekend ? '#000' : '#007DE3', // Garantir cor correta no dia atual
-          '&:hover': {
-            backgroundColor: 'transparent !important',
-          },
-        },
-        pointerEvents: isClickable ? 'auto' : 'none',
-      }}
-      disabled={!isClickable}
-    />
-  );
-};
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#007DE3',
-    },
-    secondary: {
-      main: '#FE8C68',
-    },
-    background: {
-      default: '#F3F4F6',
-    },
-    text: {
-      primary: '#444444',
-      secondary: '#777777',
-    },
-  },
-});
-
 export const Calendar = () => {
+  const { user } = useAuth();
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
 
+  const teacherId = 1;
+
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
-    const today = dayjs();
-    const isPast = newDate.isBefore(today, 'day');
-
-    // Só abre modal para dias atuais ou futuros
-    if (!isPast) {
-      setModalOpen(true);
-    }
+    if (!newDate.isBefore(dayjs(), 'day')) setModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  const handleCloseModal = () => setModalOpen(false);
 
   const getSelectedDateInfo = () => {
     const today = dayjs();
@@ -113,40 +31,68 @@ export const Calendar = () => {
     const isToday = selectedDate.isSame(today, 'day');
     const isWeekend = selectedDate.day() === 0 || selectedDate.day() === 6;
 
-    if (isPast) {
-      return { status: 'Passado', color: '#999' };
-    } else if (isWeekend) {
-      return { status: 'Fim de semana', color: '#000' };
+    if (isPast) return { status: 'Passado', color: '#aaa' };
+    if (isWeekend) return { status: 'Fim de semana', color: '#555' };
+    if (isToday) return { status: 'Hoje', color: '#007DE3' };
+    return { status: 'Futuro', color: '#007DE3' };
+  };
+
+  const CustomPickersDay = ({ day, outsideCurrentMonth, ...other }) => {
+    const today = dayjs();
+    const isToday = day.isSame(today, 'day');
+    const isPast = day.isBefore(today, 'day');
+    const isWeekend = day.day() === 0 || day.day() === 6;
+
+    let color = '#444';
+    let isClickable = true;
+
+    if (outsideCurrentMonth || isPast) {
+      color = '#ccc';
+      isClickable = false;
     } else if (isToday) {
-      return { status: 'Hoje', color: '#007DE3' };
-    } else {
-      return { status: 'Futuro', color: '#007DE3' };
+      color = '#007de3';
+    } else if (isWeekend) {
+      color = '#555';
     }
+
+    return (
+      <PickersDay
+        {...other}
+        day={day}
+        sx={{
+          width: 36,
+          height: 36,
+          borderRadius: '50%',
+          color,
+          fontWeight: isToday ? 'bold' : '500',
+          '&.Mui-selected': {
+            backgroundColor: '#FE8822',
+            color: '#fff',
+          },
+          pointerEvents: isClickable ? 'auto' : 'none',
+        }}
+        disabled={!isClickable}
+      />
+    );
   };
 
   return (
-    <ThemeProvider theme={theme}>
+  
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
         <Card
           sx={{
             width: '100%',
-            height: 'fit-content',
-            backgroundColor: 'background.default',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            borderRadius: '12px',
+            maxWidth: '100%',
+            mx: 'auto',
+          backgroundColor: '#f3f4f6',
+            borderRadius: 2,
+            p: 0,
           }}
         >
-          <CardContent sx={{ padding: '16px' }}>
+          <CardContent sx={{ p: 1 }}>
             <Typography
-              variant="h6"
-              component="h2"
-              sx={{
-                marginBottom: '16px',
-                color: 'text.primary',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                fontFamily: 'var(--font-montserrat)',
-              }}
+              variant="subtitle1"
+              sx={{ mb: 1, fontWeight: 'bold', textAlign: 'center', color: 'text.primary' }}
             >
               Calendário
             </Typography>
@@ -155,33 +101,22 @@ export const Calendar = () => {
               <DateCalendar
                 value={selectedDate}
                 onChange={handleDateChange}
-                slots={{
-                  day: CustomPickersDay,
-                }}
+                slots={{ day: CustomPickersDay }}
                 sx={{
-                  '& .MuiPickersCalendarHeader-root': {
-                    color: 'text.primary',
-                    fontFamily: 'var(--font-montserrat)',
-                  },
-                  '& .MuiDayCalendar-header': {
-                    '& .MuiTypography-root': {
-                      color: 'text.secondary',
-                      fontWeight: 'bold',
-                      fontFamily: 'var(--font-montserrat)',
-                    },
-                  },
+                  '& .MuiPickersCalendarHeader-root': { color: 'text.primary', mb: 1 },
+                  '& .MuiDayCalendar-header .MuiTypography-root': { color: 'text.secondary', fontWeight: 600 },
                 }}
               />
             </Box>
 
             <Typography
-              variant="body2"
+              variant="caption"
               sx={{
-                marginTop: '12px',
-                color: getSelectedDateInfo().color,
+                mt: 1,
+                display: 'block',
                 textAlign: 'center',
-                fontFamily: 'var(--font-montserrat)',
-                fontWeight: 'bold',
+                color: getSelectedDateInfo().color,
+                fontWeight: 500,
               }}
             >
               {selectedDate.format('DD/MM/YYYY')} - {getSelectedDateInfo().status}
@@ -193,8 +128,10 @@ export const Calendar = () => {
           open={modalOpen}
           onClose={handleCloseModal}
           selectedDate={selectedDate}
+          teacherId={teacherId}
+          studentId={user?.id || 0} // usuário logado, fallback 0
         />
       </LocalizationProvider>
-    </ThemeProvider>
+
   );
 };

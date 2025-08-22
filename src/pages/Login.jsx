@@ -42,7 +42,7 @@ export const Login = () => {
       <div className="max-w-[600px]">
         <img className="hidden md:block w-full" src={bg} alt="" />
       </div>
-      <div className="p-[20px] flex flex-col items-center justify-center rounded-2xl md:shadow-2xl md:w-[400px]">
+      <div className="p-[20px] flex flex-col items-center justify-center rounded-2xl md:shadow-2xl md:w-[400px] md:bg-light">
         <div className="flex items-center justify-center w-[180px]">
           <img className="w-full" src={logo} alt="Logo" />
         </div>

@@ -6,7 +6,6 @@ import { FaClipboardCheck } from "react-icons/fa";
 import { CgTrack } from "react-icons/cg";
 import { FaqItem } from "../components/FaqItem"
 import { SectionTitle } from "../components/SectionTitle"
-import { Testimonials } from "../components/Testimonials"
 
 const faqData = [
   {
@@ -91,10 +90,6 @@ export const FAQ = () => {
         {faqData.map(item => (
           <FaqItem key={item.id} question={item.question} answer={item.answer} icon={item.icon} />
         ))}
-      </div>
-      <SectionTitle title="Depoimentos" />
-      <div className="w-full">
-        <Testimonials />
       </div>
     </div>
   );
