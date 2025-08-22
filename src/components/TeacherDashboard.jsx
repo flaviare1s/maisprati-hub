@@ -88,7 +88,7 @@ export const TeacherDashboard = () => {
         <h3 className="text-lg font-semibold">Gerenciar Times</h3>
         <Link
           to="/teams/create"
-          className="bg-blue-logo hover:bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          className="bg-blue-logo hover:bg-blue-600 text-light px-4 py-2 rounded-md flex items-center gap-2"
         >
           <FaPlus /> Criar Novo Time
         </Link>
@@ -157,7 +157,7 @@ export const TeacherDashboard = () => {
 
       {selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-light rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-blue-logo">{selectedTeam.name}</h3>

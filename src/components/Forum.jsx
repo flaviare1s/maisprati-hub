@@ -9,7 +9,7 @@ export const Forum = ({
   setShowNewPost,
   handleCreatePost,
 }) => {
-  const [visibleComments, setVisibleComments] = useState({}); // controla quais comentários estão visíveis
+  const [visibleComments, setVisibleComments] = useState({});
 
   const toggleComments = (postId) => {
     setVisibleComments((prev) => ({
@@ -23,7 +23,7 @@ export const Forum = ({
       <div className="mb-6">
         <button
           onClick={() => setShowNewPost(!showNewPost)}
-          className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-light font-bold py-3 px-6 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
         >
           <FaMagic />
           Criar Post
@@ -41,7 +41,7 @@ export const Forum = ({
           <div className="flex gap-2 mt-3">
             <button
               onClick={handleCreatePost}
-              className="bg-blue-logo text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-blue-logo text-light px-4 py-2 rounded hover:bg-blue-600"
             >
               Publicar
             </button>
@@ -59,7 +59,7 @@ export const Forum = ({
         {forumPosts.map((post) => (
           <div
             key={post.id}
-            className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"
+            className="bg-light border rounded-lg p-4 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start gap-3 mb-3">
               {post.avatar && (
@@ -78,7 +78,7 @@ export const Forum = ({
                 <div className="flex gap-2 mt-2">
                   <button
                     onClick={() => toggleComments(post.id)}
-                    className="flex items-center gap-1 text-blue-600 hover:underline text-sm"
+                    className="flex items-center gap-1 text-blue-logo hover:underline text-sm"
                   >
                     <FaComments /> {visibleComments[post.id] ? "Ocultar Comentários" : "Ver Comentários"}
                   </button>

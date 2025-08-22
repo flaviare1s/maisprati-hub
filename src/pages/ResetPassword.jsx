@@ -75,7 +75,7 @@ export const ResetPassword = () => {
           onClick={handleBackdropClick}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 h-[300px]"
+            className="bg-light rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 h-[300px]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col items-center">
@@ -90,7 +90,7 @@ export const ResetPassword = () => {
             </div>
 
             <div className="flex flex-col items-center w-full m-auto">
-            
+
 
               <h2 className="text-xl mb-10 text-center text-gray-muted font-montserrat">
                 Digite seu e-mail

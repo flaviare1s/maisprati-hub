@@ -10,7 +10,7 @@ export const TeamMembersForm = ({ control, register, watch, errors }) => {
   });
 
   return (
-    <div className="p-6 border-b bg-white rounded-md shadow-sm">
+    <div className="p-6 border-b bg-light rounded-md shadow-sm">
       <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">Membros do Time</h2>
 
       {fields.map((field, index) => (
@@ -61,7 +61,7 @@ export const TeamMembersForm = ({ control, register, watch, errors }) => {
         <button
           type="button"
           onClick={() => append({ name: '', role: 'member', specialization: '', subLeaderType: '' })}
-          className="bg-blue-logo text-white px-4 py-2 rounded flex items-center gap-2 mt-2"
+          className="bg-blue-logo text-light px-4 py-2 rounded flex items-center gap-2 mt-2"
         >
           <FaPlus /> Adicionar Membro
         </button>

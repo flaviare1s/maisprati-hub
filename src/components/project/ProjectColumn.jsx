@@ -27,7 +27,7 @@ export const ProjectColumn = ({
   return (
     <div
       ref={dropRef}
-      className={`bg-white p-4 rounded-lg shadow-md border-t-4 transition-all duration-200 flex flex-col h-full ${isOver ? 'bg-gray-50 scale-105' : ''
+      className={`bg-light p-4 rounded-lg shadow-md border-t-4 transition-all duration-200 flex flex-col h-full ${isOver ? 'bg-gray-50 scale-105' : ''
         }`}
       style={{ borderTopColor: color }}
     >

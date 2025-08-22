@@ -95,7 +95,7 @@ export const NewPassword = () => {
           onClick={handleBackdropClick}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 items-center relative h-[300px]"
+            className="bg-light rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 items-center relative h-[300px]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col items-center">

@@ -91,7 +91,7 @@ export const TeamSelect = () => {
     <>
       {!isDesktop && showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+          <div className="bg-light rounded-2xl shadow-2xl p-6 w-full max-w-sm">
             <div className="flex flex-col items-center">
               <button
                 type="button"
@@ -138,7 +138,7 @@ export const TeamSelect = () => {
           onClick={handleBackdropClick}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 h-[300px]"
+            className="bg-light rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 h-[300px]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col items-center">
@@ -195,7 +195,7 @@ export const TeamSelect = () => {
             <button
               key={team.id}
               onClick={() => handleTeamSelected(team)}
-              className="w-full p-4 bg-blue-logo text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              className="w-full p-4 bg-blue-logo text-light rounded-lg hover:bg-blue-600 transition-colors font-medium"
             >
               <div className="flex justify-between items-center">
                 <span>{team.name}</span>

@@ -101,7 +101,7 @@ export const CreateTeam = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-md">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-light rounded-lg shadow-md">
           <div className="p-6 border-b">
             <h2 className="text-xl font-semibold text-gray-800 mb-6">
               Informações Básicas
