@@ -3,66 +3,20 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { TimeSlotModal } from './TimeSlotModal';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import { useAuth } from '../hooks/useAuth';
 
 dayjs.locale('pt-br');
 
-const CustomPickersDay = ({ day, outsideCurrentMonth, ...other }) => {
-  const today = dayjs();
-  const isToday = day.isSame(today, 'day');
-  const isPast = day.isBefore(today, 'day');
-  const isWeekend = day.day() === 0 || day.day() === 6;
-
-  let color = '#444';
-  let isClickable = true;
-
-  if (outsideCurrentMonth || isPast) {
-    color = '#ccc';
-    isClickable = false;
-  } else if (isToday) {
-    color = '#007de3';
-  } else if (isWeekend) {
-    color = '#555';
-  }
-
-  return (
-    <PickersDay
-      {...other}
-      day={day}
-      sx={{
-        width: 36,
-        height: 36,
-        borderRadius: '50%',
-        color,
-        fontWeight: isToday ? 'bold' : '500',
-        '&.Mui-selected': {
-          backgroundColor: '#FE8822',
-          color: '#fff',
-        },
-        pointerEvents: isClickable ? 'auto' : 'none',
-      }}
-      disabled={!isClickable}
-    />
-  );
-};
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#007DE3' },
-    secondary: { main: '#FE8C68' },
-    background: { default: '#f3f4f6' },
-    text: { primary: '#333', secondary: '#777' },
-  },
-  typography: { fontFamily: 'Montserrat, Arial, sans-serif' },
-});
-
 export const Calendar = () => {
+  const { user } = useAuth();
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
+
+  const teacherId = 1;
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
@@ -83,16 +37,56 @@ export const Calendar = () => {
     return { status: 'Futuro', color: '#007DE3' };
   };
 
+  const CustomPickersDay = ({ day, outsideCurrentMonth, ...other }) => {
+    const today = dayjs();
+    const isToday = day.isSame(today, 'day');
+    const isPast = day.isBefore(today, 'day');
+    const isWeekend = day.day() === 0 || day.day() === 6;
+
+    let color = '#444';
+    let isClickable = true;
+
+    if (outsideCurrentMonth || isPast) {
+      color = '#ccc';
+      isClickable = false;
+    } else if (isToday) {
+      color = '#007de3';
+    } else if (isWeekend) {
+      color = '#555';
+    }
+
+    return (
+      <PickersDay
+        {...other}
+        day={day}
+        sx={{
+          width: 36,
+          height: 36,
+          borderRadius: '50%',
+          color,
+          fontWeight: isToday ? 'bold' : '500',
+          '&.Mui-selected': {
+            backgroundColor: '#FE8822',
+            color: '#fff',
+          },
+          pointerEvents: isClickable ? 'auto' : 'none',
+        }}
+        disabled={!isClickable}
+      />
+    );
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+  
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
         <Card
           sx={{
             width: '100%',
-            maxWidth: 230,
-            backgroundColor: 'background.default',
+            maxWidth: '100%',
+            mx: 'auto',
+          backgroundColor: '#f3f4f6',
             borderRadius: 2,
-            p: 2,
+            p: 0,
           }}
         >
           <CardContent sx={{ p: 1 }}>
@@ -117,15 +111,27 @@ export const Calendar = () => {
 
             <Typography
               variant="caption"
-              sx={{ mt: 1, display: 'block', textAlign: 'center', color: getSelectedDateInfo().color, fontWeight: 500 }}
+              sx={{
+                mt: 1,
+                display: 'block',
+                textAlign: 'center',
+                color: getSelectedDateInfo().color,
+                fontWeight: 500,
+              }}
             >
               {selectedDate.format('DD/MM/YYYY')} - {getSelectedDateInfo().status}
             </Typography>
           </CardContent>
         </Card>
 
-        <TimeSlotModal open={modalOpen} onClose={handleCloseModal} selectedDate={selectedDate} />
+        <TimeSlotModal
+          open={modalOpen}
+          onClose={handleCloseModal}
+          selectedDate={selectedDate}
+          teacherId={teacherId}
+          studentId={user?.id || 0} // usuário logado, fallback 0
+        />
       </LocalizationProvider>
-    </ThemeProvider>
+
   );
 };

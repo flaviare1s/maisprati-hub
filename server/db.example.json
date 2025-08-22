@@ -448,5 +448,26 @@
       "isRead": true,
       "createdAt": "2025-08-21T15:30:00Z"
     }
+  ],
+  "timeSlots": [
+    {
+      "id": 1,
+      "teacherId": 1,
+      "date": "2025-08-22",
+      "slots": [
+        { "time": "08:00", "available": true },
+        { "time": "09:00", "available": true },
+        { "time": "10:00", "available": false }
+      ]
+    }
+  ],
+  "appointments": [
+    {
+      "id": 1,
+      "studentId": 2,
+      "teacherId": 1,
+      "date": "2025-08-22",
+      "time": "10:00"
+    }
   ]
 }
