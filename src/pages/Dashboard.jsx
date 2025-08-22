@@ -51,11 +51,6 @@ export const Dashboard = () => {
       return (
         <div>
           <TeacherDashboard />
-          <div className="mt-6 p-4 rounded-lg">
-            <p className="text-sm text-blue-logo">
-              <strong>Acesso Total</strong>
-            </p>
-          </div>
         </div>
       );
     }

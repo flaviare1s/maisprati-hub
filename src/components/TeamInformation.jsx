@@ -6,10 +6,10 @@ export const TeamInformation = ({ userTeam }) => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div>
+        {userTeam.description && <div>
           <p className="text-sm ">Descrição:</p>
           <p className="font-medium">{userTeam.description}</p>
-        </div>
+        </div>}
         <div>
           <p className="text-sm ">Membros:</p>
           <p className="font-medium">
