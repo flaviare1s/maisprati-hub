@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { CustomLoader } from './CustomLoader';
-import { DashboardStudentTab } from './DashboardStudentTab';
+import { DashboardTab } from './DashboardTab';
 import { FaRegUser, FaUsers, FaRegCalendarAlt, FaBell, FaPlus, FaEye, FaEdit, FaTrash, FaCopy, FaCheck } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { fetchTeams } from '../api.js/teams';
@@ -238,10 +238,10 @@ export const TeacherDashboard = () => {
     <div className="w-full">
       <div className="border-b mb-6">
         <nav className="-mb-px flex sm:flex-row flex-col w-full overflow-x-auto space-x-0 sm:space-x-8">
-          <DashboardStudentTab icon={<FaRegUser />} title="Perfil" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaUsers />} title="Times" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaRegCalendarAlt />} title="Reuniões" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardStudentTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaRegUser />} title="Perfil" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaUsers />} title="Times" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaRegCalendarAlt />} title="Reuniões" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <DashboardTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
         </nav>
       </div>
 

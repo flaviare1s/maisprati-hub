@@ -8,7 +8,7 @@ import { isAdmin } from '../utils/permissions';
 import { Meetings } from '../components/Meetings';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
-import { DashboardStudentTab } from '../components/DashboardStudentTab';
+import { DashboardTab } from '../components/DashboardTab';
 import { ProjectBoard } from '../components/project/ProjectBoard';
 import { NotificationsPanel } from '../components/NotificationsPanel';
 import { fetchTeams, isUserInActiveTeam } from '../api.js/teams';
@@ -64,7 +64,7 @@ export const Dashboard = () => {
         <div className="w-full">
           <div className="border-b mb-6">
             <nav className="-mb-px flex sm:flex-row flex-col w-full overflow-x-auto space-x-0 sm:space-x-8">
-              <DashboardStudentTab
+              <DashboardTab
                 icon={<FaRegUser />}
                 title="Perfil"
                 activeTab={activeTab}
@@ -72,7 +72,7 @@ export const Dashboard = () => {
               />
 
               {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
-                <DashboardStudentTab
+                <DashboardTab
                   icon={<TbLayoutKanban />}
                   title="Projeto"
                   activeTab={activeTab}
@@ -81,7 +81,7 @@ export const Dashboard = () => {
               )}
 
               {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
-                <DashboardStudentTab
+                <DashboardTab
                   icon={<FaRegCalendarAlt />}
                   title="Reuniões"
                   activeTab={activeTab}
@@ -89,7 +89,7 @@ export const Dashboard = () => {
                 />
               )}
 
-              <DashboardStudentTab
+              <DashboardTab
                 icon={<FaBell />}
                 title="Notificações"
                 activeTab={activeTab}
