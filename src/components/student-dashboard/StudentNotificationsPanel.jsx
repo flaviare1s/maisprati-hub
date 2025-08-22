@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
-import { useAuth } from '../../hooks/useAuth'
-import { getUserNotifications, markNotificationAsRead } from "../../api.js/notifications";
+import { MdClose } from "react-icons/md";
+import { useAuth } from "../../hooks/useAuth";
+import {
+  getUserNotifications,
+  deleteNotification,
+  createNotification,
+} from "../../api.js/notifications";
 
 export const StudentNotificationsPanel = () => {
   const { user } = useAuth();
@@ -22,44 +27,66 @@ export const StudentNotificationsPanel = () => {
     }
   };
 
-  const handleMarkAsRead = async (id) => {
+  const handleDelete = async (id) => {
     try {
-      await markNotificationAsRead(id);
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-      );
+      await deleteNotification(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
     } catch (error) {
-      console.error("Erro ao marcar como lida:", error);
+      console.error("Erro ao deletar notificação:", error);
+    }
+  };
+
+  const handleSendNotificationToTeacher = async () => {
+    try {
+      // supondo que o professor seja user.type === 'admin'
+      const newNotification = {
+        userId: 1, // ID do professor (admin)
+        title: "Nova mensagem do aluno",
+        message: "Um aluno enviou uma notificação para você!",
+        createdAt: new Date().toISOString(),
+        isRead: false,
+      };
+      await createNotification(newNotification);
+      alert("Notificação enviada ao professor!");
+    } catch (error) {
+      console.error("Erro ao enviar notificação:", error);
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto text-dark">
-      <h2 className="text-xl font-semibold mb-4">Notificações</h2>
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold mb-2">Notificações</h2>
+        <button
+          onClick={handleSendNotificationToTeacher}
+          className="bg-blue-logo text-light px-4 py-2 rounded text-sm hover:bg-blue-600 cursor-pointer"
+        >
+          Enviar notificação ao Professor
+        </button>
+      </div>
+
       <div className="space-y-3">
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            onClick={() => handleMarkAsRead(notification.id)}
-            className={`p-4 rounded-lg border cursor-pointer transition ${notification.isRead
-              ? "bg-gray-50"
-              : "bg-blue-50 border-blue-200 hover:bg-blue-100"
-              }`}
+            className="relative p-4 rounded-lg border bg-blue-50"
           >
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{notification.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-                <span className="text-xs text-gray-500">
-                  {new Date(notification.createdAt).toLocaleString("pt-BR")}
-                </span>
-              </div>
-              {!notification.isRead && (
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-              )}
-            </div>
+            {/* Botão de deletar (X) */}
+            <button
+              onClick={() => handleDelete(notification.id)}
+              className="absolute top-2 right-2 text-gray-muted hover:text-red-primary cursor-pointer"
+            >
+              <MdClose size={18} />
+            </button>
+
+            <h3 className="font-medium text-gray-900">{notification.title}</h3>
+            <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+            <span className="text-xs text-gray-500">
+              {new Date(notification.createdAt).toLocaleString("pt-BR")}
+            </span>
           </div>
         ))}
+
         {notifications.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <FaBell className="mx-auto text-3xl mb-2" />

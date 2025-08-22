@@ -93,7 +93,6 @@ export const CommonRoom = () => {
           userId: hero.id,
           title: "Convite para Guilda",
           message: `${user.codename} - ${user.username} convidou você para entrar na guilda dele!`,
-          isRead: false,
           createdAt: new Date().toISOString(),
           type: "guild-invite",
           fromUserId: user.id,

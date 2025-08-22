@@ -27,22 +27,6 @@ export const createNotification = async (notificationData) => {
   }
 };
 
-// Marcar notificação como lida
-export const markNotificationAsRead = async (notificationId) => {
-  try {
-    const response = await api.patch(
-      `/notifications/${notificationId}`,
-      {
-        isRead: true,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao marcar notificação como lida:", error);
-    throw error;
-  }
-};
-
 // Deletar notificação
 export const deleteNotification = async (notificationId) => {
   try {
