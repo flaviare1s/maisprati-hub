@@ -1,7 +1,11 @@
 import { FaWhatsapp } from "react-icons/fa";
 import { MdGroupAdd } from "react-icons/md";
+import { useAuth } from "../hooks/useAuth";
+import { useTeam } from "../contexts/TeamContext";
 
 export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
+  const { user } = useAuth();
+  const { userInTeam } = useTeam();
   return (
     <div>
       <div className="mb-4 text-center">
@@ -28,29 +32,36 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 <p className="text-sm text-blue-logo">{hero.specialty}</p>
               </div>
               <div
-                className={`w-3 h-3 rounded-full ${hero.status === "looking"
+                className={`w-3 h-3 rounded-full ${
+                  hero.status === "looking"
                     ? "bg-green-400"
                     : hero.status === "available"
-                      ? "bg-yellow-400"
-                      : "bg-red-400"
-                  }`}
+                    ? "bg-yellow-400"
+                    : "bg-red-400"
+                }`}
               ></div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-col">
               <button
                 onClick={() => handleStartChat(hero.whatsapp)}
-                className="flex items-center gap-2 bg-green-500 text-light py-2 px-3 rounded text-sm hover:bg-green-600 transition-colors justify-center cursor-pointer"
+                className="flex items-center gap-2 bg-green-500 text-light py-2 px-3 rounded text-sm hover:bg-green-600 transition-colors justify-center cursor-pointer m-auto w-full text-center"
               >
                 <FaWhatsapp />
                 WhatsApp
               </button>
               <button
-                onClick={() => handleSendInvite()}
-                className="flex items-center gap-2 bg-blue-logo text-light py-2 px-3 rounded text-sm hover:bg-blue-600 transition-colors cursor-pointer"
+                onClick={() => handleSendInvite(hero)}
+                disabled={user.type === "admin" || !userInTeam}
+                className={`flex items-center gap-2 py-2 px-3 rounded text-sm transition-colors
+    ${
+      user.type === "admin" || !userInTeam
+        ? "bg-gray-400 text-gray-200 cursor-not-allowed m-auto w-full text-center justify-center"
+        : "bg-blue-logo text-light hover:bg-blue-600 cursor-pointer m-auto w-full text-center justify-center"
+    }`}
               >
                 <MdGroupAdd />
-                Convidar
+                Chamar pra guilda
               </button>
             </div>
           </div>

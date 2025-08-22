@@ -9,8 +9,8 @@ export const About = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 w-screen gap-[5px] bg-light py-[5px] about">
       <AboutItemImg img={img1} alt="Imagem de pessoas conectadas" />
       <AboutItemContent
-        title="Sobre o Projeto +Prati"
-        description="O Gerenciador de Projetos da +PraTi foi desenvolvido para facilitar a organização dos trabalhos finais, conectando professores e alunos em um só lugar."
+        title="Sobre o +Prati Hub"
+        description="O +Prati Hub foi desenvolvido para facilitar a organização dos trabalhos finais, conectando professores e alunos em um só lugar."
       />
 
       <div className="md:order-4">
