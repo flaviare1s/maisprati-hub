@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
-import { useAuth } from '../hooks/useAuth'
-import { getUserNotifications, markNotificationAsRead } from "../api.js/notifications";
+import { useAuth } from '../../hooks/useAuth'
+import { getUserNotifications, markNotificationAsRead } from "../../api.js/notifications";
 
-export const NotificationsPanel = () => {
+export const StudentNotificationsPanel = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
 
@@ -34,7 +34,7 @@ export const NotificationsPanel = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto text-dark">
       <h2 className="text-xl font-semibold mb-4">Notificações</h2>
       <div className="space-y-3">
         {notifications.map((notification) => (
@@ -42,8 +42,8 @@ export const NotificationsPanel = () => {
             key={notification.id}
             onClick={() => handleMarkAsRead(notification.id)}
             className={`p-4 rounded-lg border cursor-pointer transition ${notification.isRead
-                ? "bg-gray-50"
-                : "bg-blue-50 border-blue-200 hover:bg-blue-100"
+              ? "bg-gray-50"
+              : "bg-blue-50 border-blue-200 hover:bg-blue-100"
               }`}
           >
             <div className="flex items-start justify-between">

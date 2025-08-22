@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { fetchTeams, getTeamWithMembers } from '../api.js/teams';
-import { CustomLoader } from './CustomLoader';
-import { TeamInformation } from './TeamInformation';
+import { useAuth } from '../../hooks/useAuth';
+import { fetchTeams, getTeamWithMembers } from '../../api.js/teams';
+import { CustomLoader } from '../CustomLoader';
+import { TeamInformation } from '../TeamInformation';
 
 export const StudentDashboard = () => {
   const { user } = useAuth();
@@ -37,7 +37,7 @@ export const StudentDashboard = () => {
   }
 
   return (
-    <div className="w-full p-0">
+    <div className="w-full p-0 text-dark">
       <div className='flex justify-start items-center gap-2 mb-5'>
         <img className='w-10 h-10' src={user.avatar} alt="Avatar" />
         <h2 className="text-2xl font-bold">
