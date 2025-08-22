@@ -27,22 +27,6 @@ export const createNotification = async (notificationData) => {
   }
 };
 
-// Marcar notificação como lida
-export const markNotificationAsRead = async (notificationId) => {
-  try {
-    const response = await api.patch(
-      `/notifications/${notificationId}`,
-      {
-        isRead: true,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao marcar notificação como lida:", error);
-    throw error;
-  }
-};
-
 // Deletar notificação
 export const deleteNotification = async (notificationId) => {
   try {
@@ -50,6 +34,25 @@ export const deleteNotification = async (notificationId) => {
     return true;
   } catch (error) {
     console.error("Erro ao deletar notificação:", error);
+    throw error;
+  }
+};
+
+// Criar notificação para o professor com (ID 1)
+export const sendNotificationToTeacher = async (studentName, message) => {
+  try {
+    const notification = {
+      userId: 1, // ID do professor
+      title: `Nova mensagem do aluno ${studentName}`,
+      message: `${studentName}: ${message}`,
+      createdAt: new Date().toISOString(),
+      isRead: false,
+    };
+
+    const response = await api.post("/notifications", notification);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao enviar notificação para o professor:", error);
     throw error;
   }
 };
