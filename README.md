@@ -14,16 +14,23 @@ git clone https://github.com/flaviare1s/maisprati-hub.git
 npm install
 ```
 
-4. Rodar o projeto e abrir o link que aparecer no terminal
+4. Copiar o arquivo db.example.json e renomear para db.json
+
+5. Rodar o projeto e abrir o link que aparecer no terminal
+```bash
+npm run server
+```
+
+6. Rodar o projeto e abrir o link que aparecer no terminal
 ```bash
 npm run dev
 ```
 
-5. Localizar ou criar o componente/página a ser desenvolvido e a sua respectiva rota.
+7. Localizar ou criar o componente/página a ser desenvolvido e a sua respectiva rota.
 
-6. Abra a rota correspondente no navegador para começar o desenvolvimento.
+8. Abra a rota correspondente no navegador para começar o desenvolvimento.
 
-6. Estrutura de pastas
+9. Estrutura de pastas
 - src/ → código principal do projeto.
 
 - assets → imagens, ícones e outros arquivos.

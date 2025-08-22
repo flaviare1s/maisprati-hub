@@ -1,13 +1,17 @@
 import { useForm } from "react-hook-form";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import logo from "../assets/images/logo+prati.png";
 import bg from "../assets/images/about-img1.png";
+import { useAuth } from "../hooks/useAuth";
+import { fetchUsers } from "../api.js/users";
+import toast from "react-hot-toast";
 
 export const Login = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -16,11 +20,20 @@ export const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      const users = await fetchUsers();
+      const user = users.find(
+        (user) => user.email === data.email && user.password === data.password
+      );
       console.log(data);
-      navigate("/");
 
+      if (user) {
+        login(user);
+      } else {
+        toast.error("Usuário ou senha inválidos");
+      }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
+      toast.error("Erro ao conectar com o servidor.");
     }
   };
 
@@ -48,7 +61,6 @@ export const Login = () => {
               },
             }}
           />
-
           <InputField
             name="password"
             type="password"
@@ -63,13 +75,21 @@ export const Login = () => {
               },
             }}
           />
-
-          <SubmitButton
-            label="Entrar"
-            bgColor="verde-primario"
-          />
-          <Link to="/register" className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-white">Cadastre-se</Link>
-          <Link to="/reset-password" className="text-center text-sm text-blue-logo font-bold hover:text-orange-logo mt-5 block">Esqueci minha senha</Link>
+          <div className="mt-5">
+            <SubmitButton label="Entrar" />
+          </div>
+          <Link
+            to="/register"
+            className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
+          >
+            Cadastre-se
+          </Link>
+          <Link
+            to="/reset-password"
+            className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block"
+          >
+            Esqueci minha senha
+          </Link>
         </form>
       </div>
     </div>

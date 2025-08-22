@@ -1,40 +1,51 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-logo: #007DE3;
-  --color-orange-logo: #FE8C68;
-  --color-red-secondary: #C0392B;
-  --color-btn-home: #FE8822;
+  --color-blue-logo: #007de3;
+  --color-orange-logo: #fe8c68;
+  --color-red-primary: #e74c3c;
+  --color-red-secondary: #c0392b;
+  --color-btn-home: #fe8822;
 
   --color-gray-muted: #777777;
-  --color-light: #F3F4F6;
-  --color-bg-card: #F0E9E9;
-  --color-dark: #1F1F1F;
+  --color-light: #f3f4f6;
+  --color-bg-card: #f0e9e9;
+  --color-dark: #1f1f1f;
   --color-text-secondary: #444444;
 
-  --color-bg-input: #ECF0F1;
-  --color-border-input: #BDC3C7;
+  --color-bg-input: #ecf0f1;
+  --color-border-input: #bdc3c7;
 
-  --font-montserrat: 'Montserrat', sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   color: #444;
   font-family: var(--font-montserrat);
 }
 
-.dark body, .dark .menu-mobile, .dark .chatbot, .dark .faq {
+.dark body,
+.dark .menu-mobile,
+.dark .chatbot,
+.dark .faq {
   background-color: #444;
-  color: #F0E9E9;
+  color: #f0e9e9;
 }
 
-.dark .loader, .dark .about {
+.dark .loader,
+.dark .about {
   background-color: #444;
 }
 
 .dark .testimonial {
-  color: #1F1F1F;
+  color: #1f1f1f;
 }
 
 .link-nav {
@@ -48,7 +59,7 @@ body {
   left: 0;
   height: 2px;
   width: 0;
-  background-color: var(--color-blue-logo);
+  background-color: var(--color-orange-logo);
   transition: width 0.3s ease;
 }
 
@@ -56,7 +67,8 @@ body {
   width: 100%;
 }
 
-.swiper-button-next, .swiper-button-prev {
+.swiper-button-next,
+.swiper-button-prev {
   color: var(--color-light) !important;
   background-color: var(--color-blue-logo) !important;
   border-radius: 50% !important;

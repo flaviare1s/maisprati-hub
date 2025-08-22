@@ -2,10 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { UserProfile } from "./pages/UserProfile";
 import { Dashboard } from "./pages/Dashboard";
-import { StudentForm } from "./pages/StudentForm";
-import { StudentDashboard } from "./components/StudentDashboard";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
@@ -16,19 +13,37 @@ import { FAQ } from "./pages/FAQ";
 import { ChatButton } from "./components/ChatButton";
 import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
-import { useState } from "react";
-import { UserRegister } from "./pages/UserRegister";
-import { TeacherDashboard } from "./components/TeacherDashboard";
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { StudentRegister } from "./pages/StudentRegister";
+import { StudentProfile } from "./pages/StudentProfile";
+import { TeamSelect } from "./pages/TeamSelect";
+import { CommonRoom } from "./pages/CommonRoom";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { useAuth } from "./hooks/useAuth";
+import { CustomLoader } from "./components/CustomLoader";
+import { ScrollToTop } from "./components/ScrollToTop";
+import { CodenameSelect } from "./pages/CodenameSelect";
+import { CreateTeam } from "./pages/CreateTeam";
 
-Modal.setAppElement("#root")
+Modal.setAppElement("#root");
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false)
+  const { user } = useAuth();
+  const [loadingApp, setLoadingApp] = useState(true)
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setLoadingApp(false);
+  }, [])
+
+  if (loadingApp) {
+    return <CustomLoader />
+  }
 
   return (
-    <div>
-      <Header />
+    <div className="overflow-x-hidden">
+      <ScrollToTop />
+      <Header user={user} />
       <div className="fixed bottom-4 right-4 z-50">
         <ChatButton onClick={() => setIsOpen(true)} />
         <ChatBox isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -38,10 +53,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<UserRegister />} />
+          <Route path="/register" element={<StudentRegister />} />
+          <Route path="/profile" element={<StudentProfile />} />
           <Route path="/dashboard/" element={<Dashboard />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/student/form" element={<StudentForm />} />
+          <Route path="/teams/create/" element={<CreateTeam />} />
+          <Route path="/warname/" element={<CodenameSelect />} />
+          <Route path="/team-select/" element={<TeamSelect />} />
+          <Route path="/common-room/" element={<CommonRoom />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
@@ -50,9 +68,6 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <Toaster
-        position="top-center"
-      />
     </div>
   );
 }
