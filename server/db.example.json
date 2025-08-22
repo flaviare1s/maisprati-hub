@@ -420,7 +420,6 @@
         "invitationId": "1",
         "teamId": "1"
       },
-      "isRead": false,
       "createdAt": "2025-08-21T16:15:00Z"
     },
     {
@@ -433,7 +432,6 @@
         "invitationId": "2",
         "teamId": "2"
       },
-      "isRead": false,
       "createdAt": "2025-08-21T16:10:00Z"
     },
     {
@@ -445,7 +443,6 @@
       "data": {
         "postId": "1"
       },
-      "isRead": true,
       "createdAt": "2025-08-21T15:30:00Z"
     }
   ],
