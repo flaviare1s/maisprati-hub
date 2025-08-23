@@ -76,34 +76,42 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
         </div>
 
         <div className="space-y-4">
-          {members.map((member, index) => (
-            <div key={member.userId} className="p-4 border rounded-lg flex flex-col gap-2">
-              <p className="font-medium">
-                {member.user?.username || `Usuário #${member.userId}`}
-              </p>
+          {members.map((member, index) => {
+            const alreadyHasLeader = members.some(
+              (m, i) => m.role === "leader" && i !== index
+            );
 
-              <label className="text-sm">Role</label>
-              <select
-                {...register(`members.${index}.role`)}
-                className="border px-2 py-1 rounded"
-              >
-                <option value="leader">Líder</option>
-                <option value="subleader">Sub-líder</option>
-                <option value="member">Membro</option>
-              </select>
+            return (
+              <div key={member.userId} className="p-4 border rounded-lg flex flex-col gap-2">
+                <p className="font-medium">
+                  {member.user?.username || `Usuário #${member.userId}`}
+                </p>
 
-              {members[index].role === "subleader" && (
-                <>
-                  <label className="text-sm">Tipo de Sub-líder</label>
-                  <input
-                    type="text"
-                    {...register(`members.${index}.subLeaderType`)}
-                    className="border px-2 py-1 rounded"
-                  />
-                </>
-              )}
-            </div>
-          ))}
+                <label className="text-sm">Role</label>
+                <select
+                  {...register(`members.${index}.role`)}
+                  className="border px-2 py-1 rounded"
+                >
+                  {!alreadyHasLeader && (
+                    <option value="leader">Líder</option>
+                  )}
+                  <option value="subleader">Sub-líder</option>
+                  <option value="member">Membro</option>
+                </select>
+
+                {members[index].role === "subleader" && (
+                  <>
+                    <label className="text-sm">Tipo de Sub-líder</label>
+                    <input
+                      type="text"
+                      {...register(`members.${index}.subLeaderType`)}
+                      className="border px-2 py-1 rounded"
+                    />
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-6 flex justify-end gap-2">

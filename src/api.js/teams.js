@@ -140,7 +140,11 @@ export const updateMemberRole = async (
     subLeaderType: newRole === "subleader" ? subLeaderType : null,
   };
 
-  const updatedTeam = { ...team, members: updatedMembers };
+  const updatedTeam = {
+    ...team,
+    members: updatedMembers,
+    currentMembers: updatedMembers.length
+  };
   const response = await api.put(`/teams/${teamId}`, updatedTeam);
   return response.data;
 };
