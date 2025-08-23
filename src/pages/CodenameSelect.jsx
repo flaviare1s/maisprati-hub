@@ -22,7 +22,7 @@ const importAvatars = () => {
 
       avatars.push({
         id: i,
-        src: new URL(`../assets/images/avatar/${filename}`, import.meta.url).href,
+        src: `/images/avatar/${filename}`,
         alt: `Avatar ${i}`
       });
     } catch {
@@ -136,7 +136,6 @@ export const CodenameSelect = () => {
 
       const createdUser = await createUser(formattedData);
 
-      console.log("Usuário criado:", createdUser);
       toast.success("Cadastro realizado com sucesso!");
 
       login(createdUser);

@@ -14,7 +14,7 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-2 gap-4">
         {heroes.map((hero) => (
           <div
             key={hero.id}
@@ -28,7 +28,7 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 onError={(e) => (e.target.style.display = "none")}
               />
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-800">{hero.codename}</h4>
+                <h4 className="font-semibold text-dark">{hero.codename}</h4>
                 <p className="text-sm text-blue-logo">{hero.specialty}</p>
               </div>
               <div
@@ -50,19 +50,13 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 <FaWhatsapp />
                 WhatsApp
               </button>
-              <button
+              {user.type === "student" && userInTeam && <button
                 onClick={() => handleSendInvite(hero)}
-                disabled={user.type === "admin" || !userInTeam}
-                className={`flex items-center gap-2 py-2 px-3 rounded text-sm transition-colors
-    ${
-      user.type === "admin" || !userInTeam
-        ? "bg-gray-400 text-gray-200 cursor-not-allowed m-auto w-full text-center justify-center"
-        : "bg-blue-logo text-light hover:bg-blue-600 cursor-pointer m-auto w-full text-center justify-center"
-    }`}
+                className="flex items-center gap-2 py-2 px-3 rounded text-sm transition-colors bg-blue-logo text-light hover:bg-blue-600 cursor-pointer m-auto w-full text-center justify-center"
               >
                 <MdGroupAdd />
                 Chamar pra guilda
-              </button>
+              </button>}
             </div>
           </div>
         ))}

@@ -5,7 +5,9 @@
       "username": "admin",
       "email": "admin@admin.com",
       "password": "admin123",
-      "type": "admin"
+      "type": "admin",
+      "codename": "Edu da Codifica",
+      "avatar": "/images/avatar/avatares 54.png"
     },
     {
       "id": "2",
@@ -19,7 +21,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Frontend Esforçado",
-      "avatar": "/src/assets/images/avatar/avatares 1.png"
+      "avatar": "/images/avatar/avatares 1.png"
     },
     {
       "id": "3",
@@ -33,7 +35,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Backend Refatorador",
-      "avatar": "/src/assets/images/avatar/avatares 2.png"
+      "avatar": "/images/avatar/avatares 2.png"
     },
     {
       "id": "4",
@@ -47,7 +49,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "FullStack Determinado",
-      "avatar": "/src/assets/images/avatar/avatares 5.png"
+      "avatar": "/images/avatar/avatares 5.png"
     },
     {
       "id": "5",
@@ -61,7 +63,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Designer Criativo",
-      "avatar": "/src/assets/images/avatar/avatares 4.png"
+      "avatar": "/images/avatar/avatares 4.png"
     },
     {
       "id": "6",
@@ -75,7 +77,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "DevOps Focado",
-      "avatar": "/src/assets/images/avatar/avatares 7.png"
+      "avatar": "/images/avatar/avatares 7.png"
     },
     {
       "id": "7",
@@ -89,7 +91,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Console.Log Debugador",
-      "avatar": "/src/assets/images/avatar/avatares 8.png"
+      "avatar": "/images/avatar/avatares 8.png"
     },
     {
       "id": "8",
@@ -103,7 +105,7 @@
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "BugHunter Persistente",
-      "avatar": "/src/assets/images/avatar/avatares 9.png"
+      "avatar": "/images/avatar/avatares 9.png"
     }
   ],
   "teams": [
@@ -420,7 +422,6 @@
         "invitationId": "1",
         "teamId": "1"
       },
-      "isRead": false,
       "createdAt": "2025-08-21T16:15:00Z"
     },
     {
@@ -433,7 +434,6 @@
         "invitationId": "2",
         "teamId": "2"
       },
-      "isRead": false,
       "createdAt": "2025-08-21T16:10:00Z"
     },
     {
@@ -445,7 +445,6 @@
       "data": {
         "postId": "1"
       },
-      "isRead": true,
       "createdAt": "2025-08-21T15:30:00Z"
     }
   ],

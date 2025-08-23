@@ -93,7 +93,6 @@ export const CommonRoom = () => {
           userId: hero.id,
           title: "Convite para Guilda",
           message: `${user.codename} - ${user.username} convidou você para entrar na guilda dele!`,
-          isRead: false,
           createdAt: new Date().toISOString(),
           type: "guild-invite",
           fromUserId: user.id,
@@ -134,7 +133,7 @@ export const CommonRoom = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-1">
             <div className="bg-light rounded-2xl shadow-xl p-6 mb-6 border-2 border-purple-200">
               <div className="text-center mb-4">
