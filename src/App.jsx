@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { Dashboard } from "./pages/Dashboard";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
@@ -24,6 +23,9 @@ import { CustomLoader } from "./components/CustomLoader";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { CodenameSelect } from "./pages/CodenameSelect";
 import { CreateTeam } from "./pages/CreateTeam";
+import { StudentDashboard } from "./pages/StudentDashboard";
+import { TeacherDashboard } from "./pages/TeacherDashboard";
+import { DashboardLayout } from "./layouts/DashboardLayout";
 
 Modal.setAppElement("#root");
 
@@ -50,12 +52,29 @@ function App() {
       </div>
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                user.type === "admin" ? (
+                  <Navigate to="/dashboard/admin" replace />
+                ) : (
+                  <Navigate to="/dashboard/student" replace />
+                )
+              ) : (
+                <Home />
+              )
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
           <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/dashboard/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<StudentDashboard />} />  {/* rota default */}
+            <Route path="student" element={<StudentDashboard />} />
+            <Route path="admin" element={<TeacherDashboard />} />
+          </Route>
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
