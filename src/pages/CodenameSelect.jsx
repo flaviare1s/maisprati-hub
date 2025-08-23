@@ -136,7 +136,6 @@ export const CodenameSelect = () => {
 
       const createdUser = await createUser(formattedData);
 
-      console.log("Usuário criado:", createdUser);
       toast.success("Cadastro realizado com sucesso!");
 
       login(createdUser);

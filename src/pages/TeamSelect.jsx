@@ -9,7 +9,7 @@ import { fetchTeams, validateTeamCode, addMemberToTeam } from '../api.js/teams';
 import toast from 'react-hot-toast';
 
 export const TeamSelect = () => {
-  const { completeFirstLogin, user, updateUserData } = useAuth();
+  const { user, updateUserData } = useAuth();
   const navigate = useNavigate();
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -50,27 +50,24 @@ export const TeamSelect = () => {
     try {
       await validateTeamCode(selectedTeam.id, data.securityCode);
 
-      const { updatedTeam } = await addMemberToTeam(selectedTeam.id, {
+      const { updatedTeam, updatedUserData } = await addMemberToTeam(selectedTeam.id, {
         userId: user.id,
         role: "member",
         specialization: "Desenvolvedor"
       });
 
-      updateUserData({
-        isFirstLogin: false,
-        hasGroup: true,
-        teamId: selectedTeam.id
-      });
+      updateUserData(updatedUserData);
 
-      console.log("Código válido! Entrando no time:", updatedTeam.name);
+      // Verificar se hasGroup está correto
+      if (updatedUserData.hasGroup !== true) {
+        console.error("Dados:", updatedUserData);
+      }
+
       toast.success(`Bem-vindo ao ${updatedTeam.name}!`);
-
-      completeFirstLogin();
 
       navigate('/dashboard');
 
     } catch (error) {
-      console.error("Erro na validação:", error);
       toast.error(error.message || "Código inválido");
     } finally {
       setIsLoading(false);
