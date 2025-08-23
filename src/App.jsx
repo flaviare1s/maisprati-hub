@@ -56,7 +56,19 @@ function App() {
       </div>
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Navigate
+                  to={user.type === "admin" ? "/dashboard/admin" : "/dashboard/student"}
+                  replace
+                />
+              ) : (
+                <Home />
+              )
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
