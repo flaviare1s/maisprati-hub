@@ -58,7 +58,9 @@ export const validateTeamCode = async (teamId, securityCode) => {
 
 // Adicionar membro ao time
 export const addMemberToTeam = async (teamId, memberData) => {
-  const team = await fetchTeamById(teamId);
+  // Pega o time atual
+  const teamResponse = await api.get(`/teams/${teamId}`);
+  const team = teamResponse.data;
 
   if (team.members.length >= team.maxMembers) {
     throw new Error("Time já está cheio");
@@ -80,22 +82,30 @@ export const addMemberToTeam = async (teamId, memberData) => {
     isActive: true,
   };
 
+  const updatedMembers = [...team.members, newMember];
+
   const updatedTeam = {
     ...team,
-    members: [...team.members, newMember],
-    currentMembers: team.members.length + 1,
+    members: updatedMembers,
+    currentMembers: updatedMembers.length,
   };
 
   await api.put(`/teams/${teamId}`, updatedTeam);
 
-  // Atualizar usuário
+  // Atualiza usuário
   const userResponse = await api.get(`/users/${memberData.userId}`);
   const userData = userResponse.data;
 
-  const updatedUserData = { ...userData, isFirstLogin: false };
+  const updatedUserData = {
+    ...userData,
+    isFirstLogin: false,
+    hasGroup: true,
+    teamId: teamId,
+  };
+
   await api.put(`/users/${memberData.userId}`, updatedUserData);
 
-  return updatedTeam;
+  return { updatedTeam, updatedUserData };
 };
 
 // Atualizar role de membro
@@ -172,4 +182,3 @@ export const createTeam = async (teamData) => {
     throw new Error('Não foi possível criar o time');
   }
 };
-

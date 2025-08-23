@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../api.js/users";
+import { getTeamWithMembers } from "../api.js/teams";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const [userTeam, setUserTeam] = useState(null);
   const [user, setUser] = useState(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -92,8 +94,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loadUserTeam = async () => {
+    if (user?.hasGroup && user.teamId) {
+      try {
+        const teamData = await getTeamWithMembers(user.teamId);
+        setUserTeam(teamData);
+      } catch (error) {
+        console.error("Erro ao carregar time do usuário:", error);
+      }
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, completeFirstLogin, updateUserData }}>
+    <AuthContext.Provider value={{ user, login, logout, completeFirstLogin, updateUserData, loadUserTeam, userTeam }}>
       {children}
     </AuthContext.Provider>
   );

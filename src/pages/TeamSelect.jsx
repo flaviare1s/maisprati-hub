@@ -50,18 +50,20 @@ export const TeamSelect = () => {
     try {
       await validateTeamCode(selectedTeam.id, data.securityCode);
 
-      await addMemberToTeam(selectedTeam.id, {
+      const { updatedTeam } = await addMemberToTeam(selectedTeam.id, {
         userId: user.id,
         role: "member",
         specialization: "Desenvolvedor"
       });
 
-      console.log("Código válido! Entrando no time:", selectedTeam.name);
-      toast.success(`Bem-vindo ao ${selectedTeam.name}!`);
-
       updateUserData({
-        isFirstLogin: false
+        isFirstLogin: false,
+        hasGroup: true,
+        teamId: selectedTeam.id
       });
+
+      console.log("Código válido! Entrando no time:", updatedTeam.name);
+      toast.success(`Bem-vindo ao ${updatedTeam.name}!`);
 
       completeFirstLogin();
 
