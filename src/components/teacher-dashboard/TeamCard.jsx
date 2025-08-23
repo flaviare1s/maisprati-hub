@@ -39,7 +39,7 @@ export const TeamCard = ({ team, onSelect }) => {
           </button>
           <button
             onClick={handleToggleStatus}
-            className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-md"
+            className="p-2 text-orange-logo cursor-pointer rounded-md"
             title={localTeam.isActive ? "Inativar Time" : "Ativar Time"}
           >
             {localTeam.isActive ? <FaToggleOn /> : <FaToggleOff />}
