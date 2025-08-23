@@ -56,46 +56,67 @@ export const validateTeamCode = async (teamId, securityCode) => {
   return team;
 };
 
-// Adicionar membro ao time
 export const addMemberToTeam = async (teamId, memberData) => {
-  const team = await fetchTeamById(teamId);
+  try {
+    const teamResponse = await api.get(`/teams/${teamId}`);
+    const team = teamResponse.data;
 
-  if (team.members.length >= team.maxMembers) {
-    throw new Error("Time já está cheio");
+    if (team.members.length >= team.maxMembers) {
+      throw new Error("Time já está cheio");
+    }
+
+    const isAlreadyMember = team.members.some(
+      (member) => member.userId === memberData.userId
+    );
+    if (isAlreadyMember) {
+      throw new Error("Usuário já é membro deste time");
+    }
+
+    const newMember = {
+      userId: memberData.userId,
+      role: memberData.role || "member",
+      specialization: memberData.specialization || "",
+      subLeaderType: memberData.subLeaderType || null,
+      joinedAt: new Date().toISOString().split("T")[0],
+      isActive: true,
+    };
+
+    const updatedMembers = [...team.members, newMember];
+
+    const updatedTeam = {
+      ...team,
+      members: updatedMembers,
+      currentMembers: updatedMembers.length,
+    };
+
+    const teamUpdateResult = await api.put(`/teams/${teamId}`, updatedTeam);
+
+    const userResponse = await api.get(`/users/${memberData.userId}`);
+    const userData = userResponse.data;
+
+    const updatedUserData = {
+      ...userData,
+      isFirstLogin: false,
+      hasGroup: true,
+      teamId: teamId,
+    };
+
+    const userUpdateResult = await api.put(`/users/${memberData.userId}`, updatedUserData);
+    console.log("Usuário atualizado:", userUpdateResult.data);
+
+    const verifyUser = await api.get(`/users/${memberData.userId}`);
+    console.log("🔍 Verificação - usuário após update:", verifyUser.data);
+
+    const result = { 
+      updatedTeam: teamUpdateResult.data, 
+      updatedUserData: verifyUser.data 
+    };
+    return result;
+
+  } catch (error) {
+    console.error("Erro em addMemberToTeam:", error);
+    throw error;
   }
-
-  const isAlreadyMember = team.members.some(
-    (member) => member.userId === memberData.userId
-  );
-  if (isAlreadyMember) {
-    throw new Error("Usuário já é membro deste time");
-  }
-
-  const newMember = {
-    userId: memberData.userId,
-    role: memberData.role || "member",
-    specialization: memberData.specialization || "",
-    subLeaderType: memberData.subLeaderType || null,
-    joinedAt: new Date().toISOString().split("T")[0],
-    isActive: true,
-  };
-
-  const updatedTeam = {
-    ...team,
-    members: [...team.members, newMember],
-    currentMembers: team.members.length + 1,
-  };
-
-  await api.put(`/teams/${teamId}`, updatedTeam);
-
-  // Atualizar usuário
-  const userResponse = await api.get(`/users/${memberData.userId}`);
-  const userData = userResponse.data;
-
-  const updatedUserData = { ...userData, isFirstLogin: false };
-  await api.put(`/users/${memberData.userId}`, updatedUserData);
-
-  return updatedTeam;
 };
 
 // Atualizar role de membro
@@ -173,3 +194,30 @@ export const createTeam = async (teamData) => {
   }
 };
 
+// Remover membro do time (JSON Server)
+export const deleteTeamMember = async (teamId, userId) => {
+  try {
+    // Pega o time
+    const teamResponse = await api.get(`/teams/${teamId}`);
+    const team = teamResponse.data;
+
+    // Filtra o membro que quer sair
+    const updatedMembers = team.members.filter(
+      (member) => member.userId.toString() !== userId.toString()
+    );
+
+    // Atualiza o time
+    const updatedTeam = {
+      ...team,
+      members: updatedMembers,
+      currentMembers: updatedMembers.length,
+    };
+
+    await api.put(`/teams/${teamId}`, updatedTeam);
+
+    return true;
+  } catch (error) {
+    console.error("Erro ao remover membro do time:", error);
+    throw error;
+  }
+};
