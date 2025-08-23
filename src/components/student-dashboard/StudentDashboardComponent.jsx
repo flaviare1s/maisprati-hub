@@ -4,7 +4,7 @@ import { getTeamWithMembers } from '../../api.js/teams';
 import { CustomLoader } from '../CustomLoader';
 import { TeamInformation } from '../TeamInformation';
 
-export const StudentDashboard = () => {
+export const StudentDashboardComponent = () => {
   const { user, updateUserData } = useAuth();
   const [loading, setLoading] = useState(true);
   const [localUserTeam, setLocalUserTeam] = useState(null);

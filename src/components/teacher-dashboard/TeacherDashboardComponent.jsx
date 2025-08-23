@@ -1,16 +1,16 @@
 // TeacherDashboard.jsx
 import { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { CustomLoader } from '../components/CustomLoader';
-import { DashboardTab } from '../components/DashboardTab';
+import { useAuth } from '../../hooks/useAuth';
+import { CustomLoader } from '../CustomLoader';
+import { DashboardTab } from '../DashboardTab';
 import { FaRegUser, FaUsers, FaRegCalendarAlt, FaBell } from 'react-icons/fa';
-import { fetchTeams } from '../api.js/teams';
-import { TeacherProfileTab } from '../components/teacher-dashboard/TeacherProfileTab';
-import { TeacherTeamsTab } from '../components/teacher-dashboard/TeacherTeamsTab';
-import { TeacherMeetingsTab } from '../components/teacher-dashboard/TeacherMeetingsTab';
-import { TeacherNotificationsTab } from '../components/teacher-dashboard/TeacherNotificationTab';
+import { fetchTeams } from '../../api.js/teams';
+import { TeacherProfileTab } from './TeacherProfileTab';
+import { TeacherTeamsTab } from './TeacherTeamsTab';
+import { TeacherMeetingsTab } from './TeacherMeetingsTab';
+import { TeacherNotificationsTab } from './TeacherNotificationTab';
 
-export const TeacherDashboard = () => {
+export const TeacherDashboardComponent = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('perfil');
   const [teams, setTeams] = useState([]);

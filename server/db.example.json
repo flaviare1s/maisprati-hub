@@ -120,26 +120,20 @@
         {
           "userId": "3",
           "role": "leader",
-          "specialization": "Tech Lead",
           "subLeaderType": null,
-          "joinedAt": "2024-01-15",
-          "isActive": true
+          "joinedAt": "2024-01-15"
         },
         {
           "userId": "4",
           "role": "subleader",
-          "specialization": "Frontend Developer",
           "subLeaderType": "Frontend",
-          "joinedAt": "2024-01-16",
-          "isActive": true
+          "joinedAt": "2024-01-16"
         },
         {
           "userId": "7",
           "role": "member",
-          "specialization": "UI/UX Designer",
           "subLeaderType": null,
-          "joinedAt": "2024-01-17",
-          "isActive": true
+          "joinedAt": "2024-01-17"
         }
       ],
       "isActive": true,
@@ -156,18 +150,14 @@
         {
           "userId": "5",
           "role": "leader",
-          "specialization": "Backend Lead",
           "subLeaderType": null,
-          "joinedAt": "2024-01-20",
-          "isActive": true
+          "joinedAt": "2024-01-20"
         },
         {
           "userId": "6",
           "role": "subleader",
-          "specialization": "DevOps Engineer",
           "subLeaderType": "DevOps",
-          "joinedAt": "2024-01-21",
-          "isActive": true
+          "joinedAt": "2024-01-21"
         }
       ],
       "isActive": true,
