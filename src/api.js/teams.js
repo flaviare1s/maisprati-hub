@@ -193,3 +193,31 @@ export const createTeam = async (teamData) => {
     throw new Error('Não foi possível criar o time');
   }
 };
+
+// Remover membro do time (JSON Server)
+export const deleteTeamMember = async (teamId, userId) => {
+  try {
+    // Pega o time
+    const teamResponse = await api.get(`/teams/${teamId}`);
+    const team = teamResponse.data;
+
+    // Filtra o membro que quer sair
+    const updatedMembers = team.members.filter(
+      (member) => member.userId.toString() !== userId.toString()
+    );
+
+    // Atualiza o time
+    const updatedTeam = {
+      ...team,
+      members: updatedMembers,
+      currentMembers: updatedMembers.length,
+    };
+
+    await api.put(`/teams/${teamId}`, updatedTeam);
+
+    return true;
+  } catch (error) {
+    console.error("Erro ao remover membro do time:", error);
+    throw error;
+  }
+};

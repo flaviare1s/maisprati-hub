@@ -5,32 +5,28 @@ import { CustomLoader } from '../CustomLoader';
 import { TeamInformation } from '../TeamInformation';
 
 export const StudentDashboard = () => {
-  const { user, userTeam, updateUserData } = useAuth();
-  const [loading, setLoading] = useState(!userTeam);
+  const { user, updateUserData } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [localUserTeam, setLocalUserTeam] = useState(null);
 
   useEffect(() => {
     const loadUserTeam = async () => {
-      if (user && user.hasGroup && !userTeam && user.teamId) {
+      if (user && user.hasGroup && user.teamId) {
         try {
           const teamWithDetails = await getTeamWithMembers(user.teamId);
-
+          setLocalUserTeam(teamWithDetails);
           updateUserData({ userTeam: teamWithDetails });
         } catch (error) {
           console.error('Erro ao carregar time do usuário:', error);
-        } finally {
-          setLoading(false);
         }
-      } else {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     loadUserTeam();
-  }, [user, userTeam, updateUserData]);
+  }, [user, updateUserData]);
 
-  if (loading) {
-    return <CustomLoader />;
-  }
+  if (loading) return <CustomLoader />;
 
   return (
     <div className="w-full p-0 text-dark">
@@ -56,17 +52,20 @@ export const StudentDashboard = () => {
           </div>
           <div>
             <p className="text-sm">Grupo:</p>
-            <p className="text-xl text-blue-logo">{userTeam?.name || '-'}</p>
+            <p className="text-xl text-blue-logo">{localUserTeam?.name || '-'}</p>
           </div>
         </div>
       </div>
 
-      {userTeam && (
+      {localUserTeam && (
         <div className="rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-3">
-            Informações do <span className='font-semibold text-blue-logo'>{userTeam.name}</span>
+            Informações do <span className='font-semibold text-blue-logo'>{localUserTeam.name}</span>
           </h3>
-          <TeamInformation userTeam={userTeam} />
+          <TeamInformation
+            userTeam={localUserTeam}
+            setUserTeam={setLocalUserTeam}
+          />
         </div>
       )}
     </div>

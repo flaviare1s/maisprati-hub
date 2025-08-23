@@ -75,7 +75,7 @@ export const StudentDashboard = () => {
             Informações do <span className='font-semibold text-blue-logo'>{userTeam.name}</span>
           </h3>
 
-          <TeamInformation userTeam={userTeam} />
+          <TeamInformation userTeam={userTeam} setUserTeam={setUserTeam} />
         </div>
       ) : null}
     </div>
