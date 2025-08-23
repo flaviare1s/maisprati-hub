@@ -225,3 +225,17 @@ export const deleteTeamMember = async (teamId, userId) => {
     throw error;
   }
 };
+
+// Alterar status ativo/inativo do time
+export const toggleTeamStatus = async (teamId, currentStatus) => {
+  try {
+    const response = await api.patch(`/teams/${teamId}`, {
+      isActive: !currentStatus
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao alterar status do time:", error);
+    throw error;
+  }
+};
+

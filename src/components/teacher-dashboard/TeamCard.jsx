@@ -1,13 +1,24 @@
-import { FaEye, FaEdit, FaTrash, FaCopy, FaCheck } from 'react-icons/fa';
+import { FaEye, FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { useState } from 'react';
+import { toggleTeamStatus } from '../../api.js/teams';
 
 export const TeamCard = ({ team, onSelect }) => {
   const [copiedCode, setCopiedCode] = useState(null);
+  const [localTeam, setLocalTeam] = useState(team);
 
   const copySecurityCode = (code) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
+  };
+
+  const handleToggleStatus = async () => {
+    try {
+      const updatedTeam = await toggleTeamStatus(localTeam.id, localTeam.isActive);
+      setLocalTeam(updatedTeam);
+    } catch (error) {
+      console.error("Erro ao alternar status:", error);
+    }
   };
 
   return (
@@ -22,15 +33,16 @@ export const TeamCard = ({ team, onSelect }) => {
             </span>
           )}
         </div>
-        <div className="flex gap-2">
-          <button onClick={onSelect} className="p-2 text-blue-600 hover:bg-blue-50 rounded-md" title="Visualizar Time">
+        <div>
+          <button onClick={onSelect} className="p-2 text-blue-logo hover:bg-text-blue-600 cursor-pointer rounded-md" title="Visualizar Time">
             <FaEye />
           </button>
-          <button className="p-2 text-green-600 hover:bg-green-50 rounded-md" title="Editar Time">
-            <FaEdit />
-          </button>
-          <button className="p-2 text-red-600 hover:bg-red-50 rounded-md" title="Remover Time">
-            <FaTrash />
+          <button
+            onClick={handleToggleStatus}
+            className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-md"
+            title={localTeam.isActive ? "Inativar Time" : "Ativar Time"}
+          >
+            {localTeam.isActive ? <FaToggleOn /> : <FaToggleOff />}
           </button>
         </div>
       </div>
