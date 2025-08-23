@@ -5,7 +5,9 @@
       "username": "admin",
       "email": "admin@admin.com",
       "password": "admin123",
-      "type": "admin"
+      "type": "admin",
+      "codename": "Edu da Codifica",
+      "avatar": "/images/avatar/avatares 54.png"
     },
     {
       "id": "2",

@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
 import { Login } from "./pages/Login";
-import { Dashboard } from "./pages/Dashboard";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { Forbidden } from "./pages/Forbidden";
@@ -24,8 +23,15 @@ import { CustomLoader } from "./components/CustomLoader";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { CodenameSelect } from "./pages/CodenameSelect";
 import { CreateTeam } from "./pages/CreateTeam";
+import { StudentDashboard } from "./pages/StudentDashboard";
+import { TeacherDashboard } from "./pages/TeacherDashboard";
+import { DashboardLayout } from "./layouts/DashboardLayout";
+import { ProjectBoard } from "./components/project/ProjectBoard";
+import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
+import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 
 Modal.setAppElement("#root");
+
 
 function App() {
   const { user } = useAuth();
@@ -55,8 +61,24 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
           <Route path="/profile" element={<StudentProfile />} />
-          <Route path="/dashboard/" element={<Dashboard />} />
-          <Route path="/teams/create/" element={<CreateTeam />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route
+              index
+              element={
+                user?.type === 'admin' ?
+                  <Navigate to="/dashboard/admin" replace /> :
+                  <Navigate to="/dashboard/profile" replace />
+              }
+            />
+            <Route path="profile" element={<StudentDashboard />} />
+            <Route path="project" element={<ProjectBoard />} />
+            <Route path="meetings" element={<StudentMeetingsTab />} />
+            <Route path="notifications" element={<StudentNotificationsPanel />} />
+            <Route path="admin" element={<TeacherDashboard />} />
+            <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
+          </Route>
+
+          <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
           <Route path="/common-room/" element={<CommonRoom />} />

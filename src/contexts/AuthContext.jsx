@@ -1,6 +1,8 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../api.js/users";
+import { getTeamWithMembers } from "../api.js/teams";
+import api from "../services/api";
 
 const AuthContext = createContext();
 
@@ -8,6 +10,7 @@ export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const [userTeam, setUserTeam] = useState(null);
   const [user, setUser] = useState(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -63,17 +66,13 @@ export const AuthProvider = ({ children }) => {
       try {
         const updatedUser = { ...user, isFirstLogin: false };
 
-        // Atualizar no backend
         await updateUser(user.id, updatedUser);
 
-        // Atualizar no localStorage e estado local
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
 
-        console.log("Primeiro login marcado como completo");
       } catch (error) {
         console.error("Erro ao atualizar usuário:", error);
-        // Mesmo com erro na API, mantém funcionando localmente
         const updatedUser = { ...user, isFirstLogin: false };
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
@@ -92,8 +91,49 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const refreshUserData = async () => {
+    if (user?.id) {
+      try {
+        const userResponse = await api.get(`/users/${user.id}`);
+        const freshUserData = userResponse.data;
+
+        localStorage.setItem("user", JSON.stringify(freshUserData));
+        setUser(freshUserData);
+
+        // Se o usuário tem um time, carregar os dados do time também
+        if (freshUserData.hasGroup && freshUserData.teamId) {
+          await loadUserTeam();
+        }
+
+        return freshUserData;
+      } catch (error) {
+        console.error("Erro ao atualizar dados do usuário:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const loadUserTeam = async (teamId = null) => {
+    const targetTeamId = teamId || user?.teamId;
+
+    if (targetTeamId) {
+      try {
+        console.log("Carregando dados do time:", targetTeamId);
+        const teamData = await getTeamWithMembers(targetTeamId);
+        setUserTeam(teamData);
+        console.log("Dados do time carregados:", teamData);
+        return teamData;
+      } catch (error) {
+        console.error("Erro ao carregar time do usuário:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, completeFirstLogin, updateUserData }}>
+    <AuthContext.Provider value={{ user, login, logout, completeFirstLogin, updateUserData, loadUserTeam, userTeam, refreshUserData }}>
       {children}
     </AuthContext.Provider>
   );

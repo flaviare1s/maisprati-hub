@@ -30,7 +30,7 @@ export const SendNotificationModal = ({ open, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center text-dark">
+    <div className="fixed inset-0 z-50 flex items-center justify-center text-dark p-4">
       <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
       <div className="relative bg-light rounded-xl shadow-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">

@@ -1,15 +1,55 @@
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { sendNotificationToTeacher } from "../api.js/notifications";
+import toast from "react-hot-toast";
+import { LeaveTeamModal } from "./student-dashboard/LeaveTeamModal";
+import { deleteTeamMember } from "../api.js/teams";
 
-export const TeamInformation = ({ userTeam }) => {
+export const TeamInformation = ({ userTeam, setUserTeam }) => {
   const { user } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const [reason, setReason] = useState("");
+
+  const handleLeaveTeam = async () => {
+    if (!reason.trim()) {
+      toast.error("Por favor, informe um motivo antes de sair do time.");
+      return;
+    }
+
+    try {
+      await sendNotificationToTeacher(
+        user.username,
+        `Solicitação de saída do time ${userTeam.name}. Motivo: ${reason}`
+      );
+
+      await deleteTeamMember(userTeam.id, user.id);
+
+      setUserTeam((prev) => ({
+        ...prev,
+        members: prev.members.filter((m) => m.userId !== user.id),
+        currentMembers: prev.currentMembers - 1,
+      }));
+
+      toast.success("Você saiu do time com sucesso!");
+      setShowModal(false);
+      setReason("");
+      window.location.reload();
+
+    } catch (error) {
+      toast.error("Erro ao sair do time.");
+      console.error(error);
+    }
+  };
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        {userTeam.description && <div>
-          <p className="text-sm ">Descrição:</p>
-          <p className="font-medium">{userTeam.description}</p>
-        </div>}
+        {userTeam.description && (
+          <div>
+            <p className="text-sm ">Descrição:</p>
+            <p className="font-medium">{userTeam.description}</p>
+          </div>
+        )}
         <div>
           <p className="text-sm ">Membros:</p>
           <p className="font-medium">
@@ -19,12 +59,11 @@ export const TeamInformation = ({ userTeam }) => {
       </div>
 
       <div>
-        <h4 className="text-md font-semibold mb-3">
-          Membros do Time
-        </h4>
+        <h4 className="text-md font-semibold mb-3">Membros do Time</h4>
         <div className="space-y-2">
           {userTeam.members.map((member) => {
-            const currentUserMember = member.userId.toString() === user.id.toString();
+            const currentUserMember =
+              member.userId.toString() === user.id.toString();
             return (
               <div
                 key={member.userId}
@@ -32,11 +71,12 @@ export const TeamInformation = ({ userTeam }) => {
               >
                 <div>
                   <p className="font-medium">
-                    {member.user ? member.user.username : `Usuário #${member.userId}`} {currentUserMember && '(Você)'}
+                    {member.user
+                      ? member.user.username
+                      : `Usuário #${member.userId}`}{" "}
+                    {currentUserMember && "(Você)"}
                   </p>
-                  <p className="text-sm ">
-                    {member.specialization}
-                  </p>
+                  <p className="text-sm ">{member.specialization}</p>
                   {member.user && (
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {member.user.email} • Turma: {member.user.turma}
@@ -44,14 +84,19 @@ export const TeamInformation = ({ userTeam }) => {
                   )}
                 </div>
                 <div className="text-right">
-                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${member.role === 'leader'
-                    ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-                    : member.role === 'subleader'
-                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-                      : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
-                    }`}>
-                    {member.role === 'leader' ? 'Líder' :
-                      member.role === 'subleader' ? 'Sub-líder' : 'Membro'}
+                  <span
+                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${member.role === "leader"
+                        ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+                        : member.role === "subleader"
+                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                          : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"
+                      }`}
+                  >
+                    {member.role === "leader"
+                      ? "Líder"
+                      : member.role === "subleader"
+                        ? "Sub-líder"
+                        : "Membro"}
                   </span>
                   {member.subLeaderType && (
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -64,6 +109,23 @@ export const TeamInformation = ({ userTeam }) => {
           })}
         </div>
       </div>
+
+      <div className="mt-6">
+        <button
+          onClick={() => setShowModal(true)}
+          className="w-full bg-red-secondary hover:bg-red-600 text-light font-bold py-2 px-4 rounded-lg shadow-lg transition-all"
+        >
+          Sair do Time
+        </button>
+      </div>
+
+      <LeaveTeamModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        reason={reason}
+        setReason={setReason}
+        onConfirm={handleLeaveTeam}
+      />
     </div>
-  )
-}
+  );
+};
