@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { Calendar } from '../components/Calendar';
-import { TeacherDashboard } from '../components/teacher-dashboard/TeacherDashboard';
+import { TeacherDashboardComponent } from '../components/teacher-dashboard/TeacherDashboardComponent';
 import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
 import { StudentMeetingsTab } from '../components/student-dashboard/StudentMeetingsTab';
@@ -11,7 +11,7 @@ import { DashboardTab } from '../components/DashboardTab';
 import { ProjectBoard } from '../components/project/ProjectBoard';
 import { StudentNotificationsPanel } from '../components/student-dashboard/StudentNotificationsPanel';
 import { fetchTeams, isUserInActiveTeam } from '../api.js/teams';
-import { StudentDashboard } from '../components/student-dashboard/StudentDashboard';
+import { StudentDashboardComponent } from '../components/student-dashboard/StudentDashboardComponent';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -50,7 +50,7 @@ export const Dashboard = () => {
     if (isAdmin(user)) {
       return (
         <div>
-          <TeacherDashboard />
+          <TeacherDashboardComponent />
         </div>
       );
     }
@@ -99,7 +99,7 @@ export const Dashboard = () => {
           </div>
 
           <div>
-            {activeTab === 'perfil' && <StudentDashboard />}
+            {activeTab === 'perfil' && <StudentDashboardComponent />}
             {activeTab === 'projeto' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <ProjectBoard />}
             {activeTab === 'reuniões' && (userInTeam || (!user.hasGroup && !user.wantsGroup)) && <StudentMeetingsTab />}
             {activeTab === 'notificações' && <StudentNotificationsPanel />}

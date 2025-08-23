@@ -23,8 +23,8 @@ import { CustomLoader } from "./components/CustomLoader";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { CodenameSelect } from "./pages/CodenameSelect";
 import { CreateTeam } from "./pages/CreateTeam";
-import { StudentDashboard } from "./pages/StudentDashboard";
-import { TeacherDashboard } from "./pages/TeacherDashboard";
+import { StudentDashboardPage } from "./pages/StudentDashboardPage";
+import { TeacherDashboardPage } from "./pages/TeacherDashboardPage";
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { ProjectBoard } from "./components/project/ProjectBoard";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
@@ -82,14 +82,13 @@ function App() {
                   <Navigate to="/dashboard/profile" replace />
               }
             />
-            <Route path="profile" element={<StudentDashboard />} />
+            <Route path="profile" element={<StudentDashboardPage />} />
             <Route path="project" element={<ProjectBoard />} />
             <Route path="meetings" element={<StudentMeetingsTab />} />
             <Route path="notifications" element={<StudentNotificationsPanel />} />
-            <Route path="admin" element={<TeacherDashboard />} />
+            <Route path="admin" element={<TeacherDashboardPage />} />
             <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
           </Route>
-
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
