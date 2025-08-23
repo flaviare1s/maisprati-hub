@@ -14,7 +14,7 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-2 gap-4">
         {heroes.map((hero) => (
           <div
             key={hero.id}
@@ -28,7 +28,7 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 onError={(e) => (e.target.style.display = "none")}
               />
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-800">{hero.codename}</h4>
+                <h4 className="font-semibold text-dark">{hero.codename}</h4>
                 <p className="text-sm text-blue-logo">{hero.specialty}</p>
               </div>
               <div
