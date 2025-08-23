@@ -26,8 +26,12 @@ import { CreateTeam } from "./pages/CreateTeam";
 import { StudentDashboard } from "./pages/StudentDashboard";
 import { TeacherDashboard } from "./pages/TeacherDashboard";
 import { DashboardLayout } from "./layouts/DashboardLayout";
+import { ProjectBoard } from "./components/project/ProjectBoard";
+import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
+import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 
 Modal.setAppElement("#root");
+
 
 function App() {
   const { user } = useAuth();
@@ -52,29 +56,28 @@ function App() {
       </div>
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
-          <Route
-            path="/"
-            element={
-              user ? (
-                user.type === "admin" ? (
-                  <Navigate to="/dashboard/admin" replace />
-                ) : (
-                  <Navigate to="/dashboard/student" replace />
-                )
-              ) : (
-                <Home />
-              )
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
           <Route path="/profile" element={<StudentProfile />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<StudentDashboard />} />  {/* rota default */}
-            <Route path="student" element={<StudentDashboard />} />
+            <Route
+              index
+              element={
+                user?.type === 'admin' ?
+                  <Navigate to="/dashboard/admin" replace /> :
+                  <Navigate to="/dashboard/profile" replace />
+              }
+            />
+            <Route path="profile" element={<StudentDashboard />} />
+            <Route path="project" element={<ProjectBoard />} />
+            <Route path="meetings" element={<StudentMeetingsTab />} />
+            <Route path="notifications" element={<StudentNotificationsPanel />} />
             <Route path="admin" element={<TeacherDashboard />} />
+            <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
           </Route>
+
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
