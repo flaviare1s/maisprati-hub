@@ -6,7 +6,14 @@ import { FaCrown, FaComments } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { fetchUsers } from "../api.js/users";
 import { NoTeamList } from "../components/NoTeamList";
-import { fetchComments, fetchPosts } from "../api.js/posts";
+import {
+  fetchComments,
+  fetchPosts,
+  createPost,
+  deletePost,
+  deleteComment,
+  addComment
+} from "../api.js/posts";
 import { Forum } from "../components/Forum";
 import { useTeam } from "../contexts/TeamContext";
 import { createNotification } from "../api.js/notifications";
@@ -20,6 +27,7 @@ export const CommonRoom = () => {
   const [showNewPost, setShowNewPost] = useState(false);
   const [heroes, setHeroes] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadHeroes = async () => {
@@ -36,44 +44,47 @@ export const CommonRoom = () => {
   }, []);
 
   useEffect(() => {
-    const loadForumPosts = async () => {
-      try {
-        const [posts, users] = await Promise.all([fetchPosts(), fetchUsers()]);
-
-        const postsWithAuthorsAndComments = await Promise.all(
-          posts.map(async (post) => {
-            const author = users.find((u) => u.id === post.authorId);
-            const commentsData = await fetchComments(post.id);
-
-            const commentsWithAuthors = commentsData.map((c) => {
-              const commentAuthor = users.find((u) => u.id === c.authorId);
-              return {
-                ...c,
-                author: commentAuthor?.username || "Desconhecido",
-                avatar:
-                  commentAuthor?.avatar ||
-                  "/src/assets/images/avatar/default.png",
-              };
-            });
-
-            return {
-              ...post,
-              author: author?.username || "Desconhecido",
-              avatar: author?.avatar || "/src/assets/images/avatar/default.png",
-              comments: commentsWithAuthors,
-            };
-          })
-        );
-
-        setForumPosts(postsWithAuthorsAndComments);
-      } catch (error) {
-        console.error("Erro ao buscar posts do fórum:", error);
-        toast.error("Não foi possível carregar os posts do fórum.");
-      }
-    };
-
     loadForumPosts();
   }, []);
+
+  const loadForumPosts = async () => {
+    try {
+      setLoading(true);
+      const [posts, users] = await Promise.all([fetchPosts(), fetchUsers()]);
+
+      const postsWithAuthorsAndComments = await Promise.all(
+        posts.map(async (post) => {
+          const author = users.find((u) => u.id === post.authorId);
+          const commentsData = await fetchComments(post.id);
+
+          const commentsWithAuthors = commentsData.map((c) => {
+            const commentAuthor = users.find((u) => u.id === (c.authorId || c.userId));
+            return {
+              ...c,
+              authorId: c.authorId || c.userId,
+              author: commentAuthor?.codename || commentAuthor?.username || "Desconhecido",
+              avatar: commentAuthor?.avatar || "/src/assets/images/avatar/default.png",
+            };
+          });
+
+          return {
+            ...post,
+            authorId: post.authorId || post.userId,
+            author: author?.codename || author?.username || "Desconhecido",
+            avatar: author?.avatar || "/src/assets/images/avatar/default.png",
+            comments: commentsWithAuthors,
+          };
+        })
+      );
+
+      setForumPosts(postsWithAuthorsAndComments);
+    } catch (error) {
+      console.error("Erro ao buscar posts do fórum:", error);
+      toast.error("Não foi possível carregar os posts do fórum.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleJoinTeam = () => {
     navigate("/team-select");
@@ -83,7 +94,7 @@ export const CommonRoom = () => {
     const cleanWhatsapp = whatsapp.replace(/\D/g, "");
     const whatsappUrl = `https://wa.me/55${cleanWhatsapp}`;
     window.open(whatsappUrl, "_blank");
-    toast.success("Abrindo WhatsApp! �");
+    toast.success("Abrindo WhatsApp! 📱");
   };
 
   const handleSendInvite = async (hero) => {
@@ -109,14 +120,111 @@ export const CommonRoom = () => {
     }
   };
 
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (!newPost.trim()) {
       toast.error("Escreva algo antes de postar!");
       return;
     }
-    toast.success("Post criado com sucesso! 🎉");
-    setNewPost("");
-    setShowNewPost(false);
+
+    if (!user) {
+      toast.error("Usuário não autenticado!");
+      return;
+    }
+
+    try {
+      await createPost(
+        user.id,
+        "Post do Fórum", // Título padrão ou você pode adicionar um campo separado
+        newPost.trim()
+      );
+
+      toast.success("Post criado com sucesso! 🎉");
+      setNewPost("");
+      setShowNewPost(false);
+
+      // Recarregar posts
+      await loadForumPosts();
+    } catch (error) {
+      console.error("Erro ao criar post:", error);
+      toast.error("Erro ao criar post. Tente novamente.");
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+
+      // Remover da lista local
+      setForumPosts(prev => prev.filter(post => post.id !== postId));
+
+      toast.success("Post deletado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar post:", error);
+      toast.error("Erro ao deletar post. Tente novamente.");
+    }
+  };
+
+  const handleDeleteComment = async (commentId, postId) => {
+    try {
+      await deleteComment(commentId);
+
+      // Remover da lista local
+      setForumPosts(prev =>
+        prev.map(post =>
+          post.id === postId
+            ? {
+              ...post,
+              comments: post.comments.filter(comment => comment.id !== commentId)
+            }
+            : post
+        )
+      );
+
+      toast.success("Comentário deletado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar comentário:", error);
+      toast.error("Erro ao deletar comentário. Tente novamente.");
+    }
+  };
+
+  const handleAddComment = async (postId, userId, content) => {
+    try {
+      const newComment = await addComment(postId, userId, content);
+
+      // Buscar dados atualizados do usuário para garantir informações corretas
+      const users = await fetchUsers();
+      const commentAuthor = users.find(u => u.id === userId) || user;
+
+      console.log("Debug comentário:", {
+        userId,
+        commentAuthor,
+        users: users.map(u => ({ id: u.id, codename: u.codename, username: u.username }))
+      });
+
+      // Adicionar à lista local com dados corretos do usuário
+      const commentWithUser = {
+        ...newComment,
+        authorId: userId,
+        author: commentAuthor.codename || commentAuthor.username || "Desconhecido",
+        avatar: commentAuthor.avatar || "/src/assets/images/avatar/default.png",
+      };
+
+      setForumPosts(prev =>
+        prev.map(post =>
+          post.id === postId
+            ? {
+              ...post,
+              comments: [...(post.comments || []), commentWithUser]
+            }
+            : post
+        )
+      );
+
+      toast.success("Comentário adicionado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao adicionar comentário:", error);
+      toast.error("Erro ao adicionar comentário. Tente novamente.");
+    }
   };
 
   return (
@@ -166,22 +274,20 @@ export const CommonRoom = () => {
               <div className="flex border-b">
                 <button
                   onClick={() => setActiveTab("forum")}
-                  className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${
-                    activeTab === "forum"
+                  className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${activeTab === "forum"
                       ? "border-b-2 border-orange-logo text-light bg-blue-logo"
                       : "text-gray-600 hover:text-blue-logo"
-                  }`}
+                    }`}
                 >
                   <FaComments className="inline mr-2" />
                   Fórum de Conexões
                 </button>
                 <button
                   onClick={() => setActiveTab("heroes")}
-                  className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${
-                    activeTab === "heroes"
+                  className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${activeTab === "heroes"
                       ? "border-b-2 border-orange-logo text-light bg-blue-logo"
                       : "text-gray-600 hover:text-blue-logo"
-                  }`}
+                    }`}
                 >
                   <HiOutlineUserGroup className="inline mr-2" />
                   Hérois sem Guilda ({heroes.length})
@@ -190,14 +296,26 @@ export const CommonRoom = () => {
 
               <div className="p-6">
                 {activeTab === "forum" && (
-                  <Forum
-                    forumPosts={forumPosts}
-                    newPost={newPost}
-                    setNewPost={setNewPost}
-                    showNewPost={showNewPost}
-                    setShowNewPost={setShowNewPost}
-                    handleCreatePost={handleCreatePost}
-                  />
+                  <>
+                    {loading ? (
+                      <div className="flex justify-center items-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-logo"></div>
+                      </div>
+                    ) : (
+                      <Forum
+                        forumPosts={forumPosts}
+                        newPost={newPost}
+                        setNewPost={setNewPost}
+                        showNewPost={showNewPost}
+                        setShowNewPost={setShowNewPost}
+                        handleCreatePost={handleCreatePost}
+                        currentUser={user}
+                        onDeletePost={handleDeletePost}
+                        onDeleteComment={handleDeleteComment}
+                        onAddComment={handleAddComment}
+                      />
+                    )}
+                  </>
                 )}
 
                 {activeTab === "heroes" && (
