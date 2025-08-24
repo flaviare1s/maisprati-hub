@@ -23,27 +23,33 @@ export const DashboardLayout = () => {
     if (pathname.includes('/project')) return 'projeto';
     if (pathname.includes('/meetings')) return 'reuniões';
     if (pathname.includes('/notifications')) return 'notificações';
-    return 'perfil'; // default
+    return 'perfil';
   };
 
   const [activeTab, setActiveTab] = useState(getActiveTabFromPath(location.pathname));
 
-  // Atualizar aba quando a rota mudar
   useEffect(() => {
     setActiveTab(getActiveTabFromPath(location.pathname));
   }, [location.pathname]);
 
-  // Carregar dados dos times
   useEffect(() => {
-    if (!user || isAdmin(user)) return;
+    if (!user || isAdmin(user)) {
+      setLoadingTeams(false);
+      return;
+    }
 
     const loadTeams = async () => {
       try {
         const allTeams = await fetchTeams();
         setTeams(allTeams);
-        setUserInTeam(isUserInActiveTeam(user, allTeams));
+
+        // Verificação mais robusta
+        const isInTeam = isUserInActiveTeam(user, allTeams);
+        setUserInTeam(isInTeam);
+
       } catch (error) {
         console.error("Erro ao carregar times:", error);
+        setUserInTeam(false);
       } finally {
         setLoadingTeams(false);
       }
@@ -52,11 +58,9 @@ export const DashboardLayout = () => {
     loadTeams();
   }, [user]);
 
-  // Função para navegar quando clicar na aba
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
 
-    // Navegar para a rota correspondente
     switch (tabName) {
       case 'perfil':
         navigate('/dashboard/profile');
@@ -73,12 +77,28 @@ export const DashboardLayout = () => {
     }
   };
 
+  // Função melhorada para determinar se deve mostrar as abas
+  const shouldShowProjectTabs = () => {
+    // Se está carregando, não mostra
+    if (loadingTeams) return false;
+
+    // Se é admin, não mostra
+    if (isAdmin(user)) return false;
+
+    // Se está em um time ativo, mostra
+    if (userInTeam) return true;
+
+    // Se não tem grupo E não quer grupo, mostra (usuário individual)
+    if (!user?.hasGroup && !user?.wantsGroup) return true;
+
+    // Casos padrão: não mostra
+    return false;
+  };
+
   const renderTabs = () => {
-    // Se é admin, não mostrar abas
     if (isAdmin(user)) return null;
 
-    // Se está carregando, não mostrar abas ainda
-    if (loadingTeams) return null;
+    const showProjectTabs = shouldShowProjectTabs();
 
     return (
       <div className="border-b mb-6">
@@ -90,7 +110,7 @@ export const DashboardLayout = () => {
             setActiveTab={handleTabClick}
           />
 
-          {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
+          {showProjectTabs && (
             <DashboardTab
               icon={<TbLayoutKanban />}
               title="Projeto"
@@ -99,7 +119,7 @@ export const DashboardLayout = () => {
             />
           )}
 
-          {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
+          {showProjectTabs && (
             <DashboardTab
               icon={<FaRegCalendarAlt />}
               title="Reuniões"
@@ -133,8 +153,12 @@ export const DashboardLayout = () => {
           {renderTabs()}
 
           {!isAdmin(user) && loadingTeams && (
-            <p>Carregando informações do time...</p>
+            <div className="flex items-center space-x-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+              <p>Carregando informações do time...</p>
+            </div>
           )}
+
           <Outlet />
         </div>
       </div>

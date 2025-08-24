@@ -115,25 +115,28 @@
       "securityCode": "TEAM001",
       "description": "Vamos fazer um aplicativo de gerenciamento de tarefas",
       "maxMembers": 10,
-      "currentMembers": 4,
+      "currentMembers": 3,
       "members": [
         {
           "userId": "3",
           "role": "leader",
           "subLeaderType": null,
-          "joinedAt": "2024-01-15"
+          "joinedAt": "2024-01-15",
+          "isActive": true
         },
         {
           "userId": "4",
           "role": "subleader",
           "subLeaderType": "Frontend",
-          "joinedAt": "2024-01-16"
+          "joinedAt": "2024-01-16",
+          "isActive": true
         },
         {
           "userId": "7",
           "role": "member",
           "subLeaderType": null,
-          "joinedAt": "2024-01-17"
+          "joinedAt": "2024-01-17",
+          "isActive": true
         }
       ],
       "isActive": true,
@@ -151,13 +154,15 @@
           "userId": "5",
           "role": "leader",
           "subLeaderType": null,
-          "joinedAt": "2024-01-20"
+          "joinedAt": "2024-01-20",
+          "isActive": true
         },
         {
           "userId": "6",
           "role": "subleader",
           "subLeaderType": "DevOps",
-          "joinedAt": "2024-01-21"
+          "joinedAt": "2024-01-21",
+          "isActive": true
         }
       ],
       "isActive": true,
@@ -171,7 +176,7 @@
       "maxMembers": 10,
       "currentMembers": 0,
       "members": [],
-      "isActive": true,
+      "isActive": false,
       "createdAt": "2024-02-01"
     }
   ],
@@ -295,13 +300,13 @@
         {
           "id": 7,
           "title": "Documentação",
-          "status": "todo",
-          "assignedTo": null,
-          "startedAt": null,
+          "status": "in_progress",
+          "assignedTo": "1",
+          "startedAt": "2025-08-23T23:25:28.899Z",
           "completedAt": null
         }
       ],
-      "lastUpdated": "2025-08-21T16:00:00Z",
+      "lastUpdated": "2025-08-23T23:25:28.899Z",
       "createdAt": "2025-08-21T16:00:00Z"
     },
     {
@@ -367,6 +372,120 @@
       ],
       "lastUpdated": "2025-08-21T16:00:00Z",
       "createdAt": "2025-08-21T16:00:00Z"
+    },
+    {
+      "id": "a0d3",
+      "teamId": "solo-1",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-23T23:22:02.755Z",
+      "createdAt": "2025-08-23T23:22:02.755Z"
+    },
+    {
+      "id": "7c06",
+      "teamId": "solo-1",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-23T23:22:02.756Z",
+      "createdAt": "2025-08-23T23:22:02.756Z"
     }
   ],
   "posts": [
@@ -438,8 +557,7 @@
       "createdAt": "2025-08-21T15:30:00Z"
     }
   ],
-  "timeSlots": [
-  ],
+  "timeSlots": [],
   "appointments": [
     {
       "id": 1,

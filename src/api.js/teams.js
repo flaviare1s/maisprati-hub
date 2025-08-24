@@ -238,4 +238,3 @@ export const toggleTeamStatus = async (teamId, currentStatus) => {
     throw error;
   }
 };
-

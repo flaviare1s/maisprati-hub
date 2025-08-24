@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import { TeamCard } from './TeamCard';
 import { TeamModal } from './TeamModal';
 
 export const TeacherTeamsTab = ({ teams }) => {
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <div className="w-full">
@@ -21,7 +22,7 @@ export const TeacherTeamsTab = ({ teams }) => {
 
       <div className="grid gap-4 text-gray-muted">
         {teams.map(team => (
-          <TeamCard key={team.id} team={team} onSelect={() => setSelectedTeam(team)} />
+          <TeamCard key={team.id} team={team} onSelect={() => navigate(`/teams/${team.id}/board`)} />
         ))}
       </div>
 
