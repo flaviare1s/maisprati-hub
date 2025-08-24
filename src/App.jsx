@@ -92,6 +92,7 @@ function App() {
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
+          <Route path="/teams/:teamId/board" element={<ProjectBoard />} />
           <Route path="/common-room/" element={<CommonRoom />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />

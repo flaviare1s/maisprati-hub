@@ -1,20 +1,27 @@
 import { useDrag } from "react-dnd";
 import { useRef } from "react";
-import { FaUsers, FaClock, FaCheckCircle } from "react-icons/fa";
+import { FaUsers, FaClock, FaCheckCircle, FaLock } from "react-icons/fa";
 
-export const ProjectPhaseCard = ({ phase, userTeam }) => {
+export const ProjectPhaseCard = ({
+  phase,
+  userTeam,
+  canDrag = true
+}) => {
   const dragRef = useRef(null);
 
   const [{ opacity, isDragging }, drag] = useDrag({
     type: "PROJECT_PHASE",
     item: { id: phase.id },
+    canDrag: () => canDrag,
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
       isDragging: monitor.isDragging(),
     }),
   });
 
-  drag(dragRef);
+  if (canDrag) {
+    drag(dragRef);
+  }
 
   const getStatusIcon = () => {
     switch (phase.status) {
@@ -38,16 +45,26 @@ export const ProjectPhaseCard = ({ phase, userTeam }) => {
     }
   };
 
+  const getCursorClass = () => {
+    if (!canDrag) return "cursor-default";
+    if (isDragging) return "cursor-grabbing";
+    return "cursor-grab";
+  };
+
   return (
     <div
       ref={dragRef}
-      className={`p-4 rounded-lg border-l-4 shadow-sm cursor-pointer transition-all duration-200 ${getStatusColor()} ${isDragging ? 'rotate-2 scale-105' : ''
-        }`}
+      className={`p-4 rounded-lg border-l-4 shadow-sm transition-all duration-200 ${getStatusColor()} ${getCursorClass()} ${isDragging ? 'rotate-2 scale-105' : ''
+        } ${!canDrag ? 'opacity-75' : ''}`}
       style={{ opacity }}
+      title={!canDrag ? "Apenas estudantes podem mover cards" : "Arraste para mover"}
     >
       <div className={`flex items-start justify-between ${phase.description ? 'mb-2' : 'mb-3'}`}>
         <h4 className="font-semibold text-gray-800">{phase.title}</h4>
-        {getStatusIcon()}
+        <div className="flex items-center gap-2">
+          {getStatusIcon()}
+          {!canDrag && <FaLock className="text-gray-400 text-xs" />}
+        </div>
       </div>
 
       {phase.description && (
@@ -64,7 +81,6 @@ export const ProjectPhaseCard = ({ phase, userTeam }) => {
       </div>
 
       <div className="mt-2 flex justify-between items-center">
-   
         {(phase.startedAt || phase.completedAt) && (
           <div className="text-xs text-gray-500">
             {phase.completedAt

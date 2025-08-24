@@ -8,15 +8,21 @@ export const ProjectColumn = ({
   color,
   phases,
   onDropPhase,
-  userTeam
+  userTeam,
+  user
 }) => {
   const dropRef = useRef(null);
+
+  const canMoveCards = user && user.type !== "admin";
 
   const [{ isOver }, drop] = useDrop({
     accept: "PROJECT_PHASE",
     drop: (item) => {
-      onDropPhase(item.id, status);
+      if (canMoveCards) {
+        onDropPhase(item.id, status);
+      }
     },
+    canDrop: () => canMoveCards,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
@@ -27,7 +33,7 @@ export const ProjectColumn = ({
   return (
     <div
       ref={dropRef}
-      className={`bg-light p-4 rounded-lg shadow-md border-t-4 transition-all duration-200 flex flex-col h-full ${isOver ? 'bg-gray-50 scale-105' : ''
+      className={`bg-light p-4 rounded-lg shadow-md border-t-4 transition-all duration-200 flex flex-col h-full ${isOver && canMoveCards ? 'bg-gray-50 scale-105' : ''
         }`}
       style={{ borderTopColor: color }}
     >
@@ -46,6 +52,7 @@ export const ProjectColumn = ({
             key={phase.id}
             phase={phase}
             userTeam={userTeam}
+            canDrag={canMoveCards}
           />
         ))}
 
