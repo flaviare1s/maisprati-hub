@@ -17,19 +17,23 @@ export const DashboardLayout = () => {
   const [userInTeam, setUserInTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
 
-  // Determinar a aba ativa baseada na rota atual
-  const getActiveTabFromPath = (pathname) => {
+  // Função para converter pathname em nome da aba
+  const getTabNameFromPath = (pathname) => {
     if (pathname.includes('/profile')) return 'perfil';
     if (pathname.includes('/project')) return 'projeto';
     if (pathname.includes('/meetings')) return 'reuniões';
     if (pathname.includes('/notifications')) return 'notificações';
+    if (pathname.includes('/admin')) return 'perfil'; // admin usa perfil como padrão
     return 'perfil';
   };
 
-  const [activeTab, setActiveTab] = useState(getActiveTabFromPath(location.pathname));
+  // Estado sempre sincronizado com a URL atual
+  const [activeTab, setActiveTab] = useState(() => getTabNameFromPath(location.pathname));
 
+  // Atualizar tab quando URL mudar
   useEffect(() => {
-    setActiveTab(getActiveTabFromPath(location.pathname));
+    const newTab = getTabNameFromPath(location.pathname);
+    setActiveTab(newTab);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -43,9 +47,14 @@ export const DashboardLayout = () => {
         const allTeams = await fetchTeams();
         setTeams(allTeams);
 
-        // Verificação mais robusta
-        const isInTeam = isUserInActiveTeam(user, allTeams);
-        setUserInTeam(isInTeam);
+        const isInActiveTeam = isUserInActiveTeam(user, allTeams);
+        const isInAnyTeam = allTeams.some(team =>
+          team.members.some(member =>
+            member.userId.toString() === user.id.toString()
+          )
+        );
+
+        setUserInTeam(isInActiveTeam || isInAnyTeam || user.hasGroup);
 
       } catch (error) {
         console.error("Erro ao carregar times:", error);
@@ -58,9 +67,8 @@ export const DashboardLayout = () => {
     loadTeams();
   }, [user]);
 
+  // Função que navega e automaticamente atualizará o activeTab via useEffect
   const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-
     switch (tabName) {
       case 'perfil':
         navigate('/dashboard/profile');
@@ -77,22 +85,9 @@ export const DashboardLayout = () => {
     }
   };
 
-  // Função melhorada para determinar se deve mostrar as abas
   const shouldShowProjectTabs = () => {
-    // Se está carregando, não mostra
-    if (loadingTeams) return false;
-
-    // Se é admin, não mostra
-    if (isAdmin(user)) return false;
-
-    // Se está em um time ativo, mostra
-    if (userInTeam) return true;
-
-    // Se não tem grupo E não quer grupo, mostra (usuário individual)
-    if (!user?.hasGroup && !user?.wantsGroup) return true;
-
-    // Casos padrão: não mostra
-    return false;
+    if (loadingTeams || isAdmin(user)) return false;
+    return userInTeam || user?.hasGroup || (!user?.hasGroup && !user?.wantsGroup);
   };
 
   const renderTabs = () => {

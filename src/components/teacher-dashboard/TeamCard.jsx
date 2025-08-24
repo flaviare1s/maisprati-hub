@@ -1,10 +1,17 @@
 import { FaEye, FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toggleTeamStatus } from '../../api.js/teams';
+import toast from 'react-hot-toast';
 
-export const TeamCard = ({ team, onSelect }) => {
+export const TeamCard = ({ team, onSelect, onUpdate }) => {
   const [copiedCode, setCopiedCode] = useState(null);
   const [localTeam, setLocalTeam] = useState(team);
+  const [isToggling, setIsToggling] = useState(false);
+
+  // Sincronizar estado local quando o prop team mudar
+  useEffect(() => {
+    setLocalTeam(team);
+  }, [team]);
 
   const copySecurityCode = (code) => {
     navigator.clipboard.writeText(code);
@@ -13,11 +20,18 @@ export const TeamCard = ({ team, onSelect }) => {
   };
 
   const handleToggleStatus = async () => {
+    setIsToggling(true);
     try {
       const updatedTeam = await toggleTeamStatus(localTeam.id, localTeam.isActive);
       setLocalTeam(updatedTeam);
+
+      if (onUpdate) {
+        onUpdate();
+      }
     } catch (error) {
-      console.error("Erro ao alternar status:", error);
+      toast.error("Erro ao alternar status:", error);
+    } finally {
+      setIsToggling(false);
     }
   };
 
@@ -25,47 +39,53 @@ export const TeamCard = ({ team, onSelect }) => {
     <div className="rounded-lg shadow-md p-4 border">
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
-          <h4 className="text-lg font-semibold text-blue-logo">{team.name}</h4>
-          <p className="text-sm text-gray-600 mb-2">{team.description}</p>
-          {team.area && (
+          <h4 className="text-lg font-semibold text-blue-logo">{localTeam.name}</h4>
+          <p className="text-sm text-gray-600 mb-2">{localTeam.description}</p>
+          {localTeam.area && (
             <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-              {team.area}
+              {localTeam.area}
             </span>
           )}
         </div>
-        <div>
-          <button onClick={onSelect} className="p-2 text-blue-logo hover:bg-text-blue-600 cursor-pointer rounded-md" title="Visualizar Time">
+        <div className="flex gap-1">
+          <button
+            onClick={onSelect}
+            className="p-2 text-blue-logo hover:bg-blue-50 cursor-pointer rounded-md"
+            title="Visualizar Time"
+          >
             <FaEye />
           </button>
           <button
             onClick={handleToggleStatus}
-            className="p-2 text-orange-logo cursor-pointer rounded-md"
-            title={localTeam.isActive ? "Inativar Time" : "Ativar Time"}
+            disabled={isToggling}
+            className={`p-2 cursor-pointer rounded-md transition-colors ${isToggling
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-orange-logo hover:bg-orange-50'
+              }`}
+            title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar Time" : "Ativar Time")}
           >
-            {localTeam.isActive ? <FaToggleOn /> : <FaToggleOff />}
+            {isToggling ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
+            ) : (
+              localTeam.isActive ? <FaToggleOn /> : <FaToggleOff />
+            )}
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
         <div>
-          <span className="font-medium">Membros:</span> {team.members?.length || 0}/{team.maxMembers}
+          <span className="font-medium">Membros:</span> {localTeam.members?.length || 0}/{localTeam.maxMembers}
         </div>
         <div>
           <span className="font-medium">Código:</span>
           <button
-            onClick={() => copySecurityCode(team.securityCode)}
-            className="ml-1 px-2 py-1 bg-gray-100 rounded text-xs hover:bg-gray-200 inline-flex items-center gap-1"
+            onClick={() => copySecurityCode(localTeam.securityCode)}
+            className="ml-1 px-2 py-1 bg-gray-100 rounded text-xs hover:bg-gray-200 inline-flex items-center gap-1 transition-colors"
           >
-            {team.securityCode}
-            {copiedCode === team.securityCode ? <FaCheck className="text-green-600" /> : <FaCopy />}
+            {localTeam.securityCode}
+            {copiedCode === localTeam.securityCode ? <FaCheck className="text-green-600" /> : <FaCopy />}
           </button>
-        </div>
-        <div>
-          <span className="font-medium">Status:</span>
-          <span className={`ml-1 px-2 py-1 rounded text-xs ${team.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-            {team.isActive ? 'Ativo' : 'Inativo'}
-          </span>
         </div>
       </div>
     </div>
