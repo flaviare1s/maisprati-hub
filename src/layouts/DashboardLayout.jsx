@@ -17,33 +17,48 @@ export const DashboardLayout = () => {
   const [userInTeam, setUserInTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
 
-  // Determinar a aba ativa baseada na rota atual
-  const getActiveTabFromPath = (pathname) => {
+  // Função para converter pathname em nome da aba
+  const getTabNameFromPath = (pathname) => {
     if (pathname.includes('/profile')) return 'perfil';
     if (pathname.includes('/project')) return 'projeto';
     if (pathname.includes('/meetings')) return 'reuniões';
     if (pathname.includes('/notifications')) return 'notificações';
-    return 'perfil'; // default
+    if (pathname.includes('/admin')) return 'perfil'; // admin usa perfil como padrão
+    return 'perfil';
   };
 
-  const [activeTab, setActiveTab] = useState(getActiveTabFromPath(location.pathname));
+  // Estado sempre sincronizado com a URL atual
+  const [activeTab, setActiveTab] = useState(() => getTabNameFromPath(location.pathname));
 
-  // Atualizar aba quando a rota mudar
+  // Atualizar tab quando URL mudar
   useEffect(() => {
-    setActiveTab(getActiveTabFromPath(location.pathname));
+    const newTab = getTabNameFromPath(location.pathname);
+    setActiveTab(newTab);
   }, [location.pathname]);
 
-  // Carregar dados dos times
   useEffect(() => {
-    if (!user || isAdmin(user)) return;
+    if (!user || isAdmin(user)) {
+      setLoadingTeams(false);
+      return;
+    }
 
     const loadTeams = async () => {
       try {
         const allTeams = await fetchTeams();
         setTeams(allTeams);
-        setUserInTeam(isUserInActiveTeam(user, allTeams));
+
+        const isInActiveTeam = isUserInActiveTeam(user, allTeams);
+        const isInAnyTeam = allTeams.some(team =>
+          team.members.some(member =>
+            member.userId.toString() === user.id.toString()
+          )
+        );
+
+        setUserInTeam(isInActiveTeam || isInAnyTeam || user.hasGroup);
+
       } catch (error) {
         console.error("Erro ao carregar times:", error);
+        setUserInTeam(false);
       } finally {
         setLoadingTeams(false);
       }
@@ -52,11 +67,8 @@ export const DashboardLayout = () => {
     loadTeams();
   }, [user]);
 
-  // Função para navegar quando clicar na aba
+  // Função que navega e automaticamente atualizará o activeTab via useEffect
   const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-
-    // Navegar para a rota correspondente
     switch (tabName) {
       case 'perfil':
         navigate('/dashboard/profile');
@@ -73,12 +85,15 @@ export const DashboardLayout = () => {
     }
   };
 
+  const shouldShowProjectTabs = () => {
+    if (loadingTeams || isAdmin(user)) return false;
+    return userInTeam || user?.hasGroup || (!user?.hasGroup && !user?.wantsGroup);
+  };
+
   const renderTabs = () => {
-    // Se é admin, não mostrar abas
     if (isAdmin(user)) return null;
 
-    // Se está carregando, não mostrar abas ainda
-    if (loadingTeams) return null;
+    const showProjectTabs = shouldShowProjectTabs();
 
     return (
       <div className="border-b mb-6">
@@ -90,7 +105,7 @@ export const DashboardLayout = () => {
             setActiveTab={handleTabClick}
           />
 
-          {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
+          {showProjectTabs && (
             <DashboardTab
               icon={<TbLayoutKanban />}
               title="Projeto"
@@ -99,7 +114,7 @@ export const DashboardLayout = () => {
             />
           )}
 
-          {(userInTeam || (!user.hasGroup && !user.wantsGroup)) && (
+          {showProjectTabs && (
             <DashboardTab
               icon={<FaRegCalendarAlt />}
               title="Reuniões"
@@ -133,8 +148,12 @@ export const DashboardLayout = () => {
           {renderTabs()}
 
           {!isAdmin(user) && loadingTeams && (
-            <p>Carregando informações do time...</p>
+            <div className="flex items-center space-x-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+              <p>Carregando informações do time...</p>
+            </div>
           )}
+
           <Outlet />
         </div>
       </div>
