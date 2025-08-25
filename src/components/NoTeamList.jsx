@@ -9,9 +9,9 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
   return (
     <div>
       <div className="mb-4 text-center">
-        <p className="text-gray-muted">
+        {user.type === "student" ? (<p className="text-gray-muted">
           Conecte-se com outros hérois e forme sua equipe dos sonhos!
-        </p>
+        </p>) : (<p>Alunos sem grupo!</p>)}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4">

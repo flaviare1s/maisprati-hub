@@ -14,7 +14,6 @@ import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
-import { StudentProfile } from "./pages/StudentProfile";
 import { TeamSelect } from "./pages/TeamSelect";
 import { CommonRoom } from "./pages/CommonRoom";
 import { PrivateRoute } from "./components/PrivateRoute";
@@ -72,7 +71,6 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
-          <Route path="/profile" element={<StudentProfile />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route
               index
@@ -93,7 +91,7 @@ function App() {
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
           <Route path="/teams/:teamId/board" element={<ProjectBoard />} />
-          <Route path="/common-room/" element={<CommonRoom />} />
+          {user ? (<Route path="/common-room/" element={<CommonRoom />} />) : (<Route path="/common-room/" element={<Login />} />)}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
