@@ -10,7 +10,7 @@ import { TeacherTeamsTab } from '../components/teacher-dashboard/TeacherTeamsTab
 import { TeacherMeetingsTab } from '../components/teacher-dashboard/TeacherMeetingsTab';
 import { TeacherNotificationsTab } from '../components/teacher-dashboard/TeacherNotificationTab';
 
-export const TeacherDashboard = () => {
+export const TeacherDashboardPage = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('perfil');
   const [teams, setTeams] = useState([]);

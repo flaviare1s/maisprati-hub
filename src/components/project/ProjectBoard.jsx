@@ -4,19 +4,25 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from "../../hooks/useAuth";
 import { fetchTeams, getTeamWithMembers } from "../../api.js/teams";
-import { fetchProjectProgress, createProjectProgress, updatePhaseStatus } from "../../api.js/projectProgress";
+import {
+  fetchProjectProgress,
+  createProjectProgress,
+  updatePhaseStatus,
+} from "../../api.js/projectProgress";
 import { CustomLoader } from "../CustomLoader";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const COLUMN_STATUSES = [
   { key: "todo", title: "A Fazer", color: "#6B7280" },
   { key: "in_progress", title: "Em Progresso", color: "#3B82F6" },
-  { key: "done", title: "Concluído", color: "#10B981" }
+  { key: "done", title: "Concluído", color: "#10B981" },
 ];
 
 export const ProjectBoard = () => {
   const { user } = useAuth();
+  const { teamId } = useParams();
   const [userTeam, setUserTeam] = useState(null);
   const [projectPhases, setProjectPhases] = useState([]);
   const [projectProgress, setProjectProgress] = useState(null);
@@ -25,34 +31,35 @@ export const ProjectBoard = () => {
   useEffect(() => {
     const loadProject = async () => {
       try {
-        let progress = null;
         let team = null;
+        let progress = null;
 
-        if (user.hasGroup) {
+        if (teamId) {
+          team = await getTeamWithMembers(teamId);
+          progress = await fetchProjectProgress(teamId);
+          if (!progress) progress = await createProjectProgress(teamId);
+        } else if (user.hasGroup) {
           const teams = await fetchTeams();
-          team = teams.find(t =>
-            t.members.some(member => member.userId.toString() === user.id.toString())
+          team = teams.find((t) =>
+            t.members.some((m) => m.userId.toString() === user.id.toString())
           );
 
           if (team) {
-            const teamWithDetails = await getTeamWithMembers(team.id);
-            setUserTeam(teamWithDetails);
-
+            team = await getTeamWithMembers(team.id);
             progress = await fetchProjectProgress(team.id);
             if (!progress) progress = await createProjectProgress(team.id);
           }
         } else {
-          // Usuário solo
-          progress = await fetchProjectProgress(`solo-${user.id}`); // usar chave única para solo
-          if (!progress) progress = await createProjectProgress(`solo-${user.id}`);
-
-          setUserTeam({
+          team = {
             id: `solo-${user.id}`,
             name: `${user.codename} (Trabalho Solo)`,
             members: [user],
-          });
+          };
+          progress = await fetchProjectProgress(team.id);
+          if (!progress) progress = await createProjectProgress(team.id);
         }
 
+        setUserTeam(team);
         setProjectProgress(progress);
         setProjectPhases(progress?.phases || []);
       } catch (error) {
@@ -64,7 +71,7 @@ export const ProjectBoard = () => {
     };
 
     loadProject();
-  }, [user]);
+  }, [teamId, user]);
 
   const handleDropPhase = async (phaseId, newStatus) => {
     if (!projectProgress) return;
@@ -80,35 +87,33 @@ export const ProjectBoard = () => {
       setProjectProgress(updatedProgress);
       setProjectPhases(updatedProgress.phases);
 
-      toast.success('Status da fase atualizado!');
+      toast.success("Status da fase atualizado!");
     } catch (error) {
-      console.error('Erro ao atualizar fase:', error);
-      toast.error('Erro ao atualizar status da fase');
+      console.error("Erro ao atualizar fase:", error);
+      toast.error("Erro ao atualizar status da fase");
     }
   };
 
   if (loading) {
-    return (
-      <CustomLoader />
-    );
+    return <CustomLoader />;
   }
 
   if (!userTeam) {
     return (
       <div className="p-6 text-center">
-        <p className="text-gray-muted">Você precisa estar em um time para acessar o projeto.</p>
+        <p className="text-gray-muted">
+          Você precisa estar em um time para acessar o projeto.
+        </p>
       </div>
     );
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full p-2">
         <div className="mb-6 flex items-center gap-3 flex-shrink-0">
           <HiOutlineUserGroup className="text-orange-logo text-2xl" />
-          <h2 className="text-2xl font-bold text-blue-logo">
-            {userTeam.name}
-          </h2>
+          <h2 className="text-2xl font-bold text-blue-logo">{userTeam.name}</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 overflow-hidden">
@@ -118,9 +123,12 @@ export const ProjectBoard = () => {
               status={column.key}
               title={column.title}
               color={column.color}
-              phases={projectPhases.filter((phase) => phase.status === column.key)}
+              phases={projectPhases.filter(
+                (phase) => phase.status === column.key
+              )}
               onDropPhase={handleDropPhase}
               userTeam={userTeam}
+              user={user}
             />
           ))}
         </div>
@@ -130,12 +138,17 @@ export const ProjectBoard = () => {
             <div
               className="bg-blue-logo h-3 rounded-full transition-all duration-300"
               style={{
-                width: `${(projectPhases.filter(p => p.status === 'done').length / projectPhases.length) * 100}%`
+                width: `${
+                  (projectPhases.filter((p) => p.status === "done").length /
+                    projectPhases.length) *
+                  100
+                }%`,
               }}
             ></div>
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {projectPhases.filter(p => p.status === 'done').length} de {projectPhases.length} fases concluídas
+            {projectPhases.filter((p) => p.status === "done").length} de{" "}
+            {projectPhases.length} fases concluídas
           </p>
         </div>
       </div>
