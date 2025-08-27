@@ -18,7 +18,7 @@ export const Header = () => {
   return (
     <header className='h-[80px] md:h-[100px] w-full flex items-center justify-between px-[25px] lg:px-[50px] xl:px-[100px] shadow-lg'>
       <Link to={getRedirectPath()} className='flex items-center'>
-        <div className='w-[160px] md:w-[220px] lg:w-[280px]'>
+        <div className='w-[140px] sm:w-[160px] md:w-[180px]'>
           <img className='w-full' src={logo} alt="Logo" />
         </div>
       </Link>
