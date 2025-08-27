@@ -61,7 +61,7 @@ export const StudentDashboardPage = () => {
           </div>
           <div>
             <p className="text-sm">Turma:</p>
-            <p className="font-semibold">{user.class}</p>
+            <p className="font-semibold">{user.groupClass}</p>
           </div>
           <div>
             <p className="text-sm">Grupo:</p>
