@@ -102,7 +102,7 @@ export const ProjectBoard = () => {
     return (
       <div className="p-6 text-center">
         <p className="text-gray-muted">
-          Você precisa estar em um time para acessar o projeto.
+          Você precisa estar vinculado a um time para acessar o projeto.
         </p>
       </div>
     );

@@ -20,16 +20,26 @@ export const TeamCard = ({ team, onSelect, onUpdate }) => {
   };
 
   const handleToggleStatus = async () => {
+    const originalStatus = localTeam.isActive;
     setIsToggling(true);
+
     try {
+      setLocalTeam(prev => ({ ...prev, isActive: !prev.isActive }));
+
       const updatedTeam = await toggleTeamStatus(localTeam.id, localTeam.isActive);
+
       setLocalTeam(updatedTeam);
 
+      toast.success(`Time ${originalStatus ? 'inativado' : 'ativado'} com sucesso!`);
+
       if (onUpdate) {
-        onUpdate();
+        setTimeout(() => onUpdate(), 100);
       }
+
     } catch (error) {
-      toast.error("Erro ao alternar status:", error);
+      setLocalTeam(prev => ({ ...prev, isActive: originalStatus }));
+      console.error("Erro ao alternar status:", error);
+      toast.error("Erro ao alternar status do time");
     } finally {
       setIsToggling(false);
     }
@@ -59,8 +69,8 @@ export const TeamCard = ({ team, onSelect, onUpdate }) => {
             onClick={handleToggleStatus}
             disabled={isToggling}
             className={`p-2 cursor-pointer rounded-md transition-colors ${isToggling
-                ? 'text-gray-400 cursor-not-allowed'
-                : 'text-orange-logo hover:bg-orange-50'
+              ? 'text-gray-400 cursor-not-allowed'
+              : 'text-orange-logo hover:bg-orange-50'
               }`}
             title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar Time" : "Ativar Time")}
           >
@@ -73,7 +83,7 @@ export const TeamCard = ({ team, onSelect, onUpdate }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+      <div className="grid grid-cols-1 gap-2 text-sm">
         <div>
           <span className="font-medium">Membros:</span> {localTeam.members?.length || 0}/{localTeam.maxMembers}
         </div>

@@ -77,10 +77,10 @@ export const StudentRegister = () => {
         />
 
         <SelectField
-          name="turma"
+          name="class"
           label="Turma"
           register={register}
-          error={errors.turma}
+          error={errors.class}
           required={true}
           options={[
             { value: "T1", label: "T1" },
