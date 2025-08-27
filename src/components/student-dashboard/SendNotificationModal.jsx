@@ -17,7 +17,7 @@ export const SendNotificationModal = ({ open, onClose }) => {
 
     setLoading(true);
     try {
-      await sendNotificationToTeacher(user.username, message);
+      await sendNotificationToTeacher(user.name, message);
       toast.success("Notificação enviada ao professor!");
       setMessage("");
       onClose();

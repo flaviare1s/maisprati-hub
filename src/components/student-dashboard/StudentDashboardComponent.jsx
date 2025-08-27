@@ -39,8 +39,8 @@ export const StudentDashboardComponent = () => {
         <h3 className="text-lg font-semibold mb-3">Informações do Usuário</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm">Username:</p>
-            <p className="font-semibold">{user.username}</p>
+            <p className="text-sm">Nome:</p>
+            <p className="font-semibold">{user.name}</p>
           </div>
           <div>
             <p className="text-sm">Email:</p>
