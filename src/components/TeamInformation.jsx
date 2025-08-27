@@ -18,7 +18,7 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
 
     try {
       await sendNotificationToTeacher(
-        user.username,
+        user.name,
         `Solicitação de saída do time ${userTeam.name}. Motivo: ${reason}`
       );
 
@@ -72,7 +72,7 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
                 <div className="flex items-center justify-center">
                   <p className="font-medium">
                     {member.user
-                      ? member.user.username 
+                      ? member.user.name
                       : `Usuário #${member.userId}`}{" "}
                     {currentUserMember && <span className="text-xs text-gray-500 dark:text-gray-400">(Você)</span>} • <span className="text-xs text-gray-muted">{member.user.turma}</span>
                   </p>
@@ -80,10 +80,10 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
                 <div className="text-right">
                   <span
                     className={`inline-block px-2 py-1 rounded-full text-[9px] font-medium ${member.role === "leader"
-                        ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
-                        : member.role === "subleader"
-                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-                          : "bg-gray-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+                      : member.role === "subleader"
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                        : "bg-gray-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
                       }`}
                   >
                     {member.role === "leader"

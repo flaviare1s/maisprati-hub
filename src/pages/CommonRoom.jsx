@@ -62,7 +62,7 @@ export const CommonRoom = () => {
             return {
               ...c,
               authorId: c.authorId || c.userId,
-              author: commentAuthor?.codename || commentAuthor?.username || "Desconhecido",
+              author: commentAuthor?.codename || commentAuthor?.name || "Desconhecido",
               avatar: commentAuthor?.avatar || "/src/assets/images/avatar/default.png",
             };
           });
@@ -70,7 +70,7 @@ export const CommonRoom = () => {
           return {
             ...post,
             authorId: post.authorId || post.userId,
-            author: author?.codename || author?.username || "Desconhecido",
+            author: author?.codename || author?.name || "Desconhecido",
             avatar: author?.avatar || "/src/assets/images/avatar/default.png",
             comments: commentsWithAuthors,
           };
@@ -103,7 +103,7 @@ export const CommonRoom = () => {
         const notification = {
           userId: hero.id,
           title: "Convite para Guilda",
-          message: `${user.codename} - ${user.username} convidou você para entrar na guilda dele!`,
+          message: `${user.codename} - ${user.name} convidou você para entrar na guilda dele!`,
           createdAt: new Date().toISOString(),
           type: "guild-invite",
           fromUserId: user.id,
@@ -198,14 +198,14 @@ export const CommonRoom = () => {
       console.log("Debug comentário:", {
         userId,
         commentAuthor,
-        users: users.map(u => ({ id: u.id, codename: u.codename, username: u.username }))
+        users: users.map(u => ({ id: u.id, codename: u.codename, name: u.name }))
       });
 
       // Adicionar à lista local com dados corretos do usuário
       const commentWithUser = {
         ...newComment,
         authorId: userId,
-        author: commentAuthor.codename || commentAuthor.username || "Desconhecido",
+        author: commentAuthor.codename || commentAuthor.name || "Desconhecido",
         avatar: commentAuthor.avatar || "/src/assets/images/avatar/default.png",
       };
 
@@ -253,7 +253,7 @@ export const CommonRoom = () => {
                   />
                 )}
                 <h3 className="font-bold text-gray-800">
-                  {user?.codename || user?.username}
+                  {user?.codename || user?.name}
                 </h3>
                 <div className="w-full bg-gray-200 rounded-full h-2 mt-2"></div>
               </div>
@@ -275,8 +275,8 @@ export const CommonRoom = () => {
                 <button
                   onClick={() => setActiveTab("forum")}
                   className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${activeTab === "forum"
-                      ? "border-b-2 border-orange-logo text-light bg-blue-logo"
-                      : "text-gray-600 hover:text-blue-logo"
+                    ? "border-b-2 border-orange-logo text-light bg-blue-logo"
+                    : "text-gray-600 hover:text-blue-logo"
                     }`}
                 >
                   <FaComments className="inline mr-2" />
@@ -285,8 +285,8 @@ export const CommonRoom = () => {
                 <button
                   onClick={() => setActiveTab("heroes")}
                   className={`flex-1 py-3 px-4 text-center font-medium transition-colors cursor-pointer ${activeTab === "heroes"
-                      ? "border-b-2 border-orange-logo text-light bg-blue-logo"
-                      : "text-gray-600 hover:text-blue-logo"
+                    ? "border-b-2 border-orange-logo text-light bg-blue-logo"
+                    : "text-gray-600 hover:text-blue-logo"
                     }`}
                 >
                   <HiOutlineUserGroup className="inline mr-2" />

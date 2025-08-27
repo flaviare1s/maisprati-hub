@@ -96,9 +96,7 @@ export const fetchPostsWithComments = async () => {
           title: post.title,
           content: post.content,
           author:
-            post.user?.codename ||
-            post.user?.username ||
-            "Usuário Desconhecido",
+            post.user?.codename || post.user?.name || "Usuário Desconhecido",
           avatar: post.user?.avatar || "",
           createdAt: post.createdAt,
           comments: comments.map((comment) => ({
@@ -107,7 +105,7 @@ export const fetchPostsWithComments = async () => {
             content: comment.content,
             author:
               comment.user?.codename ||
-              comment.user?.username ||
+              comment.user?.name ||
               "Usuário Desconhecido",
             avatar: comment.user?.avatar || "",
             createdAt: comment.createdAt,

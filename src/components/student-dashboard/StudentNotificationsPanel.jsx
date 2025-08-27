@@ -40,8 +40,8 @@ export const StudentNotificationsPanel = () => {
     try {
       const newNotification = {
         userId: 1,
-        title: `Nova mensagem do aluno ${user.username}`,
-        message: `${user.username}: ${message}`,
+        title: `Nova mensagem do aluno ${user.name}`,
+        message: `${user.name}: ${message}`,
         createdAt: new Date().toISOString(),
         isRead: false,
       };

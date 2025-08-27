@@ -19,10 +19,10 @@ export const StudentRegister = () => {
       </div>
       <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
         <InputField
-          name='username'
+          name='name'
           type='text'
-          placeholder='Username'
-          label="Nome de usuário *"
+          placeholder='Nome Completo'
+          label="Nome Completo *"
           register={register}
           error={errors.name?.message}
           validation={{
@@ -32,8 +32,8 @@ export const StudentRegister = () => {
         <InputField
           name="email"
           type="email"
-          placeholder="Email"
-          label="Email *"
+          placeholder="E-mail"
+          label="E-mail *"
           register={register}
           error={errors.email?.message}
           validation={{
@@ -63,7 +63,7 @@ export const StudentRegister = () => {
         <InputField
           name="whatsapp"
           type="tel"
-          placeholder="(11) 99999-9999"
+          placeholder="Digite apenas números"
           label="WhatsApp *"
           register={register}
           error={errors.whatsapp?.message}

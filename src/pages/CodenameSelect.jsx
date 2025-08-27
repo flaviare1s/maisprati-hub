@@ -8,7 +8,7 @@ import { createUser } from "../api.js/users";
 
 const importAvatars = () => {
   const avatars = [];
-  for (let i = 1; i <= 54; i++) {
+  for (let i = 1; i <= 53; i++) {
     try {
       const skipNumbers = [3, 6, 14, 16, 26];
       if (skipNumbers.includes(i)) continue;
