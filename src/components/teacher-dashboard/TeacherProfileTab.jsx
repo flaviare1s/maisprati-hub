@@ -3,8 +3,8 @@ export const TeacherProfileTab = ({ user, teams }) => (
     <div className="rounded-lg shadow-md p-4 mb-6">
       <h3 className="text-lg font-semibold mb-3">Informações gerais:</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><p className="text-sm">name:</p><p className="font-semibold">{user.name}</p></div>
-        <div><p className="text-sm">Email:</p><p className="font-semibold">{user.email}</p></div>
+        <div><p className="text-sm">Nome:</p><p className="font-semibold">{user.name}</p></div>
+        <div><p className="text-sm">E-mail:</p><p className="font-semibold">{user.email}</p></div>
         <div><p className="text-sm">Tipo de Usuário:</p><p className="font-semibold text-blue-logo">Administrador</p></div>
         <div><p className="text-sm">Times Criados:</p><p className="text-xl text-blue-logo">{teams.length}</p></div>
       </div>

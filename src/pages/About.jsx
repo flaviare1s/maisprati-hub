@@ -10,7 +10,7 @@ export const About = () => {
       <AboutItemImg img={img1} alt="Imagem de pessoas conectadas" />
       <AboutItemContent
         title="Sobre o +Prati Hub"
-        description="O +Prati Hub foi desenvolvido para facilitar a organização dos trabalhos finais, conectando professores e alunos em um só lugar."
+        description="O +Prati Hub é a rede social que conecta alunos e professores em um único espaço. Criado para facilitar a organização dos trabalhos finais, ele centraliza a comunicação, o planejamento e o acompanhamento de projetos de forma simples e colaborativa."
       />
 
       <div className="md:order-4">
@@ -18,14 +18,14 @@ export const About = () => {
       </div>
       <AboutItemContent
         title="Como Funciona"
-        description="Os alunos preenchem um formulário com seu perfil. O professor, com base nessas informações, consegue montar os grupos de forma equilibrada e eficiente."
+        description="Os alunos se cadastram na plataforma e podem interagir com colegas, formar equipes, organizar o progresso do projeto e agendar reuniões sem complicação. Tudo pensado para que o foco esteja no aprendizado e na execução dos projetos."
       />
 
       <AboutItemImg img={img3} alt="Imagem de dashboard de acompanhamento de projetos" />
       <div className="md:order-5">
         <AboutItemContent
           title="Acompanhamento"
-          description="O app permite que alunos e professores acompanhem o andamento de cada projeto, garantindo organização e transparência em todas as etapas."
+          description="Com o +Prati Hub, professores e alunos têm acesso a um painel claro e prático do andamento de cada projeto. Assim, todos acompanham as etapas, prazos e entregas com transparência e muito mais organização."
         />
       </div>
     </div>
