@@ -84,7 +84,7 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
             return (
               <div key={member.userId} className="p-4 border rounded-lg flex flex-col gap-2">
                 <p className="font-medium">
-                  {member.user?.username || `Usuário #${member.userId}`}
+                  {member.user?.name || `Usuário #${member.userId}`}
                 </p>
 
                 <label className="text-sm">Role</label>
