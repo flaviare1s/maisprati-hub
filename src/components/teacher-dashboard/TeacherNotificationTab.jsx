@@ -46,7 +46,7 @@ export const TeacherNotificationsTab = () => {
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className="relative p-4 rounded-lg border bg-blue-50"
+            className="relative p-4 rounded-lg border border-black bg-soft"
           >
 
             <button

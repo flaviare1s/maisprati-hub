@@ -74,7 +74,7 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
                     {member.user
                       ? member.user.name
                       : `Usuário #${member.userId}`}{" "}
-                    {currentUserMember && <span className="text-xs text-gray-500 dark:text-gray-400">(Você)</span>} • <span className="text-xs text-gray-muted">{member.user.turma}</span>
+                    {currentUserMember && <span className="text-xs text-gray-500 dark:text-gray-400">(Você)</span>} • <span className="text-xs text-gray-muted">{member.groupClass}</span>
                   </p>
                 </div>
                 <div className="text-right">
