@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
 import { TimeSlotModal } from "../TimeSlotModal";
 
 export const TeacherMeetingsTab = ({ teacherId }) => {
-  const [selectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(dayjs());
   const [appointments, setAppointments] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -21,34 +22,100 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
     loadAppointments();
   }, []);
 
+  const handleDateChange = (e) => {
+    const newDate = dayjs(e.target.value);
+    setSelectedDate(newDate);
+  };
+
+  // Função para obter a data mínima (hoje)
+  const getMinDate = () => {
+    return dayjs().format("YYYY-MM-DD");
+  };
+
+  // Função para obter a data máxima (3 meses à frente)
+  const getMaxDate = () => {
+    return dayjs().add(3, "months").format("YYYY-MM-DD");
+  };
+
   return (
     <div className="w-full">
       <h3 className="text-lg text-dark font-semibold mb-1">Gerenciar Reuniões</h3>
-      <p className="text-gray-muted mb-3">Abra a agenda do dia para selecionar os horários disponíveis.</p>
+      <p className="text-gray-muted mb-3">
+        Selecione uma data e configure os horários disponíveis para os alunos agendarem.
+      </p>
 
-      <div className="mb-4">
+      {/* Seletor de Data */}
+      <div className="mb-4 space-y-3">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="date-picker" className="text-sm font-medium text-dark">
+            Selecione a data:
+          </label>
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1 max-w-xs">
+              <input
+                id="date-picker"
+                type="date"
+                value={selectedDate.format("YYYY-MM-DD")}
+                onChange={handleDateChange}
+                min={getMinDate()}
+                max={getMaxDate()}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
+            </div>
+            <span className="text-sm text-gray-600">
+              {selectedDate.format("dddd, DD/MM/YYYY")}
+            </span>
+          </div>
+        </div>
+
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-blue-logo text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
+          className="bg-blue-logo text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors cursor-pointer flex items-center gap-2"
         >
-          Abrir Agenda do Dia
+          <Calendar size={16} />
+          Configurar Horários - {selectedDate.format("DD/MM/YYYY")}
         </button>
       </div>
 
-      <div className="grid gap-2">
-        {appointments
-          .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
-          .map((appt, idx) => (
-            <div
-              key={idx}
-              className="p-2 rounded text-sm border flex justify-between items-center text-dark"
-            >
-              <span>{dayjs(appt.date).format("DD/MM/YYYY")} - {appt.time}</span>
-              <span className="text-green-700 font-medium">Agendado</span>
+      {/* Lista de Agendamentos */}
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-dark mb-3">Próximos Agendamentos</h4>
+        <div className="grid gap-2 max-h-60 overflow-y-auto">
+          {appointments.length > 0 ? (
+            appointments
+              .filter(appt => dayjs(appt.date).isAfter(dayjs(), 'day') || dayjs(appt.date).isSame(dayjs(), 'day'))
+              .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
+              .map((appt, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-lg border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium text-dark">
+                      {dayjs(appt.date).format("DD/MM/YYYY")} - {appt.time}
+                    </span>
+                    {appt.studentName && (
+                      <span className="text-xs text-gray-500">
+                        Aluno: {appt.studentName}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-green-700 font-medium text-sm px-2 py-1 bg-green-50 rounded-full">
+                    Agendado
+                  </span>
+                </div>
+              ))
+          ) : (
+            <div className="text-center py-6 text-gray-500">
+              <Calendar className="mx-auto h-12 w-12 text-gray-300 mb-2" />
+              <p>Nenhum agendamento encontrado</p>
             </div>
-          ))}
+          )}
+        </div>
       </div>
 
+      {/* Modal de Horários */}
       {modalOpen && (
         <TimeSlotModal
           open={modalOpen}
@@ -59,9 +126,10 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
         />
       )}
 
+      {/* Legenda */}
       <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-light rounded-lg">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-logorounded-full" />
+          <div className="w-3 h-3 bg-blue-logo rounded-full" />
           <span className="text-xs text-gray-muted">Disponível</span>
         </div>
         <div className="flex items-center gap-2">

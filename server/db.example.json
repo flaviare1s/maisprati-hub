@@ -557,14 +557,8 @@
       "createdAt": "2025-08-21T15:30:00Z"
     }
   ],
-  "timeSlots": [],
+  "timeSlots": [
+  ],
   "appointments": [
-    {
-      "id": 1,
-      "studentId": 2,
-      "teacherId": 1,
-      "date": "2025-08-22",
-      "time": "10:00"
-    }
   ]
 }
