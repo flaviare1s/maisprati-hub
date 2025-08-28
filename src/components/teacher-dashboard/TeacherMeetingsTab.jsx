@@ -63,18 +63,18 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
               />
               <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
             </div>
-            <span className="text-sm text-gray-600">
-              {selectedDate.format("dddd, DD/MM/YYYY")}
+            <span className="text-xs text-gray-muted">
+              {selectedDate.format("ddd, DD/MM/YY")}
             </span>
           </div>
         </div>
 
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-blue-logo text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors cursor-pointer flex items-center gap-2"
+          className="bg-blue-logo text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors cursor-pointer flex items-center gap-1 m-auto sm:m-0"
         >
           <Calendar size={16} />
-          Configurar Horários - {selectedDate.format("DD/MM/YYYY")}
+          Horários - {selectedDate.format("DD/MM/YYYY")}
         </button>
       </div>
 
@@ -130,15 +130,15 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
       <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-light rounded-lg">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-blue-logo rounded-full" />
-          <span className="text-xs text-gray-muted">Disponível</span>
+          <span className="text-[9px] sm:text-xs text-gray-muted">Disponível</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-500 rounded-full" />
-          <span className="text-xs text-gray-muted">Agendado</span>
+          <span className="text-[9px] sm:text-xs text-gray-muted">Agendado</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-gray-400 rounded-full" />
-          <span className="text-xs text-gray-muted">Indisponível</span>
+          <span className="text-[9px] sm:text-xs text-gray-muted">Indisponível</span>
         </div>
       </div>
     </div>
