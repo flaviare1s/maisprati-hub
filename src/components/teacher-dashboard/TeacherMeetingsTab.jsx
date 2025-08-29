@@ -83,34 +83,41 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
         <h4 className="text-md font-medium text-dark mb-3">Próximos Agendamentos</h4>
         <div className="grid gap-2 max-h-60 overflow-y-auto">
           {appointments.length > 0 ? (
-            appointments
-              .filter(appt => dayjs(appt.date).isAfter(dayjs(), 'day') || dayjs(appt.date).isSame(dayjs(), 'day'))
-              .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
-              .map((appt, idx) => (
-                <div
-                  key={idx}
-                  className="p-3 rounded-lg border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow"
-                >
-                  <div className="flex flex-col">
-                    <span className="font-medium text-dark text-sm">
-                      {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
-                    </span>
-                    {appt.studentName && (
-                      <span className="text-xs text-gray-muted">
-                        Aluno: {appt.studentName}
-                      </span>
-                    )}
-                    {appt.teamName && appt.teamName !== 'Sem time' && (
-                      <span className="text-xs text-blue-logo font-semibold">
-                        {appt.teamName}
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-green-700 font-semibold text-xs px-2 py-1 bg-green-50 rounded-full">
-                    Agendado
+            // Agrupar por time e horário
+            Object.values(
+              appointments
+                .filter(appt => dayjs(appt.date).isAfter(dayjs(), 'day') || dayjs(appt.date).isSame(dayjs(), 'day'))
+                .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
+                .reduce((acc, appt) => {
+                  // Chave: time + data + hora
+                  const key = `${appt.teamName || 'Sem time'}_${appt.date}_${appt.time}`;
+                  if (!acc[key]) acc[key] = appt;
+                  return acc;
+                }, {})
+            ).map((appt, idx) => (
+              <div
+                key={idx}
+                className="p-3 rounded-lg border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow"
+              >
+                <div className="flex flex-col">
+                  <span className="font-medium text-dark text-sm">
+                    {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
                   </span>
+                  {appt.teamName && appt.teamName !== 'Sem time' ? (
+                    <span className="text-xs text-blue-logo font-semibold">
+                      {appt.teamName}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-blue-logo font-semibold">
+                      {appt.studentName} (solo)
+                    </span>
+                  )}
                 </div>
-              ))
+                <span className="text-green-700 font-semibold text-xs px-2 py-1 bg-green-50 rounded-full">
+                  Agendado
+                </span>
+              </div>
+            ))
           ) : (
             <div className="text-center py-6 text-gray-500">
               <Calendar className="mx-auto h-12 w-12 text-gray-300 mb-2" />

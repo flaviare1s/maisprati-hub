@@ -64,15 +64,42 @@ export const bookTimeSlot = async (studentId, teacherId, date, time) => {
   daySlots.slots[slotIndex].booked = true; // marca como agendado
   await api.put(`/timeSlots/${daySlots.id}`, daySlots);
 
-  // Criar agendamento
-  const appointment = {
-    studentId,
-    teacherId,
-    date,
-    time,
-  };
-  const res = await api.post(`/appointments`, appointment);
-  return res.data;
+  // Buscar todos os times e verificar se o aluno está em algum time
+  const teamsRes = await api.get("/teams");
+  const teams = teamsRes.data;
+  const userTeam = teams.find(
+    (team) =>
+      team.members &&
+      team.members.some(
+        (member) => member.userId.toString() === studentId.toString()
+      )
+  );
+
+  let createdAppointments = [];
+  if (userTeam) {
+    // Criar agendamento para cada membro do time
+    for (const member of userTeam.members) {
+      const appointment = {
+        studentId: member.userId,
+        teacherId,
+        date,
+        time,
+      };
+      const res = await api.post(`/appointments`, appointment);
+      createdAppointments.push(res.data);
+    }
+    return createdAppointments;
+  } else {
+    // Criar agendamento apenas para o aluno
+    const appointment = {
+      studentId,
+      teacherId,
+      date,
+      time,
+    };
+    const res = await api.post(`/appointments`, appointment);
+    return res.data;
+  }
 };
 
 // Buscar agendamentos com dados completos (nome do aluno e time)
