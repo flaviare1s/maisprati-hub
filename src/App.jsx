@@ -10,7 +10,6 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { FAQ } from "./pages/FAQ";
 import { ChatButton } from "./components/ChatButton";
-import { ChatBox } from "./components/ChatBox";
 import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
@@ -35,7 +34,6 @@ Modal.setAppElement("#root");
 function App() {
   const { user } = useAuth();
   const [loadingApp, setLoadingApp] = useState(true)
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setLoadingApp(false);
@@ -50,8 +48,7 @@ function App() {
       <ScrollToTop />
       <Header user={user} />
       <div className="fixed bottom-4 right-4 z-50">
-        <ChatButton onClick={() => setIsOpen(true)} />
-        <ChatBox isOpen={isOpen} setIsOpen={setIsOpen} />
+        <ChatButton />
       </div>
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
