@@ -9,7 +9,7 @@ import cardEntrega from "../assets/images/pratihub_homepage_option_4-removebg-pr
 
 export const Home = () => {
   return (
-    <div className="w-full min-h-screen relative">
+    <div className="w-full min-h-screen relative md:w-[80%] lg:w-[70%] m-auto">
       {/* HERO */}
       <div className="flex flex-col lg:flex-row items-center justify-between px-6 lg:px-16 py-10 gap-8">
         {/* Texto */}

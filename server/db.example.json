@@ -17,11 +17,12 @@
       "whatsapp": "(11) 99999-0001",
       "type": "student",
       "groupClass": "T1",
-      "hasGroup": false,
+      "hasGroup": true,
       "wantsGroup": true,
       "isFirstLogin": false,
       "codename": "Frontend Esforçado",
-      "avatar": "/images/avatar/avatares 1.png"
+      "avatar": "/images/avatar/avatares 1.png",
+      "teamId": "1"
     },
     {
       "id": "3",
@@ -106,6 +107,20 @@
       "isFirstLogin": false,
       "codename": "BugHunter Persistente",
       "avatar": "/images/avatar/avatares 9.png"
+    },
+    {
+      "id": "d41b",
+      "name": "Giovanna Costa da Silva",
+      "email": "gi@tete.com",
+      "password": "123456",
+      "whatsapp": "11111111111",
+      "groupClass": "T2",
+      "hasGroup": false,
+      "wantsGroup": false,
+      "type": "student",
+      "codename": "Backend Debugador",
+      "avatar": "/images/avatar/avatares 23.png",
+      "isFirstLogin": false
     }
   ],
   "teams": [
@@ -115,7 +130,7 @@
       "securityCode": "TEAM001",
       "description": "Vamos fazer um aplicativo de gerenciamento de tarefas",
       "maxMembers": 10,
-      "currentMembers": 3,
+      "currentMembers": 4,
       "members": [
         {
           "userId": "3",
@@ -136,6 +151,14 @@
           "role": "member",
           "subLeaderType": null,
           "joinedAt": "2024-01-17",
+          "isActive": true
+        },
+        {
+          "userId": "2",
+          "role": "member",
+          "specialization": "Desenvolvedor",
+          "subLeaderType": null,
+          "joinedAt": "2025-08-29",
           "isActive": true
         }
       ],
@@ -486,6 +509,120 @@
       ],
       "lastUpdated": "2025-08-23T23:22:02.756Z",
       "createdAt": "2025-08-23T23:22:02.756Z"
+    },
+    {
+      "id": "7d7c",
+      "teamId": "solo-d41b",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-29T11:20:33.623Z",
+      "createdAt": "2025-08-29T11:20:33.623Z"
+    },
+    {
+      "id": "f477",
+      "teamId": "solo-d41b",
+      "phases": [
+        {
+          "id": 1,
+          "title": "Frontend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 2,
+          "title": "Backend",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 3,
+          "title": "Design",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 4,
+          "title": "Banco de Dados",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 5,
+          "title": "Testes",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 6,
+          "title": "Deploy",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        },
+        {
+          "id": 7,
+          "title": "Documentação",
+          "status": "todo",
+          "startedAt": null,
+          "completedAt": null
+        }
+      ],
+      "lastUpdated": "2025-08-29T11:20:33.623Z",
+      "createdAt": "2025-08-29T11:20:33.623Z"
     }
   ],
   "posts": [
@@ -557,14 +694,59 @@
       "createdAt": "2025-08-21T15:30:00Z"
     }
   ],
-  "timeSlots": [],
+  "timeSlots": [
+    {
+      "id": "b341",
+      "date": "2025-08-29",
+      "slots": [
+        {
+          "time": "21:00",
+          "available": false,
+          "booked": true
+        },
+        {
+          "time": "21:30",
+          "available": false,
+          "booked": true
+        }
+      ]
+    }
+  ],
   "appointments": [
     {
-      "id": 1,
-      "studentId": 2,
+      "id": "8dce",
+      "studentId": "3",
       "teacherId": 1,
-      "date": "2025-08-22",
-      "time": "10:00"
+      "date": "2025-08-29",
+      "time": "21:00"
+    },
+    {
+      "id": "5cf5",
+      "studentId": "4",
+      "teacherId": 1,
+      "date": "2025-08-29",
+      "time": "21:00"
+    },
+    {
+      "id": "492d",
+      "studentId": "7",
+      "teacherId": 1,
+      "date": "2025-08-29",
+      "time": "21:00"
+    },
+    {
+      "id": "5cce",
+      "studentId": "2",
+      "teacherId": 1,
+      "date": "2025-08-29",
+      "time": "21:00"
+    },
+    {
+      "id": "2727",
+      "studentId": "d41b",
+      "teacherId": 1,
+      "date": "2025-08-29",
+      "time": "21:30"
     }
   ]
 }
