@@ -98,19 +98,17 @@ export const fetchAppointments = async (userId, role) => {
     // 4. Enriquecer os agendamentos com dados do aluno e time
     const enrichedAppointments = appointments.map((appointment) => {
       // Encontrar o usuário que fez o agendamento
-      const student = users.find(
-        (user) => user.id.toString() === appointment.studentId.toString()
-      );
+      const student = users.find((user) => user.id == appointment.studentId);
 
-      // Encontrar o time do usuário
+      // Encontrar o time do usuário pelo userId na lista de membros
       let teamName = "Sem time";
-      if (student && student.teamId) {
-        const team = teams.find(
-          (team) => team.id.toString() === student.teamId.toString()
-        );
-        if (team) {
-          teamName = team.name;
-        }
+      const team = teams.find(
+        (team) =>
+          team.members &&
+          team.members.some((member) => member.userId == appointment.studentId)
+      );
+      if (team) {
+        teamName = team.name;
       }
 
       return {

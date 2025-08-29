@@ -64,7 +64,7 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
               <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
             </div>
             <span className="text-xs text-gray-muted">
-              {selectedDate.format("ddd, DD/MM/YY")}
+              {selectedDate.format("ddd, DD/MM")}
             </span>
           </div>
         </div>
@@ -101,8 +101,8 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
                       </span>
                     )}
                     {appt.teamName && appt.teamName !== 'Sem time' && (
-                      <span className="text-xs text-blue-600 font-medium">
-                        Time: {appt.teamName}
+                      <span className="text-xs text-blue-logo font-semibold">
+                        {appt.teamName}
                       </span>
                     )}
                   </div>
