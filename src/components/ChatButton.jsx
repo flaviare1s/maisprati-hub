@@ -1,62 +1,135 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import chatIcon from '../assets/images/chat-icon.png';
 
 export const ChatButton = () => {
   const [isBotpressLoaded, setIsBotpressLoaded] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    const clientId = import.meta.env.VITE_BOTPRESS_CLIENT_ID;
-    const encryptionKey = import.meta.env.VITE_BOTPRESS_ENCRYPTION_KEY;
+    // Previne inicialização múltipla
+    if (initialized.current) return;
 
-    if (window.botpressWebChat && !window.__botpressInitialized) {
-      window.botpressWebChat.init({
-        clientId,
-        botName: "ConectaBot",
-        composerPlaceholder: "Digite sua mensagem...",
-        showPoweredBy: false,
-        chatId: "bp-web-widget",
-        encryptionKey
-      });
-      window.__botpressInitialized = true;
-      setIsBotpressLoaded(true);
-      console.log('✅ Botpress pronto para uso!');
-    } else {
-      // Aguarda o script carregar
-      const interval = setInterval(() => {
-        if (window.botpressWebChat && !window.__botpressInitialized) {
+    const initBotpress = () => {
+      if (window.botpressWebChat && !initialized.current) {
+        try {
+          console.log('Inicializando Botpress...');
+
           window.botpressWebChat.init({
-            clientId,
+            clientId: import.meta.env.VITE_BOTPRESS_CLIENT_ID,
             botName: "ConectaBot",
             composerPlaceholder: "Digite sua mensagem...",
             showPoweredBy: false,
             chatId: "bp-web-widget",
-            encryptionKey
+            encryptionKey: import.meta.env.VITE_BOTPRESS_ENCRYPTION_KEY,
+            layout: { position: 'right' }
           });
-          window.__botpressInitialized = true;
+
+          initialized.current = true;
           setIsBotpressLoaded(true);
-          console.log('✅ Botpress pronto para uso!');
-          clearInterval(interval);
+
+          console.log('Botpress inicializado com sucesso');
+
+        } catch (error) {
+          console.error('Erro ao inicializar Botpress:', error);
         }
-      }, 500);
-      return () => clearInterval(interval);
-    }
+      } else if (!window.botpressWebChat) {
+        setTimeout(initBotpress, 200);
+      }
+    };
+
+    initBotpress();
   }, []);
 
+  // Effect para controlar a visibilidade dos iframes
+  useEffect(() => {
+    const hideAllBotpressElements = () => {
+      // Procura por todos os possíveis elementos do Botpress
+      const selectors = [
+        '[id*="bp-widget"]',
+        '[id*="botpress"]',
+        'iframe[src*="botpress"]',
+        '.bp-chat-container',
+        '.bp-web-widget',
+        '[class*="bp-"]'
+      ];
+
+      selectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+          if (chatVisible) {
+            element.style.display = 'block';
+            element.style.position = 'fixed';
+            element.style.bottom = '80px';
+            element.style.right = '20px';
+            element.style.zIndex = '1000';
+            element.style.maxWidth = '400px';
+            element.style.maxHeight = '600px';
+          } else {
+            element.style.display = 'none';
+          }
+        });
+      });
+    };
+
+    // Executa imediatamente
+    hideAllBotpressElements();
+
+    // Observa mudanças no DOM para capturar elementos criados dinamicamente
+    const observer = new MutationObserver(() => {
+      hideAllBotpressElements();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'id']
+    });
+
+    return () => observer.disconnect();
+  }, [chatVisible]);
+
+  // Effect inicial para esconder tudo
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const allPossibleElements = document.querySelectorAll(`
+        [id*="bp-widget"],
+        [id*="botpress"],
+        iframe[src*="botpress"],
+        .bp-chat-container,
+        .bp-web-widget,
+        [class*="bp-"]
+      `);
+
+      allPossibleElements.forEach(element => {
+        element.style.display = 'none';
+      });
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [isBotpressLoaded]);
+
   const toggleChat = () => {
-    if (!window.botpressWebChat || !isBotpressLoaded) {
+    if (!isBotpressLoaded) {
       console.warn('Botpress ainda não está carregado');
       return;
     }
 
     try {
       if (chatVisible) {
-        window.botpressWebChat.sendEvent({ type: 'hide' });
+        // Esconder chat
         setChatVisible(false);
+        if (window.botpressWebChat?.sendEvent) {
+          window.botpressWebChat.sendEvent({ type: 'hide' });
+        }
         console.log('Chat escondido');
       } else {
-        window.botpressWebChat.sendEvent({ type: 'show' });
+        // Mostrar chat
         setChatVisible(true);
+        if (window.botpressWebChat?.sendEvent) {
+          window.botpressWebChat.sendEvent({ type: 'show' });
+        }
         console.log('Chat mostrado');
       }
     } catch (error) {

@@ -93,10 +93,14 @@ body {
   left: -25px !important;
 }
 
-#_rht_toaster {
+iframe[src*="botpress"],
+.bp-chat-container,
+.bp-web-widget,
+[class*="bp-"] {
   position: fixed !important;
-  top: 20px !important;
+  bottom: 80px !important;
   right: 20px !important;
-  z-index: 9999 !important;
-  max-height: 90vh !important;
+  z-index: 1000 !important;
+  max-width: 400px !important;
+  height: 500px !important;
 }

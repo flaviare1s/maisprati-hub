@@ -28,9 +28,6 @@ import { ProjectBoard } from "./components/project/ProjectBoard";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 
-Modal.setAppElement("#root");
-
-
 function App() {
   const { user } = useAuth();
   const [loadingApp, setLoadingApp] = useState(true)
