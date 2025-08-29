@@ -92,16 +92,21 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
                   className="p-3 rounded-lg border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow"
                 >
                   <div className="flex flex-col">
-                    <span className="font-medium text-dark">
-                      {dayjs(appt.date).format("DD/MM/YYYY")} - {appt.time}
+                    <span className="font-medium text-dark text-sm">
+                      {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
                     </span>
                     {appt.studentName && (
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-muted">
                         Aluno: {appt.studentName}
                       </span>
                     )}
+                    {appt.teamName && appt.teamName !== 'Sem time' && (
+                      <span className="text-xs text-blue-600 font-medium">
+                        Time: {appt.teamName}
+                      </span>
+                    )}
                   </div>
-                  <span className="text-green-700 font-medium text-sm px-2 py-1 bg-green-50 rounded-full">
+                  <span className="text-green-700 font-semibold text-xs px-2 py-1 bg-green-50 rounded-full">
                     Agendado
                   </span>
                 </div>

@@ -75,10 +75,55 @@ export const bookTimeSlot = async (studentId, teacherId, date, time) => {
   return res.data;
 };
 
-// Buscar agendamentos
+// Buscar agendamentos com dados completos (nome do aluno e time)
 export const fetchAppointments = async (userId, role) => {
-  const params =
-    role === "teacher" ? { teacherId: userId } : { studentId: userId };
-  const res = await api.get(`/appointments`, { params });
-  return res.data;
+  try {
+    const params =
+      role === "teacher" ? { teacherId: userId } : { studentId: userId };
+
+    // 1. Buscar agendamentos
+    const appointmentsRes = await api.get(`/appointments`, { params });
+    const appointments = appointmentsRes.data;
+
+    if (appointments.length === 0) return [];
+
+    // 2. Buscar todos os usuários
+    const usersRes = await api.get("/users");
+    const users = usersRes.data;
+
+    // 3. Buscar todos os times
+    const teamsRes = await api.get("/teams");
+    const teams = teamsRes.data;
+
+    // 4. Enriquecer os agendamentos com dados do aluno e time
+    const enrichedAppointments = appointments.map((appointment) => {
+      // Encontrar o usuário que fez o agendamento
+      const student = users.find(
+        (user) => user.id.toString() === appointment.studentId.toString()
+      );
+
+      // Encontrar o time do usuário
+      let teamName = "Sem time";
+      if (student && student.teamId) {
+        const team = teams.find(
+          (team) => team.id.toString() === student.teamId.toString()
+        );
+        if (team) {
+          teamName = team.name;
+        }
+      }
+
+      return {
+        ...appointment,
+        studentName: student ? student.name : "Usuário não encontrado",
+        studentCodename: student ? student.codename : "",
+        teamName: teamName,
+      };
+    });
+
+    return enrichedAppointments;
+  } catch (error) {
+    console.error("Erro ao buscar agendamentos:", error);
+    throw error;
+  }
 };

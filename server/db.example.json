@@ -558,7 +558,30 @@
     }
   ],
   "timeSlots": [
+    {
+      "id": "b341",
+      "date": "2025-08-29",
+      "slots": [
+        {
+          "time": "21:00",
+          "available": false,
+          "booked": true
+        },
+        {
+          "time": "21:30",
+          "available": true,
+          "booked": false
+        }
+      ]
+    }
   ],
   "appointments": [
+    {
+      "id": "99a6",
+      "studentId": "3",
+      "teacherId": 1,
+      "date": "2025-08-29",
+      "time": "21:00"
+    }
   ]
 }
