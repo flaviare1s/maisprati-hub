@@ -43,7 +43,6 @@ function App() {
     <div className="overflow-x-hidden">
       <ScrollToTop />
       <Header user={user} />
-      <ChatButton />
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
           <Route
@@ -90,6 +89,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <ChatButton />
       <Footer />
     </div>
   );

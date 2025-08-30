@@ -1,46 +1,27 @@
-import { useState, useEffect } from "react";
-import chatIcon from "../assets/images/chat-icon.png";
+import { useEffect, useRef } from "react";
 
 export const ChatButton = () => {
-  const [botpressLoaded, setBotpressLoaded] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://cdn.botpress.cloud/webchat/v1/inject.js";
-    script.async = true;
-    document.body.appendChild(script);
+    if (initialized.current) return;
+    initialized.current = true;
 
-    script.onload = () => {
-      if (window.botpressWebChat) {
-        window.botpressWebChat.init({
-          clientId: import.meta.env.VITE_BOTPRESS_CLIENT_ID,
-          botName: "ConectaBot",
-          composerPlaceholder: "Digite sua mensagem...",
-          hideWidget: true,
-          hostUrl: "https://cdn.botpress.cloud/webchat/v1",
-          messagingUrl: "https://messaging.botpress.cloud",
-        });
-        setBotpressLoaded(true);
-      }
+    const injectScript = document.createElement("script");
+    injectScript.src = "https://cdn.botpress.cloud/webchat/v3.2/inject.js";
+    injectScript.async = true;
+
+    injectScript.onload = () => {
+      console.log("Botpress inject.js carregado");
+
+      const configScript = document.createElement("script");
+      configScript.src = "https://files.bpcontent.cloud/2025/08/30/12/20250830120814-VEG0PHM8.js";
+      configScript.defer = true;
+      document.body.appendChild(configScript);
     };
 
-    return () => document.body.removeChild(script);
+    document.body.appendChild(injectScript);
   }, []);
 
-  const toggleChat = () => {
-    if (!botpressLoaded) return;
-    window.botpressWebChat.sendEvent({ type: "toggle" });
-  };
-
-  if (!botpressLoaded) return null;
-
-  return (
-    <button
-      onClick={toggleChat}
-      className="fixed bottom-4 right-4 w-14 h-14 bg-orange-logo hover:bg-orange-500 rounded-full flex items-center justify-center shadow-lg z-50 cursor-pointer"
-      aria-label="Abrir Chat"
-    >
-      <img src={chatIcon} alt="Ícone do chat" />
-    </button>
-  );
+  return null;
 };
