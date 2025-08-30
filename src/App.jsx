@@ -10,7 +10,6 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { FAQ } from "./pages/FAQ";
 import { ChatButton } from "./components/ChatButton";
-import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
@@ -44,9 +43,7 @@ function App() {
     <div className="overflow-x-hidden">
       <ScrollToTop />
       <Header user={user} />
-      <div className="fixed bottom-4 right-4 z-50">
-        <ChatButton />
-      </div>
+      <ChatButton />
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
           <Route

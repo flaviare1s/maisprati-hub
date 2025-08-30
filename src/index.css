@@ -92,15 +92,3 @@ body {
 .swiper-button-prev {
   left: -25px !important;
 }
-
-iframe[src*="botpress"],
-.bp-chat-container,
-.bp-web-widget,
-[class*="bp-"] {
-  position: fixed !important;
-  bottom: 80px !important;
-  right: 20px !important;
-  z-index: 1000 !important;
-  max-width: 400px !important;
-  height: 500px !important;
-}
