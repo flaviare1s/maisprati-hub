@@ -17,7 +17,7 @@ export const MenuMobile = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="focus:outline-none cursor-pointer z-50 relative"
+          className="focus:outline-none cursor-pointer z-10 relative"
           aria-label="Abrir menu"
         >
           <HiMenu size={34} />
