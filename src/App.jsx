@@ -9,9 +9,6 @@ import { NotFound } from "./pages/NotFound";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { FAQ } from "./pages/FAQ";
-import { ChatButton } from "./components/ChatButton";
-import { ChatBox } from "./components/ChatBox";
-import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
@@ -29,13 +26,9 @@ import { ProjectBoard } from "./components/project/ProjectBoard";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 
-Modal.setAppElement("#root");
-
-
 function App() {
   const { user } = useAuth();
   const [loadingApp, setLoadingApp] = useState(true)
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setLoadingApp(false);
@@ -49,10 +42,6 @@ function App() {
     <div className="overflow-x-hidden">
       <ScrollToTop />
       <Header user={user} />
-      <div className="fixed bottom-4 right-4 z-50">
-        <ChatButton onClick={() => setIsOpen(true)} />
-        <ChatBox isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">
         <Routes>
           <Route
