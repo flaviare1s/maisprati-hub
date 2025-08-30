@@ -9,7 +9,6 @@ import { NotFound } from "./pages/NotFound";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { FAQ } from "./pages/FAQ";
-import { ChatButton } from "./components/ChatButton";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
@@ -89,7 +88,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <ChatButton />
       <Footer />
     </div>
   );
