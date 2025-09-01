@@ -6,7 +6,7 @@ export const fetchUsers = async () => {
 };
 
 export const createUser = async (userData) => {
-  const response = await api.post("/users", userData);
+  const response = await api.post("/register", userData);
   return response.data;
 };
 
