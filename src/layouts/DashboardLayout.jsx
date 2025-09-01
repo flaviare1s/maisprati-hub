@@ -136,7 +136,7 @@ export const DashboardLayout = () => {
 
   return (
     <div className="p-4 md:px-6 my-auto overflow-x-hidden">
-      <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
+      <div className="flex flex-col-reverse lg:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[240px] order-2 md:order-1">
           <Calendar />
         </div>
