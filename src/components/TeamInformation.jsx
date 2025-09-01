@@ -107,9 +107,9 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
       <div className="mt-6">
         <button
           onClick={() => setShowModal(true)}
-          className="w-full bg-red-secondary hover:bg-red-600 text-light font-bold py-2 px-4 rounded-lg shadow-lg transition-all"
+          className="w-full bg-red-secondary hover:bg-red-primary text-light font-bold py-2 px-4 rounded-lg shadow-lg transition-all uppercase cursor-pointer"
         >
-          Sair do Time
+          Sair do time
         </button>
       </div>
 
