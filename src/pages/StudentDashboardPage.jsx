@@ -71,7 +71,7 @@ export const StudentDashboardPage = () => {
           </div>
           <div>
             <p className="text-sm">Grupo:</p>
-            <p className="text-xl text-blue-logo">{userTeam?.name || "-"}</p>
+            <p className="text-lg font-semibold text-blue-logo">{userTeam?.name || "-"}</p>
           </div>
         </div>
       </div>

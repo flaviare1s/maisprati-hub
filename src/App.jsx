@@ -78,6 +78,7 @@ function App() {
             <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
           </Route>
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/edit-profile/:id" element={<PrivateRoute requiredType="admin"><EditProfile /></PrivateRoute>} />
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
@@ -87,6 +88,7 @@ function App() {
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/401" element={<Forbidden />} />
+          <Route path="/forbidden" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
