@@ -1,7 +1,15 @@
+import { MdManageAccounts } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 export const TeacherProfileTab = ({ user, teams }) => (
   <div className="w-full p-0 text-dark">
     <div className="rounded-lg shadow-md p-4 mb-6">
-      <h3 className="text-lg font-semibold mb-3">Informações gerais:</h3>
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold mb-3">Informações gerais:</h3>
+        <Link to="/edit-profile">
+          <MdManageAccounts className="text-orange-logo text-3xl hover:text-orange-500 cursor-pointer" />
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div><p className="text-sm">Nome:</p><p className="font-semibold">{user.name}</p></div>
         <div><p className="text-sm">E-mail:</p><p className="font-semibold">{user.email}</p></div>

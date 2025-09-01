@@ -25,6 +25,7 @@ import { DashboardLayout } from "./layouts/DashboardLayout";
 import { ProjectBoard } from "./components/project/ProjectBoard";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
+import { EditProfile } from "./pages/EditProfile";
 
 function App() {
   const { user } = useAuth();
@@ -76,6 +77,7 @@ function App() {
             <Route path="admin" element={<TeacherDashboardPage />} />
             <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
           </Route>
+          <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />

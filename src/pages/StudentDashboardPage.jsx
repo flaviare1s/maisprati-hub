@@ -5,6 +5,7 @@ import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
 import { MdManageAccounts } from "react-icons/md";
 import { TeamManagmentModal } from "../components/student-dashboard/TeamManagmentModal";
+import { Link } from "react-router-dom";
 
 export const StudentDashboardPage = () => {
   const { user } = useAuth();
@@ -49,7 +50,12 @@ export const StudentDashboardPage = () => {
       </div>
 
       <div className="rounded-lg shadow-md p-4 mb-6">
-        <h3 className="text-lg font-semibold mb-3">Informações do Usuário</h3>
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-semibold mb-3">Informações do Usuário:</h3>
+          <Link to="/edit-profile">
+            <MdManageAccounts className="text-orange-logo text-3xl hover:text-orange-500 cursor-pointer" />
+          </Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p className="text-sm">Nome:</p>
