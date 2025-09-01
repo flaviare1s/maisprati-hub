@@ -78,7 +78,32 @@ export const EditProfile = () => {
 
     try {
       const targetUserId = id || currentUser.id;
-      const updatedUser = await updateUser(targetUserId, formData);
+
+      // Filtrar dados baseado no tipo de usuário
+      const filteredData = {
+        name: formData.name,
+        email: formData.email,
+        codename: formData.codename
+      };
+
+      // Incluir avatar apenas se foi selecionado
+      if (formData.avatar && formData.avatar.trim() !== '') {
+        filteredData.avatar = formData.avatar;
+      }
+
+      // Adicionar campos específicos apenas para estudantes
+      if (user?.type === 'student') {
+        if (formData.whatsapp) {
+          filteredData.whatsapp = formData.whatsapp;
+        }
+        if (formData.groupClass) {
+          filteredData.groupClass = formData.groupClass;
+        }
+      }
+
+      console.log('Dados filtrados para envio:', filteredData);
+
+      const updatedUser = await updateUser(targetUserId, filteredData);
 
       // Se estiver editando o próprio perfil, atualizar contexto
       if (!id || id === currentUser.id) {
@@ -143,7 +168,7 @@ export const EditProfile = () => {
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-dark mb-2">
               Nome Completo *

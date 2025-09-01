@@ -14,7 +14,7 @@ export const TeacherProfileTab = ({ user, teams }) => (
         <div><p className="text-sm">Nome:</p><p className="font-semibold">{user.name}</p></div>
         <div><p className="text-sm">E-mail:</p><p className="font-semibold">{user.email}</p></div>
         <div><p className="text-sm">Tipo de Usuário:</p><p className="font-semibold text-blue-logo">Administrador</p></div>
-        <div><p className="text-sm">Times Criados:</p><p className="text-xl text-blue-logo">{teams.length}</p></div>
+        <div><p className="text-sm">Times Criados:</p><p className="text-xl text-blue-logo font-semibold">{teams.length}</p></div>
       </div>
     </div>
 
