@@ -106,6 +106,7 @@ export const CodenameSelect = () => {
   const formData = location.state;
 
   const handleCodenameSubmit = async (e) => {
+    console.log("Data being sent:", formData);
     e.preventDefault();
 
     if (!formData) {

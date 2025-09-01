@@ -120,7 +120,7 @@ export const StudentRegister = () => {
         <InputField
           name="type"
           type="hidden"
-          value="student"
+          value="STUDENT"
           register={register}
         />
         <SubmitButton label='Registrar' />
