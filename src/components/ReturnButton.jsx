@@ -1,5 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 export const ReturnButton = () => {
+  const navigate = useNavigate();
+
   return (
-    <div>ReturnButton</div>
-  )
-}
+    <button
+      onClick={() => navigate(-1)}
+      className="text-blue-logo hover:underline cursor-pointer"
+    >
+      &larr; Voltar
+    </button>
+  );
+};
