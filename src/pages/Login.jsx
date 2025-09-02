@@ -2,11 +2,9 @@ import { useForm } from "react-hook-form";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
 import { Link } from "react-router-dom";
-
 import logo from "../assets/images/logo+prati.png";
 import bg from "../assets/images/about-img1.png";
 import { useAuth } from "../hooks/useAuth";
-import { fetchUsers } from "../api.js/users";
 import toast from "react-hot-toast";
 
 export const Login = () => {
@@ -20,20 +18,18 @@ export const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const users = await fetchUsers();
-      const user = users.find(
-        (user) => user.email === data.email && user.password === data.password
-      );
-      console.log(data);
+      await login({
+        email: data.email,
+        password: data.password
+      });
 
-      if (user) {
-        login(user);
-      } else {
-        toast.error("Usuário ou senha inválidos");
-      }
+      toast.success("Login realizado com sucesso!");
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      toast.error("Erro ao conectar com o servidor.");
+      if (error.response?.status === 401) {
+        toast.error("Email ou senha inválidos");
+      } else {
+        toast.error("Erro ao conectar com o servidor");
+      }
     }
   };
 

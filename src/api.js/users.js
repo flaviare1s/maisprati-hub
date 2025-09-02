@@ -1,8 +1,23 @@
 import api from "../services/api.js";
 
 export const fetchUsers = async () => {
-  const response = await api.get("/users");
-  return response.data;
+  try {
+    const response = await api.get("/users");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
+    throw error;
+  }
+};
+
+export const getUserById = async (userId) => {
+  try {
+    const response = await api.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar usuário:", error);
+    throw error;
+  }
 };
 
 export const createUser = async (userData) => {

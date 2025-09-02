@@ -3,7 +3,7 @@ import api from "../services/api.js";
 // Buscar todos os times
 export const fetchTeams = async () => {
   try {
-    const response = await api.get("/teams");
+    const response = await api.get("/teams/active");
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar times:", error);

@@ -93,10 +93,9 @@ const LAST_NAMES = [
   'Realista'
 ];
 
-
 export const CodenameSelect = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, refreshUserData } = useAuth();
   const [selectedFirstName, setSelectedFirstName] = useState('');
   const [selectedLastName, setSelectedLastName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('');
@@ -106,7 +105,6 @@ export const CodenameSelect = () => {
   const formData = location.state;
 
   const handleCodenameSubmit = async (e) => {
-    console.log("Data being sent:", formData);
     e.preventDefault();
 
     if (!formData) {
@@ -139,11 +137,13 @@ export const CodenameSelect = () => {
 
       toast.success("Cadastro realizado com sucesso!");
 
-      login(createdUser);
+      // Aqui usamos o Hook já chamado no topo do componente
+      const completeUser = await refreshUserData();
+      login(completeUser || createdUser);
 
-      if (createdUser.hasGroup) {
+      if ((completeUser || createdUser).hasGroup) {
         navigate("/team-select");
-      } else if (createdUser.wantsGroup) {
+      } else if ((completeUser || createdUser).wantsGroup) {
         navigate("/common-room");
       } else {
         navigate("/dashboard");
