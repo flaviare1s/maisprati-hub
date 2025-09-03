@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { SubmitButton } from "../components/SubmitButton";
 import logo from '../assets/images/logo+prati.png';
 import toast from 'react-hot-toast';
-import { createUser } from "../api.js/users";
+import { registerUser } from "../api.js/auth";
 
 const importAvatars = () => {
   const avatars = [];
@@ -95,7 +95,7 @@ const LAST_NAMES = [
 
 export const CodenameSelect = () => {
   const navigate = useNavigate();
-  const { login, refreshUserData } = useAuth();
+  const { login } = useAuth();
   const [selectedFirstName, setSelectedFirstName] = useState('');
   const [selectedLastName, setSelectedLastName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('');
@@ -123,27 +123,36 @@ export const CodenameSelect = () => {
     try {
       const codename = `${selectedFirstName} ${selectedLastName}`;
 
+      // Formatar dados conforme esperado pelo backend
       const formattedData = {
-        ...formData,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        whatsapp: formData.whatsapp,
+        groupClass: formData.groupClass,
         hasGroup: formData.hasGroup === "sim",
         wantsGroup: formData.wantsGroup === "sim",
         codename,
         avatar: selectedAvatar,
-        type: "student",
-        isFirstLogin: false
+        type: "STUDENT", // Enum conforme definido no backend
+        isFirstLogin: true // Será false após primeiro login
       };
 
-      const createdUser = await createUser(formattedData);
+      // Registrar usuário no backend
+      await registerUser(formattedData);
 
       toast.success("Cadastro realizado com sucesso!");
 
-      // Aqui usamos o Hook já chamado no topo do componente
-      const completeUser = await refreshUserData();
-      login(completeUser || createdUser);
+      // Fazer login automático após registro
+      await login({
+        email: formattedData.email,
+        password: formattedData.password
+      });
 
-      if ((completeUser || createdUser).hasGroup) {
+      // Redirecionamento baseado na escolha do usuário
+      if (formattedData.hasGroup) {
         navigate("/team-select");
-      } else if ((completeUser || createdUser).wantsGroup) {
+      } else if (formattedData.wantsGroup) {
         navigate("/common-room");
       } else {
         navigate("/dashboard");
@@ -151,7 +160,12 @@ export const CodenameSelect = () => {
 
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
-      toast.error("Erro ao realizar cadastro. Tente novamente.");
+
+      if (error.response?.status === 400) {
+        toast.error(error.response.data.error || "Dados inválidos. Verifique os campos.");
+      } else {
+        toast.error("Erro ao realizar cadastro. Tente novamente.");
+      }
     } finally {
       setIsLoading(false);
     }

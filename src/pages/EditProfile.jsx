@@ -2,22 +2,20 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
-import { updateUser } from '../api.js/users';
+import { updateUser, getUserById } from '../api.js/users';
 import { CustomLoader } from '../components/CustomLoader';
 import { ReturnButton } from '../components/ReturnButton';
 import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
-import api from '../services/api';
+import toast from 'react-hot-toast';
 
 export const EditProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user: currentUser, updateUserData } = useAuth();
+  const { user: currentUser, updateUser: updateUserContext, loadUserData } = useAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const {
     register,
@@ -32,7 +30,6 @@ export const EditProfile = () => {
     { value: 'T2', label: 'T2' }
   ];
 
-
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -40,12 +37,11 @@ export const EditProfile = () => {
 
         if (id) {
           // Carregando dados de outro usuário (só admin pode fazer isso)
-          if (currentUser.type !== 'admin') {
+          if (currentUser?.type !== 'admin') {
             navigate('/forbidden');
             return;
           }
-          const response = await api.get(`/users/${id}`);
-          userData = response.data;
+          userData = await getUserById(id);
         } else {
           // Editando próprio perfil
           userData = currentUser;
@@ -62,67 +58,72 @@ export const EditProfile = () => {
         });
       } catch (error) {
         console.error('Erro ao carregar usuário:', error);
-        setError('Erro ao carregar dados do usuário');
+        toast.error('Erro ao carregar dados do usuário');
+        navigate('/dashboard');
       } finally {
         setLoading(false);
       }
     };
 
-    loadUser();
+    if (currentUser) {
+      loadUser();
+    }
   }, [id, currentUser, navigate, reset]);
 
   const onSubmit = async (formData) => {
     setSaving(true);
-    setError('');
-    setSuccess('');
 
     try {
       const targetUserId = id || currentUser.id;
 
-      // Filtrar dados baseado no tipo de usuário
-      const filteredData = {
-        name: formData.name,
-        email: formData.email,
-        codename: formData.codename
+      // Preparar dados para atualização
+      const updateData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        codename: formData.codename.trim()
       };
-
-      // Incluir avatar apenas se foi selecionado
-      if (formData.avatar && formData.avatar.trim() !== '') {
-        filteredData.avatar = formData.avatar;
-      }
 
       // Adicionar campos específicos apenas para estudantes
       if (user?.type === 'student') {
-        if (formData.whatsapp) {
-          filteredData.whatsapp = formData.whatsapp;
+        if (formData.whatsapp && formData.whatsapp.trim()) {
+          updateData.whatsapp = formData.whatsapp.trim();
         }
         if (formData.groupClass) {
-          filteredData.groupClass = formData.groupClass;
+          updateData.groupClass = formData.groupClass;
         }
       }
 
-      console.log('Dados filtrados para envio:', filteredData);
+      console.log('Dados para atualização:', updateData);
 
-      const updatedUser = await updateUser(targetUserId, filteredData);
+      const updatedUser = await updateUser(targetUserId, updateData);
 
       // Se estiver editando o próprio perfil, atualizar contexto
       if (!id || id === currentUser.id) {
-        updateUserData(updatedUser);
+        updateUserContext(updatedUser);
+        // Recarregar dados do usuário para garantir sincronização
+        await loadUserData();
       }
 
-      setSuccess('Perfil atualizado com sucesso!');
+      toast.success('Perfil atualizado com sucesso!');
 
       // Redirecionar após sucesso
       setTimeout(() => {
         if (currentUser.type === 'admin' && id) {
-          navigate('/dashboard/admin');
+          navigate('/dashboard');
         } else {
           navigate('/dashboard');
         }
-      }, 2000);
+      }, 1500);
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
-      setError('Erro ao atualizar perfil. Tente novamente.');
+
+      if (error.response?.status === 400) {
+        toast.error(error.response.data.error || 'Dados inválidos');
+      } else if (error.response?.status === 403) {
+        toast.error('Você não tem permissão para editar este perfil');
+      } else {
+        toast.error('Erro ao atualizar perfil. Tente novamente.');
+      }
     } finally {
       setSaving(false);
     }
@@ -155,20 +156,7 @@ export const EditProfile = () => {
       <div className="bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-dark mb-6">{pageTitle}</h1>
 
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {success}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-dark mb-2">
               Nome Completo *
@@ -176,7 +164,13 @@ export const EditProfile = () => {
             <input
               id="name"
               type="text"
-              {...register('name', { required: 'Nome é obrigatório' })}
+              {...register('name', {
+                required: 'Nome é obrigatório',
+                minLength: {
+                  value: 2,
+                  message: 'Nome deve ter pelo menos 2 caracteres'
+                }
+              })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
             />
             {errors.name && (
@@ -191,7 +185,13 @@ export const EditProfile = () => {
             <input
               id="codename"
               type="text"
-              {...register('codename', { required: 'Nome de Guerra é obrigatório' })}
+              {...register('codename', {
+                required: 'Nome de Guerra é obrigatório',
+                minLength: {
+                  value: 2,
+                  message: 'Nome de Guerra deve ter pelo menos 2 caracteres'
+                }
+              })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
             />
             {errors.codename && (
@@ -209,7 +209,7 @@ export const EditProfile = () => {
               {...register('email', {
                 required: 'Email é obrigatório',
                 pattern: {
-                  value: /^\S+@\S+$/i,
+                  value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
                   message: 'Email inválido'
                 }
               })}
@@ -229,10 +229,18 @@ export const EditProfile = () => {
                 <input
                   id="whatsapp"
                   type="tel"
-                  placeholder="(11) 99999-9999"
-                  {...register('whatsapp')}
+                  placeholder="11999999999 (apenas números)"
+                  {...register('whatsapp', {
+                    pattern: {
+                      value: /^\d{10,11}$/,
+                      message: 'WhatsApp deve conter apenas números (10-11 dígitos)'
+                    }
+                  })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
                 />
+                {errors.whatsapp && (
+                  <p className="mt-1 text-sm text-red-500">{errors.whatsapp.message}</p>
+                )}
               </div>
 
               <SelectField
@@ -249,11 +257,16 @@ export const EditProfile = () => {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 bg-gray-muted text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors"
+              className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors"
+              disabled={saving}
             >
               Cancelar
             </button>
-            <SubmitButton label="Salvar" />
+            <SubmitButton
+              label={saving ? "Salvando..." : "Salvar"}
+              isLoading={saving}
+              disabled={saving}
+            />
           </div>
         </form>
       </div>

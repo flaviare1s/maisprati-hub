@@ -65,7 +65,7 @@ export const UsersManagementTab = () => {
                     />
                     <div>
                       <h4 className="font-semibold">{user.name}</h4>
-                      <p className="text-sm text-gray-muted">@{user.codename}</p>
+                      <p className="text-sm text-gray-muted">{user.codename}</p>
                       <p className="text-sm text-gray-muted">{user.email}</p>
                     </div>
                   </div>

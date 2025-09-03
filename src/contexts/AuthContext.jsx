@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTeamWithMembers } from "../api.js/teams";
-import api from "../services/api";
+import { loginUser, decodeJWT } from "../api.js/auth";
+import { getCurrentUserData } from "../api.js/users";
 
 const AuthContext = createContext();
 export { AuthContext };
@@ -21,22 +22,66 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
+  // Função para carregar dados completos do usuário
+  const loadUserData = async () => {
+    try {
+      const userData = await getCurrentUserData();
+
+      // Atualiza o user no estado e no localStorage
+      const updatedUser = {
+        ...user,
+        ...userData,
+      };
+
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      return updatedUser;
+    } catch (error) {
+      console.error("Erro ao carregar dados do usuário:", error);
+      return user;
+    }
+  };
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    setUserTeam(null);
+    navigate("/login");
+  }, [navigate]);
+
   const login = async ({ email, password }) => {
     try {
       // Chama login no backend
-      const { token } = await api.post("/auth/login", { email, password })
-        .then(res => res.data);
+      const response = await loginUser({ email, password });
+      const { token } = response;
 
       // Salva token no localStorage
       localStorage.setItem("token", token);
 
       // Decodifica o payload do JWT
-      const payload = JSON.parse(atob(token.split(".")[1]));
+      const payload = decodeJWT(token);
+      if (!payload) {
+        throw new Error("Token inválido");
+      }
 
-      // Monta user básico
+      // Busca dados completos do usuário
+      const userData = await getCurrentUserData();
+
+      // Monta user completo
       const loggedUser = {
-        email: payload.sub,
-        type: payload.type,
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        type: userData.type,
+        whatsapp: userData.whatsapp,
+        groupClass: userData.groupClass,
+        hasGroup: userData.hasGroup,
+        wantsGroup: userData.wantsGroup,
+        isFirstLogin: userData.isFirstLogin,
+        codename: userData.codename,
+        avatar: userData.avatar,
         token,
       };
 
@@ -58,14 +103,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    setUserTeam(null);
-    navigate("/login");
-  };
-
   const loadUserTeam = async (teamId = null) => {
     const targetTeamId = teamId || user?.teamId;
     if (targetTeamId) {
@@ -81,8 +118,42 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
+  // Função para atualizar dados do usuário no contexto
+  const updateUser = (newUserData) => {
+    const updatedUser = { ...user, ...newUserData };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
+  // Verificar se token ainda é válido no carregamento inicial
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && user) {
+      try {
+        const payload = decodeJWT(token);
+        const now = Math.floor(Date.now() / 1000);
+
+        // Se o token expirou, faz logout
+        if (payload.exp < now) {
+          logout();
+        }
+      } catch (error) {
+        console.error("Erro ao validar token:", error);
+        logout();
+      }
+    }
+  }, [user, logout]);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, userTeam, loadUserTeam }}>
+    <AuthContext.Provider value={{
+      user,
+      login,
+      logout,
+      userTeam,
+      loadUserTeam,
+      loadUserData,
+      updateUser
+    }}>
       {children}
     </AuthContext.Provider>
   );
