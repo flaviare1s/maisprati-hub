@@ -36,15 +36,16 @@ export const AuthProvider = ({ children }) => {
       // Monta user básico
       const loggedUser = {
         email: payload.sub,
-        role: payload.role,
+        type: payload.type,
         token,
       };
 
       localStorage.setItem("user", JSON.stringify(loggedUser));
       setUser(loggedUser);
+      console.log("Usuário logado:", loggedUser);
 
-      // Redirecionamento baseado no role
-      if (loggedUser.role === "admin") {
+      // Redirecionamento baseado no type
+      if (loggedUser.type === "admin") {
         navigate("/dashboard");
       } else {
         navigate("/dashboard");
