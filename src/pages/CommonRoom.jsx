@@ -195,12 +195,6 @@ export const CommonRoom = () => {
       const users = await fetchUsers();
       const commentAuthor = users.find(u => u.id === userId) || user;
 
-      console.log("Debug comentário:", {
-        userId,
-        commentAuthor,
-        users: users.map(u => ({ id: u.id, codename: u.codename, name: u.name }))
-      });
-
       // Adicionar à lista local com dados corretos do usuário
       const commentWithUser = {
         ...newComment,

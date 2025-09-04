@@ -93,8 +93,6 @@ export const EditProfile = () => {
         }
       }
 
-      console.log('Dados para atualização:', updateData);
-
       const updatedUser = await updateUser(targetUserId, updateData);
 
       // Se estiver editando o próprio perfil, atualizar contexto

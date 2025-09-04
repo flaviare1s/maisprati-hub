@@ -82,12 +82,7 @@ export const validateTeamCode = async (teamId, securityCode) => {
 // Adicionar membro ao time
 export const addMemberToTeam = async (teamId, memberData) => {
   try {
-    console.log("Enviando dados para adicionar membro:", {
-      teamId,
-      memberData,
-    });
     const response = await api.post(`/teams/${teamId}/members`, memberData);
-    console.log("Resposta do servidor:", response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao adicionar membro ao time:", error);

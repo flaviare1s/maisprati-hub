@@ -61,9 +61,6 @@ export const CreateTeam = () => {
         maxMembers: parseInt(data.maxMembers)
       };
 
-      console.log('Dados enviados para o backend:', teamToCreate);
-      console.log('User ID:', user.id);
-
       const createdTeam = await createTeam(teamToCreate, user.id);
 
       navigate('/dashboard', {

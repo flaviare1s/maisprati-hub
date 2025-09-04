@@ -87,7 +87,6 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem("user", JSON.stringify(loggedUser));
       setUser(loggedUser);
-      console.log("Usuário logado:", loggedUser);
 
       // Redirecionamento baseado no type
       if (loggedUser.type === "admin") {

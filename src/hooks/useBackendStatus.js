@@ -17,7 +17,6 @@ export const useBackendStatus = () => {
 
         if (response.status === 200) {
           setIsConnected(true);
-          console.log("✅ Backend conectado:", response.data);
         }
       } catch (error) {
         setIsConnected(false);
@@ -28,7 +27,6 @@ export const useBackendStatus = () => {
         try {
           await api.get("/users", { timeout: 5000 });
           setIsConnected(true);
-          console.log("✅ Backend conectado via /users");
         } catch (secondError) {
           console.error("❌ Falha total na conexão:", secondError);
         }
