@@ -54,11 +54,12 @@ export const CreateTeam = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // Enviar apenas os campos que o backend espera (sem securityCode)
+      // Enviar todos os campos incluindo o securityCode gerado no front
       const teamToCreate = {
         name: data.name,
         description: data.description || '',
-        maxMembers: parseInt(data.maxMembers)
+        maxMembers: parseInt(data.maxMembers),
+        securityCode: data.securityCode
       };
 
       const createdTeam = await createTeam(teamToCreate, user.id);
