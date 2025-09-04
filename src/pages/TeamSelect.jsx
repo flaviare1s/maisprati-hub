@@ -68,7 +68,8 @@ export const TeamSelect = () => {
       navigate('/dashboard');
 
     } catch (error) {
-      toast.error(error.message || "Código inválido");
+      const errorMessage = error.response?.data?.error || error.message || "Código inválido";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
