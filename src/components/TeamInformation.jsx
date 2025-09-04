@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { sendNotificationToTeacher } from "../api.js/notifications";
 import { removeMemberFromTeam } from "../api.js/teams";
 import toast from "react-hot-toast";
 import { LeaveTeamModal } from "./student-dashboard/LeaveTeamModal";
@@ -17,12 +16,8 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
     }
 
     try {
-      await sendNotificationToTeacher(
-        user.name,
-        `Solicitação de saída do time ${userTeam.name}. Motivo: ${reason}`
-      );
-
-      await removeMemberFromTeam(userTeam.id, user.id);
+      // Agora o backend automaticamente notifica o admin
+      await removeMemberFromTeam(userTeam.id, user.id, reason);
 
       setUserTeam((prev) => ({
         ...prev,

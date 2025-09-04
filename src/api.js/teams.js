@@ -120,9 +120,12 @@ export const updateMemberRole = async (
 };
 
 // Remover membro do time
-export const removeMemberFromTeam = async (teamId, userId) => {
+export const removeMemberFromTeam = async (teamId, userId, reason = null) => {
   try {
-    const response = await api.delete(`/teams/${teamId}/members/${userId}`);
+    const requestBody = reason ? { reason } : {};
+    const response = await api.delete(`/teams/${teamId}/members/${userId}`, {
+      data: requestBody,
+    });
     return response.data;
   } catch (error) {
     console.error("Erro ao remover membro do time:", error);
