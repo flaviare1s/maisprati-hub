@@ -3,7 +3,7 @@ import api from "../services/api";
 // Buscar todas as notificações de um usuário
 export const getUserNotifications = async (userId) => {
   try {
-    const response = await api.get('/notifications', {
+    const response = await api.get("/notifications", {
       params: { userId },
     });
     return response.data;
@@ -16,10 +16,7 @@ export const getUserNotifications = async (userId) => {
 // Criar nova notificação
 export const createNotification = async (notificationData) => {
   try {
-    const response = await api.post(
-      '/notifications',
-      notificationData
-    );
+    const response = await api.post("/notifications", notificationData);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar notificação:", error);
@@ -38,18 +35,13 @@ export const deleteNotification = async (notificationId) => {
   }
 };
 
-// Criar notificação para o professor com (ID 1)
+// Criar notificação para o professor (admin) - versão corrigida
 export const sendNotificationToTeacher = async (studentName, message) => {
   try {
-    const notification = {
-      userId: 1, // ID do professor
-      title: `Nova mensagem do aluno ${studentName}`,
-      message: `${studentName}: ${message}`,
-      createdAt: new Date().toISOString(),
-      isRead: false,
-    };
-
-    const response = await api.post("/notifications", notification);
+    const response = await api.post("/notifications/send-to-admin", {
+      studentName,
+      message,
+    });
     return response.data;
   } catch (error) {
     console.error("Erro ao enviar notificação para o professor:", error);
