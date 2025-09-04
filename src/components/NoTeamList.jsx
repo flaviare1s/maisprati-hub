@@ -31,15 +31,6 @@ export const NoTeamList = ({ heroes, handleStartChat, handleSendInvite }) => {
                 <h4 className="font-semibold text-dark">{hero.codename}</h4>
                 <p className="text-sm text-blue-logo">{hero.specialty}</p>
               </div>
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  hero.status === "looking"
-                    ? "bg-green-400"
-                    : hero.status === "available"
-                    ? "bg-yellow-400"
-                    : "bg-red-400"
-                }`}
-              ></div>
             </div>
 
             <div className="flex gap-2 flex-col">
