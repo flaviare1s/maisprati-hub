@@ -124,13 +124,16 @@ export const StudentDashboardPage = () => {
           <p className="text-center text-gray-600">
             Você indicou que possui grupo, mas ainda não foi encontrado nenhum time ativo.
           </p>
+            <Link to="/common-room" className="text-blue-logo hover:underline text-center block">
+              Acesse a Sala Comum para encontrar seu grupo.
+            </Link>
         </div>
       ) : user.wantsGroup ? (
         <div className="rounded-lg shadow-md p-4">
           <p className="text-center text-gray-600">
             Você ainda não faz parte de nenhum grupo.{" "}
             <Link to="/common-room" className="text-blue-logo hover:underline">
-              Acesse a Sala Comum para encontrar ou criar um grupo.
+              Acesse a Sala Comum para entrar em um grupo.
             </Link>
           </p>
         </div>
