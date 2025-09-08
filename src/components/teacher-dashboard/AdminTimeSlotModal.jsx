@@ -83,26 +83,26 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
 
       if (slotExists) {
         if (newAvailability) {
-          // Tornando disponível - atualizar slot existente
+          // Tornando disponível - usar createTimeSlots
           updatedSlots = existingSlots.map(s =>
             s.time === slot.time ? { ...s, available: true } : s
           );
         } else {
-          // Removendo disponibilidade - remover do array
-          updatedSlots = existingSlots.filter(s => s.time !== slot.time || s.booked === true);
+          // Removendo disponibilidade - filtrar do array
+          updatedSlots = existingSlots.filter(s => s.time !== slot.time);
         }
       } else {
         // Adicionar novo slot (sempre disponível quando adicionado)
         updatedSlots = [...existingSlots, { time: slot.time, available: true, booked: false }];
       }
 
-      // Salvar apenas slots que são disponíveis ou agendados
-      await createTimeSlots(currentAdminId, dateString, updatedSlots);
+      // Salvar no banco
+      const result = await createTimeSlots(currentAdminId, dateString, updatedSlots);
+      console.log("Resultado da API createTimeSlots:", result);
 
-      // Atualizar interface local
-      setTimeSlots(prev =>
-        prev.map(s => (s.time === slot.time ? { ...s, available: newAvailability } : s))
-      );
+      // Atualizar interface local - recriar slots completos
+      const newTimeSlots = generateDaySlots(updatedSlots, 30, selectedDate);
+      setTimeSlots(newTimeSlots);
 
       toast.success(newAvailability ? 'Horário disponibilizado!' : 'Horário removido!');
 
