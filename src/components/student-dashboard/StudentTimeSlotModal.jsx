@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import { bookTimeSlot, fetchTimeSlots } from "../../api.js/schedule";
+import { fetchTimeSlots } from "../../api.js/schedule";
 import api from "../../services/api";
 
 const generateDaySlots = (existingSlots = []) => {
@@ -58,7 +58,10 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
   }, [open, selectedDate]);
 
   const handleTimeSlotClick = async (slot) => {
-    if (!slot.available || slot.booked) return;
+    if (!slot.available || slot.booked) {
+      toast.error("Este horário não está disponível");
+      return;
+    }
 
     try {
       // Buscar admin via API service
@@ -73,12 +76,18 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         return;
       }
 
-      await bookTimeSlot({
+      // Usar endpoint correto de appointments
+      const appointmentData = {
         adminId: admin.id,
         studentId,
         date: selectedDate.format("YYYY-MM-DD"),
-        time: slot.time
-      });
+        time: slot.time + ":00" // Adicionar segundos para LocalTime
+      };
+
+      console.log("Criando appointment:", appointmentData);
+
+      const response = await api.post("/appointments", appointmentData);
+      console.log("Appointment criado:", response.data);
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>
