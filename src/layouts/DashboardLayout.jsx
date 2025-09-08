@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
-import { fetchActiveTeams, fetchTeams, isUserInActiveTeam } from '../api.js/teams';
+import { fetchActiveTeams, isUserInActiveTeam } from '../api.js/teams';
 import { isAdmin } from '../utils/permissions';
 
 export const DashboardLayout = () => {
