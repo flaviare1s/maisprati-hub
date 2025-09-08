@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import { bookTimeSlot, fetchTimeSlots, updateTimeSlotAvailability } from "../api.js/schedule";
+import { createTimeSlots, fetchTimeSlots } from "../api.js/schedule";
 
 const generateDaySlots = (existingSlots = [], interval = 30) => {
   const startHour = 6;
@@ -51,8 +51,10 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, studentId, adminId 
   }, [open, selectedDate, adminId, isStudent]);
 
   const handleTimeSlotClick = async (slot) => {
-    if (isStudent) {
-      if (!slot.available || slot.booked) return;
+    if (!isStudent) {
+      if (slot.booked) return;
+
+      const newAvailability = !slot.available;
 
       try {
         let currentAdminId = adminId;
@@ -61,29 +63,26 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, studentId, adminId 
           currentAdminId = user?.id;
         }
 
-        await bookTimeSlot(studentId, currentAdminId, selectedDate.format("YYYY-MM-DD"), slot.time);
-        toast.success(`Horário ${slot.time} reservado com sucesso!`);
-        setTimeSlots((prev) =>
-          prev.map((s) =>
-            s.time === slot.time ? { ...s, booked: true, available: false } : s
-          )
-        );
-        onClose();
-      } catch (error) {
-        toast.error(error.message || "Erro ao reservar horário");
-      }
-    } else {
-      if (slot.booked) return;
-      const newAvailability = !slot.available;
-      try {
-        await updateTimeSlotAvailability(selectedDate.format("YYYY-MM-DD"), slot.time, newAvailability);
-        setTimeSlots((prev) =>
-          prev.map((s) =>
+        const existingSlots = await fetchTimeSlots(currentAdminId, selectedDate.format("YYYY-MM-DD"));
+
+        let updatedSlots;
+        const slotExists = existingSlots.some(s => s.time === slot.time);
+
+        if (slotExists) {
+          updatedSlots = existingSlots.map(s =>
             s.time === slot.time ? { ...s, available: newAvailability } : s
-          )
+          );
+        } else {
+          updatedSlots = [...existingSlots, { time: slot.time, available: newAvailability }];
+        }
+
+        await createTimeSlots(currentAdminId, selectedDate.format("YYYY-MM-DD"), updatedSlots);
+
+        setTimeSlots(prev =>
+          prev.map(s => (s.time === slot.time ? { ...s, available: newAvailability } : s))
         );
       } catch (error) {
-        toast.error("Erro ao atualizar disponibilidade");
+        toast.error("Erro ao atualizar/criar slot");
         console.error(error);
       }
     }

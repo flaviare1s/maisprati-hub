@@ -15,12 +15,31 @@ export const fetchTimeSlots = async (adminId, date) => {
     const res = await api.get(`/timeslots/days/${date}`, {
       params: { adminId },
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`, // enviar token se houver
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
       },
     });
     return res.data?.slots || [];
   } catch (error) {
     console.error("Erro ao buscar slots:", error.response || error);
+    throw error;
+  }
+};
+
+// Disponibilizar novos horários para um dia (admin)
+export const createTimeSlots = async (adminId, date, slots) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.post(
+      `/timeslots/days`,
+      slots, // lista de slots no body
+      {
+        params: { adminId, date },
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Erro ao criar slots:", error.response || error);
     throw error;
   }
 };
