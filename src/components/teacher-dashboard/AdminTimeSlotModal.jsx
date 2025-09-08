@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 import { fetchTimeSlots, createTimeSlots } from "../../api.js/schedule";
 
-const generateDaySlots = (existingSlots = [], interval = 30) => {
+const generateDaySlots = (existingSlots = [], interval = 30, selectedDate) => {
   const startHour = 6;
   const endHour = 23;
   const slots = [];
+  const now = dayjs();
+  const isToday = selectedDate && selectedDate.isSame(now, 'day');
 
   for (let hour = startHour; hour <= endHour; hour++) {
     for (let min = 0; min < 60; min += interval) {
@@ -14,8 +17,20 @@ const generateDaySlots = (existingSlots = [], interval = 30) => {
       const time = `${hour.toString().padStart(2, "0")}:${min
         .toString()
         .padStart(2, "0")}`;
+
+      // Verificar se o horário já passou (apenas para hoje)
+      const isPastTime = isToday && now.isAfter(selectedDate.hour(hour).minute(min));
+
       const existing = existingSlots.find((s) => s.time === time);
-      slots.push(existing || { time, available: false, booked: false });
+      const slot = existing || { time, available: false, booked: false };
+
+      // Se já passou, marcar como indisponível e não clicável
+      if (isPastTime) {
+        slot.available = false;
+        slot.isPast = true;
+      }
+
+      slots.push(slot);
     }
   }
 
@@ -38,7 +53,7 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
 
         const existingSlots = await fetchTimeSlots(currentAdminId, dateString);
 
-        setTimeSlots(generateDaySlots(existingSlots));
+        setTimeSlots(generateDaySlots(existingSlots, 30, selectedDate));
       } catch (error) {
         toast.error("Erro ao carregar horários");
         console.error(error);
@@ -51,7 +66,8 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
   }, [open, selectedDate, adminId]);
 
   const handleTimeSlotClick = async (slot) => {
-    if (slot.booked) return;
+    // Não permitir clicar em slots agendados ou horários passados
+    if (slot.booked || slot.isPast) return;
 
     const newAvailability = !slot.available;
 
@@ -65,27 +81,30 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
       let updatedSlots;
       const slotExists = existingSlots.some(s => s.time === slot.time);
 
-
       if (slotExists) {
-        // Atualizar slot existente
-        updatedSlots = existingSlots.map(s =>
-          s.time === slot.time ? { ...s, available: newAvailability } : s
-        );
+        if (newAvailability) {
+          // Tornando disponível - atualizar slot existente
+          updatedSlots = existingSlots.map(s =>
+            s.time === slot.time ? { ...s, available: true } : s
+          );
+        } else {
+          // Removendo disponibilidade - remover do array
+          updatedSlots = existingSlots.filter(s => s.time !== slot.time || s.booked === true);
+        }
       } else {
-        // Adicionar novo slot
-        updatedSlots = [...existingSlots, { time: slot.time, available: newAvailability, booked: false }];
+        // Adicionar novo slot (sempre disponível quando adicionado)
+        updatedSlots = [...existingSlots, { time: slot.time, available: true, booked: false }];
       }
 
-      // Filtrar apenas slots que devem ser mantidos (disponíveis ou agendados)
-      const finalSlots = updatedSlots.filter(s => s.available === true || s.booked === true);
-
-
-      await createTimeSlots(currentAdminId, dateString, finalSlots);
+      // Salvar apenas slots que são disponíveis ou agendados
+      await createTimeSlots(currentAdminId, dateString, updatedSlots);
 
       // Atualizar interface local
       setTimeSlots(prev =>
         prev.map(s => (s.time === slot.time ? { ...s, available: newAvailability } : s))
       );
+
+      toast.success(newAvailability ? 'Horário disponibilizado!' : 'Horário removido!');
 
     } catch (error) {
       toast.error("Erro ao atualizar/criar slot");
@@ -126,6 +145,9 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
                 if (slot.booked) {
                   bgClass = "bg-red-50 text-red-500 border border-red-200 opacity-90";
                   cursorClass = "cursor-not-allowed";
+                } else if (slot.isPast) {
+                  bgClass = "bg-gray-50 text-gray-400 border border-gray-200 opacity-50";
+                  cursorClass = "cursor-not-allowed";
                 } else if (!slot.available) {
                   bgClass = "bg-gray-100 text-gray-500 border border-gray-300 hover:bg-gray-200";
                 } else {
@@ -137,7 +159,7 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
                   <button
                     key={idx}
                     onClick={() => handleTimeSlotClick(slot)}
-                    disabled={slot.booked}
+                    disabled={slot.booked || slot.isPast}
                     className={`py-3 px-2 rounded-lg text-sm font-medium transition-all duration-200 ${bgClass} ${cursorClass}`}
                   >
                     {slot.time}
