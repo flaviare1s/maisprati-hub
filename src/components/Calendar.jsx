@@ -1,140 +1,160 @@
-import { useState } from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import { Card, CardContent, Typography, Box } from '@mui/material';
-import { TimeSlotModal } from './TimeSlotModal';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
-import { useAuth } from '../hooks/useAuth';
-
-dayjs.locale('pt-br');
+import { useState, useCallback } from "react";
+import dayjs from "dayjs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
+import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
+import { useAuth } from "../hooks/useAuth";
 
 export const Calendar = () => {
   const { user } = useAuth();
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(null); // Iniciar como null
+  const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
 
-  const adminId = user?.type === "admin" ? user.id : null;
+  const startOfMonth = currentMonth.startOf("month");
+  const endOfMonth = currentMonth.endOf("month");
+  const startOfWeek = startOfMonth.startOf("week");
+  const endOfWeek = endOfMonth.endOf("week");
 
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
+  const handlePrevMonth = useCallback(() => {
+    setCurrentMonth((prev) => prev.subtract(1, "month"));
+  }, []);
 
-    if (user?.type !== 'admin' && !newDate.isBefore(dayjs(), 'day')) {
+  const handleNextMonth = useCallback(() => {
+    setCurrentMonth((prev) => prev.add(1, "month"));
+  }, []);
+
+  const isAdmin = user?.type === "admin";
+
+  const handleDateClick = useCallback(
+    (date) => {
+      // Só permite datas futuras ou hoje
+      if (date.isBefore(dayjs(), "day")) {
+        return;
+      }
+
+
+      // Forçar atualização da data
+      setSelectedDate(dayjs(date)); // Criar novo objeto dayjs
       setModalOpen(true);
+
+
+    },
+    [setSelectedDate, setModalOpen]
+  );
+
+  const renderCalendarDays = () => {
+    const days = [];
+    let day = startOfWeek;
+
+    while (day.isBefore(endOfWeek) || day.isSame(endOfWeek)) {
+      const isCurrentMonth = day.isSame(currentMonth, "month");
+      const isToday = day.isSame(dayjs(), "day");
+      const isSelected = selectedDate && day.isSame(selectedDate, "day");
+      const isPast = day.isBefore(dayjs(), 'day');
+
+      const currentDay = dayjs(day); // Criar cópia para não ter referência compartilhada
+
+      days.push(
+        <button
+          key={currentDay.format("YYYY-MM-DD")}
+          onClick={() => {
+            handleDateClick(currentDay);
+          }}
+          disabled={isPast}
+          className={`
+            w-8 h-8 flex items-center justify-center text-sm rounded-lg transition-all duration-200
+            ${!isCurrentMonth ? "text-gray-300" : ""}
+            ${isToday ? "bg-blue-100 text-blue-600 font-semibold" : ""}
+            ${isSelected && !isToday ? "bg-blue-500 text-white" : ""}
+            ${isPast ? "text-gray-300 cursor-not-allowed" : "hover:bg-blue-50 cursor-pointer"}
+            ${!isToday && !isSelected && isCurrentMonth && !isPast ? "text-gray-700" : ""}
+          `}
+        >
+          {currentDay.date()}
+        </button>
+      );
+      day = day.add(1, "day");
     }
+
+    return days;
   };
 
-  const handleCloseModal = () => setModalOpen(false);
-
-  const getSelectedDateInfo = () => {
-    const today = dayjs();
-    const isPast = selectedDate.isBefore(today, 'day');
-    const isToday = selectedDate.isSame(today, 'day');
-    const isWeekend = selectedDate.day() === 0 || selectedDate.day() === 6;
-
-    if (isPast) return { status: 'Passado', color: '#aaa' };
-    if (isWeekend) return { status: 'Fim de semana', color: '#555' };
-    if (isToday) return { status: 'Hoje', color: '#007DE3' };
-    return { status: 'Futuro', color: '#007DE3' };
-  };
-
-  const CustomPickersDay = ({ day, outsideCurrentMonth, ...other }) => {
-    const today = dayjs();
-    const isToday = day.isSame(today, 'day');
-    const isPast = day.isBefore(today, 'day');
-    const isWeekend = day.day() === 0 || day.day() === 6;
-
-    let color = '#444';
-    let isClickable = true;
-
-    if (outsideCurrentMonth || isPast) {
-      color = '#ccc';
-      isClickable = false;
-    } else if (isToday) {
-      color = '#007de3';
-    } else if (isWeekend) {
-      color = '#555';
-    }
-
-    return (
-      <PickersDay
-        {...other}
-        day={day}
-        sx={{
-          width: 36,
-          height: 36,
-          borderRadius: '50%',
-          color,
-          fontWeight: isToday ? 'bold' : '500',
-          '&.Mui-selected': {
-            backgroundColor: '#FE8822',
-            color: '#fff',
-          },
-          pointerEvents: isClickable ? 'auto' : 'none',
-        }}
-        disabled={!isClickable}
-      />
-    );
+  const handleModalClose = () => {
+    setModalOpen(false);
   };
 
   return (
-  
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-        <Card
-          sx={{
-            width: '100%',
-            maxWidth: '100%',
-            mx: 'auto',
-          backgroundColor: '#f3f4f6',
-            borderRadius: 2,
-            p: 0,
-          }}
+    <div className="w-full bg-white rounded-lg shadow-md p-4">
+      {/* Header do Calendário */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={handlePrevMonth}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          <CardContent sx={{ p: 1 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ mb: 1, fontWeight: 'bold', textAlign: 'center', color: 'text.primary' }}
-            >
-              Calendário
-            </Typography>
+          <ChevronLeft size={16} />
+        </button>
+        <h2 className="text-lg font-semibold text-gray-800">
+          {currentMonth.format("MMMM YYYY")}
+        </h2>
+        <button
+          onClick={handleNextMonth}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <DateCalendar
-                value={selectedDate}
-                onChange={handleDateChange}
-                slots={{ day: CustomPickersDay }}
-                sx={{
-                  '& .MuiPickersCalendarHeader-root': { color: 'text.primary', mb: 1 },
-                  '& .MuiDayCalendar-header .MuiTypography-root': { color: 'text.secondary', fontWeight: 600 },
-                }}
-              />
-            </Box>
+      {/* Dias da Semana */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
+          <div
+            key={day}
+            className="h-8 flex items-center justify-center text-xs font-medium text-gray-500"
+          >
+            {day}
+          </div>
+        ))}
+      </div>
 
-            <Typography
-              variant="caption"
-              sx={{
-                mt: 1,
-                display: 'block',
-                textAlign: 'center',
-                color: getSelectedDateInfo().color,
-                fontWeight: 500,
-              }}
-            >
-              {selectedDate.format('DD/MM/YYYY')} - {getSelectedDateInfo().status}
-            </Typography>
-          </CardContent>
-        </Card>
+      {/* Dias do Calendário */}
+      <div className="grid grid-cols-7 gap-1">{renderCalendarDays()}</div>
 
-        <TimeSlotModal
-          open={modalOpen}
-          onClose={handleCloseModal}
-          selectedDate={selectedDate}
-          adminId={adminId}
-          studentId={user?.id || 0}
-        />
-      </LocalizationProvider>
+      {/* Debug */}
+      <div className="mt-2 text-xs text-gray-500 text-center">
+        Data selecionada:{" "}
+        {selectedDate ? selectedDate.format("DD/MM/YYYY") : "Nenhuma"}
+      </div>
 
+      {/* Modais - só renderiza se selectedDate existir */}
+      {modalOpen && selectedDate && (
+        <>
+          {isAdmin ? (
+            <AdminTimeSlotModal
+              open={modalOpen}
+              onClose={handleModalClose}
+              selectedDate={selectedDate}
+              adminId={user?.id}
+            />
+          ) : (
+            <StudentTimeSlotModal
+              open={modalOpen}
+              onClose={handleModalClose}
+              selectedDate={selectedDate}
+              studentId={user?.id}
+            />
+          )}
+        </>
+      )}
+
+      {/* Legenda */}
+      <div className="mt-4 pt-3 border-t border-gray-200">
+        <p className="text-xs text-gray-500 text-center">
+          {isAdmin
+            ? "Clique em uma data para gerenciar horários"
+            : "Clique em uma data para agendar"}
+        </p>
+      </div>
+    </div>
   );
 };

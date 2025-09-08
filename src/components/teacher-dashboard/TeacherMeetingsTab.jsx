@@ -2,86 +2,34 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
-import { TimeSlotModal } from "../TimeSlotModal";
 
 export const TeacherMeetingsTab = ({ adminId }) => {
-  const [selectedDate, setSelectedDate] = useState(dayjs());
   const [appointments, setAppointments] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const loadAppointments = async () => {
-    try {
-      if (!adminId) {
-        console.error("AdminId não fornecido!");
-        return;
-      }
-
-      const data = await fetchAppointments(adminId, "admin");
-      setAppointments(data);
-    } catch (error) {
-      console.error("Erro ao carregar agendamentos", error);
-    }
-  };
 
   useEffect(() => {
+    const loadAppointments = async () => {
+      try {
+        if (!adminId) {
+          console.error("AdminId não fornecido!");
+          return;
+        }
+
+        const data = await fetchAppointments(adminId, "admin");
+        setAppointments(data);
+      } catch (error) {
+        console.error("Erro ao carregar agendamentos", error);
+      }
+    };
+
     loadAppointments();
   }, [adminId]);
-
-  const handleDateChange = (e) => {
-    const newDate = dayjs(e.target.value);
-    setSelectedDate(newDate);
-  };
-
-  // Função para obter a data mínima (hoje)
-  const getMinDate = () => {
-    return dayjs().format("YYYY-MM-DD");
-  };
-
-  // Função para obter a data máxima (3 meses à frente)
-  const getMaxDate = () => {
-    return dayjs().add(3, "months").format("YYYY-MM-DD");
-  };
 
   return (
     <div className="w-full">
       <h3 className="text-lg text-dark font-semibold mb-1">Gerenciar Reuniões</h3>
-      <p className="text-gray-muted mb-3">
-        Selecione uma data e configure os horários disponíveis para os alunos agendarem.
+      <p className="text-gray-muted mb-6">
+        Clique em um dia no calendário lateral para gerenciar os horários disponíveis para os alunos agendarem.
       </p>
-
-      {/* Seletor de Data */}
-      <div className="mb-4 space-y-3">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="date-picker" className="text-sm font-medium text-dark">
-            Selecione a data:
-          </label>
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-xs">
-              <input
-                id="date-picker"
-                type="date"
-                value={selectedDate.format("YYYY-MM-DD")}
-                onChange={handleDateChange}
-                min={getMinDate()}
-                max={getMaxDate()}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <Calendar className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 pointer-events-none" />
-            </div>
-            <span className="text-xs text-gray-muted">
-              {selectedDate.format("ddd, DD/MM")}
-            </span>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setModalOpen(true)}
-          className="bg-blue-logo text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors cursor-pointer flex items-center gap-1 m-auto sm:m-0"
-        >
-          <Calendar size={16} />
-          Horários - {selectedDate.format("DD/MM/YYYY")}
-        </button>
-      </div>
 
       {/* Lista de Agendamentos */}
       <div className="mb-6">
@@ -131,17 +79,6 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           )}
         </div>
       </div>
-
-      {/* Modal de Horários */}
-      {modalOpen && (
-        <TimeSlotModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          selectedDate={selectedDate}
-          adminId={adminId}
-          studentId={null}
-        />
-      )}
 
       {/* Legenda */}
       <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-light rounded-lg">

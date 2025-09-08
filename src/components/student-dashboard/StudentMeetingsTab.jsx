@@ -3,13 +3,10 @@ import dayjs from "dayjs";
 import { fetchAppointments } from "../../api.js/schedule";
 import { fetchTeams } from "../../api.js/teams";
 import { useAuth } from "../../hooks/useAuth";
-import { TimeSlotModal } from "../TimeSlotModal";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState([]);
-  const [selectedDate] = useState(dayjs());
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -55,27 +52,11 @@ export const StudentMeetingsTab = () => {
           ))}
       </div>
 
-      <TimeSlotModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        selectedDate={selectedDate}
-        adminId={1}
-        studentId={user.id}
-      />
-
-      <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg ">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-600 rounded-full" />
-          <span className="text-xs text-gray-500">Disponível</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-red-500 rounded-full" />
-          <span className="text-xs text-gray-500">Agendado</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-gray-400 rounded-full" />
-          <span className="text-xs text-gray-500">Indisponível</span>
-        </div>
+      {/* Legenda - agora apenas informativa, já que o agendamento é feito pelo calendário */}
+      <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg">
+        <p className="text-xs text-gray-600 text-center">
+          💡 Para agendar novas reuniões, clique em um dia no calendário lateral
+        </p>
       </div>
     </div>
   );
