@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { fetchActiveTeams, getTeamWithMembers, checkUserTeamStatus } from "../api.js/teams";
 import { CustomLoader } from "../components/CustomLoader";
@@ -8,32 +8,45 @@ import { TeamManagmentModal } from "../components/student-dashboard/TeamManagmen
 import { Link } from "react-router-dom";
 
 export const StudentDashboardPage = () => {
-  const { user, loadUserData } = useAuth();
+  const { user } = useAuth();
   const [userTeam, setUserTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
 
+  // Memoiza o userId para evitar re-execuções desnecessárias
+  const userId = useMemo(() => {
+    if (!user) return null;
+
+    if (user.id && typeof user.id === 'string') {
+      return user.id;
+    } else if (user._id && typeof user._id === 'string') {
+      return user._id;
+    } else if (user.id && typeof user.id === 'number') {
+      return String(user.id);
+    } else if (user._id && typeof user._id === 'number') {
+      return String(user._id);
+    }
+
+    return null;
+  }, [user]);
+
   useEffect(() => {
     const loadUserTeam = async () => {
-      if (!user) {
+      if (!user || !userId) {
         setLoading(false);
         return;
       }
 
       try {
-        // Primeiro, recarrega os dados atualizados do usuário
-        const updatedUser = await loadUserData();
-        const currentUser = updatedUser || user;
-
         // Verifica se o usuário está em algum time ativo
-        const teamStatus = await checkUserTeamStatus(currentUser.id);
+        const teamStatus = await checkUserTeamStatus(userId);
 
-        if (teamStatus.isInActiveTeam) {
+        if (teamStatus && teamStatus.isInActiveTeam) {
           // Se está em um time, busca todos os times ativos para encontrar o dele
           const teams = await fetchActiveTeams();
           const userTeamData = teams.find((team) =>
             team.members && team.members.some(
-              (member) => member.userId === currentUser.id
+              (member) => member.userId === userId
             )
           );
 
@@ -50,7 +63,7 @@ export const StudentDashboardPage = () => {
     };
 
     loadUserTeam();
-  }, [user, loadUserData]);
+  }, [userId, user]); // Agora depende do userId estável e user
 
   if (loading) {
     return <CustomLoader />;
@@ -124,9 +137,9 @@ export const StudentDashboardPage = () => {
           <p className="text-center text-gray-600">
             Você indicou que possui grupo, mas ainda não foi encontrado nenhum time ativo.
           </p>
-            <Link to="/common-room" className="text-blue-logo hover:underline text-center block">
-              Acesse a Sala Comum para entrar no seu grupo.
-            </Link>
+          <Link to="/common-room" className="text-blue-logo hover:underline text-center block">
+            Acesse a Sala Comum para entrar no seu grupo.
+          </Link>
         </div>
       ) : user.wantsGroup ? (
         <div className="rounded-lg shadow-md p-4">

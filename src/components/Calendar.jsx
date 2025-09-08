@@ -20,7 +20,10 @@ export const Calendar = () => {
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
-    if (!newDate.isBefore(dayjs(), 'day')) setModalOpen(true);
+
+    if (user?.type !== 'admin' && !newDate.isBefore(dayjs(), 'day')) {
+      setModalOpen(true);
+    }
   };
 
   const handleCloseModal = () => setModalOpen(false);
@@ -129,7 +132,7 @@ export const Calendar = () => {
           onClose={handleCloseModal}
           selectedDate={selectedDate}
           adminId={adminId}
-          studentId={user?.id || 0} // usuário logado, fallback 0
+          studentId={user?.id || 0}
         />
       </LocalizationProvider>
 
