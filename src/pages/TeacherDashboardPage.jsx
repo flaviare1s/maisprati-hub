@@ -1,4 +1,3 @@
-// TeacherDashboard.jsx
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { CustomLoader } from '../components/CustomLoader';
@@ -74,7 +73,7 @@ export const TeacherDashboardPage = () => {
         {activeTab === 'perfil' && <TeacherProfileTab user={user} teams={teams} />}
         {activeTab === 'times' && <TeacherTeamsTab teams={teams} setTeams={setTeams} />}
         {activeTab === 'usuários' && <UsersManagementTab />}
-        {activeTab === 'reuniões' && <TeacherMeetingsTab />}
+        {activeTab === 'reuniões' && <TeacherMeetingsTab adminId={user.id} />}
         {activeTab === 'notificações' && <TeacherNotificationsTab />}
       </div>
     </div>

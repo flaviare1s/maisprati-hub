@@ -4,14 +4,19 @@ import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
 import { TimeSlotModal } from "../TimeSlotModal";
 
-export const TeacherMeetingsTab = ({ teacherId }) => {
+export const TeacherMeetingsTab = ({ adminId }) => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [appointments, setAppointments] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const loadAppointments = async () => {
     try {
-      const data = await fetchAppointments(teacherId, "teacher");
+      if (!adminId) {
+        console.error("AdminId não fornecido!");
+        return;
+      }
+
+      const data = await fetchAppointments(adminId, "admin");
       setAppointments(data);
     } catch (error) {
       console.error("Erro ao carregar agendamentos", error);
@@ -20,7 +25,7 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
 
   useEffect(() => {
     loadAppointments();
-  }, []);
+  }, [adminId]);
 
   const handleDateChange = (e) => {
     const newDate = dayjs(e.target.value);
@@ -133,7 +138,7 @@ export const TeacherMeetingsTab = ({ teacherId }) => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           selectedDate={selectedDate}
-          teacherId={teacherId}
+          adminId={adminId}
           studentId={null}
         />
       )}

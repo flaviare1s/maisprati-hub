@@ -1,12 +1,7 @@
-// TimeSlotModal.jsx
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import {
-  bookTimeSlot,
-  fetchTimeSlots,
-  updateTimeSlotAvailability // import da função nova
-} from "../api.js/schedule";
+import { bookTimeSlot, fetchTimeSlots, updateTimeSlotAvailability } from "../api.js/schedule";
 
 const generateDaySlots = (existingSlots = [], interval = 30) => {
   const startHour = 6;
@@ -25,7 +20,7 @@ const generateDaySlots = (existingSlots = [], interval = 30) => {
   return slots;
 };
 
-export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentId }) => {
+export const TimeSlotModal = ({ open, onClose, selectedDate, studentId, adminId }) => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const isStudent = !!studentId;
@@ -36,7 +31,13 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
     const loadSlots = async () => {
       setLoading(true);
       try {
-        const existingSlots = await fetchTimeSlots(teacherId, selectedDate.format("YYYY-MM-DD"));
+        let currentAdminId = adminId;
+        if (!currentAdminId && !isStudent) {
+          const user = JSON.parse(localStorage.getItem("user"));
+          currentAdminId = user?.id;
+        }
+
+        const existingSlots = await fetchTimeSlots(currentAdminId, selectedDate.format("YYYY-MM-DD"));
         setTimeSlots(generateDaySlots(existingSlots));
       } catch (error) {
         toast.error("Erro ao carregar horários");
@@ -47,15 +48,20 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
     };
 
     loadSlots();
-  }, [open, selectedDate, teacherId]);
+  }, [open, selectedDate, adminId, isStudent]);
 
   const handleTimeSlotClick = async (slot) => {
     if (isStudent) {
-      // aluno só pode agendar horários disponíveis e não reservados
       if (!slot.available || slot.booked) return;
 
       try {
-        await bookTimeSlot(studentId, teacherId, selectedDate.format("YYYY-MM-DD"), slot.time);
+        let currentAdminId = adminId;
+        if (!currentAdminId) {
+          const user = JSON.parse(localStorage.getItem("user"));
+          currentAdminId = user?.id;
+        }
+
+        await bookTimeSlot(studentId, currentAdminId, selectedDate.format("YYYY-MM-DD"), slot.time);
         toast.success(`Horário ${slot.time} reservado com sucesso!`);
         setTimeSlots((prev) =>
           prev.map((s) =>
@@ -67,12 +73,10 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
         toast.error(error.message || "Erro ao reservar horário");
       }
     } else {
-      // professor alterna disponibilidade
-      if (slot.booked) return; // não pode mudar horários já agendados
-
+      if (slot.booked) return;
       const newAvailability = !slot.available;
       try {
-        await updateTimeSlotAvailability(teacherId, selectedDate.format("YYYY-MM-DD"), slot.time, newAvailability);
+        await updateTimeSlotAvailability(selectedDate.format("YYYY-MM-DD"), slot.time, newAvailability);
         setTimeSlots((prev) =>
           prev.map((s) =>
             s.time === slot.time ? { ...s, available: newAvailability } : s
@@ -89,15 +93,10 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 transition-opacity"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/50 transition-opacity" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] border overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-lg font-semibold text-dark">
-            {selectedDate ? selectedDate.format("DD/MM/YYYY") : ""}
-          </h2>
+          <h2 className="text-lg font-semibold text-dark">{selectedDate?.format("DD/MM/YYYY")}</h2>
           <button onClick={onClose} className="p-2 text-gray-500">
             <X size={20} />
           </button>
@@ -127,10 +126,8 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
                     cursorClass = "cursor-not-allowed";
                   } else if (!slot.available && !isStudent) {
                     bgClass = "bg-gray-100 text-gray-500 border border-gray-300 opacity-70";
-                    cursorClass = "cursor-pointer"; // professor pode clicar
                   } else {
                     bgClass = "text-blue-600 hover:shadow-md hover:-translate-y-0.5 border border-blue-300";
-                    cursorClass = "cursor-pointer";
                   }
 
                   return (
@@ -144,21 +141,6 @@ export const TimeSlotModal = ({ open, onClose, selectedDate, teacherId, studentI
                     </button>
                   );
                 })}
-              </div>
-
-              <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-600 rounded-full" />
-                  <span className="text-xs text-gray-500">Disponível</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full" />
-                  <span className="text-xs text-gray-500">Agendado</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-gray-400 rounded-full" />
-                  <span className="text-xs text-gray-500">Indisponível</span>
-                </div>
               </div>
             </>
           )}

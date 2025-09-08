@@ -16,7 +16,7 @@ export const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
 
-  const teacherId = 1;
+  const adminId = user?.type === "admin" ? user.id : null;
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
@@ -128,7 +128,7 @@ export const Calendar = () => {
           open={modalOpen}
           onClose={handleCloseModal}
           selectedDate={selectedDate}
-          teacherId={teacherId}
+          adminId={adminId}
           studentId={user?.id || 0} // usuário logado, fallback 0
         />
       </LocalizationProvider>

@@ -59,7 +59,7 @@ export const StudentMeetingsTab = () => {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         selectedDate={selectedDate}
-        teacherId={1}
+        adminId={1}
         studentId={user.id}
       />
 
