@@ -76,10 +76,22 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         return;
       }
 
+      // Buscar o time do usuário para incluir o teamId
+      const teamsRes = await api.get("/teams", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const userTeam = teamsRes.data.find(team =>
+        team.members && team.members.some(member => member.userId.toString() === studentId.toString())
+      );
+
+      console.log("👥 Time encontrado:", userTeam);
+
       // Usar endpoint correto de appointments
       const appointmentData = {
         adminId: admin.id,
         studentId,
+        teamId: userTeam?.id || null, // ✅ ADICIONAR TEAMID AQUI
         date: selectedDate.format("YYYY-MM-DD"),
         time: slot.time + ":00" // Adicionar segundos para LocalTime
       };
