@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
-import { fetchTeams, isUserInActiveTeam } from '../api.js/teams';
+import { fetchActiveTeams, fetchTeams, isUserInActiveTeam } from '../api.js/teams';
 import { isAdmin } from '../utils/permissions';
 
 export const DashboardLayout = () => {
@@ -14,7 +14,9 @@ export const DashboardLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
+  const [activeTeams, setActiveTeams] = useState([]);
   const [userInTeam, setUserInTeam] = useState(false);
+  const [userInActiveTeam, setUserInActiveTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
 
   // Função para converter pathname em nome da aba
@@ -44,21 +46,22 @@ export const DashboardLayout = () => {
 
     const loadTeams = async () => {
       try {
-        const allTeams = await fetchTeams();
-        setTeams(allTeams);
+        if (user?.role === 'student') {
+          const teams = await fetchActiveTeams();
+          setActiveTeams(teams);
 
-        const isInActiveTeam = isUserInActiveTeam(user, allTeams);
-        const isInAnyTeam = allTeams.some(team =>
-          team.members.some(member =>
-            member.userId.toString() === user.id.toString()
-          )
-        );
-
-        setUserInTeam(isInActiveTeam || isInAnyTeam || user.hasGroup);
-
+          // Extrai o ID do usuário de forma robusta
+          const userId = user?.id || user?._id;
+          if (userId && (typeof userId === 'string' || typeof userId === 'number')) {
+            const userIdString = String(userId);
+            const userInTeam = await isUserInActiveTeam(userIdString);
+            setUserInActiveTeam(userInTeam);
+          } else {
+            console.warn('ID do usuário não encontrado ou inválido:', user);
+          }
+        }
       } catch (error) {
-        console.error("Erro ao carregar times:", error);
-        setUserInTeam(false);
+        console.error('Erro ao carregar times:', error);
       } finally {
         setLoadingTeams(false);
       }
