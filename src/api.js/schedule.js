@@ -172,3 +172,21 @@ export const fetchAppointments = async (userId, type) => {
     throw error;
   }
 };
+
+// Buscar dias do mês do admin
+export const fetchMonthSlots = async (adminId, year, month) => {
+  if (!adminId) return [];
+
+  try {
+    const token = localStorage.getItem("token");
+    const res = await api.get("/timeslots/month", {
+      params: { adminId, year, month },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data; // array de TimeSlotDay
+  } catch (error) {
+    console.error("Erro ao buscar slots do mês:", error.response || error);
+    return [];
+  }
+};
+

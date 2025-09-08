@@ -1,10 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br"; // importa o locale pt-br
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
 import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
 import { useAuth } from "../hooks/useAuth";
+import { fetchMonthSlots } from "../api.js/schedule";
 
 dayjs.locale("pt-br");
 
@@ -13,6 +14,7 @@ export const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
+  const [monthSlots, setMonthSlots] = useState([]);
 
   const startOfMonth = currentMonth.startOf("month");
   const endOfMonth = currentMonth.endOf("month");
@@ -39,6 +41,14 @@ export const Calendar = () => {
     [setSelectedDate, setModalOpen]
   );
 
+  const loadMonthSlots = useCallback(async () => {
+    if (!user?.id) return;
+    const year = currentMonth.year();
+    const month = currentMonth.month() + 1;
+    const slots = await fetchMonthSlots(user.id, year, month);
+    setMonthSlots(slots);
+  }, [currentMonth, user]);
+
   const renderCalendarDays = () => {
     const days = [];
     let day = startOfWeek;
@@ -50,7 +60,9 @@ export const Calendar = () => {
       const isPast = day.isBefore(dayjs(), "day");
       const currentDay = dayjs(day);
 
-      const hasSlotsAvailable = false;
+      const hasSlotsAvailable = monthSlots.some(slotDay =>
+        dayjs(slotDay.date).isSame(currentDay, "day")
+      );
 
       days.push(
         <button
@@ -74,6 +86,11 @@ export const Calendar = () => {
 
     return days;
   };
+
+  useEffect(() => {
+    loadMonthSlots();
+  }, [loadMonthSlots]);
+
 
   const handleModalClose = () => setModalOpen(false);
 
