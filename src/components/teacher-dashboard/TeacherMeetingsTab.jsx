@@ -41,12 +41,6 @@ export const TeacherMeetingsTab = ({ adminId }) => {
     }
 
     try {
-      // Converter time de HH:mm:ss para HH:mm se necessário
-      const timeFormatted = appointment.time.length > 5
-        ? appointment.time.substring(0, 5) // "20:00:00" -> "20:00"
-        : appointment.time; // "20:00" -> "20:00"
-
-      console.log("Cancelando appointment pelo ID:", appointment.id);
       await api.patch(`/appointments/${appointment.id}/cancel`);
 
       // Recarregar lista de agendamentos

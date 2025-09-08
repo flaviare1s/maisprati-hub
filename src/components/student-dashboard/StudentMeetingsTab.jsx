@@ -55,7 +55,7 @@ export const StudentMeetingsTab = () => {
       {/* Legenda - agora apenas informativa, já que o agendamento é feito pelo calendário */}
       <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg">
         <p className="text-xs text-gray-600 text-center">
-          💡 Para agendar novas reuniões, clique em um dia no calendário lateral
+          Para agendar novas reuniões, clique em um dia no calendário lateral
         </p>
       </div>
     </div>
