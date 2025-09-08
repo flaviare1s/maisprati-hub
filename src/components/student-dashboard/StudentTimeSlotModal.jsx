@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { bookTimeSlot, fetchTimeSlots } from "../../api.js/schedule";
+import api from "../../services/api";
 
 const generateDaySlots = (existingSlots = []) => {
   const startHour = 6;
@@ -31,7 +32,19 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
     const loadSlots = async () => {
       setLoading(true);
       try {
-        const existingSlots = await fetchTimeSlots( selectedDate.format("YYYY-MM-DD"));
+        // Buscar o admin (único professor) via API service
+        const token = localStorage.getItem("token");
+        const usersRes = await api.get("/users", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const admin = usersRes.data.find(u => u.type === 'admin');
+
+        if (!admin) {
+          toast.error("Professor não encontrado");
+          return;
+        }
+
+        const existingSlots = await fetchTimeSlots(admin.id, selectedDate.format("YYYY-MM-DD"));
         setTimeSlots(generateDaySlots(existingSlots));
       } catch (error) {
         toast.error("Erro ao carregar horários");
@@ -48,17 +61,20 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
     if (!slot.available || slot.booked) return;
 
     try {
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const admin = users.find(u => u.type === 'admin');
-      const adminId = admin?.id;
+      // Buscar admin via API service
+      const token = localStorage.getItem("token");
+      const usersRes = await api.get("/users", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const admin = usersRes.data.find(u => u.type === 'admin');
 
-      if (!adminId) {
+      if (!admin) {
         toast.error("Professor não encontrado");
         return;
       }
 
       await bookTimeSlot({
-        adminId,
+        adminId: admin.id,
         studentId,
         date: selectedDate.format("YYYY-MM-DD"),
         time: slot.time
