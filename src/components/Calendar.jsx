@@ -6,6 +6,7 @@ import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
 import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
 import { useAuth } from "../hooks/useAuth";
 import { fetchMonthSlots } from "../api.js/schedule";
+import api from "../services/api";
 
 dayjs.locale("pt-br");
 
@@ -43,11 +44,29 @@ export const Calendar = () => {
 
   const loadMonthSlots = useCallback(async () => {
     if (!user?.id) return;
-    const year = currentMonth.year();
-    const month = currentMonth.month() + 1;
-    const slots = await fetchMonthSlots(user.id, year, month);
-    setMonthSlots(slots);
-  }, [currentMonth, user]);
+
+    try {
+      const year = currentMonth.year();
+      const month = currentMonth.month() + 1;
+
+      let adminId = user.id;
+
+      // Se é student, buscar o admin (professor)
+      if (!isAdmin) {
+        const token = localStorage.getItem("token");
+        const usersRes = await api.get("/users", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const admin = usersRes.data.find(u => u.type === 'admin');
+        adminId = admin?.id || user.id;
+      }
+
+      const slots = await fetchMonthSlots(adminId, year, month);
+      setMonthSlots(slots);
+    } catch (error) {
+      console.error("Erro ao carregar slots do mês:", error);
+    }
+  }, [currentMonth, user, isAdmin]);
 
   const renderCalendarDays = () => {
     const days = [];
@@ -61,7 +80,8 @@ export const Calendar = () => {
       const currentDay = dayjs(day);
 
       const hasSlotsAvailable = monthSlots.some(slotDay =>
-        dayjs(slotDay.date).isSame(currentDay, "day")
+        day.isSame(dayjs(slotDay.date), "day") &&
+        slotDay.slots.some(slot => slot.available && !slot.booked)
       );
 
       days.push(
