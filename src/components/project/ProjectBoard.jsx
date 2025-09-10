@@ -20,6 +20,24 @@ const COLUMN_STATUSES = [
   { key: "done", title: "Concluído", color: "#10B981" },
 ];
 
+const mapStatusToBackend = (frontendStatus) => {
+  const statusMap = {
+    'todo': 'TODO',
+    'in_progress': 'IN_PROGRESS',
+    'done': 'DONE'
+  };
+  return statusMap[frontendStatus] || frontendStatus;
+};
+
+const mapStatusToFrontend = (backendStatus) => {
+  const statusMap = {
+    'TODO': 'todo',
+    'IN_PROGRESS': 'in_progress',
+    'DONE': 'done'
+  };
+  return statusMap[backendStatus] || backendStatus.toLowerCase();
+};
+
 export const ProjectBoard = () => {
   const { user } = useAuth();
   const { teamId } = useParams();
@@ -61,7 +79,13 @@ export const ProjectBoard = () => {
 
         setUserTeam(team);
         setProjectProgress(progress);
-        setProjectPhases(progress?.phases || []);
+
+        const mappedPhases = progress?.phases?.map(phase => ({
+          ...phase,
+          status: mapStatusToFrontend(phase.status)
+        })) || [];
+
+        setProjectPhases(mappedPhases);
       } catch (error) {
         console.error("Erro ao carregar projeto:", error);
         toast.error("Erro ao carregar dados do projeto");
@@ -74,18 +98,32 @@ export const ProjectBoard = () => {
   }, [teamId, user]);
 
   const handleDropPhase = async (phaseId, newStatus) => {
-    if (!projectProgress) return;
+    if (!projectProgress || !userTeam) return;
 
     try {
+      const phase = projectPhases.find(p => p.id === phaseId);
+      if (!phase) {
+        toast.error("Fase não encontrada");
+        return;
+      }
+
+      const backendStatus = mapStatusToBackend(newStatus);
+
       const updatedProgress = await updatePhaseStatus(
-        projectProgress.id,
-        phaseId,
-        newStatus,
+        userTeam.id,
+        phase.title,
+        backendStatus,
         user.id
       );
 
       setProjectProgress(updatedProgress);
-      setProjectPhases(updatedProgress.phases);
+
+      const mappedPhases = updatedProgress?.phases?.map(phase => ({
+        ...phase,
+        status: mapStatusToFrontend(phase.status)
+      })) || [];
+
+      setProjectPhases(mappedPhases);
 
       toast.success("Status da fase atualizado!");
     } catch (error) {
@@ -138,11 +176,10 @@ export const ProjectBoard = () => {
             <div
               className="bg-blue-logo h-3 rounded-full transition-all duration-300"
               style={{
-                width: `${
-                  (projectPhases.filter((p) => p.status === "done").length /
+                width: `${(projectPhases.filter((p) => p.status === "done").length /
                     projectPhases.length) *
                   100
-                }%`,
+                  }%`,
               }}
             ></div>
           </div>
