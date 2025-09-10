@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
-import { fetchTeams, isUserInActiveTeam } from "../api.js/teams";
+import { isUserInActiveTeam } from "../api.js/teams";
 import { useAuth } from "../hooks/useAuth";
 
 const TeamContext = createContext();
@@ -10,11 +10,16 @@ export const TeamProvider = ({ children }) => {
   const [userInTeam, setUserInTeam] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !user.id) return;
 
     const loadTeams = async () => {
-      const teams = await fetchTeams();
-      setUserInTeam(isUserInActiveTeam(user, teams));
+      try {
+        const userInActiveTeam = await isUserInActiveTeam(user.id);
+        setUserInTeam(userInActiveTeam);
+      } catch (error) {
+        console.error("Erro ao carregar status do time:", error);
+        setUserInTeam(false);
+      }
     };
 
     loadTeams();

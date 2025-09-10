@@ -28,7 +28,7 @@ export const ProjectPhaseCard = ({
       case "done":
         return <FaCheckCircle className="text-green-500" />;
       case "in_progress":
-        return <FaClock className="text-blue-500" />;
+        return <FaClock className="text-blue-logo" />;
       default:
         return <FaClock className="text-gray-400" />;
     }
@@ -39,7 +39,7 @@ export const ProjectPhaseCard = ({
       case "done":
         return "border-l-green-500 bg-green-50";
       case "in_progress":
-        return "border-l-blue-500 bg-blue-50";
+        return "border-l-blue-logo bg-blue-50";
       default:
         return "border-l-gray-400 bg-gray-50";
     }

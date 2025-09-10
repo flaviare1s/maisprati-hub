@@ -1,137 +1,175 @@
-import { useState } from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
-import { Card, CardContent, Typography, Box } from '@mui/material';
-import { TimeSlotModal } from './TimeSlotModal';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
-import { useAuth } from '../hooks/useAuth';
+import { useState, useCallback, useEffect } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br"; // importa o locale pt-br
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
+import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
+import { useAuth } from "../hooks/useAuth";
+import { fetchMonthSlots } from "../api.js/schedule";
+import api from "../services/api";
 
-dayjs.locale('pt-br');
+dayjs.locale("pt-br");
 
 export const Calendar = () => {
   const { user } = useAuth();
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
+  const [monthSlots, setMonthSlots] = useState([]);
 
-  const teacherId = 1;
+  const startOfMonth = currentMonth.startOf("month");
+  const endOfMonth = currentMonth.endOf("month");
+  const startOfWeek = startOfMonth.startOf("week");
+  const endOfWeek = endOfMonth.endOf("week");
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
-    if (!newDate.isBefore(dayjs(), 'day')) setModalOpen(true);
-  };
+  const handlePrevMonth = useCallback(() => {
+    setCurrentMonth((prev) => prev.subtract(1, "month"));
+  }, []);
 
-  const handleCloseModal = () => setModalOpen(false);
+  const handleNextMonth = useCallback(() => {
+    setCurrentMonth((prev) => prev.add(1, "month"));
+  }, []);
 
-  const getSelectedDateInfo = () => {
-    const today = dayjs();
-    const isPast = selectedDate.isBefore(today, 'day');
-    const isToday = selectedDate.isSame(today, 'day');
-    const isWeekend = selectedDate.day() === 0 || selectedDate.day() === 6;
+  const isAdmin = user?.type === "admin";
 
-    if (isPast) return { status: 'Passado', color: '#aaa' };
-    if (isWeekend) return { status: 'Fim de semana', color: '#555' };
-    if (isToday) return { status: 'Hoje', color: '#007DE3' };
-    return { status: 'Futuro', color: '#007DE3' };
-  };
+  const handleDateClick = useCallback(
+    (date) => {
+      if (date.isBefore(dayjs(), "day")) return;
+      setSelectedDate(dayjs(date));
+      setModalOpen(true);
+    },
+    [setSelectedDate, setModalOpen]
+  );
 
-  const CustomPickersDay = ({ day, outsideCurrentMonth, ...other }) => {
-    const today = dayjs();
-    const isToday = day.isSame(today, 'day');
-    const isPast = day.isBefore(today, 'day');
-    const isWeekend = day.day() === 0 || day.day() === 6;
+  const loadMonthSlots = useCallback(async () => {
+    if (!user?.id) return;
 
-    let color = '#444';
-    let isClickable = true;
+    try {
+      const year = currentMonth.year();
+      const month = currentMonth.month() + 1;
 
-    if (outsideCurrentMonth || isPast) {
-      color = '#ccc';
-      isClickable = false;
-    } else if (isToday) {
-      color = '#007de3';
-    } else if (isWeekend) {
-      color = '#555';
+      let adminId = user.id;
+
+      // Se é student, buscar o admin (professor)
+      if (!isAdmin) {
+        const token = localStorage.getItem("token");
+        const usersRes = await api.get("/users", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const admin = usersRes.data.find(u => u.type === 'admin');
+        adminId = admin?.id || user.id;
+      }
+
+      const slots = await fetchMonthSlots(adminId, year, month);
+      setMonthSlots(slots);
+    } catch (error) {
+      console.error("Erro ao carregar slots do mês:", error);
+    }
+  }, [currentMonth, user, isAdmin]);
+
+  const renderCalendarDays = () => {
+    const days = [];
+    let day = startOfWeek;
+
+    while (day.isBefore(endOfWeek) || day.isSame(endOfWeek)) {
+      const isCurrentMonth = day.isSame(currentMonth, "month");
+      const isToday = day.isSame(dayjs(), "day");
+      const isSelected = selectedDate && day.isSame(selectedDate, "day");
+      const isPast = day.isBefore(dayjs(), "day");
+      const currentDay = dayjs(day);
+
+      const hasSlotsAvailable = monthSlots.some(slotDay =>
+        day.isSame(dayjs(slotDay.date), "day") &&
+        slotDay.slots.some(slot => slot.available && !slot.booked)
+      );
+
+      days.push(
+        <button
+          key={currentDay.format("YYYY-MM-DD")}
+          onClick={() => handleDateClick(currentDay)}
+          disabled={isPast}
+          className={`
+            w-8 h-8 flex items-center justify-center text-sm rounded-lg transition-all duration-200
+            ${!isCurrentMonth ? "text-gray-300" : ""}
+            ${isToday ? "bg-blue-100 text-blue-600 font-semibold" : ""}
+            ${isSelected && !isToday ? "bg-blue-logo text-white" : ""}
+            ${isPast ? "text-gray-300 cursor-not-allowed" : "hover:bg-blue-50 cursor-pointer"}
+            ${hasSlotsAvailable ? "text-blue-600 font-bold" : ""}
+          `}
+        >
+          {currentDay.date()}
+        </button>
+      );
+      day = day.add(1, "day");
     }
 
-    return (
-      <PickersDay
-        {...other}
-        day={day}
-        sx={{
-          width: 36,
-          height: 36,
-          borderRadius: '50%',
-          color,
-          fontWeight: isToday ? 'bold' : '500',
-          '&.Mui-selected': {
-            backgroundColor: '#FE8822',
-            color: '#fff',
-          },
-          pointerEvents: isClickable ? 'auto' : 'none',
-        }}
-        disabled={!isClickable}
-      />
-    );
+    return days;
   };
 
+  useEffect(() => {
+    loadMonthSlots();
+  }, [loadMonthSlots]);
+
+
+  const handleModalClose = () => setModalOpen(false);
+
   return (
-  
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-        <Card
-          sx={{
-            width: '100%',
-            maxWidth: '100%',
-            mx: 'auto',
-          backgroundColor: '#f3f4f6',
-            borderRadius: 2,
-            p: 0,
-          }}
-        >
-          <CardContent sx={{ p: 1 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ mb: 1, fontWeight: 'bold', textAlign: 'center', color: 'text.primary' }}
-            >
-              Calendário
-            </Typography>
+    <div className="w-full bg-white rounded-lg shadow-md p-4">
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <ChevronLeft size={16} />
+        </button>
+        <h2 className="font-semibold text-dark">
+          {capitalize(currentMonth.format("MMMM"))} {currentMonth.format("YYYY")}
+        </h2>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <DateCalendar
-                value={selectedDate}
-                onChange={handleDateChange}
-                slots={{ day: CustomPickersDay }}
-                sx={{
-                  '& .MuiPickersCalendarHeader-root': { color: 'text.primary', mb: 1 },
-                  '& .MuiDayCalendar-header .MuiTypography-root': { color: 'text.secondary', fontWeight: 600 },
-                }}
-              />
-            </Box>
+        <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <ChevronRight size={16} />
+        </button>
+      </div>
 
-            <Typography
-              variant="caption"
-              sx={{
-                mt: 1,
-                display: 'block',
-                textAlign: 'center',
-                color: getSelectedDateInfo().color,
-                fontWeight: 500,
-              }}
-            >
-              {selectedDate.format('DD/MM/YYYY')} - {getSelectedDateInfo().status}
-            </Typography>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
+          <div key={day} className="h-8 flex items-center justify-center text-xs font-medium text-gray-500">
+            {day}
+          </div>
+        ))}
+      </div>
 
-        <TimeSlotModal
-          open={modalOpen}
-          onClose={handleCloseModal}
-          selectedDate={selectedDate}
-          teacherId={teacherId}
-          studentId={user?.id || 0} // usuário logado, fallback 0
-        />
-      </LocalizationProvider>
+      <div className="grid grid-cols-7 gap-1">{renderCalendarDays()}</div>
 
+      <div className="mt-2 text-xs text-gray-500 text-center">
+        Data selecionada: {selectedDate ? selectedDate.format("DD/MM/YYYY") : "Nenhuma"}
+      </div>
+
+      {modalOpen && selectedDate && (
+        <>
+          {isAdmin ? (
+            <AdminTimeSlotModal
+              open={modalOpen}
+              onClose={handleModalClose}
+              selectedDate={selectedDate}
+              adminId={user?.id}
+            />
+          ) : (
+            <StudentTimeSlotModal
+              open={modalOpen}
+              onClose={handleModalClose}
+              selectedDate={selectedDate}
+              studentId={user?.id}
+            />
+          )}
+        </>
+      )}
+
+      <div className="mt-4 pt-3 border-t border-gray-200">
+        <p className="text-xs text-gray-500 text-center">
+          {isAdmin
+            ? "Clique em uma data para gerenciar horários"
+            : "Clique em uma data para agendar"}
+        </p>
+      </div>
+    </div>
   );
 };

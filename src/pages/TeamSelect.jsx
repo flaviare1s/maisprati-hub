@@ -9,7 +9,7 @@ import { fetchTeams, validateTeamCode, addMemberToTeam } from '../api.js/teams';
 import toast from 'react-hot-toast';
 
 export const TeamSelect = () => {
-  const { user, updateUserData } = useAuth();
+  const { user, updateUser } = useAuth();
   const navigate = useNavigate();
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -56,7 +56,7 @@ export const TeamSelect = () => {
         specialization: "Desenvolvedor"
       });
 
-      updateUserData(updatedUserData);
+      updateUser(updatedUserData);
 
       // Verificar se hasGroup está correto
       if (updatedUserData.hasGroup !== true) {
@@ -68,7 +68,8 @@ export const TeamSelect = () => {
       navigate('/dashboard');
 
     } catch (error) {
-      toast.error(error.message || "Código inválido");
+      const errorMessage = error.response?.data?.error || error.message || "Código inválido";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

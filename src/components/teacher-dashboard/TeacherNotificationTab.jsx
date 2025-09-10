@@ -1,32 +1,61 @@
 import { useEffect, useState } from "react";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useAuth } from "../../hooks/useAuth";
 import { getUserNotifications, deleteNotification } from "../../api.js/notifications";
 
 export const TeacherNotificationsTab = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Número de notificações por página
 
   useEffect(() => {
+    const loadNotifications = async () => {
+      try {
+        const data = await getUserNotifications(user.id);
+        setNotifications(data);
+      } catch (error) {
+        console.error("Erro ao carregar notificações:", error);
+      }
+    };
+
     if (user && user.type === "admin") {
       loadNotifications();
     }
   }, [user]);
 
-  const loadNotifications = async () => {
-    try {
-      // Buscar notificações do professor (id do professor, assumindo 1)
-      const data = await getUserNotifications(user.id);
-      setNotifications(data);
-    } catch (error) {
-      console.error("Erro ao carregar notificações:", error);
+  // Cálculos da paginação
+  const totalPages = Math.ceil(notifications.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentNotifications = notifications.slice(startIndex, endIndex);
+
+  // Funções de navegação
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
   const handleDelete = async (id) => {
     try {
       await deleteNotification(id);
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
+      const updatedNotifications = notifications.filter((n) => n.id !== id);
+      setNotifications(updatedNotifications);
+
+      // Se a página atual ficou vazia após a exclusão, volta para a página anterior
+      const newTotalPages = Math.ceil(updatedNotifications.length / itemsPerPage);
+      if (currentPage > newTotalPages && newTotalPages > 0) {
+        setCurrentPage(newTotalPages);
+      } else if (updatedNotifications.length === 0) {
+        setCurrentPage(1);
+      }
     } catch (error) {
       console.error("Erro ao deletar notificação:", error);
     }
@@ -43,12 +72,11 @@ export const TeacherNotificationsTab = () => {
           </div>
         )}
 
-        {notifications.map((notification) => (
+        {currentNotifications.map((notification) => (
           <div
             key={notification.id}
             className="relative p-4 rounded-lg border border-black bg-soft"
           >
-
             <button
               onClick={() => handleDelete(notification.id)}
               className="absolute top-2 right-2 text-gray-400 hover:text-red-primary cursor-pointer"
@@ -64,6 +92,47 @@ export const TeacherNotificationsTab = () => {
           </div>
         ))}
       </div>
+
+      {/* Controles de Paginação */}
+      {notifications.length > 0 && totalPages > 1 && (
+        <div className="flex flex-col items-center mt-8 space-y-3">
+          <div className="flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            {/* Botão Página Anterior */}
+            <button
+              onClick={goToPrevPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors border-r border-gray-200 ${currentPage === 1
+                  ? 'text-gray-400 cursor-not-allowed bg-gray-50'
+                  : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
+                }`}
+            >
+              <MdChevronLeft size={18} />
+            </button>
+
+            {/* Indicador de Página */}
+            <div className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-50 border-r border-gray-200 min-w-[120px] text-center">
+              {currentPage} de {totalPages}
+            </div>
+
+            {/* Botão Próxima Página */}
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${currentPage === totalPages
+                  ? 'text-gray-400 cursor-not-allowed bg-gray-50'
+                  : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
+                }`}
+            >
+              <MdChevronRight size={18} />
+            </button>
+          </div>
+
+          {/* Contador de registros */}
+          <div className="text-xs text-gray-500">
+            Mostrando {startIndex + 1}-{Math.min(endIndex, notifications.length)} de {notifications.length} notificações
+          </div>
+        </div>
+      )}
     </div>
   );
 };

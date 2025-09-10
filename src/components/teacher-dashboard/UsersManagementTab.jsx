@@ -34,7 +34,7 @@ export const UsersManagementTab = () => {
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-PRIMARY">{error}</p>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export const UsersManagementTab = () => {
                     />
                     <div>
                       <h4 className="font-semibold">{user.name}</h4>
-                      <p className="text-sm text-gray-muted">@{user.codename}</p>
+                      <p className="text-sm text-gray-muted">{user.codename}</p>
                       <p className="text-sm text-gray-muted">{user.email}</p>
                     </div>
                   </div>
