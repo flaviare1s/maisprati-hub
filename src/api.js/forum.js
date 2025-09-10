@@ -50,7 +50,8 @@ export const addComment = async (postId, userId, content) => {
   try {
     // Corrigido para usar o endpoint correto do backend
     const response = await api.post(`/posts/${postId}/comments`, {
-      userId, // ou authorId, dependendo do modelo Comment
+      postId,
+      authorId: userId,
       content,
       createdAt: new Date().toISOString(),
     });

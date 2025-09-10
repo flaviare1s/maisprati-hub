@@ -54,14 +54,43 @@ export const CommonRoom = () => {
 
       const postsWithAuthorsAndComments = await Promise.all(
         posts.map(async (post) => {
-          const author = users.find((u) => u.id === post.authorId);
-          const commentsData = await fetchComments(post.id);
+          // Normalizar IDs (MongoDB usa _id)
+          const postId = post.id || post._id;
+          const postAuthorId = post.authorId?.toString();
+
+          // Buscar autor do post
+          const author = users.find((u) => {
+            const userId = u.id || u._id;
+            return userId?.toString() === postAuthorId;
+          });
+
+          const commentsData = await fetchComments(postId);
 
           const commentsWithAuthors = commentsData.map((c) => {
-            const commentAuthor = users.find((u) => u.id === (c.authorId || c.userId));
+            // Normalizar o ID do comment
+            const commentId = c.id || c._id;
+
+            // O backend já retorna o objeto author completo!
+            let commentAuthorId;
+            let commentAuthor;
+
+            if (c.author && typeof c.author === 'object') {
+              // Usar diretamente o objeto author que vem do backend
+              commentAuthorId = c.author.id;
+              commentAuthor = c.author;
+            } else {
+              // Fallback para busca manual (caso não venha o author)
+              commentAuthorId = (c.authorId || c.userId)?.toString();
+              commentAuthor = users.find(u => {
+                const userId = u.id || u._id;
+                return userId?.toString() === commentAuthorId;
+              });
+            }
+
             return {
               ...c,
-              authorId: c.authorId || c.userId,
+              id: commentId,
+              authorId: commentAuthorId,
               author: commentAuthor?.codename || commentAuthor?.name || "Desconhecido",
               avatar: commentAuthor?.avatar || "/src/assets/images/avatar/default.png",
             };
@@ -69,7 +98,8 @@ export const CommonRoom = () => {
 
           return {
             ...post,
-            authorId: post.authorId || post.userId,
+            id: postId,
+            authorId: postAuthorId,
             author: author?.codename || author?.name || "Desconhecido",
             avatar: author?.avatar || "/src/assets/images/avatar/default.png",
             comments: commentsWithAuthors,
@@ -134,7 +164,7 @@ export const CommonRoom = () => {
     try {
       await createPost(
         user.id,
-        "Post do Fórum", // Título padrão ou você pode adicionar um campo separado
+        "Post do Fórum",
         newPost.trim()
       );
 
@@ -142,7 +172,6 @@ export const CommonRoom = () => {
       setNewPost("");
       setShowNewPost(false);
 
-      // Recarregar posts
       await loadForumPosts();
     } catch (error) {
       console.error("Erro ao criar post:", error);
@@ -154,7 +183,6 @@ export const CommonRoom = () => {
     try {
       await deletePost(postId);
 
-      // Remover da lista local
       setForumPosts(prev => prev.filter(post => post.id !== postId));
 
       toast.success("Post deletado com sucesso!");
@@ -168,7 +196,6 @@ export const CommonRoom = () => {
     try {
       await deleteComment(commentId);
 
-      // Remover da lista local
       setForumPosts(prev =>
         prev.map(post =>
           post.id === postId
@@ -191,18 +218,15 @@ export const CommonRoom = () => {
     try {
       const newComment = await addComment(postId, userId, content);
 
-      // Buscar dados atualizados do usuário para garantir informações corretas
       const users = await fetchUsers();
       const commentAuthor = users.find(u => u.id === userId) || user;
 
-      // Adicionar à lista local com dados corretos do usuário
       const commentWithUser = {
         ...newComment,
         authorId: userId,
-        author: commentAuthor.codename || commentAuthor.name || "Desconhecido",
-        avatar: commentAuthor.avatar || "/src/assets/images/avatar/default.png",
+        author: commentAuthor?.codename || commentAuthor?.name || "Desconhecido",
+        avatar: commentAuthor?.avatar || "/src/assets/images/avatar/default.png",
       };
-
       setForumPosts(prev =>
         prev.map(post =>
           post.id === postId
