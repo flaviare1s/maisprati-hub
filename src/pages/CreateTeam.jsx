@@ -24,15 +24,8 @@ export const CreateTeam = () => {
     defaultValues: {
       name: '',
       description: '',
-      maxMembers: '4',
-      area: '',
-      securityCode: generateSecurityCode(),
-      projectType: '',
-      technologies: '',
-      objectives: '',
-      timeline: '',
-      requirements: '',
-      members: []
+      maxMembers: '10',
+      securityCode: generateSecurityCode()
     }
   });
 
@@ -61,20 +54,23 @@ export const CreateTeam = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
+      // Enviar todos os campos incluindo o securityCode gerado no front
       const teamToCreate = {
-        ...data,
+        name: data.name,
+        description: data.description || '',
         maxMembers: parseInt(data.maxMembers),
-        createdBy: user.id,
-        securityCode: data.securityCode.toUpperCase()
+        securityCode: data.securityCode
       };
 
-      const createdTeam = await createTeam(teamToCreate);
+      const createdTeam = await createTeam(teamToCreate, user.id);
 
       navigate('/dashboard', {
         state: { message: `Time "${createdTeam.name}" criado com sucesso!` }
       });
     } catch (error) {
-      console.error(error);
+      console.error('Erro detalhado:', error);
+      console.error('Response data:', error.response?.data);
+      console.error('Response status:', error.response?.status);
     } finally {
       setLoading(false);
     }

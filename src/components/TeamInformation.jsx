@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { sendNotificationToTeacher } from "../api.js/notifications";
+import { removeMemberFromTeam } from "../api.js/teams";
 import toast from "react-hot-toast";
 import { LeaveTeamModal } from "./student-dashboard/LeaveTeamModal";
-import { deleteTeamMember } from "../api.js/teams";
 
 export const TeamInformation = ({ userTeam, setUserTeam }) => {
   const { user } = useAuth();
@@ -17,12 +16,8 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
     }
 
     try {
-      await sendNotificationToTeacher(
-        user.name,
-        `Solicitação de saída do time ${userTeam.name}. Motivo: ${reason}`
-      );
-
-      await deleteTeamMember(userTeam.id, user.id);
+      // Agora o backend automaticamente notifica o admin
+      await removeMemberFromTeam(userTeam.id, user.id, reason);
 
       setUserTeam((prev) => ({
         ...prev,
@@ -73,22 +68,22 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
                   <p className="font-medium">
                     {member.user
                       ? member.user.name
-                      : `Usuário #${member.userId}`}{" "}
+                      : `${member.userId}`}{" "}
                     {currentUserMember && <span className="text-xs text-gray-500 dark:text-gray-400">(Você)</span>} • <span className="text-xs text-gray-muted">{member.groupClass}</span>
                   </p>
                 </div>
                 <div className="text-right">
                   <span
-                    className={`inline-block px-2 py-1 rounded-full text-[9px] font-medium ${member.role === "leader"
+                    className={`inline-block px-2 py-1 rounded-full text-[9px] font-medium ${member.role?.toLowerCase() === "leader"
                       ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
-                      : member.role === "subleader"
+                      : member.role?.toLowerCase() === "subleader"
                         ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
                         : "bg-gray-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
                       }`}
                   >
-                    {member.role === "leader"
+                    {member.role?.toLowerCase() === "leader"
                       ? "Líder"
-                      : member.role === "subleader"
+                      : member.role?.toLowerCase() === "subleader"
                         ? "Sub-líder"
                         : "Membro"}
                   </span>

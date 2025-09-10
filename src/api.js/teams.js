@@ -11,6 +11,17 @@ export const fetchTeams = async () => {
   }
 };
 
+// Buscar times ativos
+export const fetchActiveTeams = async () => {
+  try {
+    const response = await api.get("/teams/active");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar times ativos:", error);
+    return [];
+  }
+};
+
 // Buscar time pelo ID
 export const fetchTeamById = async (teamId) => {
   try {
@@ -22,10 +33,21 @@ export const fetchTeamById = async (teamId) => {
   }
 };
 
-// Buscar roles
+// Buscar time por código de segurança
+export const fetchTeamByCode = async (securityCode) => {
+  try {
+    const response = await api.get(`/teams/code/${securityCode}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar time por código:", error);
+    throw new Error("Time não encontrado com este código");
+  }
+};
+
+// Buscar roles disponíveis
 export const fetchRoles = async () => {
   try {
-    const response = await api.get("/roles");
+    const response = await api.get("/teams/roles");
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar roles:", error);
@@ -36,7 +58,7 @@ export const fetchRoles = async () => {
 // Buscar tipos de subliderança
 export const fetchSubLeaderTypes = async () => {
   try {
-    const response = await api.get("/subLeaderTypes");
+    const response = await api.get("/teams/subLeaderTypes");
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar tipos de subliderança:", error);
@@ -46,75 +68,29 @@ export const fetchSubLeaderTypes = async () => {
 
 // Validar código de segurança do time
 export const validateTeamCode = async (teamId, securityCode) => {
-  const teams = await fetchTeams();
-  const team = teams.find((t) => t.id === teamId);
-
-  if (!team) throw new Error("Time não encontrado");
-  if (team.securityCode !== securityCode)
-    throw new Error("Código de segurança inválido");
-
-  return team;
+  try {
+    const response = await api.post(`/teams/${teamId}/validate`, {
+      securityCode: securityCode,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao validar código do time:", error);
+    throw error;
+  }
 };
 
+// Adicionar membro ao time
 export const addMemberToTeam = async (teamId, memberData) => {
   try {
-    const teamResponse = await api.get(`/teams/${teamId}`);
-    const team = teamResponse.data;
-
-    if (team.members.length >= team.maxMembers) {
-      throw new Error("Time já está cheio");
-    }
-
-    const isAlreadyMember = team.members.some(
-      (member) => member.userId === memberData.userId
-    );
-    if (isAlreadyMember) {
-      throw new Error("Usuário já é membro deste time");
-    }
-
-    const newMember = {
-      userId: memberData.userId,
-      role: memberData.role || "member",
-      specialization: memberData.specialization || "",
-      subLeaderType: memberData.subLeaderType || null,
-      joinedAt: new Date().toISOString().split("T")[0],
-      isActive: true,
-    };
-
-    const updatedMembers = [...team.members, newMember];
-
-    const updatedTeam = {
-      ...team,
-      members: updatedMembers,
-      currentMembers: updatedMembers.length,
-    };
-
-    const teamUpdateResult = await api.put(`/teams/${teamId}`, updatedTeam);
-
-    const userResponse = await api.get(`/users/${memberData.userId}`);
-    const userData = userResponse.data;
-
-    const updatedUserData = {
-      ...userData,
-      isFirstLogin: false,
-      hasGroup: true,
-      teamId: teamId,
-    };
-
-    const userUpdateResult = await api.put(`/users/${memberData.userId}`, updatedUserData);
-    console.log("Usuário atualizado:", userUpdateResult.data);
-
-    const verifyUser = await api.get(`/users/${memberData.userId}`);
-    console.log("🔍 Verificação - usuário após update:", verifyUser.data);
-
-    const result = { 
-      updatedTeam: teamUpdateResult.data, 
-      updatedUserData: verifyUser.data 
-    };
-    return result;
-
+    const response = await api.post(`/teams/${teamId}/members`, memberData);
+    return response.data;
   } catch (error) {
-    console.error("Erro em addMemberToTeam:", error);
+    console.error("Erro ao adicionar membro ao time:", error);
+    console.error("Detalhes do erro:", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
     throw error;
   }
 };
@@ -126,115 +102,92 @@ export const updateMemberRole = async (
   newRole,
   subLeaderType = null
 ) => {
-  const team = await fetchTeamById(teamId);
-
-  const memberIndex = team.members.findIndex(
-    (member) => member.userId === userId
-  );
-  if (memberIndex === -1) throw new Error("Membro não encontrado no time");
-
-  const updatedMembers = [...team.members];
-  updatedMembers[memberIndex] = {
-    ...updatedMembers[memberIndex],
-    role: newRole,
-    subLeaderType: newRole === "subleader" ? subLeaderType : null,
-  };
-
-  const updatedTeam = {
-    ...team,
-    members: updatedMembers,
-    currentMembers: updatedMembers.length
-  };
-  const response = await api.put(`/teams/${teamId}`, updatedTeam);
-  return response.data;
-};
-
-// Buscar time com dados completos dos membros
-export const getTeamWithMembers = async (teamId) => {
-  const [team, users] = await Promise.all([
-    fetchTeamById(teamId),
-    api.get("/users").then((res) => res.data),
-  ]);
-
-  const membersWithUserData = team.members.map((member) => {
-    const userData = users.find(
-      (u) => u.id.toString() === member.userId.toString()
-    );
-    return { ...member, user: userData || null };
-  });
-
-  return { ...team, members: membersWithUserData };
-};
-
-// Verificar se usuário está em algum time ativo
-export const isUserInActiveTeam = (user, teams) => {
-  if (!user || !teams) return false;
-
-  return teams.some(
-    (team) =>
-      team.isActive &&
-      team.members.some(
-        (member) => member.userId === user.id && member.isActive
-      )
-  );
-};
-
-// Criar um novo time
-export const createTeam = async (teamData) => {
   try {
-    const newTeam = {
-      ...teamData,
-      members: [],
-      currentMembers: 0,
-      isActive: true,
-      createdAt: new Date().toISOString().split('T')[0]
-    };
+    const requestData = { role: newRole };
+    if (subLeaderType) {
+      requestData.subLeaderType = subLeaderType;
+    }
 
-    const response = await api.post('/teams', newTeam);
+    const response = await api.put(
+      `/teams/${teamId}/members/${userId}/role`,
+      requestData
+    );
     return response.data;
   } catch (error) {
-    console.error('Erro ao criar time:', error);
-    throw new Error('Não foi possível criar o time');
+    console.error("Erro ao atualizar role do membro:", error);
+    throw error;
   }
 };
 
-// Remover membro do time (JSON Server)
-export const deleteTeamMember = async (teamId, userId) => {
+// Remover membro do time
+export const removeMemberFromTeam = async (teamId, userId, reason = null) => {
   try {
-    // Pega o time
-    const teamResponse = await api.get(`/teams/${teamId}`);
-    const team = teamResponse.data;
-
-    // Filtra o membro que quer sair
-    const updatedMembers = team.members.filter(
-      (member) => member.userId.toString() !== userId.toString()
-    );
-
-    // Atualiza o time
-    const updatedTeam = {
-      ...team,
-      members: updatedMembers,
-      currentMembers: updatedMembers.length,
-    };
-
-    await api.put(`/teams/${teamId}`, updatedTeam);
-
-    return true;
+    const requestBody = reason ? { reason } : {};
+    const response = await api.delete(`/teams/${teamId}/members/${userId}`, {
+      data: requestBody,
+    });
+    return response.data;
   } catch (error) {
     console.error("Erro ao remover membro do time:", error);
     throw error;
   }
 };
 
-// Alterar status ativo/inativo do time
-export const toggleTeamStatus = async (teamId, currentStatus) => {
+// Verificar se usuário está em time ativo
+export const checkUserTeamStatus = async (userId) => {
   try {
-    const response = await api.patch(`/teams/${teamId}`, {
-      isActive: !currentStatus
-    });
+    const response = await api.get(`/teams/user/${userId}/status`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao verificar status do usuário no time:", error);
+    return { isInActiveTeam: false };
+  }
+};
+
+// Criar um novo time
+export const createTeam = async (teamData, creatorUserId) => {
+  try {
+    const response = await api.post(
+      `/teams?creatorUserId=${creatorUserId}`,
+      teamData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar time:", error);
+    throw error;
+  }
+};
+
+// Alterar status ativo/inativo do time
+export const toggleTeamStatus = async (teamId) => {
+  try {
+    const response = await api.patch(`/teams/${teamId}/status`);
     return response.data;
   } catch (error) {
     console.error("Erro ao alterar status do time:", error);
     throw error;
+  }
+};
+
+// Buscar time com dados completos dos membros
+export const getTeamWithMembers = async (teamId) => {
+  try {
+    // No backend, o time já vem com as informações dos membros
+    const team = await fetchTeamById(teamId);
+    return team;
+  } catch (error) {
+    console.error("Erro ao buscar time com membros:", error);
+    throw error;
+  }
+};
+
+// Verificar se usuário está em algum time ativo (função auxiliar)
+export const isUserInActiveTeam = async (userId) => {
+  try {
+    const result = await checkUserTeamStatus(userId);
+    return result.isInActiveTeam;
+  } catch (error) {
+    console.error("Erro ao verificar se usuário está em time ativo:", error);
+    return false;
   }
 };
