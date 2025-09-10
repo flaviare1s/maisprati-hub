@@ -13,7 +13,7 @@ import {
   deletePost,
   deleteComment,
   addComment
-} from "../api.js/posts";
+} from "../api.js/forum";
 import { Forum } from "../components/Forum";
 import { useTeam } from "../contexts/TeamContext";
 import { createNotification } from "../api.js/notifications";
