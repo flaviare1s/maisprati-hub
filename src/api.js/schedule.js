@@ -63,7 +63,6 @@ export const updateTimeSlotAvailability = async (date, time, available) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log("Resposta:", res.data);
     return res.data;
   } catch (error) {
     console.error("Erro Axios:", error.response || error);

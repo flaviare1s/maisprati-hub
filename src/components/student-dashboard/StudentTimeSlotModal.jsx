@@ -85,8 +85,6 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         team.members && team.members.some(member => member.userId.toString() === studentId.toString())
       );
 
-      console.log("👥 Time encontrado:", userTeam);
-
       // Usar endpoint correto de appointments
       const appointmentData = {
         adminId: admin.id,

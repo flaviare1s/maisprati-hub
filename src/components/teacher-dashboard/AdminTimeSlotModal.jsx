@@ -97,8 +97,7 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
       }
 
       // Salvar no banco
-      const result = await createTimeSlots(currentAdminId, dateString, updatedSlots);
-      console.log("Resultado da API createTimeSlots:", result);
+      await createTimeSlots(currentAdminId, dateString, updatedSlots);
 
       // Atualizar interface local - recriar slots completos
       const newTimeSlots = generateDaySlots(updatedSlots, 30, selectedDate);
