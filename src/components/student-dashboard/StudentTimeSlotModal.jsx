@@ -185,11 +185,11 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
           {/* Legenda */}
           <div className="flex items-center justify-center gap-4 mt-6 p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full" />
+              <div className="w-3 h-3 bg-blue-logo rounded-full" />
               <span className="text-xs text-gray-600">Disponível</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full" />
+              <div className="w-3 h-3 bg-red-primary rounded-full" />
               <span className="text-xs text-gray-600">Agendado</span>
             </div>
             <div className="flex items-center gap-2">

@@ -10,9 +10,11 @@ import {
   fetchComments,
   fetchPosts,
   createPost,
+  updatePost,
   deletePost,
   deleteComment,
-  addComment
+  addComment,
+  updateComment
 } from "../api.js/forum";
 import { Forum } from "../components/Forum";
 import { useTeam } from "../contexts/TeamContext";
@@ -214,6 +216,51 @@ export const CommonRoom = () => {
     }
   };
 
+  const handleUpdatePost = async (postId, newTitle, newContent) => {
+    try {
+      await updatePost(postId, newTitle, newContent);
+
+      setForumPosts(prev =>
+        prev.map(post =>
+          post.id === postId
+            ? { ...post, title: newTitle, content: newContent }
+            : post
+        )
+      );
+
+      toast.success("Post atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar post:", error);
+      toast.error("Erro ao atualizar post. Tente novamente.");
+    }
+  };
+
+  const handleUpdateComment = async (commentId, postId, newContent) => {
+    try {
+      await updateComment(commentId, newContent);
+
+      setForumPosts(prev =>
+        prev.map(post =>
+          post.id === postId
+            ? {
+              ...post,
+              comments: post.comments.map(comment =>
+                comment.id === commentId
+                  ? { ...comment, content: newContent }
+                  : comment
+              )
+            }
+            : post
+        )
+      );
+
+      toast.success("Comentário atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar comentário:", error);
+      toast.error("Erro ao atualizar comentário. Tente novamente.");
+    }
+  };
+
   const handleAddComment = async (postId, userId, content) => {
     try {
       const newComment = await addComment(postId, userId, content);
@@ -329,7 +376,9 @@ export const CommonRoom = () => {
                         handleCreatePost={handleCreatePost}
                         currentUser={user}
                         onDeletePost={handleDeletePost}
+                        onUpdatePost={handleUpdatePost}
                         onDeleteComment={handleDeleteComment}
+                        onUpdateComment={handleUpdateComment}
                         onAddComment={handleAddComment}
                       />
                     )}

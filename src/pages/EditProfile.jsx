@@ -172,7 +172,7 @@ export const EditProfile = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+              <p className="mt-1 text-sm text-red-primary">{errors.name.message}</p>
             )}
           </div>
 
@@ -193,7 +193,7 @@ export const EditProfile = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
             />
             {errors.codename && (
-              <p className="mt-1 text-sm text-red-500">{errors.codename.message}</p>
+              <p className="mt-1 text-sm text-red-primary">{errors.codename.message}</p>
             )}
           </div>
 
@@ -214,7 +214,7 @@ export const EditProfile = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-primary">{errors.email.message}</p>
             )}
           </div>
 
@@ -237,7 +237,7 @@ export const EditProfile = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
                 />
                 {errors.whatsapp && (
-                  <p className="mt-1 text-sm text-red-500">{errors.whatsapp.message}</p>
+                  <p className="mt-1 text-sm text-red-primary">{errors.whatsapp.message}</p>
                 )}
               </div>
 

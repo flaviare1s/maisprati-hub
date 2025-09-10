@@ -73,7 +73,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-logo focus:border-blue-logo outline-none transition-all"
             >
               <option value="proximos">Próximos</option>
               <option value="todos">Todos</option>
@@ -211,7 +211,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           <span className="text-[9px] sm:text-xs text-gray-muted">Disponível</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-red-500 rounded-full" />
+          <div className="w-3 h-3 bg-red-primary rounded-full" />
           <span className="text-[9px] sm:text-xs text-gray-muted">Agendado</span>
         </div>
         <div className="flex items-center gap-2">

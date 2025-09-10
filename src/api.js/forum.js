@@ -36,6 +36,19 @@ export const createPost = async (authorId, title, content) => {
   }
 };
 
+export const updatePost = async (postId, title, content) => {
+  try {
+    const response = await api.put(`/posts/${postId}`, {
+      title,
+      content,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar post:", error);
+    throw error;
+  }
+};
+
 export const deletePost = async (postId) => {
   try {
     const response = await api.delete(`/posts/${postId}`);

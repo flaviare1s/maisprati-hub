@@ -34,7 +34,7 @@ export const UsersManagementTab = () => {
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-PRIMARY">{error}</p>
       </div>
     );
   }
