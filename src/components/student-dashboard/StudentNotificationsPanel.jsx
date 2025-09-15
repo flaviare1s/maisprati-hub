@@ -8,7 +8,7 @@ import {
   createNotification,
 } from "../../api.js/notifications";
 import { SendNotificationModal } from "./SendNotificationModal";
-import { Pagination } from "../Paginations";
+import { Pagination } from "../Pagination";
 
 export const StudentNotificationsPanel = () => {
   const { user } = useAuth();

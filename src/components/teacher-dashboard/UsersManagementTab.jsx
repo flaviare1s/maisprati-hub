@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchUsers } from '../../api.js/users';
 import { MdPerson } from 'react-icons/md';
 import { CustomLoader } from '../CustomLoader';
-import { Pagination } from '../Paginations';
+import { Pagination } from '../Pagination';
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);
@@ -87,7 +87,7 @@ export const UsersManagementTab = () => {
           )}
         </div>
 
-    {/* Controles de Paginação usando componente Pagination */}
+        {/* Controles de Paginação usando componente Pagination */}
         {users.length > 0 && totalPages > 1 && (
           <div className="mt-4 flex justify-center">
             <Pagination

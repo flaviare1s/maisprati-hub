@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import { TeamCard } from './TeamCard';
 import { useState } from 'react';
-import { Pagination } from '../Paginations';
+import { Pagination } from '../Pagination';
 
 export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
   const navigate = useNavigate();
