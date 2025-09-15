@@ -7,7 +7,7 @@ import { Pagination } from '../Pagination';
 export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2; // quantos times você quer mostrar por página
+  const itemsPerPage = 20; // quantos times você quer mostrar por página
 
   // Cálculos da paginação
   const startIndex = (currentPage - 1) * itemsPerPage;

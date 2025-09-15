@@ -9,7 +9,7 @@ export const UsersManagementTab = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2; // Número de usuários por página
+  const itemsPerPage = 30; // Número de usuários por página
 
   useEffect(() => {
     const loadUsers = async () => {

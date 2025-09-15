@@ -7,7 +7,7 @@ export const TeacherNotificationsTab = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Número de notificações por página
+  const itemsPerPage = 10; // Número de notificações por página
 
   useEffect(() => {
     const loadNotifications = async () => {

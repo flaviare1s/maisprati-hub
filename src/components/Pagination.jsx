@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
  */
 export const Pagination = ({
   totalItems,
-  itemsPerPage = 5,
+  itemsPerPage = 10,
   currentPage,
   onPageChange,
   showCounts = true,
