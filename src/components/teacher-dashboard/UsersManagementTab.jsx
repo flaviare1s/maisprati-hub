@@ -1,13 +1,18 @@
+
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchUsers } from '../../api.js/users';
-import { MdEdit, MdPerson } from 'react-icons/md';
+import { MdEdit, MdPerson, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { CustomLoader } from '../CustomLoader';
+import Pagination from '../pagination';
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2; // Número de usuários por página
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -39,13 +44,17 @@ export const UsersManagementTab = () => {
     );
   }
 
+  // Cálculos da paginação
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentUsers = users.slice(startIndex, endIndex);
+
   return (
     <div className="w-full p-0 text-dark">
       <div className="rounded-lg shadow-md p-1 sm:p-4 mb-6">
         <h3 className="text-lg font-semibold mb-4">Usuários</h3>
-        <p className="text-gray-600 mb-4">
-          Lista de estudantes cadastrados na plataforma.
-        </p>
+        <p className="text-gray-600 mb-4">Lista de estudantes cadastrados na plataforma.</p>
 
         <div className="grid gap-4">
           {users.length === 0 ? (
@@ -54,7 +63,7 @@ export const UsersManagementTab = () => {
               <p className="text-gray-muted">Nenhum estudante cadastrado ainda.</p>
             </div>
           ) : (
-            users.map((user) => (
+            currentUsers.map((user) => (
               <div key={user.id} className="bg-white border border-gray-200 rounded-lg px-2 sm:px-4 py-1">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -80,6 +89,21 @@ export const UsersManagementTab = () => {
             ))
           )}
         </div>
+
+    {/* Controles de Paginação usando componente Pagination */}
+        {users.length > 0 && totalPages > 1 && (
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              totalItems={users.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+              showCounts={true}
+              className=""
+            />
+          </div>
+        )}
+
       </div>
     </div>
   );
