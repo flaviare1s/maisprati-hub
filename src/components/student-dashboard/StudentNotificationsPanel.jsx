@@ -8,11 +8,15 @@ import {
   createNotification,
 } from "../../api.js/notifications";
 import { SendNotificationModal } from "./SendNotificationModal";
+import Pagination from "../pagination";
 
 export const StudentNotificationsPanel = () => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3; // número de notificações por página (ajuste como preferir)
 
   useEffect(() => {
     if (user) loadNotifications();
@@ -53,6 +57,13 @@ export const StudentNotificationsPanel = () => {
     }
   };
 
+
+  // Calcular paginação
+  const totalPages = Math.ceil(notifications.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentNotifications = notifications.slice(startIndex, endIndex);
+
   return (
     <div className="max-w-2xl mx-auto text-dark">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
@@ -66,7 +77,7 @@ export const StudentNotificationsPanel = () => {
       </div>
 
       <div className="space-y-3">
-        {notifications.map((notification) => (
+        {currentNotifications.map((notification) => (
           <div
             key={notification.id}
             className="relative p-4 rounded-lg border bg-blue-50"
@@ -96,6 +107,21 @@ export const StudentNotificationsPanel = () => {
           </div>
         )}
       </div>
+
+      {/* Controles de Paginação */}
+      {notifications.length > 0 && totalPages > 1 && (
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            totalItems={notifications.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+            showCounts={true}
+            className=""
+          />
+        </div>
+      )}
+
 
       <SendNotificationModal
         open={modalOpen}

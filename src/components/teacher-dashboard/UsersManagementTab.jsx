@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { fetchUsers } from '../../api.js/users';
 import { MdEdit, MdPerson, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { CustomLoader } from '../CustomLoader';
+import Pagination from '../pagination';
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);
@@ -89,40 +90,20 @@ export const UsersManagementTab = () => {
           )}
         </div>
 
-        {/* Controles de Paginação */}
+    {/* Controles de Paginação usando componente Pagination */}
         {users.length > 0 && totalPages > 1 && (
-          <div className="flex flex-col items-center mt-8 space-y-3">
-            <div className="flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              {/* Botão Página Anterior */}
-              <button
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed bg-gray-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'}`}
-              >
-                <MdChevronLeft size={18} />
-              </button>
-
-              {/* Indicador de Página */}
-              <div className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-50 border-r border-gray-200 min-w-[120px] text-center">
-                {currentPage} de {totalPages}
-              </div>
-
-              {/* Botão Próxima Página */}
-              <button
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed bg-gray-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'}`}
-              >
-                <MdChevronRight size={18} />
-              </button>
-            </div>
-
-            {/* Contador de registros */}
-            <div className="text-xs text-gray-500">
-              Mostrando {startIndex + 1}-{Math.min(endIndex, users.length)} de {users.length} usuários
-            </div>
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              totalItems={users.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+              showCounts={true}
+              className=""
+            />
           </div>
         )}
+
       </div>
     </div>
   );
