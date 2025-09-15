@@ -1,11 +1,8 @@
-
-
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { fetchUsers } from '../../api.js/users';
-import { MdEdit, MdPerson, MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { MdPerson } from 'react-icons/md';
 import { CustomLoader } from '../CustomLoader';
-import Pagination from '../pagination';
+import { Pagination } from '../Paginations';
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);

@@ -1,4 +1,3 @@
-import React from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import PropTypes from 'prop-types';
 
@@ -13,7 +12,7 @@ import PropTypes from 'prop-types';
  * - showCounts: mostra o texto "Mostrando X-Y de Z" (default true)
  * - className: classes adicionais para estilização do container
  */
-const Pagination = ({
+export const Pagination = ({
   totalItems,
   itemsPerPage = 5,
   currentPage,
@@ -90,5 +89,3 @@ Pagination.propTypes = {
   showCounts: PropTypes.bool, // opcional, exibir contador
   className: PropTypes.string, // opcional, classes adicionais
 };
-
-export default Pagination;
