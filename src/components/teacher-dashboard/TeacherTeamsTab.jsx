@@ -1,9 +1,19 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import { TeamCard } from './TeamCard';
+import { useState } from 'react';
+import { Pagination } from '../Pagination';
 
 export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20; // quantos times você quer mostrar por página
+
+  // Cálculos da paginação
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTeams = teams.slice(startIndex, endIndex);
+
 
   return (
     <div className="w-full">
@@ -18,7 +28,7 @@ export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-muted">
-        {teams.map(team => (
+        {currentTeams.map(team => (
           <TeamCard
             key={team.id}
             team={team}
@@ -34,6 +44,17 @@ export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
           <p className="text-sm mt-2">Clique em "Criar Novo Time" para começar.</p>
         </div>
       )}
+      {teams.length > itemsPerPage && (
+        <div className="mt-6">
+          <Pagination
+            totalItems={teams.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
+
     </div>
   );
 };

@@ -207,7 +207,7 @@ export const TeamSelect = () => {
           ))
         ) : (
           <div className="text-center text-gray-muted py-4">
-            Carregando times...
+            Nenhum time cadastrado!
           </div>
         )}
       </div>

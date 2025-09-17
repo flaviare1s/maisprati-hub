@@ -8,7 +8,6 @@ import { Forbidden } from "./pages/Forbidden";
 import { NotFound } from "./pages/NotFound";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import { FAQ } from "./pages/FAQ";
 import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
@@ -26,6 +25,7 @@ import { ProjectBoard } from "./components/project/ProjectBoard";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 import { EditProfile } from "./pages/EditProfile";
+import { FAQ } from "./pages/FAQ";
 
 function App() {
   const { user } = useAuth();
