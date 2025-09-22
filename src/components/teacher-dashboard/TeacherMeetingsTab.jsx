@@ -186,7 +186,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
                   {appt.status !== 'CANCELLED' && appt.status !== 'CANCELED' && appt.status !== 'COMPLETED' && (
                     <button
                       onClick={() => handleCancelAppointment(appt)}
-                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold"
+                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold cursor-pointer"
                       title="Cancelar agendamento"
                     >
                       Cancelar

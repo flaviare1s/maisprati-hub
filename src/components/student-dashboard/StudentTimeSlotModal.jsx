@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchTimeSlots } from "../../api.js/schedule";
 import api from "../../services/api";
+import { notifyAppointmentScheduled } from "../../api.js/notifications";
 
 const generateDaySlots = (existingSlots = []) => {
   const startHour = 6;
@@ -89,12 +90,61 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       const appointmentData = {
         adminId: admin.id,
         studentId,
-        teamId: userTeam?.id || null, // ✅ ADICIONAR TEAMID AQUI
+        teamId: userTeam?.id || null, 
         date: selectedDate.format("YYYY-MM-DD"),
-        time: slot.time + ":00" // Adicionar segundos para LocalTime
+        time: slot.time + ":00"
       };
 
       await api.post("/appointments", appointmentData);
+
+      try {
+        if (userTeam) {
+          const teamName = userTeam.name;
+
+          // Notificar admin
+          await api.post("/notifications", {
+            userId: admin.id,
+            title: "Nova reunião do time",
+            message: `O time ${teamName} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
+            createdAt: new Date().toISOString(),
+          });
+
+          // Notificar membros do time
+          await Promise.all(
+            userTeam.members.map((member) =>
+              api.post("/notifications", {
+                userId: member.userId,
+                title: "Nova reunião do time",
+                message: `O time ${teamName} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
+                createdAt: new Date().toISOString(),
+              })
+            )
+          );
+        } else {
+          // Notificar admin individual se o aluno não tiver time
+          await api.post("/notifications", {
+            userId: admin.id,
+            title: "Nova reunião agendada",
+            message: `O aluno ${studentId} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
+            createdAt: new Date().toISOString(),
+          });
+        }
+      } catch (notifError) {
+        console.error("Erro ao enviar notificações:", notifError);
+      }
+
+
+      try {
+        await notifyAppointmentScheduled({
+          adminId: admin.id,
+          teamId: userTeam?.id || null,
+          studentId,
+          date: selectedDate.format("YYYY-MM-DD"),
+          time: slot.time
+        });
+      } catch (notifError) {
+        console.error("Erro ao enviar notificações:", notifError);
+      }
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>

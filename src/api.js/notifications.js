@@ -48,3 +48,34 @@ export const sendNotificationToTeacher = async (studentName, message) => {
     throw error;
   }
 };
+
+// Função para enviar notificações para professor e membros do time
+export const notifyAppointmentScheduled = async (appointment, teamName, teamMembers) => {
+  try {
+    // Notificar professor/admin
+    await createNotification({
+      userId: appointment.adminId,
+      title: `Nova reunião agendada`,
+      message: `O time ${teamName} agendou uma reunião para ${appointment.date} às ${appointment.time}`,
+      createdAt: new Date().toISOString(),
+    });
+    console.log("Notificação enviada para professor/admin");
+
+    // Notificar membros do time
+    if (teamMembers && teamMembers.length) {
+      await Promise.all(
+        teamMembers.map((member) =>
+          createNotification({
+            userId: member.userId,
+            title: `Nova reunião do time`,
+            message: `O time ${teamName} agendou uma reunião para ${appointment.date} às ${appointment.time}`,
+            createdAt: new Date().toISOString(),
+          })
+        )
+      );
+      console.log("Notificação enviada para membros do time");
+    }
+  } catch (error) {
+    console.error("Erro ao enviar notificações:", error);
+  }
+};
