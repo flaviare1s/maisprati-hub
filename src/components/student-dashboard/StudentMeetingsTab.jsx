@@ -4,6 +4,7 @@ import { fetchAppointments } from "../../api.js/schedule";
 import { fetchTeams } from "../../api.js/teams";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
+import toast from "react-hot-toast";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
@@ -14,34 +15,19 @@ export const StudentMeetingsTab = () => {
       try {
         let allAppointments = [];
 
-        // 1. Buscar appointments individuais do usuário
+        // Buscar appointments individuais do usuário
         const individualAppointments = await fetchAppointments(user.id, "student");
         allAppointments.push(...individualAppointments);
 
-        // 2. Buscar appointments do time (se faz parte de um)
+        // Buscar appointments do time (se faz parte de um)
         const teams = await fetchTeams();
         const userTeam = teams.find(team =>
           team.members && team.members.some(member => member.userId.toString() === user.id.toString())
         );
 
         if (userTeam) {
-          try {
-            // Tentar buscar appointments por teamId
-            const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
-            allAppointments.push(...teamAppointments.data);
-          } catch {
-            // Fallback: buscar de todos os membros
-            for (const member of userTeam.members) {
-              if (member.userId.toString() !== user.id.toString()) {
-                try {
-                  const memberAppts = await fetchAppointments(member.userId, "student");
-                  allAppointments.push(...memberAppts.filter(appt => appt.teamId === userTeam.id));
-                } catch (err) {
-                  console.warn("Erro ao buscar appointments do membro:", err);
-                }
-              }
-            }
-          }
+          const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
+          allAppointments.push(...teamAppointments.data);
         }
 
         // Remover duplicatas por ID
@@ -57,21 +43,48 @@ export const StudentMeetingsTab = () => {
     loadAppointments();
   }, [user]);
 
+  const handleCancelAppointment = async (appointment) => {
+    const confirmMessage = `Tem certeza que deseja cancelar a reunião marcada para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}? O professor será notificado.`;
+    if (!window.confirm(confirmMessage)) return;
+
+    try {
+      await api.patch(`/appointments/${appointment.id}/cancel`);
+
+      setAppointments(prev =>
+        prev.map(a => a.id === appointment.id ? { ...a, status: "CANCELLED" } : a)
+      );
+
+      toast.success("Reunião cancelada com sucesso!");
+
+      try {
+        await api.post("/notifications", {
+          userId: appointment.adminId,
+          title: "Reunião cancelada",
+          message: `O aluno${appointment.studentName ? ` ${appointment.studentName}` : ''} cancelou a reunião marcada para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}.`,
+          createdAt: new Date().toISOString(),
+        });
+      } catch (notifError) {
+        console.error("Erro ao enviar notificação de cancelamento:", notifError);
+      }
+
+    } catch (err) {
+      console.error("Erro ao cancelar reunião:", err);
+      toast.error("Erro ao cancelar reunião");
+    }
+  };
+
   return (
     <div className="w-full text-dark">
       <h3 className="text-lg font-semibold mb-4">Minhas Reuniões</h3>
-
       <div className="grid gap-2">
         {appointments
           .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
           .map((appt, idx) => {
-            // Status do appointment
             const status = appt.status || 'SCHEDULED';
             const isPast = dayjs(`${appt.date} ${appt.time}`).isBefore(dayjs());
 
             let statusText = 'Agendado';
             let statusColor = 'text-green-600 bg-green-50';
-
             if (status === 'CANCELLED' || status === 'CANCELED') {
               statusText = 'Cancelado';
               statusColor = 'text-red-600 bg-red-50';
@@ -86,22 +99,38 @@ export const StudentMeetingsTab = () => {
             return (
               <div
                 key={idx}
-                className={`p-3 rounded-lg text-sm border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow ${status === 'CANCELLED' || status === 'CANCELED' ? 'opacity-60' : ''
-                  }`}
+                className={`p-3 rounded-lg text-sm border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow ${status === 'CANCELLED' ? 'opacity-60' : ''}`}
               >
                 <div className="flex flex-col">
                   <span className="font-medium text-dark">
                     {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
                   </span>
-                  {appt.teamName && (
+                  {appt.teamName ? (
                     <span className="text-xs text-blue-logo font-semibold">
                       {appt.teamName}
                     </span>
+                  ) : (
+                    <span className="text-xs text-blue-logo font-semibold">
+                      {appt.studentName || 'Você'}
+                    </span>
                   )}
                 </div>
-                <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusColor}`}>
-                  {statusText}
-                </span>
+
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusColor}`}>
+                    {statusText}
+                  </span>
+                  {/* Botão cancelar se permitido */}
+                  {status !== 'CANCELLED' && status !== 'COMPLETED' && !isPast && (
+                    <button
+                      onClick={() => handleCancelAppointment(appt)}
+                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold cursor-pointer"
+                      title="Cancelar reunião"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -113,13 +142,6 @@ export const StudentMeetingsTab = () => {
           <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
         </div>
       )}
-
-      {/* Legenda - agora apenas informativa, já que o agendamento é feito pelo calendário */}
-      <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-gray-50 rounded-lg">
-        <p className="text-xs text-gray-600 text-center">
-          Para agendar novas reuniões, clique em um dia no calendário lateral
-        </p>
-      </div>
     </div>
   );
 };

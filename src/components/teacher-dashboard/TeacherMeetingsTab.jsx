@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { fetchAppointments } from "../../api.js/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";

@@ -90,50 +90,14 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       const appointmentData = {
         adminId: admin.id,
         studentId,
-        teamId: userTeam?.id || null, 
+        teamId: userTeam?.id || null,
         date: selectedDate.format("YYYY-MM-DD"),
         time: slot.time + ":00"
       };
 
       await api.post("/appointments", appointmentData);
 
-      try {
-        if (userTeam) {
-          const teamName = userTeam.name;
-
-          // Notificar admin
-          await api.post("/notifications", {
-            userId: admin.id,
-            title: "Nova reunião do time",
-            message: `O time ${teamName} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
-            createdAt: new Date().toISOString(),
-          });
-
-          // Notificar membros do time
-          await Promise.all(
-            userTeam.members.map((member) =>
-              api.post("/notifications", {
-                userId: member.userId,
-                title: "Nova reunião do time",
-                message: `O time ${teamName} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
-                createdAt: new Date().toISOString(),
-              })
-            )
-          );
-        } else {
-          // Notificar admin individual se o aluno não tiver time
-          await api.post("/notifications", {
-            userId: admin.id,
-            title: "Nova reunião agendada",
-            message: `O aluno ${studentId} agendou uma reunião para ${appointmentData.date} às ${slot.time}`,
-            createdAt: new Date().toISOString(),
-          });
-        }
-      } catch (notifError) {
-        console.error("Erro ao enviar notificações:", notifError);
-      }
-
-
+      // Enviar notificações usando a função centralizada
       try {
         await notifyAppointmentScheduled({
           adminId: admin.id,
@@ -141,7 +105,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
           studentId,
           date: selectedDate.format("YYYY-MM-DD"),
           time: slot.time
-        });
+        }, userTeam?.name || null, userTeam?.members || []);
       } catch (notifError) {
         console.error("Erro ao enviar notificações:", notifError);
       }
