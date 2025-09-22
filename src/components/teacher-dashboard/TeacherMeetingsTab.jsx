@@ -69,7 +69,8 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           teamName,
           teamMembers,
           studentName,
-          adminId
+          adminId, 
+          true
         );
       } catch (notifError) {
         console.error("Erro ao enviar notificação de cancelamento:", notifError);
