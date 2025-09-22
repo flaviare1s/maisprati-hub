@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
-import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { fetchAppointments } from "../../api.js/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";
+import { notifyAppointmentCanceled } from "../../api.js/notifications";
 
 export const TeacherMeetingsTab = ({ adminId }) => {
   const [appointments, setAppointments] = useState([]);
@@ -41,7 +41,40 @@ export const TeacherMeetingsTab = ({ adminId }) => {
     }
 
     try {
+      // Buscar dados do time se existir
+      let teamMembers = [];
+
+      if (appointment.teamId && teamName) {
+        const token = localStorage.getItem("token");
+        const teamsRes = await api.get("/teams", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const team = teamsRes.data.find(t => t.id === appointment.teamId);
+        if (team) {
+          teamMembers = team.members;
+        }
+      }
+
+      // Cancelar no backend
       await api.patch(`/appointments/${appointment.id}/cancel`);
+
+      // Enviar notificações centralizadas
+      try {
+        await notifyAppointmentCanceled(
+          {
+            date: appointment.date,
+            time: appointment.time,
+            teamId: appointment.teamId
+          },
+          teamName,
+          teamMembers,
+          studentName,
+          adminId, 
+          true
+        );
+      } catch (notifError) {
+        console.error("Erro ao enviar notificação de cancelamento:", notifError);
+      }
 
       // Recarregar lista de agendamentos
       const data = await fetchAppointments(adminId, "admin");
@@ -186,7 +219,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
                   {appt.status !== 'CANCELLED' && appt.status !== 'CANCELED' && appt.status !== 'COMPLETED' && (
                     <button
                       onClick={() => handleCancelAppointment(appt)}
-                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold"
+                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold cursor-pointer"
                       title="Cancelar agendamento"
                     >
                       Cancelar

@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchTimeSlots } from "../../api.js/schedule";
 import api from "../../services/api";
+import { notifyAppointmentScheduled } from "../../api.js/notifications";
 
 const generateDaySlots = (existingSlots = []) => {
   const startHour = 6;
@@ -85,19 +86,28 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         team.members && team.members.some(member => member.userId.toString() === studentId.toString())
       );
 
-      // Usar endpoint correto de appointments
       const appointmentData = {
         adminId: admin.id,
         studentId,
-        teamId: userTeam?.id || null, // ✅ ADICIONAR TEAMID AQUI
+        teamId: userTeam?.id || null,
         date: selectedDate.format("YYYY-MM-DD"),
-        time: slot.time + ":00" // Adicionar segundos para LocalTime
+        time: slot.time + ":00"
       };
 
-      console.log("Criando appointment:", appointmentData);
+      await api.post("/appointments", appointmentData);
 
-      const response = await api.post("/appointments", appointmentData);
-      console.log("Appointment criado:", response.data);
+      // Enviar notificações usando a função centralizada
+      try {
+        await notifyAppointmentScheduled({
+          teamId: userTeam?.id || null,
+          studentId,
+          date: selectedDate.format("YYYY-MM-DD"),
+          time: slot.time
+        }, userTeam?.name || null, userTeam?.members || [],
+          admin.id);
+      } catch (notifError) {
+        console.error("Erro ao enviar notificações:", notifError);
+      }
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>
