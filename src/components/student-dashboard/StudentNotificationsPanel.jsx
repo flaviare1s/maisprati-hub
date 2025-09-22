@@ -10,7 +10,7 @@ import {
 import { SendNotificationModal } from "./SendNotificationModal";
 import { Pagination } from "../Pagination";
 
-export const StudentNotificationsPanel = () => {
+export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,6 +35,9 @@ export const StudentNotificationsPanel = () => {
     try {
       await deleteNotification(id);
       setNotifications((prev) => prev.filter((n) => n.id !== id));
+      if (refreshNotificationCount) {
+        refreshNotificationCount();
+      }
     } catch (error) {
       console.error("Erro ao deletar notificação:", error);
     }

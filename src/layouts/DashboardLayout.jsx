@@ -8,6 +8,7 @@ import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
 import { fetchActiveTeams, isUserInActiveTeam } from '../api.js/teams';
 import { isAdmin } from '../utils/permissions';
+import { getUserNotifications } from "../api.js/notifications";
 
 export const DashboardLayout = () => {
   const { user } = useAuth();
@@ -18,6 +19,30 @@ export const DashboardLayout = () => {
   const [userInTeam, setUserInTeam] = useState(false);
   const [userInActiveTeam, setUserInActiveTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const userId = user?.id || user?._id;
+        if (userId) {
+          const notifications = await getUserNotifications(userId);
+          setNotificationCount(notifications?.length || 0);
+        }
+      } catch (error) {
+        setNotificationCount(0);
+      }
+    };
+    if (user) fetchNotifications();
+  }, [user]);
+
+  const refreshNotificationCount = async () => {
+    const userId = user?.id || user?._id;
+    if (userId) {
+      const notifications = await getUserNotifications(userId);
+      setNotificationCount(notifications?.length || 0);
+    }
+  };
 
   // Função para converter pathname em nome da aba
   const getTabNameFromPath = (pathname) => {
@@ -126,12 +151,26 @@ export const DashboardLayout = () => {
             />
           )}
 
-          <DashboardTab
-            icon={<FaBell />}
-            title="Notificações"
-            activeTab={activeTab}
-            setActiveTab={handleTabClick}
-          />
+          <div className="flex items-center">
+            <DashboardTab
+              icon={<FaBell />}
+              title="Notificações"
+              activeTab={activeTab}
+              setActiveTab={handleTabClick}
+              refreshNotificationCount={refreshNotificationCount}
+            />
+            {notificationCount > 0 && (
+              <span
+                className={`ml-2 rounded-full text-[9px] h-fit border px-[3px] font-semibold
+                    ${activeTab === "notificações"
+                    ? "bg-blue-logo text-light border-blue-logo"
+                    : "text-gray-muted border-gray-muted"
+                  }`}
+              >
+                {notificationCount}
+              </span>
+            )}
+          </div>
         </nav>
       </div>
     );

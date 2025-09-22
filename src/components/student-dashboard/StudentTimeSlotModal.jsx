@@ -94,10 +94,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         time: slot.time + ":00" // Adicionar segundos para LocalTime
       };
 
-      console.log("Criando appointment:", appointmentData);
-
-      const response = await api.post("/appointments", appointmentData);
-      console.log("Appointment criado:", response.data);
+      await api.post("/appointments", appointmentData);
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>

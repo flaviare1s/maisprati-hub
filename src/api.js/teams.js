@@ -138,8 +138,8 @@ export const checkUserTeamStatus = async (userId) => {
   try {
     const response = await api.get(`/teams/user/${userId}/status`);
     return response.data;
+  // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    console.error("Erro ao verificar status do usuário no time:", error);
     return { isInActiveTeam: false };
   }
 };
@@ -187,7 +187,7 @@ export const isUserInActiveTeam = async (userId) => {
     const result = await checkUserTeamStatus(userId);
     return result.isInActiveTeam;
   } catch (error) {
-    console.error("Erro ao verificar se usuário está em time ativo:", error);
+    console.error("Erro ao verificar se usuário está em algum time ativo:", error);
     return false;
   }
 };
