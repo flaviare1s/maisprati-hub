@@ -47,6 +47,7 @@ export const TeacherDashboardPage = () => {
         }
       } catch (error) {
         setNotificationCount(0);
+        console.error('Erro ao carregar notificações:', error);
       }
     };
     if (user) fetchNotifications();
