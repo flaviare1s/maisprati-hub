@@ -70,55 +70,6 @@ export const updateTimeSlotAvailability = async (date, time, available) => {
   }
 };
 
-// Reservar horário para aluno ou time
-export const bookTimeSlot = async (studentId, adminId, date, time) => {
-  try {
-    const token = localStorage.getItem("token");
-
-    await api.patch(`/timeslots/${date}/${time}/book`, null, {
-      params: { adminId },
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    // Buscar todos os times e verificar se o aluno está em algum time
-    const teamsRes = await api.get("/teams", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const teams = teamsRes.data;
-    const userTeam = teams.find((team) =>
-      team.members?.some(
-        (member) => member.userId.toString() === studentId.toString()
-      )
-    );
-
-    let createdAppointments = [];
-    if (userTeam) {
-      for (const member of userTeam.members) {
-        const appointment = {
-          studentId: member.userId,
-          adminId,
-          date,
-          time,
-        };
-        const res = await api.post(`/appointments`, appointment, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        createdAppointments.push(res.data);
-      }
-      return createdAppointments;
-    } else {
-      const appointment = { studentId, adminId, date, time };
-      const res = await api.post(`/appointments`, appointment, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return res.data;
-    }
-  } catch (error) {
-    console.error("Erro ao reservar horário:", error.response || error);
-    throw error;
-  }
-};
-
 // Buscar agendamentos com dados completos
 export const fetchAppointments = async (userId, type) => {
   try {
