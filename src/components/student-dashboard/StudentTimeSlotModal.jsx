@@ -86,7 +86,6 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
         team.members && team.members.some(member => member.userId.toString() === studentId.toString())
       );
 
-      // Usar endpoint correto de appointments
       const appointmentData = {
         adminId: admin.id,
         studentId,
@@ -100,12 +99,12 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       // Enviar notificações usando a função centralizada
       try {
         await notifyAppointmentScheduled({
-          adminId: admin.id,
           teamId: userTeam?.id || null,
           studentId,
           date: selectedDate.format("YYYY-MM-DD"),
           time: slot.time
-        }, userTeam?.name || null, userTeam?.members || []);
+        }, userTeam?.name || null, userTeam?.members || [],
+          admin.id);
       } catch (notifError) {
         console.error("Erro ao enviar notificações:", notifError);
       }

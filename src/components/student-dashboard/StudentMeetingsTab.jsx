@@ -5,6 +5,7 @@ import { fetchTeams } from "../../api.js/teams";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";
+import { notifyAppointmentCanceled } from "../../api.js/notifications";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
@@ -48,24 +49,48 @@ export const StudentMeetingsTab = () => {
     if (!window.confirm(confirmMessage)) return;
 
     try {
+      // Buscar dados do time se existir
+      let teamName = null;
+      let teamMembers = [];
+
+      if (appointment.teamId) {
+        const token = localStorage.getItem("token");
+        const teamsRes = await api.get("/teams", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const team = teamsRes.data.find(t => t.id === appointment.teamId);
+        if (team) {
+          teamName = team.name;
+          teamMembers = team.members;
+        }
+      }
+
+      // Cancelar no backend
       await api.patch(`/appointments/${appointment.id}/cancel`);
 
+      // Atualizar estado local
       setAppointments(prev =>
         prev.map(a => a.id === appointment.id ? { ...a, status: "CANCELLED" } : a)
       );
 
-      toast.success("Reunião cancelada com sucesso!");
-
+      // Enviar notificações centralizadas
       try {
-        await api.post("/notifications", {
-          userId: appointment.adminId,
-          title: "Reunião cancelada",
-          message: `O aluno${appointment.studentName ? ` ${appointment.studentName}` : ''} cancelou a reunião marcada para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}.`,
-          createdAt: new Date().toISOString(),
-        });
+        await notifyAppointmentCanceled(
+          {
+            date: appointment.date,
+            time: appointment.time,
+            teamId: appointment.teamId
+          },
+          teamName,
+          teamMembers,
+          appointment.studentName || user.name,
+          appointment.adminId
+        );
       } catch (notifError) {
         console.error("Erro ao enviar notificação de cancelamento:", notifError);
       }
+
+      toast.success("Reunião cancelada com sucesso!");
 
     } catch (err) {
       console.error("Erro ao cancelar reunião:", err);

@@ -35,7 +35,7 @@ export const deleteNotification = async (notificationId) => {
   }
 };
 
-// Criar notificação para o professor (admin) - versão corrigida
+// Criar notificação para o professor (admin)
 export const sendNotificationToTeacher = async (studentName, message) => {
   try {
     const response = await api.post("/notifications/send-to-admin", {
@@ -53,10 +53,11 @@ export const sendNotificationToTeacher = async (studentName, message) => {
 export const notifyAppointmentScheduled = async (
   appointment,
   teamName,
-  teamMembers
+  teamMembers,
+  adminId
 ) => {
   try {
-    const { adminId, date, time, teamId } = appointment;
+    const { date, time, teamId, studentId } = appointment;
 
     // Se tem time, notificar como reunião do time
     if (teamId && teamName) {
@@ -69,14 +70,10 @@ export const notifyAppointmentScheduled = async (
       });
       console.log("Notificação enviada para professor/admin sobre time");
 
-      // Notificar membros do time (exceto o admin se ele for membro)
+      // Notificar TODOS os membros do time (incluindo quem agendou)
       if (teamMembers && teamMembers.length) {
-        const membersToNotify = teamMembers.filter(
-          (member) => member.userId !== adminId
-        );
-
         await Promise.all(
-          membersToNotify.map((member) =>
+          teamMembers.map((member) =>
             createNotification({
               userId: member.userId,
               title: "Nova reunião do time",
@@ -95,8 +92,17 @@ export const notifyAppointmentScheduled = async (
         message: `Um aluno agendou uma reunião para ${date} às ${time}`,
         createdAt: new Date().toISOString(),
       });
+
+      // Notificar também o próprio estudante
+      await createNotification({
+        userId: studentId,
+        title: "Nova reunião marcada",
+        message: `Sua reunião foi marcada para ${date} às ${time}`,
+        createdAt: new Date().toISOString(),
+      });
+
       console.log(
-        "Notificação enviada para professor/admin sobre reunião individual"
+        "Notificação enviada para professor/admin e estudante sobre reunião individual"
       );
     }
   } catch (error) {
@@ -109,10 +115,11 @@ export const notifyAppointmentCanceled = async (
   appointment,
   teamName,
   teamMembers,
-  studentName
+  studentName,
+  adminId
 ) => {
   try {
-    const { adminId, date, time, teamId } = appointment;
+    const { date, time, teamId } = appointment;
 
     // Se tem time, notificar como cancelamento do time
     if (teamId && teamName) {
@@ -127,14 +134,10 @@ export const notifyAppointmentCanceled = async (
         "Notificação de cancelamento enviada para professor/admin sobre time"
       );
 
-      // Notificar membros do time (exceto o admin se ele for membro)
+      // Notificar TODOS os membros do time
       if (teamMembers && teamMembers.length) {
-        const membersToNotify = teamMembers.filter(
-          (member) => member.userId !== adminId
-        );
-
         await Promise.all(
-          membersToNotify.map((member) =>
+          teamMembers.map((member) =>
             createNotification({
               userId: member.userId,
               title: "Reunião do time cancelada",
@@ -161,4 +164,3 @@ export const notifyAppointmentCanceled = async (
     console.error("Erro ao enviar notificações de cancelamento:", error);
   }
 };
-
