@@ -9,12 +9,14 @@ import { TeacherTeamsTab } from '../components/teacher-dashboard/TeacherTeamsTab
 import { TeacherMeetingsTab } from '../components/teacher-dashboard/TeacherMeetingsTab';
 import { TeacherNotificationsTab } from '../components/teacher-dashboard/TeacherNotificationTab';
 import { UsersManagementTab } from '../components/teacher-dashboard/UsersManagementTab';
+import { getUserNotifications } from '../api.js/notifications';
 
 export const TeacherDashboardPage = () => {
   const { user, loadUserData } = useAuth();
   const [activeTab, setActiveTab] = useState('perfil');
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
@@ -34,6 +36,21 @@ export const TeacherDashboardPage = () => {
 
     loadData();
   }, [loadUserData]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const userId = user?.id || user?._id;
+        if (userId) {
+          const notifications = await getUserNotifications(userId);
+          setNotificationCount(notifications?.length || 0);
+        }
+      } catch (error) {
+        setNotificationCount(0);
+      }
+    };
+    if (user) fetchNotifications();
+  }, [user]);
 
   if (loading) return <CustomLoader />;
 
@@ -65,7 +82,20 @@ export const TeacherDashboardPage = () => {
           <DashboardTab icon={<FaUsers />} title="Times" activeTab={activeTab} setActiveTab={setActiveTab} />
           <DashboardTab icon={<FaUserCog />} title="Usuários" activeTab={activeTab} setActiveTab={setActiveTab} />
           <DashboardTab icon={<FaRegCalendarAlt />} title="Reuniões" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <DashboardTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <div className='flex items-center'>
+            <DashboardTab icon={<FaBell />} title="Notificações" activeTab={activeTab} setActiveTab={setActiveTab} />
+            {notificationCount > 0 && (
+              <span
+                className={`ml-2 rounded-full text-[9px] h-fit border px-[3px] font-semibold
+        ${activeTab === 'notificações'
+                    ? 'bg-blue-logo text-light border-blue-logo'
+                    : 'text-gray-muted border-gray-muted'
+                  }`}
+              >
+                {notificationCount}
+              </span>
+            )}
+          </div>
         </nav>
       </div>
 
