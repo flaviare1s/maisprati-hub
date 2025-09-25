@@ -9,14 +9,19 @@ export const UsersManagementTab = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 30; // Número de usuários por página
+  const [sortOption, setSortOption] = useState('name'); // <--- Defina 'name' como padrão
+  const itemsPerPage = 30;
 
+  // Efeito para carregar os usuários e ordená-los por nome
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const usersData = await fetchUsers();
-        // Filtrar apenas estudantes para o admin gerenciar
         const students = usersData.filter(user => user.type === 'student');
+
+        // <--- Nova lógica de ordenação inicial
+        students.sort((a, b) => a.name.localeCompare(b.name));
+        
         setUsers(students);
       } catch (error) {
         console.error('Erro ao carregar usuários:', error);
@@ -29,6 +34,24 @@ export const UsersManagementTab = () => {
     loadUsers();
   }, []);
 
+  // Efeito para reordenar a lista quando o usuário clicar nos botões
+  useEffect(() => {
+    let sortedUsers = [...users];
+
+    if (sortOption === 'name') {
+      sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === 'groupClass') {
+      sortedUsers.sort((a, b) => {
+        if (!a.groupClass) return 1;
+        if (!b.groupClass) return -1;
+        return a.groupClass.localeCompare(b.groupClass);
+      });
+    }
+
+    setUsers(sortedUsers);
+    setCurrentPage(1); // Reseta para a primeira página após a ordenação
+  }, [sortOption]);
+
   if (loading) {
     return <CustomLoader />;
   }
@@ -40,8 +63,8 @@ export const UsersManagementTab = () => {
       </div>
     );
   }
-
-  // Cálculos da paginação
+  
+  // Lógica de paginação
   const totalPages = Math.ceil(users.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -52,6 +75,22 @@ export const UsersManagementTab = () => {
       <div className="rounded-lg shadow-md p-1 sm:p-4 mb-6">
         <h3 className="text-lg font-semibold mb-4">Usuários</h3>
         <p className="text-gray-600 mb-4">Lista de estudantes cadastrados na plataforma.</p>
+
+        {/* 🔹 Botões de ordenação */}
+        <div className="flex space-x-2 mb-4">
+          <button
+            className={`px-4 py-2 rounded ${sortOption === 'name' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => setSortOption('name')}
+          >
+            Ordenar por Nome
+          </button>
+          <button
+            className={`px-4 py-2 rounded ${sortOption === 'groupClass' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => setSortOption('groupClass')}
+          >
+            Ordenar por Turma
+          </button>
+        </div>
 
         <div className="grid gap-4">
           {users.length === 0 ? (
@@ -76,10 +115,8 @@ export const UsersManagementTab = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4">
-                    <div className="text-right">
-                      <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
-                    </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
                   </div>
                 </div>
               </div>
@@ -87,7 +124,7 @@ export const UsersManagementTab = () => {
           )}
         </div>
 
-        {/* Controles de Paginação usando componente Pagination */}
+        {/* Paginação */}
         {users.length > 0 && totalPages > 1 && (
           <div className="mt-4 flex justify-center">
             <Pagination
@@ -96,11 +133,9 @@ export const UsersManagementTab = () => {
               currentPage={currentPage}
               onPageChange={(page) => setCurrentPage(page)}
               showCounts={true}
-              className=""
             />
           </div>
         )}
-
       </div>
     </div>
   );
