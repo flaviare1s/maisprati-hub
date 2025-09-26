@@ -29,14 +29,14 @@ import { FAQ } from "./pages/FAQ";
 
 function App() {
   const { user } = useAuth();
-  const [loadingApp, setLoadingApp] = useState(true)
+  const [loadingApp, setLoadingApp] = useState(true);
 
   useEffect(() => {
     setLoadingApp(false);
-  }, [])
+  }, []);
 
   if (loadingApp) {
-    return <CustomLoader />
+    return <CustomLoader />;
   }
 
   return (
@@ -50,7 +50,11 @@ function App() {
             element={
               user ? (
                 <Navigate
-                  to={user.type === "admin" ? "/dashboard/admin" : "/dashboard/student"}
+                  to={
+                    user.type === "admin"
+                      ? "/dashboard/admin"
+                      : "/dashboard/student"
+                  }
                   replace
                 />
               ) : (
@@ -65,25 +69,58 @@ function App() {
             <Route
               index
               element={
-                user?.type === 'admin' ?
-                  <Navigate to="/dashboard/admin" replace /> :
+                user?.type === "admin" ? (
+                  <Navigate to="/dashboard/admin" replace />
+                ) : (
                   <Navigate to="/dashboard/profile" replace />
+                )
               }
             />
             <Route path="profile" element={<StudentDashboardPage />} />
             <Route path="project" element={<ProjectBoard />} />
             <Route path="meetings" element={<StudentMeetingsTab />} />
-            <Route path="notifications" element={<StudentNotificationsPanel />} />
-            <Route path="admin" element={<TeacherDashboardPage />} />
-            <Route path="student" element={<Navigate to="/dashboard/profile" replace />} />
+            <Route
+              path="notifications"
+              element={<StudentNotificationsPanel />}
+            />
+            <Route
+              path="admin"
+              element={
+                <PrivateRoute requiredType="admin">
+                  <TeacherDashboardPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="student"
+              element={<Navigate to="/dashboard/profile" replace />}
+            />
           </Route>
           <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="/edit-profile/:id" element={<PrivateRoute requiredType="admin"><EditProfile /></PrivateRoute>} />
-          <Route path="/teams/create/" element={<PrivateRoute requiredType="admin"><CreateTeam /></PrivateRoute>} />
+          <Route
+            path="/edit-profile/:id"
+            element={
+              <PrivateRoute requiredType="admin">
+                <EditProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/create/"
+            element={
+              <PrivateRoute requiredType="admin">
+                <CreateTeam />
+              </PrivateRoute>
+            }
+          />
           <Route path="/warname/" element={<CodenameSelect />} />
           <Route path="/team-select/" element={<TeamSelect />} />
           <Route path="/teams/:teamId/board" element={<ProjectBoard />} />
-          {user ? (<Route path="/common-room/" element={<CommonRoom />} />) : (<Route path="/common-room/" element={<Login />} />)}
+          {user ? (
+            <Route path="/common-room/" element={<CommonRoom />} />
+          ) : (
+            <Route path="/common-room/" element={<Login />} />
+          )}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
