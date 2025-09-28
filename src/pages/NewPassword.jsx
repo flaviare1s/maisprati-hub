@@ -93,7 +93,7 @@ export const NewPassword = () => {
                 }}
                 autoComplete="new-password"
               />
-              <SubmitButton label="Avançar" />
+              <SubmitButton label="Alterar senha" />
             </form>
           </div>
         </div>
@@ -153,7 +153,7 @@ export const NewPassword = () => {
                   }}
                   autoComplete="new-password"
                 />
-                <SubmitButton label="Avançar" />
+                <SubmitButton label="Alterar senha" />
               </form>
             </div>
           </div>
