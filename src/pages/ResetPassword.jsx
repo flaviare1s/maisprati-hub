@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import logo from "../assets/images/logo+prati.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
+import { forgotPassword } from "../api.js/auth";
+import toast from "react-hot-toast";
 
 export const ResetPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -17,9 +19,14 @@ export const ResetPassword = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const onSubmit = (data) => {
-    console.log("Email digitado:", data.email);
-    navigate("/new-password");
+  const onSubmit = async (data) => {
+    try {
+      await forgotPassword(data.email);
+      toast.success("Email enviado! Verifique sua caixa de entrada.");
+    } catch (error) {
+      console.error("Erro ao solicitar redefinição de senha:", error);
+      toast.error("Não foi possível enviar o email. Tente novamente.");
+    }
   };
 
   const handleBackdropClick = (e) => {
