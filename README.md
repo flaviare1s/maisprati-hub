@@ -24,7 +24,11 @@ cd maisprati-hub
 npm install
 ```
 
-#### 3. Configurar o Backend
+#### 3. Configurar o .env
+
+- Copie o arquivo .env.example e renomeie para .env
+
+#### 4. Configurar o Backend
 
 - Clonar o repositório do backend: https://github.com/flaviare1s/maisprati-hub-server
 - O backend é uma aplicação Spring Boot
@@ -32,23 +36,23 @@ npm install
 - Configure as variáveis de ambiente necessárias no backend
 - Execute o projeto pelo IntelliJ IDEA ou a IDE de sua preferência (porta 8080)
 
-#### 4. Executar o Frontend
+#### 5. Executar o Frontend
 
 ```bash
 # Na pasta raiz do projeto frontend
 npm run dev
 ```
 
-#### 5. Deploy
+#### 6. Deploy
 
 **Aplicação em produção:** https://maisprati-hub.vercel.app/
 
-#### 6. Acessar a aplicação
+#### 7. Acessar a aplicação
 
 - Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8080`
+- Backend API: `http://localhost:8080/api`
 
-### 7. Estrutura de pastas
+### 8. Estrutura de pastas
 
 ```
 src/
@@ -64,7 +68,7 @@ src/
 └── index.css       → variáveis de cores, fontes e configurações dos temas
 ```
 
-### 8. Funcionalidades Principais
+### 9. Funcionalidades Principais
 
 - **Autenticação**: Login e registro de usuários
 - **Dashboard**: Painéis diferentes para students e admins
@@ -74,7 +78,7 @@ src/
 - **Notificações**: Sistema de notificações em tempo real
 - **Perfil**: Gerenciamento de perfil de usuário
 
-### 9. Tecnologias Utilizadas
+### 10. Tecnologias Utilizadas
 
 **Frontend:**
 
