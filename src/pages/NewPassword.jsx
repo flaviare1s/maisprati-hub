@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../assets/images/logo+prati.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
+import toast from "react-hot-toast";
+import { resetPassword } from "../api.js/auth";
 
 export const NewPassword = () => {
   const {
@@ -14,6 +16,9 @@ export const NewPassword = () => {
   } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token");
 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
@@ -23,9 +28,14 @@ export const NewPassword = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const onSubmit = (data) => {
-    console.log("Nova senha cadastrada:", data.password);
-    navigate("/login");
+  const onSubmit = async (data) => {
+    try {
+      await resetPassword(token, data.password);
+      toast.success("Senha alterada com sucesso!");
+      navigate("/login");
+    } catch (error) {
+      toast.error("Erro ao atualizar senha.", error);
+    }
   };
 
   const handleBackdropClick = (e) => {
@@ -83,7 +93,7 @@ export const NewPassword = () => {
                 }}
                 autoComplete="new-password"
               />
-              <SubmitButton label="Avançar" />
+              <SubmitButton label="Alterar senha" />
             </form>
           </div>
         </div>
@@ -143,7 +153,7 @@ export const NewPassword = () => {
                   }}
                   autoComplete="new-password"
                 />
-                <SubmitButton label="Avançar" />
+                <SubmitButton label="Alterar senha" />
               </form>
             </div>
           </div>
