@@ -69,7 +69,7 @@ export const ResetPassword = () => {
                     },
                   }}
                 />
-                <SubmitButton label="Avançar" />
+                <SubmitButton label="Enviar e-mail" />
               </form>
             </div>
           </div>
@@ -118,7 +118,7 @@ export const ResetPassword = () => {
                     },
                   }}
                 />
-                <SubmitButton label="Avançar" />
+                <SubmitButton label="Enviar e-mail" />
               </form>
             </div>
           </div>
