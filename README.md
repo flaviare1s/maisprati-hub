@@ -43,8 +43,6 @@ npm run dev
 
 **Aplicação em produção:** https://maisprati-hub.vercel.app/
 
-_Nota: O deploy atual ainda utiliza json-server. A integração com o backend Spring Boot está em desenvolvimento._
-
 #### 6. Acessar a aplicação
 
 - Frontend: `http://localhost:5173`
