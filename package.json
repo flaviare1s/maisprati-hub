@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
     "dayjs": "^1.11.13",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.540.0",
     "react": "^19.1.0",
     "react-burger-menu": "^3.1.0",

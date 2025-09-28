@@ -12,21 +12,53 @@ export const fetchTimeSlots = async (adminId, date) => {
   }
 
   try {
-    const res = await api.get(`/timeslots/days/${date}`, {
-      params: { adminId },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-      },
+    const token = localStorage.getItem("token");
+    let url = `/timeslots/days/${date}`;
+    let res;
+    try {
+      res = await api.get(url, {
+        params: { adminId },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data?.slots && res.data.slots.length > 0) {
+        return res.data.slots;
+      }
+    } catch (firstError) {
+      console.log(
+        "Primeira tentativa falhou, tentando formato alternativo...",
+        firstError
+      );
+    }
+    const dateObj = new Date(date + "T00:00:00.000Z");
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const monthRes = await api.get("/timeslots/month", {
+      params: { adminId, year, month },
+      headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data?.slots || [];
+    const targetDate = date;
+    const dayData = monthRes.data.find((day) => {
+      const dayDate = new Date(day.date).toISOString().split("T")[0];
+      return dayDate === targetDate;
+    });
+    return dayData?.slots || [];
   } catch (error) {
-    console.error("Erro ao buscar slots:", error.response || error);
-    throw error;
+    console.error("Erro ao buscar slots:", error);
+    return [];
   }
 };
 
 // Disponibilizar novos horários para um dia (admin)
 export const createTimeSlots = async (adminId, date, slots) => {
+  if (!date) {
+    console.error("Data não fornecida para criação de slots!");
+    return;
+  }
+  if (!adminId) {
+    console.error("AdminId não fornecido para criação de slots!");
+    return;
+  }
+
   try {
     const token = localStorage.getItem("token");
     const res = await api.post(
@@ -46,18 +78,24 @@ export const createTimeSlots = async (adminId, date, slots) => {
 
 // Atualizar disponibilidade de um horário (professor/admin)
 export const updateTimeSlotAvailability = async (date, time, available) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const adminId = user?.id;
+
+  if (!adminId) {
+    console.error("Usuário/adminId não encontrado!");
+    return;
+  }
+  if (!date) {
+    console.error("Data não fornecida para atualização de slot!");
+    return;
+  }
+  if (!time) {
+    console.error("Hora não fornecida para atualização de slot!");
+    return;
+  }
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    const adminId = user?.id;
-
-    if (!adminId) {
-      console.error("Usuário/adminId não encontrado!");
-      return;
-    }
-
     const url = `/timeslots/${date}/${time}/${available ? "book" : "release"}`;
-    
     const res = await api.patch(url, null, {
       params: { adminId },
       headers: { Authorization: `Bearer ${token}` },
@@ -125,7 +163,10 @@ export const fetchAppointments = async (userId, type) => {
 
 // Buscar dias do mês do admin
 export const fetchMonthSlots = async (adminId, year, month) => {
-  if (!adminId) return [];
+  if (!adminId) {
+    console.error("AdminId não fornecido para buscar slots do mês!");
+    return [];
+  }
 
   try {
     const token = localStorage.getItem("token");
@@ -139,4 +180,3 @@ export const fetchMonthSlots = async (adminId, year, month) => {
     return [];
   }
 };
-
