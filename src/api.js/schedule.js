@@ -12,16 +12,44 @@ export const fetchTimeSlots = async (adminId, date) => {
   }
 
   try {
-    const res = await api.get(`/timeslots/days/${date}`, {
-      params: { adminId },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-      },
+    const token = localStorage.getItem("token");
+    
+    let url = `/timeslots/days/${date}`;
+    let res;
+    
+    try {
+      res = await api.get(url, {
+        params: { adminId },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      if (res.data?.slots && res.data.slots.length > 0) {
+        return res.data.slots;
+      }
+    } catch (firstError) {
+      console.log("Primeira tentativa falhou, tentando formato alternativo...", firstError);
+    }
+    
+    const dateObj = new Date(date + 'T00:00:00.000Z');
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    
+    const monthRes = await api.get("/timeslots/month", {
+      params: { adminId, year, month },
+      headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data?.slots || [];
+    
+    const targetDate = date;
+    const dayData = monthRes.data.find(day => {
+      const dayDate = new Date(day.date).toISOString().split('T')[0];
+      return dayDate === targetDate;
+    });
+    
+    return dayData?.slots || [];
+    
   } catch (error) {
-    console.error("Erro ao buscar slots:", error.response || error);
-    throw error;
+    console.error("Erro ao buscar slots:", error);
+    return [];
   }
 };
 
