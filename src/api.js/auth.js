@@ -30,3 +30,19 @@ export const decodeJWT = (token) => {
     return null;
   }
 };
+
+// Função para envio de e-mail com token
+export const forgotPassword = async (email) => {
+  const response = await api.post("/auth/forgot-password", { email });
+  return response.data;
+};
+
+
+// Função para redefinição de senha
+export const resetPassword = async (token, newPassword) => {
+  const response = await api.post("/auth/reset-password", {
+    token,
+    newPassword,
+  });
+  return response.data;
+};
