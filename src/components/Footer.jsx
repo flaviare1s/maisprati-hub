@@ -1,4 +1,4 @@
-import { Linkedin, Instagram, Facebook, Youtube } from 'react-icons';
+import { FaLinkedin, FaInstagram, FaFacebook, FaYoutube } from 'react-icons';
 
 export const Footer = () => {
   return (
@@ -37,16 +37,16 @@ export const Footer = () => {
           {/* Redes Sociais - Direita */}
           <div className="flex gap-3 flex-shrink-0">
             <a href="#" className="bg-white text-blue-600 rounded-full p-2 hover:bg-gray-100 transition">
-              <Linkedin size={20} />
+              <FaLinkedin size={20} />
             </a>
             <a href="#" className="bg-white text-blue-600 rounded-full p-2 hover:bg-gray-100 transition">
-              <Instagram size={20} />
+              <FaInstagram size={20} />
             </a>
             <a href="#" className="bg-white text-blue-600 rounded-full p-2 hover:bg-gray-100 transition">
-              <Facebook size={20} />
+              <FaFacebook size={20} />
             </a>
             <a href="#" className="bg-white text-blue-600 rounded-full p-2 hover:bg-gray-100 transition">
-              <Youtube size={20} />
+              <FaYoutube size={20} />
             </a>
           </div>
         </div>
