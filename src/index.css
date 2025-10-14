@@ -95,7 +95,10 @@ body {
 }
 
 /* Cards e containers no tema dark - mais específicos */
-.dark .bg-white:not(.calendar-container):not(.forum-post):not(.dashboard-main) {
+.dark
+  .bg-white:not(.calendar-container):not(.forum-post):not(.dashboard-main):not(
+    .mobile-menu-panel
+  ) {
   background-color: var(--dark-bg-card) !important;
 }
 
