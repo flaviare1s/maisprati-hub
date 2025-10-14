@@ -45,11 +45,8 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
     const loadSlots = async () => {
       setLoading(true);
       try {
-        const currentAdminId = adminId || JSON.parse(localStorage.getItem("user"))?.id;
         const dateString = selectedDate.format("YYYY-MM-DD");
-
-        const existingSlots = await fetchTimeSlots(currentAdminId, dateString);
-
+        const existingSlots = await fetchTimeSlots(adminId, dateString);
         setTimeSlots(generateDaySlots(existingSlots, 30, selectedDate));
       } catch (error) {
         toast.error("Erro ao carregar horários");
@@ -73,14 +70,13 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
     setTimeSlots(updatedTimeSlots);
 
     try {
-      const currentAdminId = adminId || JSON.parse(localStorage.getItem("user"))?.id;
       const dateString = selectedDate.format("YYYY-MM-DD");
 
       const slotsToSave = updatedTimeSlots
         .filter(s => s.available && !s.booked)
         .map(s => ({ time: s.time, available: true, booked: false }));
 
-      await createTimeSlots(currentAdminId, dateString, slotsToSave);
+      await createTimeSlots(adminId, dateString, slotsToSave);
 
       toast.success(newAvailability ? 'Horário disponibilizado!' : 'Horário removido!');
 
