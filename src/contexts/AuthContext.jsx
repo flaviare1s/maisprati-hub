@@ -11,11 +11,27 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [userTeam, setUserTeam] = useState(null);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // evitar flash inicial
 
-  const logout = useCallback(async () => {
+  // Função para carregar dados completos do usuário
+  const loadUserData = async () => {
     try {
-      // Chama backend para destruir sessão
-      await logoutUser();
+      const userData = await getCurrentUserData(); // pega do backend via cookie
+      setUser(userData);
+      return userData;
+    } catch (err) {
+      console.error("Erro ao carregar dados do usuário:", err);
+      setUser(null);
+      return null;
+    }
+  };
+
+  const logout = useCallback(async ({ skipServer = false }) => {
+    try {
+      // Chama backend para destruir sessão - limpa cookies
+      if (!skipServer) {
+      await logoutUser(); // <-- só chama se ainda estiver logado
+    }
     } catch (err) {
       console.error("Erro ao fazer logout:", err);
     }
@@ -41,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Carregar time do usuário
   const loadUserTeam = async (teamId = null) => {
     const targetTeamId = teamId || user?.teamId;
     if (targetTeamId) {
@@ -56,26 +73,44 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
-  const refreshUserData = async () => {
+  // Função para atualizar dados do usuário no contexto
+  const updateUser = async () => {
     try {
-      const userData = await getCurrentUserData();
-      setUser(userData);
+      const userData = await getCurrentUserData(); // pega do backend via cookie
+      setUser(userData); // atualiza apenas o estado
+      return userData;
     } catch (err) {
       console.error("Erro ao atualizar usuário:", err);
+      return null;
     }
   };
 
+  // Carregar usuário na inicialização
   useEffect(() => {
     const initializeUser = async () => {
-      const userData = await getCurrentUserData();
-      if (userData) {
-        setUser(userData);
-      } else {
-        setUser(null); // expresso, mesmo que já seja null
+      try {
+        const userData = await getCurrentUserData();
+        setUser(userData || null);
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false); // redenriza após a checagem
       }
     };
     initializeUser();
-  }, []);  // não depender de logout
+  }, []);
+
+  // Logout automático ao expirar o token
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      logout({ skipServer: true }); // já sabe que o backend invalidou o cookie
+    };
+    window.addEventListener("unauthorized", handleUnauthorized);
+
+    return () => {
+      window.removeEventListener("unauthorized", handleUnauthorized);
+    };
+  }, [logout]);
 
   return (
     <AuthContext.Provider
@@ -85,8 +120,10 @@ export const AuthProvider = ({ children }) => {
         logout,
         userTeam,
         loadUserTeam,
-        refreshUserData,
+        loadUserData,
+        updateUser,
         registerUser,
+        loading
       }}
     >
       {children}

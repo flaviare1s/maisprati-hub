@@ -15,6 +15,10 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      // Sessão expirada ou usuário não autenticado
+      window.dispatchEvent(new CustomEvent("unauthorized"));
+    }
     return Promise.reject(error);
   }
 );
