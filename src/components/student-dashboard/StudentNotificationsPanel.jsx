@@ -16,7 +16,7 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // número de notificações por página (ajuste como preferir)
+  const itemsPerPage = 10;
 
   useEffect(() => {
     if (user) loadNotifications();
