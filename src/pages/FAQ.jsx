@@ -127,22 +127,11 @@ export function FAQ() {
   return (
     <section className="py-16 bg-gray-50" id="faq">
       <div className="max-w-4xl mx-auto px-6">
-        <SectionTitle preTitle="FAQ" title="Dúvidas Frequentes" />
+        <SectionTitle title="Dúvidas Frequentes" />
         <div className="space-y-4">
           {faqData.map((item) => (
             <FaqItem key={item.id} {...item} />
           ))}
-        </div>
-
-        {/* CTA final */}
-        <div className="text-center mt-10">
-          <p className="text-gray-700 mb-4">Ainda tem dúvidas?</p>
-          <a
-            href="#contato"
-            className="inline-block px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
-          >
-            Fale com a gente
-          </a>
         </div>
       </div>
     </section>

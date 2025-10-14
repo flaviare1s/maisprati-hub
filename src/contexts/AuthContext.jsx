@@ -79,7 +79,6 @@ export const AuthProvider = ({ children }) => {
         groupClass: userData.groupClass,
         hasGroup: userData.hasGroup,
         wantsGroup: userData.wantsGroup,
-        isFirstLogin: userData.isFirstLogin,
         codename: userData.codename,
         avatar: userData.avatar,
         token,

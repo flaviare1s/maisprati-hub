@@ -134,8 +134,7 @@ export const CodenameSelect = () => {
         wantsGroup: formData.wantsGroup === "sim",
         codename,
         avatar: selectedAvatar,
-        type: "STUDENT", // Enum conforme definido no backend
-        isFirstLogin: true // Será false após primeiro login
+        type: "STUDENT",
       };
 
       // Registrar usuário no backend

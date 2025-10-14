@@ -1,7 +1,7 @@
 import { MdManageAccounts } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-export const TeacherProfileTab = ({ user, teams }) => (
+export const TeacherProfileTab = ({ user, teams, totalUsers }) => (
   <div className="w-full p-0 text-dark">
     <div className="rounded-lg shadow-md p-4 mb-6">
       <div className="flex justify-between items-center">
@@ -24,8 +24,8 @@ export const TeacherProfileTab = ({ user, teams }) => (
         <p className="text-2xl font-bold text-blue-logo">{teams.length}</p>
       </div>
       <div className="rounded-lg shadow-md p-4">
-        <h4 className="font-semibold mb-2">Alunos Cadastrados</h4>
-        <p className="text-2xl font-bold text-green-600">{teams.reduce((total, t) => total + t.members.length, 0)}</p>
+        <h4 className="font-semibold mb-2">Usuários Cadastrados</h4>
+        <p className="text-2xl font-bold text-green-600">{totalUsers}</p>
       </div>
       <div className="rounded-lg shadow-md p-4">
         <h4 className="font-semibold mb-2">Times Ativos</h4>
