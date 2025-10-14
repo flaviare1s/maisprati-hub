@@ -12,6 +12,27 @@ const api = axios.create({
 // Force cookie sending
 api.defaults.withCredentials = true;
 
+// Função para extrair token do cookie (fallback)
+const getTokenFromCookie = () => {
+  const match = document.cookie.match(/access_token=([^;]+)/);
+  return match ? match[1] : null;
+};
+
+// Interceptor para adicionar Authorization header como fallback
+api.interceptors.request.use(
+  (config) => {
+    // Se não for request de login, adiciona header como fallback
+    if (!config.url?.includes("/login")) {
+      const token = getTokenFromCookie();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 // Controle para evitar múltiplos dispatches de logout
 let isLogoutDispatched = false;
 let logoutTimeout = null;
