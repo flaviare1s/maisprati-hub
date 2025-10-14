@@ -30,22 +30,22 @@ export const Home = () => {
 
       {/* CARDS DE AÇÕES */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 lg:px-16 py-10">
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardEquipe} alt="Crie sua equipe" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Crie sua equipe</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardProjeto} alt="Organize seu Projeto" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Organize seu projeto</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardTutor} alt="Organize com o Tutor" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Interaja com os colegas</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardEntrega} alt="Entregue seu Projeto" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Agende reuniões</h3>
         </div>

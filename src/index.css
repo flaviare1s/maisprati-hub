@@ -17,6 +17,46 @@
   --color-border-input: #bdc3c7;
 
   --font-montserrat: "Montserrat", sans-serif;
+
+  /* Variáveis para tema dark */
+  --dark-bg-primary: #1a1a1a;
+  --dark-bg-secondary: #2d2d2d;
+  --dark-bg-card: #3a3a3a;
+  --dark-bg-elevated: #454545;
+  --dark-text-primary: #f0f0f0;
+
+  /* Theme-aware colors para melhor controle */
+  --theme-text-primary: #111827; /* preto no light mode */
+  --dark-text-secondary: #d0d0d0;
+  --dark-text-muted: #a0a0a0;
+  --dark-border: #555555;
+  --dark-border-light: #666666;
+}
+
+/* Dark theme overrides */
+.dark {
+  --theme-text-primary: #f9fafb; /* claro no dark mode */
+}
+
+/* Classe específica para datas de reunião - máxima prioridade */
+.meeting-date-text {
+  color: #111827 !important; /* preto para light mode */
+}
+
+.dark .meeting-date-text {
+  color: #f9fafb !important; /* branco para dark mode */
+}
+
+/* Nova classe com força total */
+.meeting-date-text-force-dark {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.dark .meeting-date-text-force-dark {
+  color: #ffffff !important;
 }
 
 html,
@@ -31,21 +71,327 @@ body {
   font-family: var(--font-montserrat);
 }
 
-.dark body,
+/* Tema Dark Principal */
+.dark body {
+  background-color: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+/* Componentes específicos no tema dark */
 .dark .menu-mobile,
 .dark .chatbot,
 .dark .faq {
-  background-color: #444;
-  color: #f0e9e9;
+  background-color: var(--dark-bg-secondary);
+  color: var(--dark-text-primary);
 }
 
 .dark .loader,
 .dark .about {
-  background-color: #444;
+  background-color: var(--dark-bg-primary);
 }
 
 .dark .testimonial {
   color: #1f1f1f;
+}
+
+/* Cards e containers no tema dark - mais específicos */
+.dark .bg-white:not(.calendar-container):not(.forum-post):not(.dashboard-main) {
+  background-color: var(--dark-bg-card) !important;
+}
+
+.dark .border-gray-200 {
+  border-color: var(--dark-border) !important;
+}
+
+.dark .border-gray-300 {
+  border-color: var(--dark-border-light) !important;
+}
+
+.dark .text-gray-600:not(.calendar-container *):not(.dashboard-main *) {
+  color: var(--dark-text-secondary) !important;
+}
+
+.dark .text-gray-500:not(.calendar-container *):not(.dashboard-main *) {
+  color: var(--dark-text-muted) !important;
+}
+
+.dark .text-gray-800,
+.dark .text-gray-900 {
+  color: var(--dark-text-primary) !important;
+}
+
+.dark .text-dark:not(.calendar-container *):not(.dashboard-main *) {
+  color: var(--dark-text-primary) !important;
+}
+
+/* Backgrounds específicos no tema dark */
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: var(--dark-bg-secondary) !important;
+}
+
+.dark .bg-blue-50 {
+  background-color: rgba(0, 125, 227, 0.1) !important;
+}
+
+.dark .bg-purple-100 {
+  background-color: rgba(147, 51, 234, 0.2) !important;
+}
+
+.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+.dark .bg-yellow-100 {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Hover e focus states no tema dark */
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--dark-bg-elevated) !important;
+}
+
+.dark .hover\:shadow-lg:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Input fields no tema dark */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  background-color: var(--dark-bg-card) !important;
+  border-color: var(--color-blue-logo) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--dark-text-muted) !important;
+}
+
+/* Calendário específico - garante que no light mode permaneça branco */
+.calendar-container {
+  background-color: white !important;
+}
+
+.dark .calendar-container {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Elementos do calendário - preserva cores no light mode */
+.calendar-container .text-gray-300 {
+  color: #d1d5db !important; /* gray-300 original */
+}
+
+.calendar-container .text-blue-600 {
+  color: #2563eb !important; /* blue-600 original - mantém azul dos slots */
+}
+
+.calendar-container .bg-blue-100 {
+  background-color: #dbeafe !important; /* blue-100 original */
+}
+
+.calendar-container .bg-blue-50 {
+  background-color: #eff6ff !important; /* blue-50 original */
+}
+
+.calendar-container .hover\:bg-blue-50:hover {
+  background-color: #eff6ff !important; /* blue-50 original */
+}
+
+/* Cores específicas do calendário no light mode */
+.calendar-container h2 {
+  color: #1f1f1f !important; /* text-dark original */
+}
+
+.calendar-container .text-gray-500 {
+  color: #6b7280 !important; /* gray-500 original no light mode */
+}
+
+/* Variantes dark do calendário */
+.dark .calendar-container .text-gray-300 {
+  color: #9ca3af !important; /* mais claro no dark */
+}
+
+.dark .calendar-container .bg-blue-100 {
+  background-color: rgba(37, 99, 235, 0.2) !important; /* blue translúcido */
+}
+
+.dark .calendar-container .bg-blue-50 {
+  background-color: rgba(37, 99, 235, 0.1) !important; /* blue mais claro */
+}
+
+.dark .calendar-container .hover\:bg-blue-50:hover {
+  background-color: rgba(37, 99, 235, 0.1) !important; /* blue mais claro */
+}
+
+.dark .calendar-container h2 {
+  color: #f0f0f0 !important; /* text-gray-100 no dark */
+}
+
+.dark .calendar-container .text-gray-500 {
+  color: #9ca3af !important; /* gray-400 no dark */
+}
+
+/* Posts do fórum específicos - garante que no light mode permaneçam brancos */
+.forum-post {
+  background-color: white !important;
+}
+
+.dark .forum-post {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Cards de usuários específicos - garante que no light mode permaneçam brancos */
+.user-card {
+  background-color: white !important;
+}
+
+.dark .user-card {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Cards de reuniões específicos - garante que no light mode permaneçam brancos */
+.meeting-card {
+  background-color: white !important;
+}
+
+.dark .meeting-card {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Textos dos cards de reuniões - garante visibilidade */
+.meeting-card .font-medium {
+  color: #111827 !important; /* gray-900 - preto no light mode */
+}
+
+.dark .meeting-card .font-medium {
+  color: #f9fafb !important; /* gray-100 - claro no dark mode */
+}
+
+/* Textos de data e hora nas reuniões - força cores corretas */
+.meeting-card span.font-medium {
+  color: #111827 !important; /* preto no light mode */
+}
+
+.dark .meeting-card span.font-medium {
+  color: #f9fafb !important; /* claro no dark mode */
+}
+
+/* Especificamente para textos com text-gray-900 dark:text-gray-100 */
+.meeting-card .text-gray-900 {
+  color: #111827 !important;
+}
+
+.dark .meeting-card .text-gray-100 {
+  color: #f9fafb !important;
+}
+
+/* Override da regra global para text-gray-900 dentro de meeting-card */
+.dark .meeting-card .text-gray-900 {
+  color: #f9fafb !important; /* sobrescreve a regra global */
+}
+
+/* Regra geral para todos os spans dentro de meeting-card */
+.meeting-card span {
+  color: #111827 !important; /* preto no light mode */
+}
+
+.dark .meeting-card span {
+  color: #f9fafb !important; /* claro no dark mode */
+}
+
+/* Exceção para spans com cores específicas (como badges) */
+.meeting-card span.text-blue-logo,
+.meeting-card span.text-red-700,
+.meeting-card span.text-blue-700,
+.meeting-card span.text-gray-700,
+.meeting-card span.text-green-600 {
+  color: inherit !important; /* manter a cor original para badges */
+}
+
+/* Select de filtro específico - garante aparência correta */
+.filter-select {
+  background-color: white !important;
+  color: #374151 !important; /* gray-700 */
+  border-color: #d1d5db !important; /* gray-300 */
+}
+
+.dark .filter-select {
+  background-color: #374151 !important; /* gray-700 */
+  color: #f9fafb !important; /* gray-50 */
+  border-color: #4b5563 !important; /* gray-600 */
+}
+
+/* Dashboard main container - específico para não afetar light mode */
+.dashboard-main {
+  background-color: #f3f4f6 !important; /* bg-light original */
+}
+
+.dark .dashboard-main {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Dashboard textos - preserva cores no light mode */
+.dashboard-main h1 {
+  color: #1f1f1f !important; /* text-dark original no light mode */
+}
+
+.dashboard-main .text-dark {
+  color: #1f1f1f !important; /* preserva text-dark no light mode */
+}
+
+.dark .dashboard-main h1 {
+  color: #f0f0f0 !important; /* text-gray-100 no dark */
+}
+
+.dark .dashboard-main .text-dark {
+  color: #f0f0f0 !important; /* text-gray-100 no dark */
+}
+
+/* Textos importantes sempre visíveis */
+.text-gray-800,
+.text-gray-900,
+.font-semibold,
+.font-bold {
+  color: #1f2937 !important; /* dark gray no light mode */
+}
+
+.dark .text-gray-800,
+.dark .text-gray-900,
+.dark .font-semibold,
+.dark .font-bold {
+  color: #f0f0f0 !important; /* light gray no dark mode */
+}
+
+/* Garante visibilidade de elementos de texto */
+.text-dark {
+  color: #1f1f1f !important; /* sempre escuro no light mode */
+}
+
+.dark .text-dark {
+  color: #f0f0f0 !important; /* sempre claro no dark mode */
 }
 
 .link-nav {

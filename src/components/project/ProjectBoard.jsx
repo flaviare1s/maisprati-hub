@@ -177,7 +177,7 @@ export const ProjectBoard = () => {
               className="bg-blue-logo h-3 rounded-full transition-all duration-300"
               style={{
                 width: `${(projectPhases.filter((p) => p.status === "done").length /
-                    projectPhases.length) *
+                  projectPhases.length) *
                   100
                   }%`,
               }}

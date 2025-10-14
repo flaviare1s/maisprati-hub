@@ -102,14 +102,14 @@ export const TeacherNotificationsTab = () => {
               <MdClose size={18} />
             </button>
 
-            <h4 className="font-medium text-dark">{notification.title}</h4>
+            <h4 className="font-medium text-dark dark:text-white">{notification.title}</h4>
             <p
-              className="text-sm text-gray-600 mt-1"
+              className="text-sm text-gray-600 dark:text-gray-200 mt-1"
               dangerouslySetInnerHTML={{
                 __html: formatMessage(notification.message)
               }}
             />
-            <span className="text-xs text-gray-muted">
+            <span className="text-xs text-gray-muted dark:text-gray-300">
               {new Date(notification.createdAt).toLocaleString("pt-BR")}
             </span>
           </div>
@@ -119,7 +119,7 @@ export const TeacherNotificationsTab = () => {
       {/* Controles de Paginação */}
       {notifications.length > 0 && totalPages > 1 && (
         <div className="flex flex-col items-center mt-8 space-y-3">
-          <div className="flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 overflow-hidden">
             {/* Botão Página Anterior */}
             <button
               onClick={goToPrevPage}
