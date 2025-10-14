@@ -387,6 +387,33 @@ body {
   background-color: var(--dark-bg-card) !important;
 }
 
+/* About page específico - backgrounds */
+.dark .bg-bg-card {
+  background-color: var(--dark-bg-secondary) !important;
+}
+
+.bg-bg-card {
+  background-color: #f0e9e9 !important; /* cor original no light mode */
+}
+
+/* About page - textos específicos */
+.dark .text-gray-muted {
+  color: var(--dark-text-secondary) !important; /* texto claro no dark */
+}
+
+.text-gray-muted {
+  color: #777777 !important; /* cor original no light mode */
+}
+
+/* About page - títulos azuis permanecem visíveis */
+.dark .text-blue-logo {
+  color: #60a5fa !important; /* azul mais claro no dark para contraste */
+}
+
+.text-blue-logo {
+  color: #007de3 !important; /* azul original no light mode */
+}
+
 /* Textos e elementos dos forms de autenticação */
 .dark .text-gray-muted {
   color: var(--dark-text-secondary) !important;
