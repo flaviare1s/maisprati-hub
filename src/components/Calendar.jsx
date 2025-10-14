@@ -119,23 +119,23 @@ export const Calendar = () => {
   };
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-md p-4">
+    <div className="calendar-container w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
       <div className="flex items-center justify-between mb-4">
-        <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <ChevronLeft size={16} />
         </button>
-        <h2 className="font-semibold text-dark">
+        <h2 className="font-semibold text-dark dark:text-gray-100">
           {capitalize(currentMonth.format("MMMM"))} {currentMonth.format("YYYY")}
         </h2>
 
-        <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <ChevronRight size={16} />
         </button>
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
         {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => (
-          <div key={day} className="h-8 flex items-center justify-center text-xs font-medium text-gray-500">
+          <div key={day} className="h-8 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-400">
             {day}
           </div>
         ))}
@@ -143,7 +143,7 @@ export const Calendar = () => {
 
       <div className="grid grid-cols-7 gap-1">{renderCalendarDays()}</div>
 
-      <div className="mt-2 text-xs text-gray-500 text-center">
+      <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
         Data selecionada: {selectedDate ? selectedDate.format("DD/MM/YYYY") : "Nenhuma"}
       </div>
 

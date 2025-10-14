@@ -50,7 +50,7 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
+        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
       >
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-blue-logo">Gerenciar {team.name}</h3>

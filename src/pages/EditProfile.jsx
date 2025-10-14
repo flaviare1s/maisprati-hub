@@ -151,7 +151,7 @@ export const EditProfile = () => {
         <ReturnButton />
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-dark mb-6">{pageTitle}</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
