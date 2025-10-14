@@ -8,7 +8,6 @@ import { Forbidden } from "./pages/Forbidden";
 import { NotFound } from "./pages/NotFound";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
 import { CommonRoom } from "./pages/CommonRoom";
@@ -16,6 +15,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { useAuth } from "./hooks/useAuth";
 import { CustomLoader } from "./components/CustomLoader";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { ConnectionStatus } from "./components/ConnectionStatus";
 import { CodenameSelect } from "./pages/CodenameSelect";
 import { CreateTeam } from "./pages/CreateTeam";
 import { StudentDashboardPage } from "./pages/StudentDashboardPage";
@@ -28,19 +28,15 @@ import { EditProfile } from "./pages/EditProfile";
 import { FAQ } from "./pages/FAQ";
 
 function App() {
-  const { user } = useAuth();
-  const [loadingApp, setLoadingApp] = useState(true);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    setLoadingApp(false);
-  }, []);
-
-  if (loadingApp) {
+  if (loading) {
     return <CustomLoader />;
   }
 
   return (
     <div className="overflow-x-hidden">
+      <ConnectionStatus />
       <ScrollToTop />
       <Header user={user} />
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">

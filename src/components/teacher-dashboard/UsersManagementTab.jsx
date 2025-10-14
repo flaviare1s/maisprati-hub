@@ -93,8 +93,8 @@ export const UsersManagementTab = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1); // Reseta a página ao buscar
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reseta a página ao buscar
             }}
           />
         </div>
@@ -102,13 +102,19 @@ export const UsersManagementTab = () => {
         {/* 🔹 Botões de ordenação */}
         <div className="flex space-x-2 mb-4">
           <button
-            className={`px-4 py-2 rounded ${sortOption === 'name' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded transition-colors cursor-pointer ${sortOption === 'name'
+              ? 'bg-blue-logo text-white'
+              : 'bg-gray-100 hover:bg-blue-200 hover:text-blue-800 dark:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-500'
+              }`}
             onClick={() => setSortOption('name')}
           >
             Ordenar por Nome
           </button>
           <button
-            className={`px-4 py-2 rounded ${sortOption === 'groupClass' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded transition-colors cursor-pointer ${sortOption === 'groupClass'
+              ? 'bg-orange-logo text-white'
+              : 'bg-gray-100 hover:bg-orange-200 hover:text-orange-800 dark:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-500'
+              }`}
             onClick={() => setSortOption('groupClass')}
           >
             Ordenar por Turma
@@ -123,7 +129,7 @@ export const UsersManagementTab = () => {
             </div>
           ) : (
             currentUsers.map((user) => (
-              <div key={user.id} className="bg-white border border-gray-200 rounded-lg px-2 sm:px-4 py-1">
+              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img

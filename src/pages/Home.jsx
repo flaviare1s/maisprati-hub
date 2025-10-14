@@ -30,22 +30,22 @@ export const Home = () => {
 
       {/* CARDS DE AÇÕES */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 lg:px-16 py-10">
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardEquipe} alt="Crie sua equipe" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Crie sua equipe</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardProjeto} alt="Organize seu Projeto" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Organize seu projeto</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardTutor} alt="Organize com o Tutor" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Interaja com os colegas</h3>
         </div>
 
-        <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-5 text-center hover:shadow-lg transition text-dark dark:text-gray-100">
           <img src={cardEntrega} alt="Entregue seu Projeto" className="mx-auto h-[100px] object-contain mb-3" />
           <h3 className="font-semibold text-base sm:text-lg">Agende reuniões</h3>
         </div>
@@ -55,13 +55,13 @@ export const Home = () => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center px-6 lg:px-16 pb-12">
         <Link
           to="/login"
-          className="uppercase text-white bg-orange-500 py-2 px-6 rounded-full text-center font-bold hover:bg-orange-600 transition"
+          className="uppercase text-white bg-orange-logo py-2 px-6 rounded-full text-center font-bold hover:bg-orange-400 transition"
         >
           Já tenho cadastro
         </Link>
         <Link
           to="/register"
-          className="uppercase text-white bg-orange-500 py-2 px-6 rounded-full text-center font-bold hover:bg-orange-600 transition"
+          className="uppercase text-white bg-orange-logo py-2 px-6 rounded-full text-center font-bold hover:bg-orange-400 transition"
         >
           Quero me cadastrar
         </Link>

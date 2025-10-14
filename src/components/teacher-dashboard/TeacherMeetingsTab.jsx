@@ -4,7 +4,6 @@ import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { notifyAppointmentCanceled } from "../../api.js/notifications";
 
 export const TeacherMeetingsTab = ({ adminId }) => {
   const [appointments, setAppointments] = useState([]);
@@ -41,40 +40,11 @@ export const TeacherMeetingsTab = ({ adminId }) => {
     }
 
     try {
-      // Buscar dados do time se existir
-      let teamMembers = [];
-
-      if (appointment.teamId && teamName) {
-        const token = localStorage.getItem("token");
-        const teamsRes = await api.get("/teams", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const team = teamsRes.data.find(t => t.id === appointment.teamId);
-        if (team) {
-          teamMembers = team.members;
-        }
-      }
-
       // Cancelar no backend
       await api.patch(`/appointments/${appointment.id}/cancel`);
 
-      // Enviar notificações centralizadas
-      try {
-        await notifyAppointmentCanceled(
-          {
-            date: appointment.date,
-            time: appointment.time,
-            teamId: appointment.teamId
-          },
-          teamName,
-          teamMembers,
-          studentName,
-          adminId, 
-          true
-        );
-      } catch (notifError) {
-        console.error("Erro ao enviar notificação de cancelamento:", notifError);
-      }
+      // Notificações são enviadas automaticamente pelo backend
+      // Removido chamada duplicada do frontend
 
       // Recarregar lista de agendamentos
       const data = await fetchAppointments(adminId, "admin");
@@ -97,16 +67,25 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
       {/* Lista de Agendamentos */}
       <div className="mb-6">
+        <style>{`
+          .meeting-text-black {
+            color: #000000 !important;
+            font-weight: 700 !important;
+          }
+          .dark .meeting-text-black {
+            color: #ffffff !important;
+          }
+        `}</style>
         <div className="flex justify-between items-center mb-4">
           <h4 className="text-sm sm:text-md font-medium text-dark">Agendamentos</h4>
 
           {/* Filtro Select */}
           <div className="flex items-center gap-2">
-            <label className="text-xs md:text-sm text-gray-600 font-medium">Filtrar:</label>
+            <label className="text-xs md:text-sm text-gray-800 dark:text-gray-300 font-medium">Filtrar:</label>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-logo focus:border-blue-logo outline-none transition-all"
+              className="filter-select px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-logo focus:border-blue-logo outline-none transition-all text-gray-800 dark:text-gray-100"
             >
               <option value="proximos">Próximos</option>
               <option value="todos">Todos</option>
@@ -162,10 +141,10 @@ export const TeacherMeetingsTab = ({ adminId }) => {
             ).map((appt, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-lg border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow"
+                className="meeting-card p-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 flex justify-between items-center hover:shadow-sm transition-shadow"
               >
                 <div className="flex flex-col">
-                  <span className="font-medium text-dark text-sm">
+                  <span className="font-medium text-sm meeting-text-black">
                     {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
                   </span>
                   {appt.teamName && appt.teamName !== 'Sem time' ? (
@@ -186,7 +165,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
                     if (status === 'CANCELLED' || status === 'CANCELED') {
                       return (
-                        <span className="text-red-700 font-semibold text-xs px-2 py-1 bg-red-50 rounded-full">
+                        <span className="text-red-700 dark:text-red-300 font-semibold text-xs px-2 py-1 bg-red-50 dark:bg-red-900/30 rounded-full">
                           Cancelado
                         </span>
                       );
@@ -194,7 +173,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
                     if (status === 'COMPLETED') {
                       return (
-                        <span className="text-blue-700 font-semibold text-xs px-2 py-1 bg-blue-50 rounded-full">
+                        <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
                           Concluído
                         </span>
                       );
@@ -202,14 +181,14 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
                     if (isPast && status !== 'COMPLETED') {
                       return (
-                        <span className="text-gray-700 font-semibold text-xs px-2 py-1 bg-gray-50 rounded-full">
+                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
                           Expirado
                         </span>
                       );
                     }
 
                     return (
-                      <span className="text-green-700 font-semibold text-xs px-2 py-1 bg-green-50 rounded-full">
+                      <span className="text-green-700 dark:text-green-300 font-semibold text-xs px-2 py-1 bg-green-50 dark:bg-green-900/30 rounded-full">
                         Agendado
                       </span>
                     );
@@ -238,18 +217,18 @@ export const TeacherMeetingsTab = ({ adminId }) => {
       </div>
 
       {/* Legenda */}
-      <div className="flex items-center justify-center gap-6 mt-6 p-3 bg-light rounded-lg">
+      <div className="flex items-center justify-center gap-6 mt-6 p-3 rounded-lg">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-blue-logo rounded-full" />
-          <span className="text-[9px] sm:text-xs text-gray-muted">Disponível</span>
+          <span className="text-[9px] sm:text-xs text-gray-800 dark:text-gray-300">Disponível</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-primary rounded-full" />
-          <span className="text-[9px] sm:text-xs text-gray-muted">Agendado</span>
+          <span className="text-[9px] sm:text-xs text-gray-800 dark:text-gray-300">Agendado</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-gray-400 rounded-full" />
-          <span className="text-[9px] sm:text-xs text-gray-muted">Indisponível</span>
+          <span className="text-[9px] sm:text-xs text-gray-800 dark:text-gray-300">Indisponível</span>
         </div>
       </div>
     </div>

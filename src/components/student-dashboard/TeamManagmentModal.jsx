@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../SubmitButton"
-import { updateMemberRole, fetchTeamById } from "../../api.js/teams";
+import { updateMemberRole, updateTeam, fetchTeamById } from "../../api.js/teams";
 import toast from "react-hot-toast";
 
 export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
@@ -20,6 +20,11 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
 
   const onSubmit = async (data) => {
     try {
+      await updateTeam(team.id, {
+        name: data.teamName,
+        description: data.teamDescription
+      });
+
       for (const member of data.members) {
         await updateMemberRole(
           team.id,
@@ -29,16 +34,15 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
         );
       }
 
-      // Recarregar dados atualizados do time
       const updatedTeam = await fetchTeamById(team.id);
 
       setUserTeam(updatedTeam);
 
-      toast.success("Roles atualizadas com sucesso!");
+      toast.success("Time atualizado com sucesso!");
       onClose();
     } catch (error) {
-      console.error("Erro ao atualizar membros:", error);
-      toast.error("Erro ao atualizar roles");
+      console.error("Erro ao atualizar time:", error);
+      toast.error("Erro ao atualizar time");
     }
   };
 
@@ -46,7 +50,7 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
+        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
       >
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-blue-logo">Gerenciar {team.name}</h3>

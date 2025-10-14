@@ -82,7 +82,7 @@ export const Forum = ({
         <div className="text-center">
           <button
             onClick={() => setShowNewPost(true)}
-            className="bg-blue-logo text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 mx-auto"
+            className="bg-blue-logo text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 mx-auto cursor-pointer"
           >
             <FaPlus size={16} />
             Criar Novo Post
@@ -129,7 +129,7 @@ export const Forum = ({
         </div>
       ) : (
         forumPosts.map((post) => (
-          <div key={post.id} className="bg-white border rounded-lg p-4 shadow-sm">
+          <div key={post.id} className="forum-post bg-white dark:bg-gray-800 border dark:border-gray-600 rounded-lg p-4 shadow-sm">
             {/* Header do post */}
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">

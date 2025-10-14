@@ -59,19 +59,13 @@ export const ProjectPhaseCard = ({
       style={{ opacity }}
       title={!canDrag ? "Apenas estudantes podem mover cards" : "Arraste para mover"}
     >
-      <div className={`flex items-start justify-between ${phase.description ? 'mb-2' : 'mb-3'}`}>
+      <div className="flex items-start justify-between mb-2">
         <h4 className="font-semibold text-gray-800">{phase.title}</h4>
         <div className="flex items-center gap-2">
           {getStatusIcon()}
           {!canDrag && <FaLock className="text-gray-400 text-xs" />}
         </div>
       </div>
-
-      {phase.description && (
-        <p className="text-sm text-gray-600 mb-3">
-          {phase.description}
-        </p>
-      )}
 
       <div className="flex items-center justify-between text-xs text-gray-500">
         <div className="flex items-center gap-1">

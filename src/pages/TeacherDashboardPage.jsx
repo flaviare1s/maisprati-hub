@@ -10,6 +10,7 @@ import {
   FaUserCog,
 } from "react-icons/fa";
 import { fetchTeams } from "../api.js/teams";
+import { fetchUsers } from "../api.js/users";
 import { TeacherProfileTab } from "../components/teacher-dashboard/TeacherProfileTab";
 import { TeacherTeamsTab } from "../components/teacher-dashboard/TeacherTeamsTab";
 import { TeacherMeetingsTab } from "../components/teacher-dashboard/TeacherMeetingsTab";
@@ -21,18 +22,21 @@ export const TeacherDashboardPage = () => {
   const { user, loadUserData } = useAuth();
   const [activeTab, setActiveTab] = useState("perfil");
   const [teams, setTeams] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Carrega dados atualizados do usuário
         await loadUserData();
 
-        // Carrega todos os times (admin pode ver todos)
         const allTeams = await fetchTeams();
         setTeams(allTeams);
+
+        const allUsers = await fetchUsers();
+        const studentsOnly = allUsers.filter(user => user.type === "student");
+        setTotalUsers(studentsOnly.length);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
@@ -123,11 +127,10 @@ export const TeacherDashboardPage = () => {
             {notificationCount > 0 && (
               <span
                 className={`ml-2 rounded-full text-[9px] h-fit border px-[3px] font-semibold
-        ${
-          activeTab === "notificações"
-            ? "bg-blue-logo text-light border-blue-logo"
-            : "text-gray-muted border-gray-muted"
-        }`}
+        ${activeTab === "notificações"
+                    ? "bg-blue-logo text-light border-blue-logo"
+                    : "text-gray-muted border-gray-muted"
+                  }`}
               >
                 {notificationCount}
               </span>
@@ -138,7 +141,7 @@ export const TeacherDashboardPage = () => {
 
       <div>
         {activeTab === "perfil" && (
-          <TeacherProfileTab user={user} teams={teams} />
+          <TeacherProfileTab user={user} teams={teams} totalUsers={totalUsers} />
         )}
         {activeTab === "times" && (
           <TeacherTeamsTab teams={teams} setTeams={setTeams} />

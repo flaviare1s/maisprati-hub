@@ -24,7 +24,7 @@ export const InputField = ({
                 type="radio"
                 value={option.value}
                 {...register(name, validation)}
-                className="mr-2 text-blue-logo focus:ring-blue-logo"
+                className="mr-2 text-blue-logo focus:ring-blue-logo bg-white"
               />
               <span className="text-gray-muted">{option.label}</span>
             </label>

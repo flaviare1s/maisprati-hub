@@ -15,6 +15,10 @@ export const Header = () => {
     return "/";
   };
 
+  const handleLogout = () => {
+    logout({ skipServer: false });
+  };
+
   return (
     <header className='h-[80px] md:h-[100px] w-full flex items-center justify-between px-[25px] lg:px-[50px] xl:px-[100px] shadow-lg'>
       <Link to={getRedirectPath()} className='flex items-center'>
@@ -25,14 +29,14 @@ export const Header = () => {
       <div className='flex items-center gap-1 md:gap-10'>
         <div className='hidden md:block'>
           {user ? (
-            <MenuDesktop user={user} onLogout={logout} />
+            <MenuDesktop user={user} onLogout={handleLogout} />
           ) : (
-            <MenuDesktop user={null} onLogout={logout} />
+            <MenuDesktop user={null} onLogout={handleLogout} />
           )}
         </div>
-          <div className='md:hidden'>
-            <MenuMobile user={user} onLogout={logout} />
-          </div>
+        <div className='md:hidden'>
+          <MenuMobile user={user} onLogout={handleLogout} />
+        </div>
         <ThemeToggle />
       </div>
     </header>

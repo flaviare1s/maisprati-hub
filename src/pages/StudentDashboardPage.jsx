@@ -152,7 +152,7 @@ export const StudentDashboardPage = () => {
         </div>
       ) : (
         <div className="rounded-lg shadow-md p-4">
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-700 dark:text-gray-300">
             Você optou por trabalhar individualmente.
           </p>
         </div>
