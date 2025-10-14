@@ -8,7 +8,6 @@ import { Forbidden } from "./pages/Forbidden";
 import { NotFound } from "./pages/NotFound";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import { useEffect, useState } from "react";
 import { StudentRegister } from "./pages/StudentRegister";
 import { TeamSelect } from "./pages/TeamSelect";
 import { CommonRoom } from "./pages/CommonRoom";
@@ -28,14 +27,9 @@ import { EditProfile } from "./pages/EditProfile";
 import { FAQ } from "./pages/FAQ";
 
 function App() {
-  const { user } = useAuth();
-  const [loadingApp, setLoadingApp] = useState(true);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    setLoadingApp(false);
-  }, []);
-
-  if (loadingApp) {
+  if (loading) {
     return <CustomLoader />;
   }
 
