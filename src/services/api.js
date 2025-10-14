@@ -9,6 +9,9 @@ const api = axios.create({
   withCredentials: true, // enviar e receber cookies
 });
 
+// Force cookie sending
+api.defaults.withCredentials = true;
+
 // Controle para evitar múltiplos dispatches de logout
 let isLogoutDispatched = false;
 let logoutTimeout = null;
