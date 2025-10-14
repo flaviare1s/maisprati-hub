@@ -490,6 +490,49 @@ body {
   color: #f0f0f0 !important; /* sempre claro no dark mode */
 }
 
+/* Project Phase Cards específicos - títulos dos cards */
+.dark .text-gray-800 {
+  color: #f9fafb !important; /* títulos dos cards claros no dark mode */
+}
+
+.text-gray-800 {
+  color: #1f2937 !important; /* títulos dos cards escuros no light mode */
+}
+
+/* Project Phase Cards - backgrounds dos cards no dark mode */
+.dark .bg-green-50 {
+  background-color: rgba(
+    34,
+    197,
+    94,
+    0.1
+  ) !important; /* verde translúcido para cards concluídos */
+}
+
+.dark .bg-blue-50 {
+  background-color: rgba(
+    59,
+    130,
+    246,
+    0.1
+  ) !important; /* azul translúcido para cards em progresso */
+}
+
+.dark .bg-gray-50 {
+  background-color: var(
+    --dark-bg-secondary
+  ) !important; /* cinza para cards pendentes */
+}
+
+/* Project Phase Cards - textos secundários com melhor contraste no dark mode */
+.dark .text-gray-500 {
+  color: #d1d5db !important; /* texto mais claro para datas e informações secundárias */
+}
+
+.dark .text-gray-600 {
+  color: #e5e7eb !important; /* texto mais claro para descrições */
+}
+
 .link-nav {
   position: relative;
 }
