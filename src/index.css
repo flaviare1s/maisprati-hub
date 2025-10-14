@@ -561,6 +561,95 @@ body {
   color: #ffffff !important; /* branco no modo dark */
 }
 
+/* No Team List - cards dos heróis sem guilda */
+.dark .from-light {
+  background: var(--dark-bg-card) !important;
+}
+
+.dark .to-blue-50 {
+  background: linear-gradient(
+    to right,
+    var(--dark-bg-card),
+    rgba(59, 130, 246, 0.1)
+  ) !important;
+}
+
+/* No Team List - corrige gradiente completo no dark mode */
+.dark .bg-gradient-to-r.from-light.to-blue-50 {
+  background: linear-gradient(
+    to right,
+    var(--dark-bg-card),
+    rgba(59, 130, 246, 0.1)
+  ) !important;
+}
+
+/* Botões de login, logout e cadastrar - textos sempre brancos */
+.bg-blue-logo,
+.bg-orange-logo,
+.hover\:bg-blue-600:hover,
+.hover\:bg-orange-400:hover {
+  color: white !important;
+}
+
+.bg-blue-logo .text-light,
+.bg-orange-logo .text-light,
+button.bg-blue-logo,
+.bg-blue-logo:hover,
+.bg-orange-logo:hover {
+  color: white !important;
+}
+
+/* Força cor branca nos botões independente do tema */
+.text-light {
+  color: #f3f4f6 !important; /* sempre branco/claro */
+}
+
+.dark .text-light {
+  color: white !important; /* força branco no dark mode */
+}
+
+/* Botões laranja da Home - "Já tenho cadastro" e "Quero me cadastrar" */
+.bg-orange-500,
+.bg-orange-logo,
+.hover\:bg-orange-600:hover,
+.hover\:bg-orange-400:hover,
+.bg-orange-500:hover,
+.bg-orange-logo:hover {
+  color: white !important;
+}
+
+.text-white {
+  color: white !important; /* sempre branco */
+}
+
+.dark .text-white {
+  color: white !important; /* força branco no dark mode */
+}
+
+.bg-orange-500 .text-white,
+.bg-orange-logo .text-white,
+.hover\:bg-orange-600 .text-white,
+.hover\:bg-orange-400 .text-white {
+  color: white !important;
+}
+
+/* Menu Mobile - hover dos ícones mais claro no tema light */
+.hover\:bg-gray-100:hover {
+  background-color: #f8f9fa !important; /* cinza bem claro no light mode */
+}
+
+.hover\:bg-gray-200:hover {
+  background-color: #f8f9fa !important; /* cinza bem claro para o botão fechar */
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #374151 !important; /* mantém cinza escuro no dark mode */
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #374151 !important; /* mantém cinza escuro no dark mode */
+}
+
 .link-nav {
   position: relative;
 }

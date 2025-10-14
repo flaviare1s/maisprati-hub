@@ -55,13 +55,13 @@ export const Home = () => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center px-6 lg:px-16 pb-12">
         <Link
           to="/login"
-          className="uppercase text-white bg-orange-500 py-2 px-6 rounded-full text-center font-bold hover:bg-orange-600 transition"
+          className="uppercase text-white bg-orange-logo py-2 px-6 rounded-full text-center font-bold hover:bg-orange-400 transition"
         >
           Já tenho cadastro
         </Link>
         <Link
           to="/register"
-          className="uppercase text-white bg-orange-500 py-2 px-6 rounded-full text-center font-bold hover:bg-orange-600 transition"
+          className="uppercase text-white bg-orange-logo py-2 px-6 rounded-full text-center font-bold hover:bg-orange-400 transition"
         >
           Quero me cadastrar
         </Link>

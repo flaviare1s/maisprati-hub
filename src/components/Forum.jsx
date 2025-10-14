@@ -82,7 +82,7 @@ export const Forum = ({
         <div className="text-center">
           <button
             onClick={() => setShowNewPost(true)}
-            className="bg-blue-logo text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 mx-auto"
+            className="bg-blue-logo text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2 mx-auto cursor-pointer"
           >
             <FaPlus size={16} />
             Criar Novo Post

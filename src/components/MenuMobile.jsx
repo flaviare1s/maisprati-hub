@@ -48,7 +48,7 @@ export const MenuMobile = ({ user, onLogout }) => {
         className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         aria-label="Abrir menu"
       >
-        <HiMenu size={24} className="text-gray-800 dark:text-gray-300" />
+        <HiMenu size={24} className="text-gray-800 dark:text-gray-300 cursor-pointer" />
       </button>
 
       {/* Backdrop */}
@@ -71,7 +71,7 @@ export const MenuMobile = ({ user, onLogout }) => {
           <h2 className="text-xl font-bold" style={{ color: isDark ? '#ffffff' : '#1f2937' }}>Menu</h2>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer"
             aria-label="Fechar menu"
           >
             <HiX size={24} style={{ color: isDark ? '#d1d5db' : '#374151' }} />
