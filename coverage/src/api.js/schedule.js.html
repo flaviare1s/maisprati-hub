@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/182</span>
+                <span class='fraction'>0/168</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/182</span>
+                <span class='fraction'>0/168</span>
             </div>
         
             
@@ -231,35 +231,7 @@
 <a name='L166'></a><a href='#L166'>166</a>
 <a name='L167'></a><a href='#L167'>167</a>
 <a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L169'></a><a href='#L169'>169</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -441,13 +413,12 @@
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const token = localStorage.getItem("token");</span>
 <span class="cstat-no" title="statement not covered" >    let url = `/timeslots/days/${date}`;</span>
 <span class="cstat-no" title="statement not covered" >    let res;</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      res = await api.get(url, {</span>
 <span class="cstat-no" title="statement not covered" >        params: { adminId },</span>
-<span class="cstat-no" title="statement not covered" >        headers: { Authorization: `Bearer ${token}` },</span>
 <span class="cstat-no" title="statement not covered" >      });</span>
 <span class="cstat-no" title="statement not covered" >      if (res.data?.slots &amp;&amp; res.data.slots.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >        return res.data.slots;</span>
@@ -458,18 +429,21 @@
 <span class="cstat-no" title="statement not covered" >        firstError</span>
 <span class="cstat-no" title="statement not covered" >      );</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const dateObj = new Date(date + "T00:00:00.000Z");</span>
 <span class="cstat-no" title="statement not covered" >    const year = dateObj.getFullYear();</span>
 <span class="cstat-no" title="statement not covered" >    const month = dateObj.getMonth() + 1;</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const monthRes = await api.get("/timeslots/month", {</span>
 <span class="cstat-no" title="statement not covered" >      params: { adminId, year, month },</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const targetDate = date;</span>
 <span class="cstat-no" title="statement not covered" >    const dayData = monthRes.data.find((day) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      const dayDate = new Date(day.date).toISOString().split("T")[0];</span>
 <span class="cstat-no" title="statement not covered" >      return dayDate === targetDate;</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return dayData?.slots || [];</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error("Erro ao buscar slots:", error);</span>
@@ -489,15 +463,9 @@
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const token = localStorage.getItem("token");</span>
-<span class="cstat-no" title="statement not covered" >    const res = await api.post(</span>
-<span class="cstat-no" title="statement not covered" >      `/timeslots/days`,</span>
-<span class="cstat-no" title="statement not covered" >      slots, // lista de slots no body</span>
-<span class="cstat-no" title="statement not covered" >      {</span>
-<span class="cstat-no" title="statement not covered" >        params: { adminId, date },</span>
-<span class="cstat-no" title="statement not covered" >        headers: { Authorization: `Bearer ${token}` },</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    const res = await api.post(`/timeslots/days`, slots, {</span>
+<span class="cstat-no" title="statement not covered" >      params: { adminId, date },</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >    return res.data;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error("Erro ao criar slots:", error.response || error);</span>
@@ -506,12 +474,14 @@
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >// Atualizar disponibilidade de um horário (professor/admin)</span>
-<span class="cstat-no" title="statement not covered" >export const updateTimeSlotAvailability = async (date, time, available) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const user = JSON.parse(localStorage.getItem("user"));</span>
-<span class="cstat-no" title="statement not covered" >  const adminId = user?.id;</span>
-<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export const updateTimeSlotAvailability = async (</span>
+<span class="cstat-no" title="statement not covered" >  date,</span>
+<span class="cstat-no" title="statement not covered" >  time,</span>
+<span class="cstat-no" title="statement not covered" >  available,</span>
+<span class="cstat-no" title="statement not covered" >  adminId</span>
+<span class="cstat-no" title="statement not covered" >) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (!adminId) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error("Usuário/adminId não encontrado!");</span>
+<span class="cstat-no" title="statement not covered" >    console.error("adminId não fornecido!");</span>
 <span class="cstat-no" title="statement not covered" >    return;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >  if (!date) {</span>
@@ -522,12 +492,11 @@
 <span class="cstat-no" title="statement not covered" >    console.error("Hora não fornecida para atualização de slot!");</span>
 <span class="cstat-no" title="statement not covered" >    return;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const token = localStorage.getItem("token");</span>
 <span class="cstat-no" title="statement not covered" >    const url = `/timeslots/${date}/${time}/${available ? "book" : "release"}`;</span>
 <span class="cstat-no" title="statement not covered" >    const res = await api.patch(url, null, {</span>
 <span class="cstat-no" title="statement not covered" >      params: { adminId },</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return res.data;</span>
@@ -545,28 +514,19 @@
 <span class="cstat-no" title="statement not covered" >      return [];</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const token = localStorage.getItem("token");</span>
-<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const actualType = type === "teacher" ? "admin" : type;</span>
 <span class="cstat-no" title="statement not covered" >    const params =</span>
 <span class="cstat-no" title="statement not covered" >      actualType === "admin" ? { adminId: userId } : { studentId: userId };</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const appointmentsRes = await api.get(`/appointments`, {</span>
-<span class="cstat-no" title="statement not covered" >      params,</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" >    const appointmentsRes = await api.get(`/appointments`, { params });</span>
 <span class="cstat-no" title="statement not covered" >    const appointments = appointmentsRes.data;</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    if (!appointments.length) return [];</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const usersRes = await api.get("/users", {</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" >    const usersRes = await api.get("/users");</span>
 <span class="cstat-no" title="statement not covered" >    const users = usersRes.data;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const teamsRes = await api.get("/teams", {</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" >    const teamsRes = await api.get("/teams");</span>
 <span class="cstat-no" title="statement not covered" >    const teams = teamsRes.data;</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return appointments.map((appointment) =&gt; {</span>
@@ -598,12 +558,10 @@
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const token = localStorage.getItem("token");</span>
 <span class="cstat-no" title="statement not covered" >    const res = await api.get("/timeslots/month", {</span>
 <span class="cstat-no" title="statement not covered" >      params: { adminId, year, month },</span>
-<span class="cstat-no" title="statement not covered" >      headers: { Authorization: `Bearer ${token}` },</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >    return res.data; // array de TimeSlotDay</span>
+<span class="cstat-no" title="statement not covered" >    return res.data;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error("Erro ao buscar slots do mês:", error.response || error);</span>
 <span class="cstat-no" title="statement not covered" >    return [];</span>
@@ -616,7 +574,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-09T11:10:21.320Z
+                at 2025-10-14T18:12:50.029Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

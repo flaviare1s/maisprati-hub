@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/100</span>
+                <span class='fraction'>0/104</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/100</span>
+                <span class='fraction'>0/104</span>
             </div>
         
             
@@ -186,7 +186,11 @@
 <a name='L121'></a><a href='#L121'>121</a>
 <a name='L122'></a><a href='#L122'>122</a>
 <a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -212,11 +216,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -311,7 +319,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useForm } from "react-hook-form";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" >import { SubmitButton } from "../SubmitButton"</span>
-<span class="cstat-no" title="statement not covered" >import { updateMemberRole, fetchTeamById } from "../../api.js/teams";</span>
+<span class="cstat-no" title="statement not covered" >import { updateMemberRole, updateTeam, fetchTeamById } from "../../api.js/teams";</span>
 <span class="cstat-no" title="statement not covered" >import toast from "react-hot-toast";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export const TeamManagmentModal = ({ team, onClose, setUserTeam }) =&gt; {</span>
@@ -331,6 +339,11 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  const onSubmit = async (data) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      await updateTeam(team.id, {</span>
+<span class="cstat-no" title="statement not covered" >        name: data.teamName,</span>
+<span class="cstat-no" title="statement not covered" >        description: data.teamDescription</span>
+<span class="cstat-no" title="statement not covered" >      });</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >      for (const member of data.members) {</span>
 <span class="cstat-no" title="statement not covered" >        await updateMemberRole(</span>
 <span class="cstat-no" title="statement not covered" >          team.id,</span>
@@ -340,16 +353,15 @@
 <span class="cstat-no" title="statement not covered" >        );</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 &nbsp;
-      // Recarregar dados atualizados do time
 <span class="cstat-no" title="statement not covered" >      const updatedTeam = await fetchTeamById(team.id);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      setUserTeam(updatedTeam);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      toast.success("Roles atualizadas com sucesso!");</span>
+<span class="cstat-no" title="statement not covered" >      toast.success("Time atualizado com sucesso!");</span>
 <span class="cstat-no" title="statement not covered" >      onClose();</span>
 <span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >      console.error("Erro ao atualizar membros:", error);</span>
-<span class="cstat-no" title="statement not covered" >      toast.error("Erro ao atualizar roles");</span>
+<span class="cstat-no" title="statement not covered" >      console.error("Erro ao atualizar time:", error);</span>
+<span class="cstat-no" title="statement not covered" >      toast.error("Erro ao atualizar time");</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  };</span>
 &nbsp;
@@ -357,7 +369,7 @@
 <span class="cstat-no" title="statement not covered" >    &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;form</span>
 <span class="cstat-no" title="statement not covered" >        onSubmit={handleSubmit(onSubmit)}</span>
-<span class="cstat-no" title="statement not covered" >        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"</span>
+<span class="cstat-no" title="statement not covered" >        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"</span>
       &gt;
 <span class="cstat-no" title="statement not covered" >        &lt;div className="flex justify-between items-center mb-6"&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;h3 className="text-xl font-bold text-blue-logo"&gt;Gerenciar {team.name}&lt;/h3&gt;</span>
@@ -439,7 +451,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-09T11:10:21.320Z
+                at 2025-10-14T18:12:50.029Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

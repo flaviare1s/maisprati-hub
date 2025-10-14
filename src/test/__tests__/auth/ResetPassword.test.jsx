@@ -2,9 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 import { render } from '../../utils/test-utils';
 
-// Mock do módulo de API
 vi.mock('../../../api.js/auth', () => ({
-  forgotPassword: vi.fn()
+  forgotPassword: vi.fn(),
+  loginUser: vi.fn(),
+  registerUser: vi.fn(),
+  resetPassword: vi.fn(),
+  logoutUser: vi.fn(),
+  decodeJWT: vi.fn(() => ({ exp: Date.now() / 1000 + 3600 }))
 }));
 
 import { ResetPassword } from '../../../pages/ResetPassword';

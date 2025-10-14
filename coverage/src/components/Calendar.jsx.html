@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/140</span>
+                <span class='fraction'>0/141</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/140</span>
+                <span class='fraction'>0/141</span>
             </div>
         
             
@@ -237,8 +237,7 @@
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
 <a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L175'></a><a href='#L175'>175</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -297,9 +296,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -319,6 +315,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -351,19 +348,20 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -415,7 +413,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useState, useCallback, useEffect } from "react";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
 <span class="cstat-no" title="statement not covered" >import dayjs from "dayjs";</span>
-<span class="cstat-no" title="statement not covered" >import "dayjs/locale/pt-br"; // importa o locale pt-br</span>
+<span class="cstat-no" title="statement not covered" >import "dayjs/locale/pt-br";</span>
 <span class="cstat-no" title="statement not covered" >import { ChevronLeft, ChevronRight } from "lucide-react";</span>
 <span class="cstat-no" title="statement not covered" >import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";</span>
 <span class="cstat-no" title="statement not covered" >import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";</span>
@@ -468,10 +466,7 @@
 &nbsp;
       // Se é student, buscar o admin (professor)
 <span class="cstat-no" title="statement not covered" >      if (!isAdmin) {</span>
-<span class="cstat-no" title="statement not covered" >        const token = localStorage.getItem("token");</span>
-<span class="cstat-no" title="statement not covered" >        const usersRes = await api.get("/users", {</span>
-<span class="cstat-no" title="statement not covered" >          headers: { Authorization: `Bearer ${token}` }</span>
-<span class="cstat-no" title="statement not covered" >        });</span>
+<span class="cstat-no" title="statement not covered" >        const usersRes = await api.get("/users");</span>
 <span class="cstat-no" title="statement not covered" >        const admin = usersRes.data.find(u =&gt; u.type === 'admin');</span>
 <span class="cstat-no" title="statement not covered" >        adminId = admin?.id || user.id;</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
@@ -481,7 +476,7 @@
 <span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error("Erro ao carregar slots do mês:", error);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  }, [currentMonth, user, isAdmin]);</span>
+<span class="cstat-no" title="statement not covered" >  }, [currentMonth, user?.id, isAdmin]);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  const renderCalendarDays = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const days = [];</span>
@@ -494,10 +489,11 @@
 <span class="cstat-no" title="statement not covered" >      const isPast = day.isBefore(dayjs(), "day");</span>
 <span class="cstat-no" title="statement not covered" >      const currentDay = dayjs(day);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      const hasSlotsAvailable = monthSlots.some(slotDay =&gt;</span>
-<span class="cstat-no" title="statement not covered" >        day.isSame(dayjs(slotDay.date), "day") &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >        slotDay.slots.some(slot =&gt; slot.available &amp;&amp; !slot.booked)</span>
-<span class="cstat-no" title="statement not covered" >      );</span>
+<span class="cstat-no" title="statement not covered" >      const hasSlotsAvailable = monthSlots.some(slotDay =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        const dayMatch = day.isSame(dayjs(slotDay.date), "day");</span>
+<span class="cstat-no" title="statement not covered" >        const hasAvailableSlots = slotDay.slots.some(slot =&gt; slot.available &amp;&amp; !slot.booked);</span>
+<span class="cstat-no" title="statement not covered" >        return dayMatch &amp;&amp; hasAvailableSlots;</span>
+<span class="cstat-no" title="statement not covered" >      });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      days.push(</span>
 <span class="cstat-no" title="statement not covered" >        &lt;button</span>
@@ -526,27 +522,28 @@
 <span class="cstat-no" title="statement not covered" >    loadMonthSlots();</span>
 <span class="cstat-no" title="statement not covered" >  }, [loadMonthSlots]);</span>
 &nbsp;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  const handleModalClose = () =&gt; setModalOpen(false);</span>
+<span class="cstat-no" title="statement not covered" >  const handleModalClose = () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setModalOpen(false);</span>
+<span class="cstat-no" title="statement not covered" >    loadMonthSlots();</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;div className="w-full bg-white rounded-lg shadow-md p-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;div className="calendar-container w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;div className="flex items-center justify-between mb-4"&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;ChevronLeft size={16} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;/button&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;h2 className="font-semibold text-dark"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;h2 className="font-semibold text-dark dark:text-gray-100"&gt;</span>
 <span class="cstat-no" title="statement not covered" >          {capitalize(currentMonth.format("MMMM"))} {currentMonth.format("YYYY")}</span>
 <span class="cstat-no" title="statement not covered" >        &lt;/h2&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        &lt;button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;ChevronRight size={16} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;/button&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      &lt;div className="grid grid-cols-7 gap-1 mb-2"&gt;</span>
 <span class="cstat-no" title="statement not covered" >        {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >          &lt;div key={day} className="h-8 flex items-center justify-center text-xs font-medium text-gray-500"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div key={day} className="h-8 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-400"&gt;</span>
 <span class="cstat-no" title="statement not covered" >            {day}</span>
 <span class="cstat-no" title="statement not covered" >          &lt;/div&gt;</span>
 <span class="cstat-no" title="statement not covered" >        ))}</span>
@@ -554,7 +551,7 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      &lt;div className="grid grid-cols-7 gap-1"&gt;{renderCalendarDays()}&lt;/div&gt;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      &lt;div className="mt-2 text-xs text-gray-500 text-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center"&gt;</span>
 <span class="cstat-no" title="statement not covered" >        Data selecionada: {selectedDate ? selectedDate.format("DD/MM/YYYY") : "Nenhuma"}</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
 &nbsp;
@@ -595,7 +592,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-09T11:10:21.320Z
+                at 2025-10-14T18:12:50.029Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

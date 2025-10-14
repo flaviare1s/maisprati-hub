@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.83% </span>
+                <span class="strong">23.78% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/193</span>
+                <span class='fraction'>49/206</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.83% </span>
+                <span class="strong">23.78% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/193</span>
+                <span class='fraction'>49/206</span>
             </div>
         
             
@@ -256,7 +256,20 @@
 <a name='L191'></a><a href='#L191'>191</a>
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -437,10 +450,23 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -589,7 +615,7 @@ export const checkUserTeamStatus = <span class="fstat-no" title="function not co
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    const response = await api.get(`/teams/user/${userId}/status`);</span>
 <span class="cstat-no" title="statement not covered" >    return response.data;</span>
-<span class="cstat-no" title="statement not covered" >  // eslint-disable-next-line no-unused-vars</span>
+<span class="cstat-no" title="statement not covered" >    // eslint-disable-next-line no-unused-vars</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    return { isInActiveTeam: false };</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -623,11 +649,21 @@ export const toggleTeamStatus = <span class="fstat-no" title="function not cover
 // Buscar time com dados completos dos membros
 export const getTeamWithMembers = <span class="fstat-no" title="function not covered" >async (teamId) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    // No backend, o time já vem com as informações dos membros</span>
 <span class="cstat-no" title="statement not covered" >    const team = await fetchTeamById(teamId);</span>
 <span class="cstat-no" title="statement not covered" >    return team;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error("Erro ao buscar time com membros:", error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;
+// Atualizar dados do time (nome, descrição, etc.)
+export const updateTeam = <span class="fstat-no" title="function not covered" >async (teamId, teamData) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.put(`/teams/${teamId}`, teamData);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error("Erro ao atualizar dados do time:", error);</span>
 <span class="cstat-no" title="statement not covered" >    throw error;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
@@ -638,7 +674,10 @@ export const isUserInActiveTeam = <span class="fstat-no" title="function not cov
 <span class="cstat-no" title="statement not covered" >    const result = await checkUserTeamStatus(userId);</span>
 <span class="cstat-no" title="statement not covered" >    return result.isInActiveTeam;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error("Erro ao verificar se usuário está em algum time ativo:", error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error(</span>
+<span class="cstat-no" title="statement not covered" >      "Erro ao verificar se usuário está em algum time ativo:",</span>
+<span class="cstat-no" title="statement not covered" >      error</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
@@ -649,7 +688,7 @@ export const isUserInActiveTeam = <span class="fstat-no" title="function not cov
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-09T11:10:21.320Z
+                at 2025-10-14T18:12:50.029Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

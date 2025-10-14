@@ -2,16 +2,19 @@ import { vi } from "vitest";
 
 // Mock das APIs para testes
 export const mockAuthApi = {
-  login: vi.fn(),
-  logout: vi.fn(),
+  // Corrigido para corresponder às importações reais no código (e adicionado registerUser)
+  loginUser: vi.fn(),
+  registerUser: vi.fn(),
+  logoutUser: vi.fn(),
   forgotPassword: vi.fn(),
-  resetPassword: vi.fn(),
+  resetPassword: vi.fn(), // Funções não utilizadas no AuthContext, mas mantidas por segurança:
   verifyToken: vi.fn(),
 };
 
 export const mockUsersApi = {
   getAllUsers: vi.fn(),
-  getUserById: vi.fn(),
+  getUserById: vi.fn(), // Adicionado a função usada no AuthContext (getCurrentUserData)
+  getCurrentUserData: vi.fn(),
   updateUser: vi.fn(),
   deleteUser: vi.fn(),
   getUserProfile: vi.fn(),
@@ -25,7 +28,8 @@ export const mockTeamsApi = {
   updateTeam: vi.fn(),
   deleteTeam: vi.fn(),
   joinTeam: vi.fn(),
-  leaveTeam: vi.fn(),
+  leaveTeam: vi.fn(), // Adicionado a função usada no AuthContext (getTeamWithMembers)
+  getTeamWithMembers: vi.fn(),
 };
 
 export const mockNotificationsApi = {

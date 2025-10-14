@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/119</span>
+                <span class='fraction'>0/116</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/119</span>
+                <span class='fraction'>0/116</span>
             </div>
         
             
@@ -196,11 +196,7 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -231,16 +227,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -347,7 +339,6 @@
 <span class="cstat-no" title="statement not covered" >import { NotFound } from "./pages/NotFound";</span>
 <span class="cstat-no" title="statement not covered" >import { Header } from "./components/Header";</span>
 <span class="cstat-no" title="statement not covered" >import { Footer } from "./components/Footer";</span>
-<span class="cstat-no" title="statement not covered" >import { useEffect, useState } from "react";</span>
 <span class="cstat-no" title="statement not covered" >import { StudentRegister } from "./pages/StudentRegister";</span>
 <span class="cstat-no" title="statement not covered" >import { TeamSelect } from "./pages/TeamSelect";</span>
 <span class="cstat-no" title="statement not covered" >import { CommonRoom } from "./pages/CommonRoom";</span>
@@ -355,6 +346,7 @@
 <span class="cstat-no" title="statement not covered" >import { useAuth } from "./hooks/useAuth";</span>
 <span class="cstat-no" title="statement not covered" >import { CustomLoader } from "./components/CustomLoader";</span>
 <span class="cstat-no" title="statement not covered" >import { ScrollToTop } from "./components/ScrollToTop";</span>
+<span class="cstat-no" title="statement not covered" >import { ConnectionStatus } from "./components/ConnectionStatus";</span>
 <span class="cstat-no" title="statement not covered" >import { CodenameSelect } from "./pages/CodenameSelect";</span>
 <span class="cstat-no" title="statement not covered" >import { CreateTeam } from "./pages/CreateTeam";</span>
 <span class="cstat-no" title="statement not covered" >import { StudentDashboardPage } from "./pages/StudentDashboardPage";</span>
@@ -367,19 +359,15 @@
 <span class="cstat-no" title="statement not covered" >import { FAQ } from "./pages/FAQ";</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >function App() {</span>
-<span class="cstat-no" title="statement not covered" >  const { user } = useAuth();</span>
-<span class="cstat-no" title="statement not covered" >  const [loadingApp, setLoadingApp] = useState(true);</span>
+<span class="cstat-no" title="statement not covered" >  const { user, loading } = useAuth();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setLoadingApp(false);</span>
-<span class="cstat-no" title="statement not covered" >  }, []);</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  if (loadingApp) {</span>
+<span class="cstat-no" title="statement not covered" >  if (loading) {</span>
 <span class="cstat-no" title="statement not covered" >    return &lt;CustomLoader /&gt;;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;div className="overflow-x-hidden"&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;ConnectionStatus /&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;ScrollToTop /&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;Header user={user} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden"&gt;</span>
@@ -481,7 +469,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-09T11:10:21.320Z
+                at 2025-10-14T18:12:50.029Z
             </div>
         <script src="../prettify.js"></script>
         <script>
