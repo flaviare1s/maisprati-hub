@@ -16,7 +16,7 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // número de notificações por página (ajuste como preferir)
+  const itemsPerPage = 10;
 
   useEffect(() => {
     if (user) loadNotifications();
@@ -60,6 +60,24 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
     }
   };
 
+  // Função para formatar mensagem com data e hora em negrito
+  const formatMessage = (message) => {
+    // Regex para capturar data no formato dd/mm/yyyy ou dd/mm/aaaa
+    const dateRegex = /(\d{1,2}\/\d{1,2}\/\d{4})/g;
+    // Regex para capturar hora no formato HH:mm ou H:mm
+    const timeRegex = /(\d{1,2}:\d{2})/g;
+
+    let formattedMessage = message;
+
+    // Substituir datas por versão em negrito
+    formattedMessage = formattedMessage.replace(dateRegex, '<strong>$1</strong>');
+
+    // Substituir horas por versão em negrito
+    formattedMessage = formattedMessage.replace(timeRegex, '<strong>$1</strong>');
+
+    return formattedMessage;
+  };
+
 
   // Calcular paginação
   const totalPages = Math.ceil(notifications.length / itemsPerPage);
@@ -69,6 +87,21 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
 
   return (
     <div className="max-w-2xl mx-auto text-dark">
+      <style>{`
+        .notification-message-text {
+          color: #000000 !important;
+        }
+        .dark .notification-message-text {
+          color: #ffffff !important;
+        }
+        .notification-message-text strong {
+          color: #000000 !important;
+          font-weight: 700 !important;
+        }
+        .dark .notification-message-text strong {
+          color: #ffffff !important;
+        }
+      `}</style>
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
         <h2 className="text-xl font-semibold mb-2">Notificações</h2>
         <button
@@ -92,12 +125,17 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
               <MdClose size={18} />
             </button>
 
-            <h3 className="font-medium text-gray-900">{notification.title}</h3>
-            <p className="text-sm text-gray-600 mt-1">
+            <h3 className="font-medium text-gray-900 dark:text-white">{notification.title}</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-200 mt-1">
               {notification.senderName ? `${notification.senderName}: ` : ""}
-              {notification.message}
+              <span
+                className="notification-message-text"
+                dangerouslySetInnerHTML={{
+                  __html: formatMessage(notification.message)
+                }}
+              />
             </p>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-700 dark:text-gray-300">
               {new Date(notification.createdAt).toLocaleString("pt-BR")}
             </span>
           </div>

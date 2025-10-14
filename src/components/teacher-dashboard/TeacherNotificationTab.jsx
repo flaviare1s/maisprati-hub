@@ -61,6 +61,24 @@ export const TeacherNotificationsTab = () => {
     }
   };
 
+  // Função para formatar mensagem com data e hora em negrito
+  const formatMessage = (message) => {
+    // Regex para capturar data no formato dd/mm/yyyy ou dd/mm/aaaa
+    const dateRegex = /(\d{1,2}\/\d{1,2}\/\d{4})/g;
+    // Regex para capturar hora no formato HH:mm ou H:mm
+    const timeRegex = /(\d{1,2}:\d{2})/g;
+
+    let formattedMessage = message;
+
+    // Substituir datas por versão em negrito
+    formattedMessage = formattedMessage.replace(dateRegex, '<strong>$1</strong>');
+
+    // Substituir horas por versão em negrito
+    formattedMessage = formattedMessage.replace(timeRegex, '<strong>$1</strong>');
+
+    return formattedMessage;
+  };
+
   return (
     <div className="w-full">
       <h3 className="text-lg font-semibold mb-4 text-dark">Notificações</h3>
@@ -84,9 +102,14 @@ export const TeacherNotificationsTab = () => {
               <MdClose size={18} />
             </button>
 
-            <h4 className="font-medium text-dark">{notification.title}</h4>
-            <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-            <span className="text-xs text-gray-muted">
+            <h4 className="font-medium text-dark dark:text-white">{notification.title}</h4>
+            <p
+              className="text-sm text-gray-600 dark:text-gray-200 mt-1"
+              dangerouslySetInnerHTML={{
+                __html: formatMessage(notification.message)
+              }}
+            />
+            <span className="text-xs text-gray-muted dark:text-gray-300">
               {new Date(notification.createdAt).toLocaleString("pt-BR")}
             </span>
           </div>
@@ -96,14 +119,14 @@ export const TeacherNotificationsTab = () => {
       {/* Controles de Paginação */}
       {notifications.length > 0 && totalPages > 1 && (
         <div className="flex flex-col items-center mt-8 space-y-3">
-          <div className="flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 overflow-hidden">
             {/* Botão Página Anterior */}
             <button
               onClick={goToPrevPage}
               disabled={currentPage === 1}
               className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors border-r border-gray-200 ${currentPage === 1
-                  ? 'text-gray-400 cursor-not-allowed bg-gray-50'
-                  : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
+                ? 'text-gray-400 cursor-not-allowed bg-gray-50'
+                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
                 }`}
             >
               <MdChevronLeft size={18} />
@@ -119,8 +142,8 @@ export const TeacherNotificationsTab = () => {
               onClick={goToNextPage}
               disabled={currentPage === totalPages}
               className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${currentPage === totalPages
-                  ? 'text-gray-400 cursor-not-allowed bg-gray-50'
-                  : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
+                ? 'text-gray-400 cursor-not-allowed bg-gray-50'
+                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
                 }`}
             >
               <MdChevronRight size={18} />

@@ -43,7 +43,7 @@ export const Pagination = ({
   return (
     <div className={`flex flex-col items-center ${className}`}>
       {/* Controles de navegação */}
-      <div className="flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 overflow-hidden">
         {/* Botão Página Anterior */}
         <button
           onClick={goPrev}
