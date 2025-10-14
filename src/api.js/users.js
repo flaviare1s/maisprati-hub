@@ -46,7 +46,11 @@ export const getCurrentUserData = async () => {
     const response = await api.get("/auth/me");
     return response.data;
   } catch (error) {
+    // 401/403 - não há usuário logado
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return null;
+    }
     console.error("Erro ao buscar dados do usuário atual:", error);
-    throw error;
+    throw error; // 500 - erro inesperado/servidor
   }
 };
