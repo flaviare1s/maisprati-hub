@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../SubmitButton"
-import { updateMemberRole, fetchTeamById } from "../../api.js/teams";
+import { updateMemberRole, updateTeam, fetchTeamById } from "../../api.js/teams";
 import toast from "react-hot-toast";
 
 export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
@@ -20,6 +20,11 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
 
   const onSubmit = async (data) => {
     try {
+      await updateTeam(team.id, {
+        name: data.teamName,
+        description: data.teamDescription
+      });
+
       for (const member of data.members) {
         await updateMemberRole(
           team.id,
@@ -29,16 +34,15 @@ export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {
         );
       }
 
-      // Recarregar dados atualizados do time
       const updatedTeam = await fetchTeamById(team.id);
 
       setUserTeam(updatedTeam);
 
-      toast.success("Roles atualizadas com sucesso!");
+      toast.success("Time atualizado com sucesso!");
       onClose();
     } catch (error) {
-      console.error("Erro ao atualizar membros:", error);
-      toast.error("Erro ao atualizar roles");
+      console.error("Erro ao atualizar time:", error);
+      toast.error("Erro ao atualizar time");
     }
   };
 

@@ -70,10 +70,14 @@ export const notifyAppointmentScheduled = async (
       });
       console.log("Notificação enviada para professor/admin sobre time");
 
-      // Notificar TODOS os membros do time (incluindo quem agendou)
+      // Notificar membros do time EXCETO quem agendou
       if (teamMembers && teamMembers.length) {
+        const otherMembers = teamMembers.filter(
+          (member) => member.userId !== studentId
+        );
+
         await Promise.all(
-          teamMembers.map((member) =>
+          otherMembers.map((member) =>
             createNotification({
               userId: member.userId,
               title: "Nova reunião do time",
@@ -82,18 +86,23 @@ export const notifyAppointmentScheduled = async (
             })
           )
         );
-        console.log("Notificação enviada para membros do time");
+        console.log("Notificação enviada para outros membros do time");
       }
+
+      await createNotification({
+        userId: studentId,
+        title: "Reunião agendada",
+        message: `Você agendou uma reunião para o time ${teamName} em ${date} às ${time}`,
+        createdAt: new Date().toISOString(),
+      });
+      console.log("Notificação específica enviada para quem agendou");
     } else {
-      // Se não tem time, notificar como reunião individual
       await createNotification({
         userId: adminId,
         title: "Nova reunião agendada",
         message: `Um aluno agendou uma reunião para ${date} às ${time}`,
         createdAt: new Date().toISOString(),
       });
-
-      // Notificar também o próprio estudante
       await createNotification({
         userId: studentId,
         title: "Nova reunião marcada",
@@ -117,13 +126,13 @@ export const notifyAppointmentCanceled = async (
   teamMembers,
   studentName,
   adminId,
-  canceledByAdmin = false // <- novo parâmetro
+  canceledByAdmin = false,
+  canceledByStudentId = null
 ) => {
   try {
     const { date, time, teamId } = appointment;
 
     if (teamId && teamName) {
-      // Montar mensagem de acordo com quem cancelou
       const messageForAdmin = canceledByAdmin
         ? `Você cancelou a reunião do time ${teamName} marcada para ${date} às ${time}`
         : `O time ${teamName} cancelou a reunião marcada para ${date} às ${time}`;
@@ -140,10 +149,16 @@ export const notifyAppointmentCanceled = async (
         createdAt: new Date().toISOString(),
       });
 
-      // Notificar membros do time
+      // Notificar membros do time EXCETO quem cancelou (se foi um estudante)
       if (teamMembers && teamMembers.length) {
+        const membersToNotify = canceledByStudentId
+          ? teamMembers.filter(
+              (member) => member.userId !== canceledByStudentId
+            )
+          : teamMembers;
+
         await Promise.all(
-          teamMembers.map((member) =>
+          membersToNotify.map((member) =>
             createNotification({
               userId: member.userId,
               title: "Reunião do time cancelada",
@@ -152,6 +167,16 @@ export const notifyAppointmentCanceled = async (
             })
           )
         );
+      }
+
+      // Se foi cancelado por um estudante, notificar especificamente quem cancelou
+      if (canceledByStudentId && !canceledByAdmin) {
+        await createNotification({
+          userId: canceledByStudentId,
+          title: "Reunião cancelada",
+          message: `Você cancelou a reunião do time ${teamName} marcada para ${date} às ${time}`,
+          createdAt: new Date().toISOString(),
+        });
       }
     } else {
       // Cancelamento individual
@@ -163,6 +188,16 @@ export const notifyAppointmentCanceled = async (
           : `O aluno ${studentName} cancelou a reunião marcada para ${date} às ${time}`,
         createdAt: new Date().toISOString(),
       });
+
+      // Se foi cancelado por estudante, notificar o estudante também
+      if (!canceledByAdmin && canceledByStudentId) {
+        await createNotification({
+          userId: canceledByStudentId,
+          title: "Reunião cancelada",
+          message: `Sua reunião do dia ${date} às ${time} foi cancelada.`,
+          createdAt: new Date().toISOString(),
+        });
+      }
     }
   } catch (error) {
     console.error("Erro ao enviar notificações de cancelamento:", error);

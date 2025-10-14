@@ -3,7 +3,6 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchTimeSlots } from "../../api.js/schedule";
 import api from "../../services/api";
-import { notifyAppointmentScheduled } from "../../api.js/notifications";
 
 const generateDaySlots = (existingSlots = []) => {
   const startHour = 6;
@@ -96,18 +95,8 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
 
       await api.post("/appointments", appointmentData);
 
-      // Enviar notificações usando a função centralizada
-      try {
-        await notifyAppointmentScheduled({
-          teamId: userTeam?.id || null,
-          studentId,
-          date: selectedDate.format("YYYY-MM-DD"),
-          time: slot.time
-        }, userTeam?.name || null, userTeam?.members || [],
-          admin.id);
-      } catch (notifError) {
-        console.error("Erro ao enviar notificações:", notifError);
-      }
+      // Notificações são enviadas automaticamente pelo backend atualizado
+      // Backend agora envia para todos os membros do time + admin
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>

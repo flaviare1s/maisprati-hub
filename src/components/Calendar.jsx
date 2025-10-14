@@ -66,7 +66,7 @@ export const Calendar = () => {
     } catch (error) {
       console.error("Erro ao carregar slots do mês:", error);
     }
-  }, [currentMonth, user, isAdmin]);
+  }, [currentMonth, user?.id, isAdmin]);
 
   const renderCalendarDays = () => {
     const days = [];
@@ -79,10 +79,11 @@ export const Calendar = () => {
       const isPast = day.isBefore(dayjs(), "day");
       const currentDay = dayjs(day);
 
-      const hasSlotsAvailable = monthSlots.some(slotDay =>
-        day.isSame(dayjs(slotDay.date), "day") &&
-        slotDay.slots.some(slot => slot.available && !slot.booked)
-      );
+      const hasSlotsAvailable = monthSlots.some(slotDay => {
+        const dayMatch = day.isSame(dayjs(slotDay.date), "day");
+        const hasAvailableSlots = slotDay.slots.some(slot => slot.available && !slot.booked);
+        return dayMatch && hasAvailableSlots;
+      });
 
       days.push(
         <button
@@ -112,7 +113,10 @@ export const Calendar = () => {
   }, [loadMonthSlots]);
 
 
-  const handleModalClose = () => setModalOpen(false);
+  const handleModalClose = () => {
+    setModalOpen(false);
+    loadMonthSlots();
+  };
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md p-4">

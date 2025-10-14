@@ -15,6 +15,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { useAuth } from "./hooks/useAuth";
 import { CustomLoader } from "./components/CustomLoader";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { ConnectionStatus } from "./components/ConnectionStatus";
 import { CodenameSelect } from "./pages/CodenameSelect";
 import { CreateTeam } from "./pages/CreateTeam";
 import { StudentDashboardPage } from "./pages/StudentDashboardPage";
@@ -35,6 +36,7 @@ function App() {
 
   return (
     <div className="overflow-x-hidden">
+      <ConnectionStatus />
       <ScrollToTop />
       <Header user={user} />
       <main className="font-montserrat flex flex-col min-h-[calc(100vh-100px)] overflow-x-hidden">

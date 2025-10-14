@@ -20,6 +20,12 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       return userData;
     } catch (err) {
+      // Se for erro de servidor, não faz logout
+      if (err.message === "SERVER_ERROR") {
+        console.warn("Mantendo sessão devido a erro temporário do servidor");
+        return user; // Mantém o usuário atual
+      }
+
       console.error("Erro ao carregar dados do usuário:", err);
       setUser(null);
       return null;
@@ -30,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     try {
       // Chama backend para destruir sessão - limpa cookies
       if (!skipServer) {
-      await logoutUser(); // <-- só chama se ainda estiver logado
-    }
+        await logoutUser(); // <-- só chama se ainda estiver logado
+      }
     } catch (err) {
       console.error("Erro ao fazer logout:", err);
     }
@@ -91,10 +97,14 @@ export const AuthProvider = ({ children }) => {
       try {
         const userData = await getCurrentUserData();
         setUser(userData || null);
-      } catch {
+      } catch (error) {
+        // Só considera como erro se não for 401/403 (não autenticado)
+        if (error?.response?.status !== 401 && error?.response?.status !== 403) {
+          console.error("Erro inesperado ao verificar autenticação:", error);
+        }
         setUser(null);
       } finally {
-        setLoading(false); // redenriza após a checagem
+        setLoading(false); // renderiza após a checagem
       }
     };
     initializeUser();
@@ -102,15 +112,91 @@ export const AuthProvider = ({ children }) => {
 
   // Logout automático ao expirar o token
   useEffect(() => {
+    let logoutDebounceTimer = null;
+
     const handleUnauthorized = () => {
-      logout({ skipServer: true }); // já sabe que o backend invalidou o cookie
+      // Evita múltiplos logouts simultâneos
+      if (logoutDebounceTimer) {
+        clearTimeout(logoutDebounceTimer);
+      }
+
+      logoutDebounceTimer = setTimeout(() => {
+        // Só faz logout se realmente há um usuário logado
+        if (user) {
+          console.log("Sessão expirada - fazendo logout automático");
+          logout({ skipServer: true }); // já sabe que o backend invalidou o cookie
+        }
+      }, 200); // Debounce de 200ms
     };
+
     window.addEventListener("unauthorized", handleUnauthorized);
 
     return () => {
       window.removeEventListener("unauthorized", handleUnauthorized);
+      if (logoutDebounceTimer) {
+        clearTimeout(logoutDebounceTimer);
+      }
     };
-  }, [logout]);
+  }, [logout, user]); // Dependência do user para evitar logout desnecessário
+
+  // Verificação periódica da sessão para usuários logados
+  useEffect(() => {
+    if (!user) return;
+
+    const checkSession = async () => {
+      try {
+        await getCurrentUserData();
+      } catch (error) {
+        // Se a sessão expirou, o interceptor já vai lidar com isso
+        if (error?.response?.status === 401) {
+          console.log("Sessão expirada detectada na verificação periódica");
+        }
+      }
+    };
+
+    // Verifica a sessão a cada 10 minutos para usuários logados
+    const sessionCheckInterval = setInterval(checkSession, 10 * 60 * 1000);
+
+    return () => {
+      clearInterval(sessionCheckInterval);
+    };
+  }, [user]);
+
+  // Verificação de atividade do usuário (para renovar sessão automaticamente)
+  useEffect(() => {
+    if (!user) return;
+
+    let lastActivity = Date.now();
+
+    const updateActivity = () => {
+      lastActivity = Date.now();
+    };
+
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    events.forEach(event => {
+      document.addEventListener(event, updateActivity, true);
+    });
+
+    // Verifica atividade a cada 5 minutos
+    const activityCheckInterval = setInterval(() => {
+      const now = Date.now();
+      const timeSinceLastActivity = now - lastActivity;
+
+      // Se houve atividade nos últimos 30 minutos, mantém a sessão ativa
+      if (timeSinceLastActivity < 30 * 60 * 1000) {
+        getCurrentUserData().catch(() => {
+          // Se falhar, deixa o interceptor lidar
+        });
+      }
+    }, 5 * 60 * 1000);
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, updateActivity, true);
+      });
+      clearInterval(activityCheckInterval);
+    };
+  }, [user]);
 
   return (
     <AuthContext.Provider
