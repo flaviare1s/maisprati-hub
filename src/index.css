@@ -18,15 +18,14 @@
 
   --font-montserrat: "Montserrat", sans-serif;
 
-  /* Variáveis para tema dark */
   --dark-bg-primary: #1a1a1a;
   --dark-bg-secondary: #2d2d2d;
+  --dark-bg-body: #222222;
   --dark-bg-card: #3a3a3a;
   --dark-bg-elevated: #454545;
   --dark-text-primary: #f0f0f0;
 
-  /* Theme-aware colors para melhor controle */
-  --theme-text-primary: #111827; /* preto no light mode */
+  --theme-text-primary: #111827;
   --dark-text-secondary: #d0d0d0;
   --dark-text-muted: #a0a0a0;
   --dark-border: #555555;
@@ -73,7 +72,7 @@ body {
 
 /* Tema Dark Principal */
 .dark body {
-  background-color: var(--dark-bg-primary);
+  background-color: var(--dark-bg-body);
   color: var(--dark-text-primary);
 }
 
@@ -157,6 +156,11 @@ body {
 .dark .hover\:shadow-lg:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
     0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6),
+    0 4px 6px -2px rgba(0, 0, 0, 0.4) !important;
 }
 
 .dark .shadow-md {
@@ -373,6 +377,38 @@ body {
   color: #f0f0f0 !important; /* text-gray-100 no dark */
 }
 
+/* Login form container específico */
+.dark .md\:bg-light {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Reset password e new password modais */
+.dark .bg-light {
+  background-color: var(--dark-bg-card) !important;
+}
+
+/* Textos e elementos dos forms de autenticação */
+.dark .text-gray-muted {
+  color: var(--dark-text-secondary) !important;
+}
+
+/* Links nos forms de autenticação */
+.dark .text-red-primary {
+  color: #ef4444 !important; /* mantém vermelho mais claro no dark */
+}
+
+.dark .text-red-primary:hover {
+  color: #dc2626 !important; /* vermelho mais escuro no hover */
+}
+
+.dark .text-blue-logo {
+  color: #60a5fa !important; /* azul mais claro no dark */
+}
+
+.dark .text-blue-logo:hover {
+  color: #3b82f6 !important; /* azul mais escuro no hover */
+}
+
 /* Textos importantes sempre visíveis */
 .text-gray-800,
 .text-gray-900,
@@ -386,6 +422,36 @@ body {
 .dark .font-semibold,
 .dark .font-bold {
   color: #f0f0f0 !important; /* light gray no dark mode */
+}
+
+/* FAQ Items específicos - corrige cores no light e dark mode */
+.dark .text-gray-700 {
+  color: #d1d5db !important; /* claro no dark mode para boa leitura */
+}
+
+.text-gray-700 {
+  color: #374151 !important; /* escuro no light mode para boa leitura */
+}
+
+/* FAQ containers - garante backgrounds corretos */
+.bg-white {
+  background-color: white !important; /* branco no light mode */
+}
+
+.dark
+  .bg-white:not(.calendar-container):not(.forum-post):not(.dashboard-main):not(
+    .mobile-menu-panel
+  ) {
+  background-color: var(--dark-bg-card) !important; /* escuro no dark mode */
+}
+
+/* FAQ text colors específicos */
+.dark .font-semibold {
+  color: #f9fafb !important; /* títulos claros no dark */
+}
+
+.font-semibold {
+  color: #1f2937 !important; /* títulos escuros no light */
 }
 
 /* Garante visibilidade de elementos de texto */
