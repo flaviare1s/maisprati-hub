@@ -115,9 +115,7 @@ export const Calendar = () => {
 
   const handleModalClose = () => {
     setModalOpen(false);
-    if (isAdmin) {
-      loadMonthSlots();
-    }
+    loadMonthSlots();
   };
 
   return (
