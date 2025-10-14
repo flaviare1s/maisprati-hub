@@ -12,13 +12,12 @@ export const fetchTimeSlots = async (adminId, date) => {
   }
 
   try {
-    const token = localStorage.getItem("token");
     let url = `/timeslots/days/${date}`;
     let res;
+
     try {
       res = await api.get(url, {
         params: { adminId },
-        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data?.slots && res.data.slots.length > 0) {
         return res.data.slots;
@@ -29,18 +28,21 @@ export const fetchTimeSlots = async (adminId, date) => {
         firstError
       );
     }
+
     const dateObj = new Date(date + "T00:00:00.000Z");
     const year = dateObj.getFullYear();
     const month = dateObj.getMonth() + 1;
+
     const monthRes = await api.get("/timeslots/month", {
       params: { adminId, year, month },
-      headers: { Authorization: `Bearer ${token}` },
     });
+
     const targetDate = date;
     const dayData = monthRes.data.find((day) => {
       const dayDate = new Date(day.date).toISOString().split("T")[0];
       return dayDate === targetDate;
     });
+
     return dayData?.slots || [];
   } catch (error) {
     console.error("Erro ao buscar slots:", error);
@@ -60,15 +62,9 @@ export const createTimeSlots = async (adminId, date, slots) => {
   }
 
   try {
-    const token = localStorage.getItem("token");
-    const res = await api.post(
-      `/timeslots/days`,
-      slots, // lista de slots no body
-      {
-        params: { adminId, date },
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const res = await api.post(`/timeslots/days`, slots, {
+      params: { adminId, date },
+    });
     return res.data;
   } catch (error) {
     console.error("Erro ao criar slots:", error.response || error);
@@ -77,12 +73,14 @@ export const createTimeSlots = async (adminId, date, slots) => {
 };
 
 // Atualizar disponibilidade de um horário (professor/admin)
-export const updateTimeSlotAvailability = async (date, time, available) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const adminId = user?.id;
-
+export const updateTimeSlotAvailability = async (
+  date,
+  time,
+  available,
+  adminId
+) => {
   if (!adminId) {
-    console.error("Usuário/adminId não encontrado!");
+    console.error("adminId não fornecido!");
     return;
   }
   if (!date) {
@@ -93,12 +91,11 @@ export const updateTimeSlotAvailability = async (date, time, available) => {
     console.error("Hora não fornecida para atualização de slot!");
     return;
   }
+
   try {
-    const token = localStorage.getItem("token");
     const url = `/timeslots/${date}/${time}/${available ? "book" : "release"}`;
     const res = await api.patch(url, null, {
       params: { adminId },
-      headers: { Authorization: `Bearer ${token}` },
     });
 
     return res.data;
@@ -116,28 +113,19 @@ export const fetchAppointments = async (userId, type) => {
       return [];
     }
 
-    const token = localStorage.getItem("token");
-
     const actualType = type === "teacher" ? "admin" : type;
     const params =
       actualType === "admin" ? { adminId: userId } : { studentId: userId };
 
-    const appointmentsRes = await api.get(`/appointments`, {
-      params,
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const appointmentsRes = await api.get(`/appointments`, { params });
     const appointments = appointmentsRes.data;
 
     if (!appointments.length) return [];
 
-    const usersRes = await api.get("/users", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const usersRes = await api.get("/users");
     const users = usersRes.data;
 
-    const teamsRes = await api.get("/teams", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const teamsRes = await api.get("/teams");
     const teams = teamsRes.data;
 
     return appointments.map((appointment) => {
@@ -169,12 +157,10 @@ export const fetchMonthSlots = async (adminId, year, month) => {
   }
 
   try {
-    const token = localStorage.getItem("token");
     const res = await api.get("/timeslots/month", {
       params: { adminId, year, month },
-      headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data; // array de TimeSlotDay
+    return res.data;
   } catch (error) {
     console.error("Erro ao buscar slots do mês:", error.response || error);
     return [];

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
-import "dayjs/locale/pt-br"; // importa o locale pt-br
+import "dayjs/locale/pt-br";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
 import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
@@ -53,10 +53,7 @@ export const Calendar = () => {
 
       // Se é student, buscar o admin (professor)
       if (!isAdmin) {
-        const token = localStorage.getItem("token");
-        const usersRes = await api.get("/users", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const usersRes = await api.get("/users");
         const admin = usersRes.data.find(u => u.type === 'admin');
         adminId = admin?.id || user.id;
       }
@@ -112,7 +109,6 @@ export const Calendar = () => {
     loadMonthSlots();
   }, [loadMonthSlots]);
 
-
   const handleModalClose = () => {
     setModalOpen(false);
     loadMonthSlots();
@@ -127,7 +123,6 @@ export const Calendar = () => {
         <h2 className="font-semibold text-dark dark:text-gray-100">
           {capitalize(currentMonth.format("MMMM"))} {currentMonth.format("YYYY")}
         </h2>
-
         <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <ChevronRight size={16} />
         </button>

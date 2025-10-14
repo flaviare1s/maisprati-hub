@@ -33,10 +33,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       setLoading(true);
       try {
         // Buscar o admin (único professor) via API service
-        const token = localStorage.getItem("token");
-        const usersRes = await api.get("/users", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const usersRes = await api.get("/users");
         const admin = usersRes.data.find(u => u.type === 'admin');
 
         if (!admin) {
@@ -65,10 +62,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
 
     try {
       // Buscar admin via API service
-      const token = localStorage.getItem("token");
-      const usersRes = await api.get("/users", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const usersRes = await api.get("/users");
       const admin = usersRes.data.find(u => u.type === 'admin');
 
       if (!admin) {
@@ -77,9 +71,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       }
 
       // Buscar o time do usuário para incluir o teamId
-      const teamsRes = await api.get("/teams", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const teamsRes = await api.get("/teams");
 
       const userTeam = teamsRes.data.find(team =>
         team.members && team.members.some(member => member.userId.toString() === studentId.toString())
@@ -94,9 +86,6 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       };
 
       await api.post("/appointments", appointmentData);
-
-      // Notificações são enviadas automaticamente pelo backend atualizado
-      // Backend agora envia para todos os membros do time + admin
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>
