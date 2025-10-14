@@ -6,41 +6,51 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // enviar e receber cookies
+  withCredentials: true,
 });
 
-// Force cookie sending
 api.defaults.withCredentials = true;
 
-// Função para extrair token do cookie (fallback)
 const getTokenFromCookie = () => {
   const match = document.cookie.match(/access_token=([^;]+)/);
   return match ? match[1] : null;
 };
 
-// Interceptor para adicionar Authorization header como fallback
+const requestLog = new Map();
+const MAX_REQUESTS_PER_SECOND = 10;
+
+setInterval(() => {
+  requestLog.clear();
+}, 1000);
+
+let isLogoutDispatched = false;
+let logoutTimeout = null;
+
 api.interceptors.request.use(
   (config) => {
-    // Se não for request de login, adiciona header como fallback
-    if (!config.url?.includes("/login")) {
+    if (!config.url?.includes("/login") && !config.url?.includes("/register")) {
       const token = getTokenFromCookie();
-      if (token) {
+      if (token && !config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
+
+    const endpoint = `${config.method?.toUpperCase()} ${config.url}`;
+    const count = requestLog.get(endpoint) || 0;
+    requestLog.set(endpoint, count + 1);
+
+    if (count > MAX_REQUESTS_PER_SECOND) {
+      console.warn(`⚠️ LOOP DETECTADO: ${endpoint} (${count} req/s)`);
+      console.trace("Stack trace:");
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Controle para evitar múltiplos dispatches de logout
-let isLogoutDispatched = false;
-let logoutTimeout = null;
-
-// Interceptor para lidar com respostas de erro
 api.interceptors.response.use(
   (response) => {
-    // Reset do flag se a requisição foi bem-sucedida
     if (isLogoutDispatched) {
       isLogoutDispatched = false;
       if (logoutTimeout) {
@@ -51,23 +61,28 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Só dispara logout para 401 em endpoints não-públicos
     if (error.response?.status === 401) {
       const url = error.config?.url || "";
 
-      // Não fazer logout automático para endpoints de verificação
-      const isCheckEndpoint =
-        url.includes("/auth/me") || url.includes("/auth/check");
+      const isAuthEndpoint =
+        url.includes("/auth/me") ||
+        url.includes("/auth/check") ||
+        url.includes("/auth/login") ||
+        url.includes("/auth/register") ||
+        url.includes("/auth/forgot-password") ||
+        url.includes("/auth/reset-password");
 
-      if (!isCheckEndpoint && !isLogoutDispatched) {
+      if (!isAuthEndpoint && !isLogoutDispatched) {
         isLogoutDispatched = true;
 
-        // Debounce para evitar múltiplos logouts
         logoutTimeout = setTimeout(() => {
+          console.log("🚪 Disparando logout por 401 em endpoint protegido");
           window.dispatchEvent(new CustomEvent("unauthorized"));
+          isLogoutDispatched = false;
         }, 100);
       }
     }
+
     return Promise.reject(error);
   }
 );
