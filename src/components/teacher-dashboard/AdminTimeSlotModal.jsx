@@ -18,13 +18,11 @@ const generateDaySlots = (existingSlots = [], interval = 30, selectedDate) => {
         .toString()
         .padStart(2, "0")}`;
 
-      // Verificar se o horário já passou (apenas para hoje)
       const isPastTime = isToday && now.isAfter(selectedDate.hour(hour).minute(min));
 
       const existing = existingSlots.find((s) => s.time === time);
       const slot = existing || { time, available: false, booked: false };
 
-      // Se já passou, marcar como indisponível e não clicável
       if (isPastTime) {
         slot.available = false;
         slot.isPast = true;
@@ -41,7 +39,6 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
   const [timeSlots, setTimeSlots] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Carregar slots do dia
   useEffect(() => {
     if (!open || !selectedDate) return;
 
@@ -66,46 +63,29 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
   }, [open, selectedDate, adminId]);
 
   const handleTimeSlotClick = async (slot) => {
-    // Não permitir clicar em slots agendados ou horários passados
     if (slot.booked || slot.isPast) return;
 
     const newAvailability = !slot.available;
+
+    const updatedTimeSlots = timeSlots.map(s =>
+      s.time === slot.time ? { ...s, available: newAvailability } : s
+    );
+    setTimeSlots(updatedTimeSlots);
 
     try {
       const currentAdminId = adminId || JSON.parse(localStorage.getItem("user"))?.id;
       const dateString = selectedDate.format("YYYY-MM-DD");
 
-      // Buscar slots existentes do banco para este dia específico
-      const existingSlots = await fetchTimeSlots(currentAdminId, dateString);
+      const slotsToSave = updatedTimeSlots
+        .filter(s => s.available && !s.booked)
+        .map(s => ({ time: s.time, available: true, booked: false }));
 
-      let updatedSlots;
-      const slotExists = existingSlots.some(s => s.time === slot.time);
-
-      if (slotExists) {
-        if (newAvailability) {
-          // Tornando disponível - usar createTimeSlots
-          updatedSlots = existingSlots.map(s =>
-            s.time === slot.time ? { ...s, available: true } : s
-          );
-        } else {
-          // Removendo disponibilidade - filtrar do array
-          updatedSlots = existingSlots.filter(s => s.time !== slot.time);
-        }
-      } else {
-        // Adicionar novo slot (sempre disponível quando adicionado)
-        updatedSlots = [...existingSlots, { time: slot.time, available: true, booked: false }];
-      }
-
-      // Salvar no banco
-      await createTimeSlots(currentAdminId, dateString, updatedSlots);
-
-      // Atualizar interface local - recriar slots completos
-      const newTimeSlots = generateDaySlots(updatedSlots, 30, selectedDate);
-      setTimeSlots(newTimeSlots);
+      await createTimeSlots(currentAdminId, dateString, slotsToSave);
 
       toast.success(newAvailability ? 'Horário disponibilizado!' : 'Horário removido!');
 
     } catch (error) {
+      setTimeSlots(timeSlots);
       toast.error("Erro ao atualizar/criar slot");
       console.error("ERRO:", error);
     }
@@ -168,7 +148,6 @@ export const AdminTimeSlotModal = ({ open, onClose, selectedDate, adminId }) => 
             </div>
           )}
 
-          {/* Legenda */}
           <div className="flex items-center justify-center gap-4 mt-6 p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-blue-logo rounded-full" />
