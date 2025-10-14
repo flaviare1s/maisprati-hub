@@ -86,7 +86,6 @@ api.interceptors.response.use(
       const token = response.data?.token;
       if (token) {
         setToken(token);
-        console.log("✅ Token salvo com sucesso");
       }
     }
 
