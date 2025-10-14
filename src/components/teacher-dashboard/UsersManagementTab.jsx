@@ -104,7 +104,7 @@ export const UsersManagementTab = () => {
           <button
             className={`px-4 py-2 rounded transition-colors cursor-pointer ${sortOption === 'name'
               ? 'bg-blue-logo text-white'
-              : 'bg-gray-100 hover:bg-blue-200 hover:text-blue-800 dark:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-500'
+              : 'bg-gray-100 hover:bg-blue-logo hover:text-white dark:bg-gray-600 text-gray-light dark:text-gray-200 border border-gray-300 dark:border-gray-500'
               }`}
             onClick={() => setSortOption('name')}
           >
@@ -113,7 +113,7 @@ export const UsersManagementTab = () => {
           <button
             className={`px-4 py-2 rounded transition-colors cursor-pointer ${sortOption === 'groupClass'
               ? 'bg-orange-logo text-white'
-              : 'bg-gray-100 hover:bg-orange-200 hover:text-orange-800 dark:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-500'
+              : 'bg-gray-100 hover:bg-orange-logo hover:text-light dark:bg-gray-600 text-gray-light dark:text-gray-200 border border-gray-300 dark:border-gray-500'
               }`}
             onClick={() => setSortOption('groupClass')}
           >
