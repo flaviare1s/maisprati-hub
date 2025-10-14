@@ -135,7 +135,7 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
                 }}
               />
             </p>
-            <span className="text-xs text-gray-500 dark:text-gray-300">
+            <span className="text-xs text-gray-700 dark:text-gray-300">
               {new Date(notification.createdAt).toLocaleString("pt-BR")}
             </span>
           </div>

@@ -48,7 +48,7 @@ export const MenuMobile = ({ user, onLogout }) => {
         className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         aria-label="Abrir menu"
       >
-        <HiMenu size={24} className="text-gray-600 dark:text-gray-300" />
+        <HiMenu size={24} className="text-gray-800 dark:text-gray-300" />
       </button>
 
       {/* Backdrop */}
@@ -110,11 +110,14 @@ export const MenuMobile = ({ user, onLogout }) => {
                 key={item.to}
                 to={item.to}
                 onClick={handleLinkClick}
-                className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors duration-200 group"
+                className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200 group"
                 style={{ color: isDark ? '#d1d5db' : '#374151' }}
               >
-                <Icon size={20} className="group-hover:scale-110 transition-transform duration-200" />
-                <span className="font-medium">{item.label}</span>
+                <Icon
+                  size={20}
+                  className="group-hover:scale-110 transition-all duration-200 group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                />
+                <span className="font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400">{item.label}</span>
               </Link>
             );
           })}
@@ -123,7 +126,7 @@ export const MenuMobile = ({ user, onLogout }) => {
           {user && (
             <button
               onClick={handleLogout}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-300 transition-colors duration-200 group"
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200 group cursor-pointer"
             >
               <HiLogout size={20} className="group-hover:scale-110 transition-transform duration-200" />
               <span className="font-medium">Sair</span>
@@ -134,7 +137,7 @@ export const MenuMobile = ({ user, onLogout }) => {
         {/* Footer */}
         <div className="px-6 py-4 border-t border-gray-300 dark:border-gray-700">
           <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-            +Prati Hub © 2024
+            +PratiHub © 2025
           </p>
         </div>
       </div>
