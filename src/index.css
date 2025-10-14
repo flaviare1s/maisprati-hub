@@ -533,6 +533,34 @@ body {
   color: #e5e7eb !important; /* texto mais claro para descrições */
 }
 
+/* Teacher Notifications Tab - corrige textos no modo light */
+.text-gray-600 {
+  color: #374151 !important; /* texto escuro no modo light */
+}
+
+.dark .text-gray-600 {
+  color: #e5e7eb !important; /* texto claro no modo dark */
+}
+
+/* Teacher Notifications - força cor preta no modo light para mensagens */
+.bg-soft p {
+  color: #000000 !important; /* preto no modo light */
+}
+
+.dark .bg-soft p {
+  color: #ffffff !important; /* branco no modo dark */
+}
+
+/* Teacher Notifications - garante que strong elements sejam visíveis */
+.bg-soft p strong {
+  color: #000000 !important; /* preto no modo light */
+  font-weight: 700 !important;
+}
+
+.dark .bg-soft p strong {
+  color: #ffffff !important; /* branco no modo dark */
+}
+
 .link-nav {
   position: relative;
 }
