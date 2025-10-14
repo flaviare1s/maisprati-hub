@@ -35,7 +35,8 @@ export const TeacherDashboardPage = () => {
         setTeams(allTeams);
 
         const allUsers = await fetchUsers();
-        setTotalUsers(allUsers.length);
+        const studentsOnly = allUsers.filter(user => user.type === "student");
+        setTotalUsers(studentsOnly.length);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
