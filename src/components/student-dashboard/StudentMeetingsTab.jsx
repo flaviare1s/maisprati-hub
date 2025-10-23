@@ -5,7 +5,6 @@ import { fetchTeams } from "../../api.js/teams";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { notifyAppointmentCanceled } from "../../api.js/notifications";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
@@ -49,22 +48,6 @@ export const StudentMeetingsTab = () => {
     if (!window.confirm(confirmMessage)) return;
 
     try {
-      // Buscar dados do time se existir
-      let teamName = null;
-      let teamMembers = [];
-
-      if (appointment.teamId) {
-        const token = localStorage.getItem("token");
-        const teamsRes = await api.get("/teams", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const team = teamsRes.data.find(t => t.id === appointment.teamId);
-        if (team) {
-          teamName = team.name;
-          teamMembers = team.members;
-        }
-      }
-
       // Cancelar no backend
       await api.patch(`/appointments/${appointment.id}/cancel`);
 
@@ -73,22 +56,8 @@ export const StudentMeetingsTab = () => {
         prev.map(a => a.id === appointment.id ? { ...a, status: "CANCELLED" } : a)
       );
 
-      // Enviar notificações centralizadas
-      try {
-        await notifyAppointmentCanceled(
-          {
-            date: appointment.date,
-            time: appointment.time,
-            teamId: appointment.teamId
-          },
-          teamName,
-          teamMembers,
-          appointment.studentName || user.name,
-          appointment.adminId
-        );
-      } catch (notifError) {
-        console.error("Erro ao enviar notificação de cancelamento:", notifError);
-      }
+      // Notificações são enviadas automaticamente pelo backend
+      // Removido chamada duplicada do frontend
 
       toast.success("Reunião cancelada com sucesso!");
 
@@ -100,6 +69,15 @@ export const StudentMeetingsTab = () => {
 
   return (
     <div className="w-full text-dark">
+      <style>{`
+        .meeting-text-black {
+          color: #000000 !important;
+          font-weight: 700 !important;
+        }
+        .dark .meeting-text-black {
+          color: #ffffff !important;
+        }
+      `}</style>
       <h3 className="text-lg font-semibold mb-4">Minhas Reuniões</h3>
       <div className="grid gap-2">
         {appointments
@@ -108,26 +86,13 @@ export const StudentMeetingsTab = () => {
             const status = appt.status || 'SCHEDULED';
             const isPast = dayjs(`${appt.date} ${appt.time}`).isBefore(dayjs());
 
-            let statusText = 'Agendado';
-            let statusColor = 'text-green-600 bg-green-50';
-            if (status === 'CANCELLED' || status === 'CANCELED') {
-              statusText = 'Cancelado';
-              statusColor = 'text-red-600 bg-red-50';
-            } else if (status === 'COMPLETED') {
-              statusText = 'Concluído';
-              statusColor = 'text-blue-600 bg-blue-50';
-            } else if (isPast && status !== 'COMPLETED') {
-              statusText = 'Expirado';
-              statusColor = 'text-gray-600 bg-gray-50';
-            }
-
             return (
               <div
                 key={idx}
-                className={`p-3 rounded-lg text-sm border border-gray-200 bg-white flex justify-between items-center hover:shadow-sm transition-shadow ${status === 'CANCELLED' ? 'opacity-60' : ''}`}
+                className={`meeting-card p-3 rounded-lg text-sm border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 flex justify-between items-center hover:shadow-sm transition-shadow ${status === 'CANCELLED' ? 'opacity-60' : ''}`}
               >
                 <div className="flex flex-col">
-                  <span className="font-medium text-dark">
+                  <span className="font-medium meeting-text-black">
                     {dayjs(appt.date).format("DD/MM/YY")} - {appt.time}
                   </span>
                   {appt.teamName ? (
@@ -142,9 +107,38 @@ export const StudentMeetingsTab = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusColor}`}>
-                    {statusText}
-                  </span>
+                  {/* Badge dinâmica baseada no status */}
+                  {(() => {
+                    if (status === 'CANCELLED' || status === 'CANCELED') {
+                      return (
+                        <span className="text-red-700 dark:text-red-300 font-semibold text-xs px-2 py-1 bg-red-50 dark:bg-red-900/30 rounded-full">
+                          Cancelado
+                        </span>
+                      );
+                    }
+
+                    if (status === 'COMPLETED') {
+                      return (
+                        <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                          Concluído
+                        </span>
+                      );
+                    }
+
+                    if (isPast && status !== 'COMPLETED') {
+                      return (
+                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
+                          Expirado
+                        </span>
+                      );
+                    }
+
+                    return (
+                      <span className="text-green-700 dark:text-green-300 font-semibold text-xs px-2 py-1 bg-green-50 dark:bg-green-900/30 rounded-full">
+                        Agendado
+                      </span>
+                    );
+                  })()}
                   {/* Botão cancelar se permitido */}
                   {status !== 'CANCELLED' && status !== 'COMPLETED' && !isPast && (
                     <button

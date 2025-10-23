@@ -46,6 +46,18 @@ export const getCurrentUserData = async () => {
     const response = await api.get("/auth/me");
     return response.data;
   } catch (error) {
+    // 401/403 - não há usuário logado (situação normal)
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      return null;
+    }
+
+    // 500/502/503 - problemas temporários do servidor
+    if (error.response?.status >= 500) {
+      console.warn("Servidor temporariamente indisponível, mantendo sessão");
+      throw new Error("SERVER_ERROR"); // Erro específico para problemas de servidor
+    }
+
+    // Outros erros (rede, timeout, etc.)
     console.error("Erro ao buscar dados do usuário atual:", error);
     throw error;
   }

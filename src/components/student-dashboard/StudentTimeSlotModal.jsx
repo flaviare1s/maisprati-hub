@@ -3,7 +3,6 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchTimeSlots } from "../../api.js/schedule";
 import api from "../../services/api";
-import { notifyAppointmentScheduled } from "../../api.js/notifications";
 
 const generateDaySlots = (existingSlots = []) => {
   const startHour = 6;
@@ -34,10 +33,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       setLoading(true);
       try {
         // Buscar o admin (único professor) via API service
-        const token = localStorage.getItem("token");
-        const usersRes = await api.get("/users", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const usersRes = await api.get("/users");
         const admin = usersRes.data.find(u => u.type === 'admin');
 
         if (!admin) {
@@ -66,10 +62,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
 
     try {
       // Buscar admin via API service
-      const token = localStorage.getItem("token");
-      const usersRes = await api.get("/users", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const usersRes = await api.get("/users");
       const admin = usersRes.data.find(u => u.type === 'admin');
 
       if (!admin) {
@@ -78,9 +71,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       }
 
       // Buscar o time do usuário para incluir o teamId
-      const teamsRes = await api.get("/teams", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const teamsRes = await api.get("/teams");
 
       const userTeam = teamsRes.data.find(team =>
         team.members && team.members.some(member => member.userId.toString() === studentId.toString())
@@ -95,19 +86,6 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
       };
 
       await api.post("/appointments", appointmentData);
-
-      // Enviar notificações usando a função centralizada
-      try {
-        await notifyAppointmentScheduled({
-          teamId: userTeam?.id || null,
-          studentId,
-          date: selectedDate.format("YYYY-MM-DD"),
-          time: slot.time
-        }, userTeam?.name || null, userTeam?.members || [],
-          admin.id);
-      } catch (notifError) {
-        console.error("Erro ao enviar notificações:", notifError);
-      }
 
       // Atualizar o slot como agendado
       setTimeSlots(prev =>
@@ -132,7 +110,7 @@ export const StudentTimeSlotModal = ({ open, onClose, selectedDate, studentId })
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50 transition-opacity" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] border overflow-hidden">
+      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[80vh] border dark:border-gray-600 overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-lg font-semibold text-dark">
             Agendar Reunião - {selectedDate?.format("DD/MM/YYYY")}

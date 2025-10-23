@@ -138,7 +138,7 @@ export const checkUserTeamStatus = async (userId) => {
   try {
     const response = await api.get(`/teams/user/${userId}/status`);
     return response.data;
-  // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars
   } catch (error) {
     return { isInActiveTeam: false };
   }
@@ -172,11 +172,21 @@ export const toggleTeamStatus = async (teamId) => {
 // Buscar time com dados completos dos membros
 export const getTeamWithMembers = async (teamId) => {
   try {
-    // No backend, o time já vem com as informações dos membros
     const team = await fetchTeamById(teamId);
     return team;
   } catch (error) {
     console.error("Erro ao buscar time com membros:", error);
+    throw error;
+  }
+};
+
+// Atualizar dados do time (nome, descrição, etc.)
+export const updateTeam = async (teamId, teamData) => {
+  try {
+    const response = await api.put(`/teams/${teamId}`, teamData);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar dados do time:", error);
     throw error;
   }
 };
@@ -187,7 +197,10 @@ export const isUserInActiveTeam = async (userId) => {
     const result = await checkUserTeamStatus(userId);
     return result.isInActiveTeam;
   } catch (error) {
-    console.error("Erro ao verificar se usuário está em algum time ativo:", error);
+    console.error(
+      "Erro ao verificar se usuário está em algum time ativo:",
+      error
+    );
     return false;
   }
 };

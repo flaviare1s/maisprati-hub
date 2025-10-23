@@ -22,9 +22,8 @@ const FaqItem = ({ question, answer, icon }) => {
 
   return (
     <div
-      className={`rounded-2xl border shadow-sm transition-all duration-300 ${
-        open ? "bg-blue-50 border-blue-200" : "bg-white border-gray-200"
-      }`}
+      className={`rounded-2xl border shadow-sm transition-all duration-300 ${open ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700" : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600"
+        }`}
     >
       <button
         onClick={() => setOpen(!open)}
@@ -36,9 +35,8 @@ const FaqItem = ({ question, answer, icon }) => {
           <h3 className="font-semibold text-lg">{question}</h3>
         </div>
         <ChevronDown
-          className={`transition-transform duration-300 ${
-            open ? "rotate-180 text-blue-600" : "rotate-0 text-gray-500"
-          }`}
+          className={`transition-transform duration-300 ${open ? "rotate-180 text-blue-600" : "rotate-0 text-gray-500"
+            }`}
         />
       </button>
       {open && <div className="px-6 pb-4 text-gray-700">{answer}</div>}
@@ -127,22 +125,11 @@ export function FAQ() {
   return (
     <section className="py-16 bg-gray-50" id="faq">
       <div className="max-w-4xl mx-auto px-6">
-        <SectionTitle preTitle="FAQ" title="Dúvidas Frequentes" />
+        <SectionTitle title="Dúvidas Frequentes" />
         <div className="space-y-4">
           {faqData.map((item) => (
             <FaqItem key={item.id} {...item} />
           ))}
-        </div>
-
-        {/* CTA final */}
-        <div className="text-center mt-10">
-          <p className="text-gray-700 mb-4">Ainda tem dúvidas?</p>
-          <a
-            href="#contato"
-            className="inline-block px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
-          >
-            Fale com a gente
-          </a>
         </div>
       </div>
     </section>

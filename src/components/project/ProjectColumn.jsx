@@ -38,7 +38,13 @@ export const ProjectColumn = ({
       style={{ borderTopColor: color }}
     >
       <div className="flex items-center justify-between mb-4 flex-shrink-0">
-        <h3 className="text-lg font-semibold" style={{ color: color }}>
+        <h3
+          className="text-lg font-semibold"
+          style={{
+            color: `${color} !important`,
+            filter: 'brightness(1.2) contrast(1.1)'
+          }}
+        >
           {title}
         </h3>
         <span className="bg-gray-100 text-gray-muted px-2 py-1 rounded-full text-sm font-medium">
