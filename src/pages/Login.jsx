@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { InputField } from "../components/InputField";
+import { SocialLoginButton } from "../components/SocialLoginButton";
 import { SubmitButton } from "../components/SubmitButton";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo+prati.png";
@@ -73,6 +74,10 @@ export const Login = () => {
           />
           <div className="mt-5">
             <SubmitButton label="Entrar" />
+          </div>
+          <div className="w-full">
+            <SocialLoginButton provider="google" />
+            <SocialLoginButton provider="github" />
           </div>
           <Link
             to="/register"
