@@ -92,8 +92,8 @@ export const Calendar = () => {
             ${!isCurrentMonth ? "text-gray-300" : ""}
             ${isToday ? "bg-blue-100 text-blue-600 font-semibold" : ""}
             ${isSelected && !isToday ? "bg-blue-logo text-white" : ""}
-            ${isPast ? "text-gray-300 cursor-not-allowed" : "hover:bg-blue-50 cursor-pointer"}
-            ${hasSlotsAvailable ? "text-blue-600 font-bold" : ""}
+            ${isPast ? "text-gray-300 cursor-not-allowed" : hasSlotsAvailable ? "text-blue-600 font-bold" : ""}
+            ${hasSlotsAvailable && isPast ? "text-gray-300 cursor-not-allowed" : ""}
           `}
         >
           {currentDay.date()}
