@@ -172,7 +172,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
                     if (isPast && status !== 'COMPLETED') {
                       return (
-                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
+                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full badge-expirado">
                           Expirado
                         </span>
                       );
