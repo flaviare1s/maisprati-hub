@@ -4,10 +4,12 @@ import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";
+import { ConfirmationModal } from "../ConfirmationModal";
 
 export const TeacherMeetingsTab = ({ adminId }) => {
   const [appointments, setAppointments] = useState([]);
-  const [filter, setFilter] = useState('proximos'); // 'proximos', 'todos', 'cancelados', 'completados', 'passados'
+  const [filter, setFilter] = useState('proximos');
+  const [confirmationModal, setConfirmationModal] = useState({ open: false, message: "", onConfirm: null });
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -28,34 +30,29 @@ export const TeacherMeetingsTab = ({ adminId }) => {
   }, [adminId]);
 
   const handleCancelAppointment = async (appointment) => {
-    // Mostrar confirmação antes de cancelar
     const studentName = appointment.studentName || 'estudante';
     const teamName = appointment.teamName && appointment.teamName !== 'Sem time' ? appointment.teamName : null;
     const displayName = teamName ? `time ${teamName}` : studentName;
 
-    const confirmMessage = `Tem certeza que deseja cancelar o agendamento de ${displayName} para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}?\n\nO estudante será notificado sobre o cancelamento.`;
+    setConfirmationModal({
+      open: true,
+      message: `Tem certeza que deseja cancelar o agendamento de ${displayName} para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}?\n\nO estudante será notificado sobre o cancelamento.`,
+      onConfirm: async () => {
+        try {
+          await api.patch(`/appointments/${appointment.id}/cancel`);
 
-    if (!window.confirm(confirmMessage)) {
-      return; // Usuário cancelou a ação
-    }
+          const data = await fetchAppointments(adminId, "admin");
+          setAppointments(data);
 
-    try {
-      // Cancelar no backend
-      await api.patch(`/appointments/${appointment.id}/cancel`);
-
-      // Notificações são enviadas automaticamente pelo backend
-      // Removido chamada duplicada do frontend
-
-      // Recarregar lista de agendamentos
-      const data = await fetchAppointments(adminId, "admin");
-      setAppointments(data);
-
-      toast.success(`Agendamento de ${displayName} cancelado! O estudante foi notificado.`);
-
-    } catch (error) {
-      toast.error("Erro ao cancelar agendamento");
-      console.error("ERRO:", error);
-    }
+          toast.success(`Agendamento de ${displayName} cancelado! O estudante foi notificado.`);
+        } catch (error) {
+          toast.error("Erro ao cancelar agendamento");
+          console.error("ERRO:", error);
+        } finally {
+          setConfirmationModal({ open: false, message: "", onConfirm: null });
+        }
+      },
+    });
   };
 
   return (
@@ -97,7 +94,6 @@ export const TeacherMeetingsTab = ({ adminId }) => {
         </div>
         <div className="grid gap-2 max-h-60 overflow-y-auto">
           {appointments.length > 0 ? (
-            // Filtrar e agrupar appointments
             Object.values(
               appointments
                 .filter(appt => {
@@ -108,23 +104,18 @@ export const TeacherMeetingsTab = ({ adminId }) => {
 
                   switch (filter) {
                     case 'proximos':
-                      // Apenas futuros não cancelados/completados
                       return !isPast && status !== 'CANCELLED' && status !== 'CANCELED' && status !== 'COMPLETED';
 
                     case 'cancelados':
-                      // Apenas cancelados
                       return status === 'CANCELLED' || status === 'CANCELED';
 
                     case 'completados':
-                      // Apenas completados
                       return status === 'COMPLETED';
 
                     case 'passados':
-                      // Apenas passados (não completados)
                       return isPast && status !== 'COMPLETED';
 
                     case 'todos':
-                      // Todos os agendamentos
                       return true;
 
                     default:
@@ -231,6 +222,13 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           <span className="text-[9px] sm:text-xs text-gray-800 dark:text-gray-300">Indisponível</span>
         </div>
       </div>
+
+      <ConfirmationModal
+        open={confirmationModal.open}
+        message={confirmationModal.message}
+        onClose={() => setConfirmationModal({ open: false, message: "", onConfirm: null })}
+        onConfirm={confirmationModal.onConfirm}
+      />
     </div>
   );
 };
