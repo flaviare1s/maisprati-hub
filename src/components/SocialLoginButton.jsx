@@ -13,7 +13,7 @@ export const SocialLoginButton = ({ provider }) => {
   return (
     <button
       onClick={handleLogin}
-      className={`flex items-center justify-center gap-2 w-full border border-gray-300 rounded-md py-2 px-4 mt-3 transition hover:bg-gray-100`}
+      className={`flex items-center justify-center gap-2 w-full border border-gray-300 rounded-md py-2 px-4 mt-3 transition hover:bg-gray-100 cursor-pointer`}
     >
       <Icon size={22} />
       <span className="font-medium">{label}</span>
