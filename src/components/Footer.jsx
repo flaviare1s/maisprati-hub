@@ -1,34 +1,37 @@
-import { FaLinkedin, FaInstagram, FaFacebook, FaDiscord } from "react-icons/fa";
+import { FaLinkedin, FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa';
+import logo from '../assets/images/logo-menu.png';
 
 export const Footer = () => {
   return (
-    <footer className="w-full  px-4 py-6 bg-blue-logo shadow border-t  border-[#eee] min-h-90 ">
-      <div className=" mx-auto   grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5 ">
-        <section className="w-full">
-        <img className="w-full rounded-lg max-h-30 mb-2 mt-10 max-w-3/4" src="\src\assets\images\logo-menu.png" alt="" />
-        </section>
-        <section className="w-full">
-        <p className="mb-0.5 text-white mt-10 pl-2.5 pb-3 ml-20 font-bold">Instituição </p>
-          <p  className="mb-2  ml-20 mt-5 text-white items-justify size-full max-w-3/4 ">Somos a +praTI, uma iniciativa da sociedade sem fins lucrativos, que busca    encontrar ecapacitar novos talentos da área de TI</p>
-        </section>
+    <footer className="bg-blue-logo text-white py-8 px-4 md:py-14 md:pb-24 flex flex-col justify-center items-center">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-        <section className="w-full">
-          <p className="mb-0.5 text-white mt-10  pb-3 ml-22 font-bold">Menu</p>
-          <ul className="mb-0.5 text-white mt-5  pb-3 ml-22" >
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">Sobre</a></li>
-            <li><a href="/faq">FAQ</a></li>
-          </ul>
-        </section>
+        <div className="flex justify-center w-[150px] m-auto">
+          <img className="w-full" src={logo} alt="Logo-+Prati-hub" />
+        </div>
 
-        <section className="w-full mt-5 flex flex-auto pl-18 items-center  text-white ">
-        <a className="p-3"  href="https://www.linkedin.com/company/maisprati/"><FaLinkedin size={32} /></a>
-        <a className="p-3"  href="https://www.instagram.com/maisprati/"><FaInstagram size={32}/></a>
-        <a className="p-3"  href="https://www.facebook.com/maispratioficial/?locale=pt_BR"><FaFacebook size={32}/></a>
-        <a className="p-3"  href="https://www.facebook.com/maispratioficial/?locale=pt_BR"><FaDiscord size={32}/></a>
-
-        </section>
+        <div className="span-col-1 md:col-span-2">
+          <p className="text-sm text-center md:text-left">
+            +PraTiHub foi criada para o gerenciamento dos projetos finais da +PraTi. Plataforma desenvolvida por alunos para alunos, com o objetivo de facilitar a organização e o acompanhamento dos projetos.
+          </p>
+        </div>
+        <div className="flex justify-center items-center gap-3">
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+            <FaLinkedin size={20} />
+          </a>
+          <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+            <FaInstagram size={20} />
+          </a>
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+            <FaFacebook size={20} />
+          </a>
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+            <FaYoutube size={20} />
+          </a>
+        </div>
       </div>
     </footer>
-  )
-}
+  );
+};
+
+export default Footer;
