@@ -12,20 +12,20 @@ export const Footer = () => {
 
         <div className="span-col-1 md:col-span-2">
           <p className="text-sm text-center md:text-left">
-            +PraTiHub foi criada para o gerenciamento dos projetos finais da +PraTi. Plataforma desenvolvida por alunos para alunos, com o objetivo de facilitar a organização e o acompanhamento dos projetos.
+            +praTiHub foi criada para o gerenciamento dos projetos finais da +praTi. Plataforma desenvolvida por alunos para alunos, com o objetivo de facilitar a organização e o acompanhamento dos projetos.
           </p>
         </div>
         <div className="flex justify-center items-center gap-3">
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d">
             <FaLinkedin size={20} />
           </a>
-          <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+          <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d">
             <FaInstagram size={20} />
           </a>
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d">
             <FaFacebook size={20} />
           </a>
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:bg-gray-100 transition">
+          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d">
             <FaYoutube size={20} />
           </a>
         </div>

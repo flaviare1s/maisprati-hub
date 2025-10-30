@@ -9,8 +9,8 @@ export const About = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 w-screen gap-[5px] bg-light py-[5px] about">
       <AboutItemImg img={img1} alt="Imagem de pessoas conectadas" />
       <AboutItemContent
-        title="Sobre o +Prati Hub"
-        description="O +Prati Hub é a rede social que conecta alunos e professores em um único espaço. Criado para facilitar a organização dos trabalhos finais, ele centraliza a comunicação, o planejamento e o acompanhamento de projetos de forma simples e colaborativa."
+        title="Sobre o +praTiHub"
+        description="O +praTiHub é a rede social que conecta alunos e professores em um único espaço. Criado para facilitar a organização dos trabalhos finais, ele centraliza a comunicação, o planejamento e o acompanhamento de projetos de forma simples e colaborativa."
       />
 
       <div className="md:order-4">
@@ -25,7 +25,7 @@ export const About = () => {
       <div className="md:order-5">
         <AboutItemContent
           title="Acompanhamento"
-          description="Com o +Prati Hub, professores e alunos têm acesso a um painel claro e prático do andamento de cada projeto. Assim, todos acompanham as etapas, prazos e entregas com transparência e muito mais organização."
+          description="Com o +praTiHub, professores e alunos têm acesso a um painel claro e prático do andamento de cada projeto. Assim, todos acompanham as etapas, prazos e entregas com transparência e muito mais organização."
         />
       </div>
     </div>

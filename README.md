@@ -1,4 +1,4 @@
-# +PraTi Hub
+# +praTiHub
 
 ## Visão Geral do Projeto
 
