@@ -144,7 +144,7 @@ export const StudentRegister = () => {
           value="STUDENT"
           register={register}
         />
-        <SubmitButton label='Registrar' />
+        <SubmitButton label='Registrar' aria-label="Registrar" />
         <Link to="/login" className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block">Já tem conta? Acesse aqui</Link>
       </form>
     </div>
