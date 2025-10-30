@@ -179,7 +179,7 @@ export const DashboardLayout = () => {
       intervalId = setInterval(() => {
         console.log("Polling: Calling refreshNotificationCount...");
         refreshNotificationCount();
-      }, 5000);
+      }, 1000);
     }
 
     return () => {

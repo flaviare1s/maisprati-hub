@@ -6,11 +6,19 @@ import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "../ConfirmationModal";
+import { Pagination } from "../Pagination";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [confirmationModal, setConfirmationModal] = useState({ open: false, message: "", onConfirm: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(appointments.length / itemsPerPage);
+  const currentAppointments = appointments
+    .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
+    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -77,10 +85,17 @@ export const StudentMeetingsTab = () => {
         }
       `}</style>
       <h3 className="text-lg font-semibold mb-4">Minhas Reuniões</h3>
-      <div className="grid gap-2">
-        {appointments
-          .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
-          .map((appt, idx) => {
+
+      {currentAppointments.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <p>Nenhuma reunião encontrada</p>
+          <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
+        </div>
+      )}
+
+      {currentAppointments.length > 0 && (
+        <div className="grid gap-2">
+          {currentAppointments.map((appt, idx) => {
             const status = appt.status || 'SCHEDULED';
             const isPast = dayjs(`${appt.date} ${appt.time}`).isBefore(dayjs());
 
@@ -151,12 +166,19 @@ export const StudentMeetingsTab = () => {
               </div>
             );
           })}
-      </div>
+        </div>
+      )}
 
-      {appointments.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <p>Nenhuma reunião encontrada</p>
-          <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
+      {appointments.length > 0 && totalPages > 1 && (
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            totalItems={appointments.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+            showCounts={true}
+            className=""
+          />
         </div>
       )}
 
