@@ -1,6 +1,6 @@
 import { CustomLoader } from "./CustomLoader";
 
-export const SubmitButton = ({ label, isLoading = false, disabled = false }) => {
+export const SubmitButton = ({ label, isLoading = false, disabled = false, ...props }) => {
   return (
     <button
       type="submit"
@@ -9,6 +9,7 @@ export const SubmitButton = ({ label, isLoading = false, disabled = false }) => 
           ? 'bg-gray-400 cursor-not-allowed'
           : 'bg-blue-logo hover:bg-blue-600 cursor-pointer'
         }`}
+        {...props}
     >
       {isLoading ? <CustomLoader /> : label}
     </button>
