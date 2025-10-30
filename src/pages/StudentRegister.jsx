@@ -21,11 +21,14 @@ export const StudentRegister = () => {
   }, [socialName, socialEmail, setValue]);
 
   const onSubmit = async (data) => {
-    // converte para boolean
+    // Clean the WhatsApp number to contain only digits
+    data.whatsapp = data.whatsapp.replace(/\D/g, '');
+
+    // Convert to boolean
     data.hasGroup = data.hasGroup === "sim";
     data.wantsGroup = data.wantsGroup === "sim";
 
-    // envia state para página de registro
+    // Send state to the registration page
     navigate("/warname", { state: { ...data } });
   };
   return (
@@ -81,15 +84,15 @@ export const StudentRegister = () => {
         <InputField
           name="whatsapp"
           type="tel"
-          placeholder="Digite apenas números"
+          placeholder="Digite seu whatsapp"
           label="WhatsApp *"
           register={register}
           error={errors.whatsapp?.message}
           validation={{
             required: "WhatsApp é obrigatório",
             pattern: {
-              value: /^\d{10,11}$/,
-              message: "Digite apenas números, ex: 11999999999",
+              value: /^[\d\s\-()]+$/,
+              message: "Digite um número válido",
             },
           }}
         />
