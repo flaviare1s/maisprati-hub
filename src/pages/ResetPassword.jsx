@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import logo from "../assets/images/logo+prati.png";
+import logo from "../assets/images/logo.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
 import { forgotPassword } from "../api.js/auth";

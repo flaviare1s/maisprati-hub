@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/images/logo+prati.png';
+import logo from '../assets/images/logo.png';
 import { InputField } from '../components/InputField';
 import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
@@ -30,7 +30,7 @@ export const StudentRegister = () => {
   };
   return (
     <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto mt-5'>
-      <div className='w-[180px] mb-14'>
+      <div className='w-[180px]'>
         <img src={logo} alt="logo da +prati" className='w-full' />
       </div>
       <form className='w-full' onSubmit={handleSubmit(onSubmit)}>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { SubmitButton } from "../components/SubmitButton";
-import logo from '../assets/images/logo+prati.png';
+import logo from '../assets/images/logo.png';
 import toast from 'react-hot-toast';
 import { registerUser } from "../api.js/auth";
 
