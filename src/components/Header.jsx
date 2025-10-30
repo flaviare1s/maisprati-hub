@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo from '../assets/images/+pratihubb-removebg-preview.png'
+import logo from '../assets/images/logo.png'
 import { MenuDesktop } from './MenuDesktop'
 import { MenuMobile } from './MenuMobile'
 import { ThemeToggle } from './ThemeToggle'
