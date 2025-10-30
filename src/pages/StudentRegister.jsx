@@ -30,7 +30,7 @@ export const StudentRegister = () => {
   };
   return (
     <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto mt-5'>
-      <div className='w-[180px]'>
+      <div className='w-[180px] mb-3'>
         <img src={logo} alt="logo da +prati" className='w-full' />
       </div>
       <form className='w-full' onSubmit={handleSubmit(onSubmit)}>
