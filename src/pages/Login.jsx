@@ -73,7 +73,7 @@ export const Login = () => {
             }}
           />
           <div className="mt-5">
-            <SubmitButton label="Entrar" />
+            <SubmitButton label="Entrar" aria-label="Entrar no sistema" />
           </div>
         </form>
         <div className="w-full mt-4">
