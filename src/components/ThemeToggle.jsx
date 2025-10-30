@@ -1,4 +1,4 @@
-import { FaMoon, FaSun } from "react-icons/fa";
+import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "../contexts/ThemeContext";
 
 export const ThemeToggle = () => {
@@ -9,7 +9,7 @@ export const ThemeToggle = () => {
       onClick={() => setLightMode(!lightMode)}
       className="p-2 text-2xl rounded bg-transparent cursor-pointer"
     >
-      {lightMode ? <FaSun className="md:text-orange-logo" /> : <FaMoon />}
+      {lightMode ? <FiSun className="md:text-orange-logo" /> : <FiMoon />}
     </button>
   );
 };
