@@ -5,21 +5,21 @@ import { fetchTeams } from "../../api.js/teams";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";
+import { ConfirmationModal } from "../ConfirmationModal";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState([]);
+  const [confirmationModal, setConfirmationModal] = useState({ open: false, message: "", onConfirm: null });
 
   useEffect(() => {
     const loadAppointments = async () => {
       try {
         let allAppointments = [];
 
-        // Buscar appointments individuais do usuário
         const individualAppointments = await fetchAppointments(user.id, "student");
         allAppointments.push(...individualAppointments);
 
-        // Buscar appointments do time (se faz parte de um)
         const teams = await fetchTeams();
         const userTeam = teams.find(team =>
           team.members && team.members.some(member => member.userId.toString() === user.id.toString())
@@ -30,7 +30,6 @@ export const StudentMeetingsTab = () => {
           allAppointments.push(...teamAppointments.data);
         }
 
-        // Remover duplicatas por ID
         const uniqueAppointments = allAppointments.filter((appt, index, self) =>
           index === self.findIndex(a => a.id === appt.id)
         );
@@ -44,27 +43,26 @@ export const StudentMeetingsTab = () => {
   }, [user]);
 
   const handleCancelAppointment = async (appointment) => {
-    const confirmMessage = `Tem certeza que deseja cancelar a reunião marcada para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}? O professor será notificado.`;
-    if (!window.confirm(confirmMessage)) return;
+    setConfirmationModal({
+      open: true,
+      message: `Tem certeza que deseja cancelar a reunião marcada para ${dayjs(appointment.date).format("DD/MM/YYYY")} às ${appointment.time}? O professor será notificado.`,
+      onConfirm: async () => {
+        try {
+          await api.patch(`/appointments/${appointment.id}/cancel`);
 
-    try {
-      // Cancelar no backend
-      await api.patch(`/appointments/${appointment.id}/cancel`);
+          setAppointments(prev =>
+            prev.map(a => a.id === appointment.id ? { ...a, status: "CANCELLED" } : a)
+          );
 
-      // Atualizar estado local
-      setAppointments(prev =>
-        prev.map(a => a.id === appointment.id ? { ...a, status: "CANCELLED" } : a)
-      );
-
-      // Notificações são enviadas automaticamente pelo backend
-      // Removido chamada duplicada do frontend
-
-      toast.success("Reunião cancelada com sucesso!");
-
-    } catch (err) {
-      console.error("Erro ao cancelar reunião:", err);
-      toast.error("Erro ao cancelar reunião");
-    }
+          toast.success("Reunião cancelada com sucesso!");
+        } catch (err) {
+          console.error("Erro ao cancelar reunião:", err);
+          toast.error("Erro ao cancelar reunião");
+        } finally {
+          setConfirmationModal({ open: false, message: "", onConfirm: null });
+        }
+      },
+    });
   };
 
   return (
@@ -127,7 +125,7 @@ export const StudentMeetingsTab = () => {
 
                     if (isPast && status !== 'COMPLETED') {
                       return (
-                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
+                        <span className="badge-expirado text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
                           Expirado
                         </span>
                       );
@@ -161,6 +159,13 @@ export const StudentMeetingsTab = () => {
           <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
         </div>
       )}
+
+      <ConfirmationModal
+        open={confirmationModal.open}
+        message={confirmationModal.message}
+        onClose={() => setConfirmationModal({ open: false, message: "", onConfirm: null })}
+        onConfirm={confirmationModal.onConfirm}
+      />
     </div>
   );
 };

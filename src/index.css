@@ -333,7 +333,7 @@ body {
 .meeting-card span.text-blue-logo,
 .meeting-card span.text-red-700,
 .meeting-card span.text-blue-700,
-.meeting-card span.text-gray-700,
+.meeting-card span.text-gray-700:not(.badge-expirado),
 .meeting-card span.text-green-600 {
   color: inherit !important; /* manter a cor original para badges */
 }
@@ -693,4 +693,14 @@ button.bg-blue-logo,
 
 .swiper-button-prev {
   left: -25px !important;
+}
+
+/* Estilo específico para o badge "Expirado" */
+.badge-expirado {
+  color: #4b5563 !important; /* Texto cinza escuro */
+  background-color: #e5e7eb !important; /* Fundo cinza claro */
+  font-weight: 600 !important; /* Semibold */
+  font-size: 0.75rem !important; /* Texto pequeno */
+  padding: 0.25rem 0.5rem !important; /* Espaçamento interno */
+  border-radius: 9999px !important; /* Borda arredondada */
 }

@@ -2,7 +2,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Calendar } from "../components/Calendar";
 import { useAuth } from "../hooks/useAuth";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
@@ -36,28 +36,25 @@ export const DashboardLayout = () => {
     if (user) fetchNotifications();
   }, [user]);
 
-  const refreshNotificationCount = async () => {
+  const refreshNotificationCount = useCallback(async () => {
     const userId = user?.id || user?._id;
     if (userId) {
       const notifications = await getUserNotifications(userId);
       setNotificationCount(notifications?.length || 0);
     }
-  };
+  }, [user]);
 
-  // Função para converter pathname em nome da aba
   const getTabNameFromPath = (pathname) => {
     if (pathname.includes('/profile')) return 'perfil';
     if (pathname.includes('/project')) return 'projeto';
     if (pathname.includes('/meetings')) return 'reuniões';
     if (pathname.includes('/notifications')) return 'notificações';
-    if (pathname.includes('/admin')) return 'perfil'; // admin usa perfil como padrão
+    if (pathname.includes('/admin')) return 'perfil';
     return 'perfil';
   };
 
-  // Estado sempre sincronizado com a URL atual
   const [activeTab, setActiveTab] = useState(() => getTabNameFromPath(location.pathname));
 
-  // Atualizar tab quando URL mudar
   useEffect(() => {
     const newTab = getTabNameFromPath(location.pathname);
     setActiveTab(newTab);
@@ -75,7 +72,6 @@ export const DashboardLayout = () => {
           const teams = await fetchActiveTeams();
           setActiveTeams(teams);
 
-          // Extrai o ID do usuário de forma robusta
           const userId = user?.id || user?._id;
           if (userId && (typeof userId === 'string' || typeof userId === 'number')) {
             const userIdString = String(userId);
@@ -95,7 +91,6 @@ export const DashboardLayout = () => {
     loadTeams();
   }, [user]);
 
-  // Função que navega e automaticamente atualizará o activeTab via useEffect
   const handleTabClick = (tabName) => {
     switch (tabName) {
       case 'perfil':
@@ -175,6 +170,25 @@ export const DashboardLayout = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    let intervalId;
+
+    if (user) {
+      console.log("Starting polling for notification count in DashboardLayout...");
+      intervalId = setInterval(() => {
+        console.log("Polling: Calling refreshNotificationCount...");
+        refreshNotificationCount();
+      }, 5000);
+    }
+
+    return () => {
+      if (intervalId) {
+        console.log("Clearing polling interval in DashboardLayout...");
+        clearInterval(intervalId);
+      }
+    };
+  }, [user, refreshNotificationCount]);
 
   return (
     <div className="p-4 md:px-6 my-auto overflow-x-hidden text-dark dark:text-gray-100">

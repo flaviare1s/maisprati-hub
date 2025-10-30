@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { InputField } from "../components/InputField";
+import { SocialLoginButton } from "../components/SocialLoginButton";
 import { SubmitButton } from "../components/SubmitButton";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logo+prati.png";
+import logo from "../assets/images/logo.png";
 import bg from "../assets/images/about-img1.png";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -34,11 +35,11 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center md:mx-10 lg:mx-0 m-auto">
+    <div className="w-full flex flex-col md:flex-row items-center justify-center md:mx-10 lg:mx-0 m-auto">
       <div className="max-w-[600px]">
         <img className="hidden md:block w-full" src={bg} alt="" />
       </div>
-      <div className="p-[20px] flex flex-col items-center justify-center rounded-2xl md:shadow-2xl md:w-[400px] md:bg-light">
+      <div className="w-full p-4 flex flex-col items-center justify-center rounded-2xl md:shadow-2xl sm:w-[400px] md:bg-light">
         <div className="flex items-center justify-center w-[180px]">
           <img className="w-full" src={logo} alt="Logo" />
         </div>
@@ -74,19 +75,23 @@ export const Login = () => {
           <div className="mt-5">
             <SubmitButton label="Entrar" />
           </div>
-          <Link
-            to="/register"
-            className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
-          >
-            Cadastre-se
-          </Link>
-          <Link
-            to="/reset-password"
-            className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block"
-          >
-            Esqueci minha senha
-          </Link>
         </form>
+        <div className="w-full mt-4">
+          <SocialLoginButton provider="google" />
+          <SocialLoginButton provider="github" />
+        </div>
+        <Link
+          to="/register"
+          className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
+        >
+          Cadastre-se
+        </Link>
+        <Link
+          to="/reset-password"
+          className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block"
+        >
+          Esqueci minha senha
+        </Link>
       </div>
     </div>
   );
