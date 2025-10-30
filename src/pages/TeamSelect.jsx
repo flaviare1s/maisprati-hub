@@ -2,7 +2,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import logo from '../assets/images/logo+prati.png';
+import logo from '../assets/images/logo.png';
 import { InputField } from '../components/InputField';
 import { SubmitButton } from '../components/SubmitButton';
 import { fetchTeams, validateTeamCode, addMemberToTeam } from '../api.js/teams';

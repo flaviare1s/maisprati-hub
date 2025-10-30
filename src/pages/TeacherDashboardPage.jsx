@@ -48,6 +48,8 @@ export const TeacherDashboardPage = () => {
   }, [loadUserData]);
 
   useEffect(() => {
+    let intervalId;
+
     const fetchNotifications = async () => {
       try {
         const userId = user?.id || user?._id;
@@ -60,7 +62,22 @@ export const TeacherDashboardPage = () => {
         console.error("Erro ao carregar notificações:", error);
       }
     };
-    if (user) fetchNotifications();
+
+    if (user) {
+      fetchNotifications();
+      console.log("Starting polling for notifications in TeacherDashboardPage...");
+      intervalId = setInterval(() => {
+        console.log("Polling: Fetching notifications...");
+        fetchNotifications();
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalId) {
+        console.log("Clearing polling interval in TeacherDashboardPage...");
+        clearInterval(intervalId);
+      }
+    };
   }, [user]);
 
   if (loading) return <CustomLoader />;

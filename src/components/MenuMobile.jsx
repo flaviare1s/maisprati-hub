@@ -137,7 +137,7 @@ export const MenuMobile = ({ user, onLogout }) => {
         {/* Footer */}
         <div className="px-6 py-4 border-t border-gray-300 dark:border-gray-700">
           <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
-            +PratiHub © 2025
+            +pratiHub © 2025
           </p>
         </div>
       </div>

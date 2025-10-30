@@ -298,7 +298,7 @@ export const CommonRoom = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-logo mb-2 flex items-center justify-center gap-3">
             <FaCrown className="text-yellow-500 animate-pulse" />
-            Taverna dos Hérois
+            Taverna dos Heróis
             <FaCrown className="text-yellow-500 animate-pulse" />
           </h1>
           <p className="text-gray-muted">
@@ -355,7 +355,7 @@ export const CommonRoom = () => {
                     }`}
                 >
                   <HiOutlineUserGroup className="inline mr-2" />
-                  Hérois sem Guilda ({heroes.length})
+                  Heróis sem Guilda ({heroes.length})
                 </button>
               </div>
 
