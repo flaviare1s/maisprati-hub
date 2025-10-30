@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">19.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/56</span>
+                <span class='fraction'>11/56</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">19.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/56</span>
+                <span class='fraction'>11/56</span>
             </div>
         
             
@@ -154,8 +154,8 @@
 <a name='L89'></a><a href='#L89'>89</a>
 <a name='L90'></a><a href='#L90'>90</a>
 <a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L92'></a><a href='#L92'>92</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,7 +168,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -237,16 +237,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { MdChevronLeft, MdChevronRight } from 'react-icons/md';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" >import PropTypes from 'prop-types';</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import PropTypes from 'prop-types';
 &nbsp;
 /**
  * Componente de paginação reutilizável
@@ -259,7 +259,7 @@
  * - showCounts: mostra o texto "Mostrando X-Y de Z" (default true)
  * - className: classes adicionais para estilização do container
  */
-<span class="cstat-no" title="statement not covered" >export const Pagination = ({</span>
+export const Pagination = <span class="fstat-no" title="function not covered" >({</span>
 <span class="cstat-no" title="statement not covered" >  totalItems,</span>
 <span class="cstat-no" title="statement not covered" >  itemsPerPage = 10,</span>
 <span class="cstat-no" title="statement not covered" >  currentPage,</span>
@@ -328,14 +328,14 @@
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 // Validação de tipos das props
-<span class="cstat-no" title="statement not covered" >Pagination.propTypes = {</span>
-<span class="cstat-no" title="statement not covered" >  totalItems: PropTypes.number.isRequired, // obrigatório</span>
-<span class="cstat-no" title="statement not covered" >  itemsPerPage: PropTypes.number, // opcional, padrão 5</span>
-<span class="cstat-no" title="statement not covered" >  currentPage: PropTypes.number.isRequired, // obrigatório, controlado pelo pai</span>
-<span class="cstat-no" title="statement not covered" >  onPageChange: PropTypes.func.isRequired, // obrigatório, função para alterar a página</span>
-<span class="cstat-no" title="statement not covered" >  showCounts: PropTypes.bool, // opcional, exibir contador</span>
-<span class="cstat-no" title="statement not covered" >  className: PropTypes.string, // opcional, classes adicionais</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+Pagination.propTypes = {
+  totalItems: PropTypes.number.isRequired, // obrigatório
+  itemsPerPage: PropTypes.number, // opcional, padrão 5
+  currentPage: PropTypes.number.isRequired, // obrigatório, controlado pelo pai
+  onPageChange: PropTypes.func.isRequired, // obrigatório, função para alterar a página
+  showCounts: PropTypes.bool, // opcional, exibir contador
+  className: PropTypes.string, // opcional, classes adicionais
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -343,7 +343,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-30T13:27:33.518Z
+                at 2025-10-30T13:44:46.042Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

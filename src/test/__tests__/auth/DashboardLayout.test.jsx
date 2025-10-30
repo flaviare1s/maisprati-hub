@@ -5,7 +5,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { describe, expect, it } from "vitest";
 
 describe("DashboardLayout", () => {
-  it("renders the dashboard layout with tabs", () => {
+  it("deve renderizar o layout do dashboard com as abas corretas", () => {
     const mockUser = { id: "123", role: "student" };
 
     render(
