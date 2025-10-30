@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/FaqItem.jsx</title>
+    <title>Code coverage report for src/components/ConfirmationModal.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> FaqItem.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> ConfirmationModal.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -94,6 +94,22 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -105,55 +121,39 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useState } from 'react';<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >export const FaqItem = ({ question, answer, icon }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const [isOpen, setIsOpen] = useState(false);</span>
-<span class="cstat-no" title="statement not covered" >  const toggleAccordion = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setIsOpen(!isOpen);</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >export const ConfirmationModal = ({ open, message, onClose, onConfirm }) =&gt; {<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" >  if (!open) return null;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;div className="mb-4"&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;button</span>
-<span class="cstat-no" title="statement not covered" >        className="flex justify-between items-center w-full p-4 text-left font-bold bg-orange-logo rounded-lg shadow-md"</span>
-<span class="cstat-no" title="statement not covered" >        onClick={toggleAccordion}</span>
-      &gt;
-<span class="cstat-no" title="statement not covered" >        &lt;div className="flex items-center gap-4"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          {icon}</span>
-<span class="cstat-no" title="statement not covered" >          &lt;span className="text-sm md:text-base"&gt;{question}&lt;/span&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;div className="fixed px-2 inset-0 z-50 flex items-center justify-center bg-[#000000ac]"&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-96"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4"&gt;</span>
+          Confirmação
+<span class="cstat-no" title="statement not covered" >        &lt;/h2&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;p className="text-sm text-gray-600 dark:text-gray-300 mb-6"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          {message}</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/p&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className="flex justify-end gap-4"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;button</span>
+<span class="cstat-no" title="statement not covered" >            onClick={onClose}</span>
+<span class="cstat-no" title="statement not covered" >            className="px-8 py-2 text-sm font-medium text-blue-logo bg-white border rounded-lg transition cursor-pointer hover:text-blue-800"</span>
+<span class="cstat-no" title="statement not covered" >          &gt;</span>
+            NÃO
+<span class="cstat-no" title="statement not covered" >          &lt;/button&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;button</span>
+<span class="cstat-no" title="statement not covered" >            onClick={onConfirm}</span>
+<span class="cstat-no" title="statement not covered" >            className="px-8 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition cursor-pointer"</span>
+<span class="cstat-no" title="statement not covered" >          &gt;</span>
+            SIM
+<span class="cstat-no" title="statement not covered" >          &lt;/button&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}&gt;</span>
-          &amp;#9660;
-<span class="cstat-no" title="statement not covered" >        &lt;/span&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;/button&gt;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      {isOpen &amp;&amp; (</span>
-<span class="cstat-no" title="statement not covered" >        &lt;div className="py-2 text-gray-muted"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;p&gt;{answer}&lt;/p&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
-      )}
+<span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
 <span class="cstat-no" title="statement not covered" >    &lt;/div&gt;</span>
   );
-<span class="cstat-no" title="statement not covered" >};</span></pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >};</span>
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/DashboardTab.jsx</title>
+    <title>Code coverage report for src/components/SocialLoginButton.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> DashboardTab.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> SocialLoginButton.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>15/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>15/17</span>
             </div>
         
             
@@ -79,15 +79,27 @@
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
-<a name='L17'></a><a href='#L17'>17</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -95,19 +107,25 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const DashboardTab = ({ icon, title, activeTab, setActiveTab }) =&gt; {
-  const tabKey = title.toLowerCase();
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+&nbsp;
+export const SocialLoginButton = ({ provider }) =&gt; {
+  const handleLogin = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    window.location.href = `${import.meta.env.VITE_API_BASE_URL.replace("/api", "")}/oauth2/authorization/${provider}`;</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
+&nbsp;
+  const isGoogle = provider === "google";
+  const Icon = isGoogle ? FcGoogle : FaGithub;
+  const label = isGoogle ? "Entrar com Google" : "Entrar com GitHub";
 &nbsp;
   return (
     &lt;button
-      onClick={() =&gt; setActiveTab(tabKey)}
-      className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm cursor-pointer ${activeTab === tabKey
-          ? "border-blue-logo text-blue-logo"
-          : "border-transparent text-gray-muted"
-        }`}
+      onClick={handleLogin}
+      className={`flex items-center justify-center gap-2 w-full border border-gray-300 rounded-md py-2 px-4 mt-3 transition hover:bg-gray-100 cursor-pointer`}
     &gt;
-      {icon}
-      {title}
+      &lt;Icon size={22} /&gt;
+      &lt;span className="font-medium"&gt;{label}&lt;/span&gt;
     &lt;/button&gt;
   );
 };

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.56% </span>
+                <span class="strong">43.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/64</span>
+                <span class='fraction'>28/64</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>2/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.56% </span>
+                <span class="strong">43.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/64</span>
+                <span class='fraction'>28/64</span>
             </div>
         
             
@@ -174,22 +174,22 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import api from "../services/api.js";
 &nbsp;
@@ -238,22 +238,22 @@ export const getCurrentUserData = async () =&gt; {
   try {
     const response = await api.get("/auth/me");
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return response.data;</span></span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    // 401/403 - não há usuário logado (situação normal)</span>
-<span class="cstat-no" title="statement not covered" >    if (error.response?.status === 401 || error.response?.status === 403) {</span>
+  } catch (error) {
+    // 401/403 - não há usuário logado (situação normal)
+    if (error.response<span class="branch-0 cbranch-no" title="branch not covered" >?.status </span>=== 401 || error.response<span class="branch-0 cbranch-no" title="branch not covered" >?.status </span>=== 403) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      return null;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // 500/502/503 - problemas temporários do servidor</span>
-<span class="cstat-no" title="statement not covered" >    if (error.response?.status &gt;= 500) {</span>
+&nbsp;
+    // 500/502/503 - problemas temporários do servidor
+    if (error.response<span class="branch-0 cbranch-no" title="branch not covered" >?.status </span>&gt;= 500) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      console.warn("Servidor temporariamente indisponível, mantendo sessão");</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error("SERVER_ERROR"); // Erro específico para problemas de servidor</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Outros erros (rede, timeout, etc.)</span>
-<span class="cstat-no" title="statement not covered" >    console.error("Erro ao buscar dados do usuário atual:", error);</span>
-<span class="cstat-no" title="statement not covered" >    throw error;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+&nbsp;
+    // Outros erros (rede, timeout, etc.)
+    console.error("Erro ao buscar dados do usuário atual:", error);
+    throw error;
+  }
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -262,7 +262,7 @@ export const getCurrentUserData = async () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-14T18:12:50.029Z
+                at 2025-10-30T13:27:33.518Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
