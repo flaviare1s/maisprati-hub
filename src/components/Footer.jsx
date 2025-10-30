@@ -16,16 +16,16 @@ export const Footer = () => {
           </p>
         </div>
         <div className="flex justify-center items-center gap-3">
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+          <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=true&heroEntityKey=urn%3Ali%3Aorganization%3A66592074&keywords=%2Bprati&origin=RICH_QUERY_SUGGESTION&position=0&searchId=d54022d3-ac8a-40cd-b1d9-be6089d50c46&sid=VaF&spellCorrectionEnabled=false" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
             <FaLinkedin size={20} />
           </a>
           <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
             <FaInstagram size={20} />
           </a>
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+          <a href="https://www.facebook.com/maispratioficial/" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
             <FaFacebook size={20} />
           </a>
-          <a href="#" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+          <a href="https://www.youtube.com/@maispraTI" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
             <FaYoutube size={20} />
           </a>
         </div>
