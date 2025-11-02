@@ -114,7 +114,6 @@ export const AuthProvider = ({ children }) => {
 
       logoutDebounceTimer = setTimeout(() => {
         if (userRef.current) {
-          console.log("Sessão expirada - fazendo logout automático");
           logout({ skipServer: true });
         }
       }, 200);
@@ -140,7 +139,6 @@ export const AuthProvider = ({ children }) => {
         await getCurrentUserData();
       } catch (error) {
         if (error?.response?.status === 401) {
-          console.log("Sessão expirada detectada na verificação periódica");
           logout({ skipServer: true });
         }
       }
@@ -171,7 +169,6 @@ export const AuthProvider = ({ children }) => {
       if (timeSinceLastActivity < 30 * 60 * 1000) {
         getCurrentUserData().catch((error) => {
           if (error?.response?.status === 401) {
-            console.log("Sessão expirada detectada durante verificação de atividade");
             logout({ skipServer: true });
           }
         });

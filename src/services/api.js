@@ -62,7 +62,6 @@ api.interceptors.response.use(
         isLogoutDispatched = true;
 
         logoutTimeout = setTimeout(() => {
-          console.log("🚪 Disparando logout por 401");
           window.dispatchEvent(new CustomEvent("unauthorized"));
         }, 100);
       }

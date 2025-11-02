@@ -182,14 +182,12 @@ export const DashboardLayout = () => {
 
     if (user) {
       intervalId = setInterval(() => {
-        console.log("Polling: Calling refreshNotificationCount...");
         refreshNotificationCount();
       }, 1000);
     }
 
     return () => {
       if (intervalId) {
-        console.log("Clearing polling interval in DashboardLayout...");
         clearInterval(intervalId);
       }
     };

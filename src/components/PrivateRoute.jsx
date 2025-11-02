@@ -10,7 +10,7 @@ export const PrivateRoute = ({ children, requiredType = null, requireGroup = fal
   // Log para debug (sempre executado)
   useEffect(() => {
     if (!user && !loading) {
-      console.log(`🔒 PrivateRoute: Usuário não autenticado em ${location.pathname}`);
+      console.log(`PrivateRoute: Usuário não autenticado em ${location.pathname}`);
     }
   }, [user, loading, location.pathname]);
 
