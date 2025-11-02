@@ -23,6 +23,7 @@ export const StudentMeetingsTab = () => {
     return appointments.filter(appt => {
       const appointmentDateTime = dayjs(`${appt.date} ${appt.time}`);
       const status = appt.status || 'SCHEDULED';
+      const isPast = appointmentDateTime.isBefore(now);
 
       switch (filter) {
         case 'proximos':
@@ -30,9 +31,8 @@ export const StudentMeetingsTab = () => {
         case 'cancelados':
           return status === 'CANCELLED' || status === 'CANCELED';
         case 'completados':
-          return status === 'COMPLETED';
-        case 'passados':
-          return appointmentDateTime.isBefore(now) && status !== 'COMPLETED' && status !== 'CANCELLED' && status !== 'CANCELED';
+          // Inclui tanto reuniões marcadas como COMPLETED quanto reuniões passadas (que são automaticamente concluídas)
+          return status === 'COMPLETED' || (isPast && status !== 'CANCELLED' && status !== 'CANCELED');
         case 'todos':
         default:
           return true;
@@ -44,7 +44,8 @@ export const StudentMeetingsTab = () => {
   const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
   const currentAppointments = filteredAppointments
     .sort((a, b) => {
-      if (filter === 'passados') {
+      // Para concluídos, ordena do mais recente para o mais antigo
+      if (filter === 'completados') {
         return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time);
       }
       return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time);
@@ -157,14 +158,13 @@ export const StudentMeetingsTab = () => {
             <option value="todos">Todos</option>
             <option value="cancelados">Cancelados</option>
             <option value="completados">Concluídos</option>
-            <option value="passados">Passados</option>
           </select>
         </div>
       </div>
 
       {currentAppointments.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          <p>Nenhuma reunião encontrada para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : filter === 'completados' ? 'concluídos' : 'passados'}"</p>
+          <p>Nenhuma reunião encontrada para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : 'concluídos'}"</p>
           {filter === 'proximos' && (
             <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
           )}
@@ -200,6 +200,15 @@ export const StudentMeetingsTab = () => {
                 <div className="flex items-center gap-2">
                   {/* Badge dinâmica baseada no status */}
                   {(() => {
+                    // Se a reunião passou e não foi cancelada, considera como concluída
+                    if (isPast && status !== 'CANCELLED' && status !== 'CANCELED') {
+                      return (
+                        <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                          Concluído
+                        </span>
+                      );
+                    }
+
                     if (status === 'CANCELLED' || status === 'CANCELED') {
                       return (
                         <span className="text-red-700 dark:text-red-300 font-semibold text-xs px-2 py-1 bg-red-50 dark:bg-red-900/30 rounded-full">
@@ -212,14 +221,6 @@ export const StudentMeetingsTab = () => {
                       return (
                         <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
                           Concluído
-                        </span>
-                      );
-                    }
-
-                    if (isPast && status !== 'COMPLETED') {
-                      return (
-                        <span className="badge-expirado text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full">
-                          Expirado
                         </span>
                       );
                     }

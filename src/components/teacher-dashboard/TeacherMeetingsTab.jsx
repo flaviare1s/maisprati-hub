@@ -28,9 +28,8 @@ export const TeacherMeetingsTab = ({ adminId }) => {
         case 'cancelados':
           return status === 'CANCELLED' || status === 'CANCELED';
         case 'completados':
-          return status === 'COMPLETED';
-        case 'passados':
-          return isPast && status !== 'COMPLETED';
+          // Inclui tanto reuniões marcadas como COMPLETED quanto reuniões passadas (que são automaticamente concluídas)
+          return status === 'COMPLETED' || (isPast && status !== 'CANCELLED' && status !== 'CANCELED');
         case 'todos':
           return true;
         default:
@@ -41,7 +40,8 @@ export const TeacherMeetingsTab = ({ adminId }) => {
     const uniqueAppointments = Object.values(
       filtered
         .sort((a, b) => {
-          if (filter === 'passados') {
+          // Para concluídos, ordena do mais recente para o mais antigo
+          if (filter === 'completados') {
             return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time);
           }
           return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time);
@@ -165,7 +165,6 @@ export const TeacherMeetingsTab = ({ adminId }) => {
               <option value="todos">Todos</option>
               <option value="cancelados">Cancelados</option>
               <option value="completados">Concluídos</option>
-              <option value="passados">Passados</option>
             </select>
           </div>
         </div>
@@ -204,18 +203,11 @@ export const TeacherMeetingsTab = ({ adminId }) => {
                       );
                     }
 
-                    if (status === 'COMPLETED') {
+                    // Se é passado ou completado, considerar como concluído
+                    if (status === 'COMPLETED' || isPast) {
                       return (
                         <span className="text-blue-700 dark:text-blue-300 font-semibold text-xs px-2 py-1 bg-blue-50 dark:bg-blue-900/30 rounded-full">
                           Concluído
-                        </span>
-                      );
-                    }
-
-                    if (isPast && status !== 'COMPLETED') {
-                      return (
-                        <span className="text-gray-700 dark:text-gray-300 font-semibold text-xs px-2 py-1 bg-gray-50 dark:bg-gray-700 rounded-full badge-expirado">
-                          Expirado
                         </span>
                       );
                     }
@@ -254,7 +246,7 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           ) : (
             <div className="text-center py-6 text-gray-muted">
               <Calendar className="mx-auto h-12 w-12 text-gray-300 mb-2" />
-              <p>Nenhum agendamento encontrado para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : filter === 'completados' ? 'concluídos' : 'passados'}"</p>
+              <p>Nenhum agendamento encontrado para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : 'concluídos'}"</p>
             </div>
           )}
         </div>
