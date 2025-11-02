@@ -141,11 +141,13 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         if (error?.response?.status === 401) {
           console.log("Sessão expirada detectada na verificação periódica");
+          logout({ skipServer: true });
         }
       }
     };
 
-    const sessionCheckInterval = setInterval(checkSession, 10 * 60 * 1000);
+    // Verifica a sessão a cada 30 segundos
+    const sessionCheckInterval = setInterval(checkSession, 30 * 1000);
 
     let lastActivity = Date.now();
 
@@ -153,22 +155,28 @@ export const AuthProvider = ({ children }) => {
       lastActivity = Date.now();
     };
 
-    const events = ['mousedown', 'keypress', 'click'];
+    const events = ['mousedown', 'keypress', 'click', 'scroll', 'touchstart'];
     events.forEach(event => {
       document.addEventListener(event, updateActivity, { passive: true });
     });
 
+    // Verifica atividade a cada 2 minutos
     const activityCheckInterval = setInterval(() => {
       if (!userRef.current) return;
 
       const now = Date.now();
       const timeSinceLastActivity = now - lastActivity;
 
+      // Se houve atividade nos últimos 30 minutos, verifica a sessão
       if (timeSinceLastActivity < 30 * 60 * 1000) {
-        getCurrentUserData().catch(() => {
+        getCurrentUserData().catch((error) => {
+          if (error?.response?.status === 401) {
+            console.log("Sessão expirada detectada durante verificação de atividade");
+            logout({ skipServer: true });
+          }
         });
       }
-    }, 5 * 60 * 1000);
+    }, 2 * 60 * 1000);
 
     return () => {
       clearInterval(sessionCheckInterval);
@@ -177,7 +185,7 @@ export const AuthProvider = ({ children }) => {
         document.removeEventListener(event, updateActivity);
       });
     };
-  }, []);
+  }, [user, logout]);
 
   return (
     <AuthContext.Provider

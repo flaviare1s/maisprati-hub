@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Calendar } from "../components/Calendar";
 import { useAuth } from "../hooks/useAuth";
@@ -14,12 +13,18 @@ export const DashboardLayout = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [teams, setTeams] = useState([]);
-  const [activeTeams, setActiveTeams] = useState([]);
-  const [userInTeam, setUserInTeam] = useState(false);
-  const [userInActiveTeam, setUserInActiveTeam] = useState(false);
+  const [setActiveTeams] = useState([]);
+  const [userInTeam] = useState(false);
+  const [setUserInActiveTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
+
+  // Verificação adicional de segurança - redireciona se não há usuário
+  useEffect(() => {
+    if (!user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -30,6 +35,7 @@ export const DashboardLayout = () => {
           setNotificationCount(notifications?.length || 0);
         }
       } catch (error) {
+        console.error("Erro ao buscar notificações:", error);
         setNotificationCount(0);
       }
     };
@@ -175,7 +181,6 @@ export const DashboardLayout = () => {
     let intervalId;
 
     if (user) {
-      console.log("Starting polling for notification count in DashboardLayout...");
       intervalId = setInterval(() => {
         console.log("Polling: Calling refreshNotificationCount...");
         refreshNotificationCount();
