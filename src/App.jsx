@@ -61,7 +61,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<StudentRegister />} />
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>
+            }
+          >
             <Route
               index
               element={
@@ -92,7 +99,14 @@ function App() {
               element={<Navigate to="/dashboard/profile" replace />}
             />
           </Route>
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route
+            path="/edit-profile"
+            element={
+              <PrivateRoute>
+                <EditProfile />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/edit-profile/:id"
             element={
@@ -109,14 +123,38 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/warname/" element={<CodenameSelect />} />
-          <Route path="/team-select/" element={<TeamSelect />} />
-          <Route path="/teams/:teamId/board" element={<ProjectBoard />} />
-          {user ? (
-            <Route path="/common-room/" element={<CommonRoom />} />
-          ) : (
-            <Route path="/common-room/" element={<Login />} />
-          )}
+          <Route
+            path="/warname/"
+            element={
+              <PrivateRoute>
+                <CodenameSelect />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/team-select/"
+            element={
+              <PrivateRoute>
+                <TeamSelect />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teams/:teamId/board"
+            element={
+              <PrivateRoute>
+                <ProjectBoard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/common-room/"
+            element={
+              <PrivateRoute>
+                <CommonRoom />
+              </PrivateRoute>
+            }
+          />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/faq" element={<FAQ />} />
