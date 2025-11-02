@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/330</span>
+                <span class='fraction'>13/330</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.93% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/330</span>
+                <span class='fraction'>13/330</span>
             </div>
         
             
@@ -465,15 +465,15 @@
 <a name='L400'></a><a href='#L400'>400</a>
 <a name='L401'></a><a href='#L401'>401</a>
 <a name='L402'></a><a href='#L402'>402</a>
-<a name='L403'></a><a href='#L403'>403</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L403'></a><a href='#L403'>403</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -483,11 +483,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -867,15 +867,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useEffect, useState } from "react";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
-<span class="cstat-no" title="statement not covered" >import { useAuth } from "../hooks/useAuth";</span>
-<span class="cstat-no" title="statement not covered" >import { useNavigate } from "react-router-dom";</span>
-<span class="cstat-no" title="statement not covered" >import { HiOutlineUserGroup } from "react-icons/hi";</span>
-<span class="cstat-no" title="statement not covered" >import { FaCrown, FaComments } from "react-icons/fa";</span>
-<span class="cstat-no" title="statement not covered" >import toast from "react-hot-toast";</span>
-<span class="cstat-no" title="statement not covered" >import { fetchUsers } from "../api.js/users";</span>
-<span class="cstat-no" title="statement not covered" >import { NoTeamList } from "../components/NoTeamList";</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { FaCrown, FaComments } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { fetchUsers } from "../api.js/users";
+import { NoTeamList } from "../components/NoTeamList";
+import {
   fetchComments,
   fetchPosts,
   createPost,
@@ -885,11 +885,11 @@
   addComment,
   updateComment
 } from "../api.js/forum";
-<span class="cstat-no" title="statement not covered" >import { Forum } from "../components/Forum";</span>
-<span class="cstat-no" title="statement not covered" >import { useTeam } from "../contexts/TeamContext";</span>
-<span class="cstat-no" title="statement not covered" >import { createNotification } from "../api.js/notifications";</span>
+import { Forum } from "../components/Forum";
+import { useTeam } from "../contexts/TeamContext";
+import { createNotification } from "../api.js/notifications";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export const CommonRoom = () =&gt; {</span>
+export const CommonRoom = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const { userInTeam } = useTeam();</span>
 <span class="cstat-no" title="statement not covered" >  const { user } = useAuth();</span>
 <span class="cstat-no" title="statement not covered" >  const navigate = useNavigate();</span>
@@ -1276,7 +1276,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-02T10:07:38.211Z
+                at 2025-11-02T10:24:51.623Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
