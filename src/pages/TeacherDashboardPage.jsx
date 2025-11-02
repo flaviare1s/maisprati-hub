@@ -66,7 +66,6 @@ export const TeacherDashboardPage = () => {
     if (user) {
       fetchNotifications();
       intervalId = setInterval(() => {
-        console.log("Polling: Fetching notifications...");
         fetchNotifications();
       }, 1000);
     }
