@@ -3,7 +3,7 @@ import logo from '../assets/images/logo-footer.png';
 
 export const Footer = () => {
   return (
-    <footer className="bg-blue-logo text-white py-8 px-4 md:py-14 md:pb-24 flex flex-col justify-center items-center mt-3">
+    <footer className="bg-blue-logo text-white py-8 px-4 md:py-14 md:pb-24 flex flex-col justify-center items-center mt-3" data-testid="footer">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
         <div className="flex justify-center w-[150px] m-auto">

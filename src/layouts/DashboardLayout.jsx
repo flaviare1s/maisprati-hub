@@ -194,7 +194,7 @@ export const DashboardLayout = () => {
   }, [user, refreshNotificationCount]);
 
   return (
-    <div className="p-4 md:px-6 my-auto overflow-x-hidden text-dark dark:text-gray-100">
+    <div className="p-4 md:px-6 my-auto overflow-x-hidden text-dark dark:text-gray-100" data-testid="dashboard-layout">
       <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[240px] order-2 md:order-1">
           <Calendar />

@@ -78,7 +78,7 @@ export const StudentDashboardPage = () => {
   }
 
   return (
-    <div className="w-full p-0 text-dark">
+    <div className="w-full p-0 text-dark" data-testid="student-dashboard-page">
       <div className="flex justify-start items-center gap-2 mb-5">
         {user.avatar && (
           <img className="w-10 h-10 rounded-full object-cover" src={user.avatar} alt="Avatar" />
