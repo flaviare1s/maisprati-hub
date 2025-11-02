@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import { fetchAppointments } from "../../api.js/schedule";
 import { fetchTeams } from "../../api.js/teams";
@@ -55,36 +55,52 @@ export const StudentMeetingsTab = () => {
     setCurrentPage(1);
   }, [filter]);
 
+  // Função para carregar appointments usando useCallback para evitar dependência circular
+  const loadAppointments = useCallback(async () => {
+    try {
+      if (!user?.id) return;
 
-  useEffect(() => {
-    const loadAppointments = async () => {
-      try {
-        let allAppointments = [];
+      let allAppointments = [];
 
-        const individualAppointments = await fetchAppointments(user.id, "student");
-        allAppointments.push(...individualAppointments);
+      const individualAppointments = await fetchAppointments(user.id, "student");
+      allAppointments.push(...individualAppointments);
 
-        const teams = await fetchTeams();
-        const userTeam = teams.find(team =>
-          team.members && team.members.some(member => member.userId.toString() === user.id.toString())
-        );
+      const teams = await fetchTeams();
+      const userTeam = teams.find(team =>
+        team.members && team.members.some(member => member.userId.toString() === user.id.toString())
+      );
 
-        if (userTeam) {
-          const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
-          allAppointments.push(...teamAppointments.data);
-        }
-
-        const uniqueAppointments = allAppointments.filter((appt, index, self) =>
-          index === self.findIndex(a => a.id === appt.id)
-        );
-
-        setAppointments(uniqueAppointments);
-      } catch (error) {
-        console.error("Erro ao carregar agendamentos", error);
+      if (userTeam) {
+        const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
+        allAppointments.push(...teamAppointments.data);
       }
-    };
-    loadAppointments();
+
+      const uniqueAppointments = allAppointments.filter((appt, index, self) =>
+        index === self.findIndex(a => a.id === appt.id)
+      );
+
+      setAppointments(uniqueAppointments);
+    } catch (error) {
+      console.error("Erro ao carregar agendamentos", error);
+    }
   }, [user]);
+
+  // Effect para carregar appointments inicialmente
+  useEffect(() => {
+    loadAppointments();
+  }, [loadAppointments]);
+
+  // Effect para polling automático a cada meio segundo
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const interval = setInterval(() => {
+      loadAppointments();
+    }, 500);
+
+    // Cleanup do interval quando o componente for desmontado
+    return () => clearInterval(interval);
+  }, [user, loadAppointments]);
 
   const handleCancelAppointment = async (appointment) => {
     setConfirmationModal({

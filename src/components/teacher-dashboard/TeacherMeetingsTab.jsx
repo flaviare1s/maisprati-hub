@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
 import { fetchAppointments } from "../../api.js/schedule";
@@ -67,23 +67,37 @@ export const TeacherMeetingsTab = ({ adminId }) => {
     setCurrentPage(1);
   }, [filter]);
 
-  useEffect(() => {
-    const loadAppointments = async () => {
-      try {
-        if (!adminId) {
-          console.error("AdminId não fornecido!");
-          return;
-        }
-
-        const data = await fetchAppointments(adminId, "admin");
-        setAppointments(data);
-      } catch (error) {
-        console.error("Erro ao carregar agendamentos", error);
+  // Função para carregar appointments usando useCallback
+  const loadAppointments = useCallback(async () => {
+    try {
+      if (!adminId) {
+        console.error("AdminId não fornecido!");
+        return;
       }
-    };
 
-    loadAppointments();
+      const data = await fetchAppointments(adminId, "admin");
+      setAppointments(data);
+    } catch (error) {
+      console.error("Erro ao carregar agendamentos", error);
+    }
   }, [adminId]);
+
+  // Effect para carregar appointments inicialmente
+  useEffect(() => {
+    loadAppointments();
+  }, [loadAppointments]);
+
+  // Effect para polling automático a cada meio segundo
+  useEffect(() => {
+    if (!adminId) return;
+
+    const interval = setInterval(() => {
+      loadAppointments();
+    }, 500);
+
+    // Cleanup do interval quando o componente for desmontado
+    return () => clearInterval(interval);
+  }, [adminId, loadAppointments]);
 
   const handleCancelAppointment = async (appointment) => {
     const studentName = appointment.studentName || 'estudante';
