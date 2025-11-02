@@ -32,7 +32,7 @@ export const StudentRegister = () => {
     navigate("/warname", { state: { ...data } });
   };
   return (
-    <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto mt-5'>
+    <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto my-8'>
       <div className='w-[180px] mb-3'>
         <img src={logo} alt="logo da +prati" className='w-full' />
       </div>
@@ -144,7 +144,7 @@ export const StudentRegister = () => {
           value="STUDENT"
           register={register}
         />
-        <SubmitButton label='Registrar' />
+        <SubmitButton label='Registrar' aria-label="Registrar" />
         <Link to="/login" className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block">Já tem conta? Acesse aqui</Link>
       </form>
     </div>

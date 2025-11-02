@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import { fetchAppointments } from "../../api.js/schedule";
 import { fetchTeams } from "../../api.js/teams";
@@ -6,41 +6,101 @@ import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "../ConfirmationModal";
+import { Pagination } from "../Pagination";
 
 export const StudentMeetingsTab = () => {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [confirmationModal, setConfirmationModal] = useState({ open: false, message: "", onConfirm: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [filter, setFilter] = useState('proximos');
+
+  // Função para filtrar appointments baseado no filtro selecionado
+  const getFilteredAppointments = () => {
+    const now = dayjs();
+
+    return appointments.filter(appt => {
+      const appointmentDateTime = dayjs(`${appt.date} ${appt.time}`);
+      const status = appt.status || 'SCHEDULED';
+
+      switch (filter) {
+        case 'proximos':
+          return appointmentDateTime.isAfter(now) && status !== 'CANCELLED' && status !== 'CANCELED';
+        case 'cancelados':
+          return status === 'CANCELLED' || status === 'CANCELED';
+        case 'completados':
+          return status === 'COMPLETED';
+        case 'passados':
+          return appointmentDateTime.isBefore(now) && status !== 'COMPLETED' && status !== 'CANCELLED' && status !== 'CANCELED';
+        case 'todos':
+        default:
+          return true;
+      }
+    });
+  };
+
+  const filteredAppointments = getFilteredAppointments();
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
+  const currentAppointments = filteredAppointments
+    .sort((a, b) => {
+      if (filter === 'passados') {
+        return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time);
+      }
+      return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time);
+    })
+    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   useEffect(() => {
-    const loadAppointments = async () => {
-      try {
-        let allAppointments = [];
+    setCurrentPage(1);
+  }, [filter]);
 
-        const individualAppointments = await fetchAppointments(user.id, "student");
-        allAppointments.push(...individualAppointments);
+  // Função para carregar appointments usando useCallback para evitar dependência circular
+  const loadAppointments = useCallback(async () => {
+    try {
+      if (!user?.id) return;
 
-        const teams = await fetchTeams();
-        const userTeam = teams.find(team =>
-          team.members && team.members.some(member => member.userId.toString() === user.id.toString())
-        );
+      let allAppointments = [];
 
-        if (userTeam) {
-          const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
-          allAppointments.push(...teamAppointments.data);
-        }
+      const individualAppointments = await fetchAppointments(user.id, "student");
+      allAppointments.push(...individualAppointments);
 
-        const uniqueAppointments = allAppointments.filter((appt, index, self) =>
-          index === self.findIndex(a => a.id === appt.id)
-        );
+      const teams = await fetchTeams();
+      const userTeam = teams.find(team =>
+        team.members && team.members.some(member => member.userId.toString() === user.id.toString())
+      );
 
-        setAppointments(uniqueAppointments);
-      } catch (error) {
-        console.error("Erro ao carregar agendamentos", error);
+      if (userTeam) {
+        const teamAppointments = await api.get(`/appointments?teamId=${userTeam.id}`);
+        allAppointments.push(...teamAppointments.data);
       }
-    };
-    loadAppointments();
+
+      const uniqueAppointments = allAppointments.filter((appt, index, self) =>
+        index === self.findIndex(a => a.id === appt.id)
+      );
+
+      setAppointments(uniqueAppointments);
+    } catch (error) {
+      console.error("Erro ao carregar agendamentos", error);
+    }
   }, [user]);
+
+  // Effect para carregar appointments inicialmente
+  useEffect(() => {
+    loadAppointments();
+  }, [loadAppointments]);
+
+  // Effect para polling automático a cada meio segundo
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const interval = setInterval(() => {
+      loadAppointments();
+    }, 500);
+
+    // Cleanup do interval quando o componente for desmontado
+    return () => clearInterval(interval);
+  }, [user, loadAppointments]);
 
   const handleCancelAppointment = async (appointment) => {
     setConfirmationModal({
@@ -76,11 +136,44 @@ export const StudentMeetingsTab = () => {
           color: #ffffff !important;
         }
       `}</style>
-      <h3 className="text-lg font-semibold mb-4">Minhas Reuniões</h3>
-      <div className="grid gap-2">
-        {appointments
-          .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
-          .map((appt, idx) => {
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-2">
+          <h3 className="text-lg font-semibold">Minhas Reuniões</h3>
+          {filteredAppointments.length > 0 && (
+            <span className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-logo dark:text-blue-300 px-2 py-1 rounded-full font-bold">
+              {filteredAppointments.length}
+            </span>
+          )}
+        </div>
+        {/* Filtro Select */}
+        <div className="flex items-center gap-2">
+          <label className="text-xs md:text-sm text-gray-800 dark:text-gray-300 font-medium">Filtrar:</label>
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="filter-select px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-logo focus:border-blue-logo outline-none transition-all text-gray-800 dark:text-gray-100"
+          >
+            <option value="proximos">Próximos</option>
+            <option value="todos">Todos</option>
+            <option value="cancelados">Cancelados</option>
+            <option value="completados">Concluídos</option>
+            <option value="passados">Passados</option>
+          </select>
+        </div>
+      </div>
+
+      {currentAppointments.length === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <p>Nenhuma reunião encontrada para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : filter === 'completados' ? 'concluídos' : 'passados'}"</p>
+          {filter === 'proximos' && (
+            <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
+          )}
+        </div>
+      )}
+
+      {currentAppointments.length > 0 && (
+        <div className="grid gap-2">
+          {currentAppointments.map((appt, idx) => {
             const status = appt.status || 'SCHEDULED';
             const isPast = dayjs(`${appt.date} ${appt.time}`).isBefore(dayjs());
 
@@ -151,12 +244,19 @@ export const StudentMeetingsTab = () => {
               </div>
             );
           })}
-      </div>
+        </div>
+      )}
 
-      {appointments.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <p>Nenhuma reunião encontrada</p>
-          <p className="text-sm mt-2">Use o calendário para agendar uma reunião</p>
+      {filteredAppointments.length > 0 && totalPages > 1 && (
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            totalItems={filteredAppointments.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={(page) => setCurrentPage(page)}
+            showCounts={true}
+            className=""
+          />
         </div>
       )}
 

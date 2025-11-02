@@ -23,7 +23,7 @@ export const fetchTimeSlots = async (adminId, date) => {
         return res.data.slots;
       }
     } catch (firstError) {
-      console.log(
+      console.error(
         "Primeira tentativa falhou, tentando formato alternativo...",
         firstError
       );

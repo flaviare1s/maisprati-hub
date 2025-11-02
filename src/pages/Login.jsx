@@ -35,9 +35,9 @@ export const Login = () => {
   };
 
   return (
-    <div className="w-full flex flex-col md:flex-row items-center justify-center md:mx-10 lg:mx-0 m-auto">
+    <div className="w-full flex flex-col lg:flex-row items-center justify-center md:mx-10 lg:mx-0 m-auto px-4">
       <div className="max-w-[600px]">
-        <img className="hidden md:block w-full" src={bg} alt="" />
+        <img className="hidden lg:block w-full" src={bg} alt="" />
       </div>
       <div className="w-full p-4 flex flex-col items-center justify-center rounded-2xl md:shadow-2xl sm:w-[400px] md:bg-light">
         <div className="flex items-center justify-center w-[180px]">
@@ -77,17 +77,19 @@ export const Login = () => {
           </div>
         </form>
         <div className="w-full mt-4">
-          <SocialLoginButton provider="google" />
-          <SocialLoginButton provider="github" />
+          <SocialLoginButton provider="google" aria-label="Entrar com Google" />
+          <SocialLoginButton provider="github" aria-label="Entrar com GitHub" />
         </div>
         <Link
           to="/register"
+          aria-label="Cadastrar"
           className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
         >
           Cadastre-se
         </Link>
         <Link
           to="/reset-password"
+          aria-label="Esqueci minha senha"
           className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block"
         >
           Esqueci minha senha

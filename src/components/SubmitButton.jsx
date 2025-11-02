@@ -9,7 +9,7 @@ export const SubmitButton = ({ label, isLoading = false, disabled = false, ...pr
         ? 'bg-gray-400 cursor-not-allowed'
         : 'bg-blue-logo hover:bg-blue-600 cursor-pointer'
         }`}
-      {...props}
+        {...props}
     >
       {isLoading ? <CustomLoader /> : label}
     </button>

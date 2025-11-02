@@ -14,7 +14,6 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
