@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.09% </span>
+                <span class="strong">27.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>62/206</span>
+                <span class='fraction'>56/206</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.75% </span>
+                <span class="strong">6.25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/16</span>
+                <span class='fraction'>1/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.09% </span>
+                <span class="strong">27.18% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>62/206</span>
+                <span class='fraction'>56/206</span>
             </div>
         
             
@@ -406,20 +406,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -431,6 +417,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -464,6 +453,15 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -474,7 +472,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import api from "../services/api.js";
 &nbsp;
 // Buscar todos os times
@@ -611,15 +611,15 @@ export const removeMemberFromTeam = <span class="fstat-no" title="function not c
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 // Verificar se usuário está em time ativo
-export const checkUserTeamStatus = async (userId) =&gt; {
-  try {
-    const response = await api.get(`/teams/user/${userId}/status`);
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return response.data;</span></span>
+export const checkUserTeamStatus = <span class="fstat-no" title="function not covered" >async (userId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get(`/teams/user/${userId}/status`);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
 <span class="cstat-no" title="statement not covered" >    // eslint-disable-next-line no-unused-vars</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    return { isInActiveTeam: false };</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-};
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 // Criar um novo time
 export const createTeam = <span class="fstat-no" title="function not covered" >async (teamData, creatorUserId) =&gt; {</span>
@@ -669,10 +669,10 @@ export const updateTeam = <span class="fstat-no" title="function not covered" >a
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 // Verificar se usuário está em algum time ativo (função auxiliar)
-export const isUserInActiveTeam = async (userId) =&gt; {
-  try {
-    const result = await checkUserTeamStatus(userId);
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return result.isInActiveTeam;</span></span>
+export const isUserInActiveTeam = <span class="fstat-no" title="function not covered" >async (userId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const result = await checkUserTeamStatus(userId);</span>
+<span class="cstat-no" title="statement not covered" >    return result.isInActiveTeam;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error(</span>
 <span class="cstat-no" title="statement not covered" >      "Erro ao verificar se usuário está em algum time ativo:",</span>
@@ -680,7 +680,7 @@ export const isUserInActiveTeam = async (userId) =&gt; {
 <span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-};
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -688,7 +688,7 @@ export const isUserInActiveTeam = async (userId) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-30T18:40:58.313Z
+                at 2025-11-02T09:31:42.394Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
