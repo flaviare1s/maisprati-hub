@@ -5,11 +5,67 @@ import { fetchAppointments } from "../../api.js/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "../ConfirmationModal";
+import { Pagination } from "../Pagination";
 
 export const TeacherMeetingsTab = ({ adminId }) => {
   const [appointments, setAppointments] = useState([]);
   const [filter, setFilter] = useState('proximos');
   const [confirmationModal, setConfirmationModal] = useState({ open: false, message: "", onConfirm: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const getFilteredAppointments = () => {
+    const now = dayjs();
+
+    const filtered = appointments.filter(appt => {
+      const appointmentDateTime = dayjs(`${appt.date} ${appt.time}`);
+      const isPast = appointmentDateTime.isBefore(now);
+      const status = appt.status || 'SCHEDULED';
+
+      switch (filter) {
+        case 'proximos':
+          return !isPast && status !== 'CANCELLED' && status !== 'CANCELED' && status !== 'COMPLETED';
+        case 'cancelados':
+          return status === 'CANCELLED' || status === 'CANCELED';
+        case 'completados':
+          return status === 'COMPLETED';
+        case 'passados':
+          return isPast && status !== 'COMPLETED';
+        case 'todos':
+          return true;
+        default:
+          return true;
+      }
+    });
+
+    const uniqueAppointments = Object.values(
+      filtered
+        .sort((a, b) => {
+          if (filter === 'passados') {
+            return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time);
+          }
+          return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time);
+        })
+        .reduce((acc, appt) => {
+          const key = `${appt.teamName || 'Sem time'}_${appt.date}_${appt.time}`;
+          if (!acc[key]) acc[key] = appt;
+          return acc;
+        }, {})
+    );
+
+    return uniqueAppointments;
+  };
+
+  const filteredAppointments = getFilteredAppointments();
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
+  const currentAppointments = filteredAppointments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter]);
 
   useEffect(() => {
     const loadAppointments = async () => {
@@ -74,7 +130,14 @@ export const TeacherMeetingsTab = ({ adminId }) => {
           }
         `}</style>
         <div className="flex justify-between items-center mb-4">
-          <h4 className="text-sm sm:text-md font-medium text-dark">Agendamentos</h4>
+          <div className="flex items-center gap-2">
+            <h4 className="text-sm sm:text-md font-medium text-dark">Agendamentos</h4>
+            {filteredAppointments.length > 0 && (
+              <span className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-logo font-bold dark:text-blue-300 px-2 py-1 rounded-full">
+                {filteredAppointments.length}
+              </span>
+            )}
+          </div>
 
           {/* Filtro Select */}
           <div className="flex items-center gap-2">
@@ -92,44 +155,9 @@ export const TeacherMeetingsTab = ({ adminId }) => {
             </select>
           </div>
         </div>
-        <div className="grid gap-2 max-h-60 overflow-y-auto">
-          {appointments.length > 0 ? (
-            Object.values(
-              appointments
-                .filter(appt => {
-                  const now = dayjs();
-                  const appointmentDateTime = dayjs(`${appt.date} ${appt.time}`);
-                  const isPast = appointmentDateTime.isBefore(now);
-                  const status = appt.status || 'SCHEDULED';
-
-                  switch (filter) {
-                    case 'proximos':
-                      return !isPast && status !== 'CANCELLED' && status !== 'CANCELED' && status !== 'COMPLETED';
-
-                    case 'cancelados':
-                      return status === 'CANCELLED' || status === 'CANCELED';
-
-                    case 'completados':
-                      return status === 'COMPLETED';
-
-                    case 'passados':
-                      return isPast && status !== 'COMPLETED';
-
-                    case 'todos':
-                      return true;
-
-                    default:
-                      return true;
-                  }
-                })
-                .sort((a, b) => dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time))
-                .reduce((acc, appt) => {
-                  // Chave: time + data + hora
-                  const key = `${appt.teamName || 'Sem time'}_${appt.date}_${appt.time}`;
-                  if (!acc[key]) acc[key] = appt;
-                  return acc;
-                }, {})
-            ).map((appt, idx) => (
+        <div className="grid gap-2">
+          {currentAppointments.length > 0 ? (
+            currentAppointments.map((appt, idx) => (
               <div
                 key={idx}
                 className="meeting-card p-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 flex justify-between items-center hover:shadow-sm transition-shadow"
@@ -185,26 +213,51 @@ export const TeacherMeetingsTab = ({ adminId }) => {
                     );
                   })()}
 
-                  {/* Botão para cancelar apenas se não estiver cancelado/completado */}
-                  {appt.status !== 'CANCELLED' && appt.status !== 'CANCELED' && appt.status !== 'COMPLETED' && (
-                    <button
-                      onClick={() => handleCancelAppointment(appt)}
-                      className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold cursor-pointer"
-                      title="Cancelar agendamento"
-                    >
-                      Cancelar
-                    </button>
-                  )}
+                  {/* Botão para cancelar apenas se não estiver cancelado/completado e não for passado */}
+                  {(() => {
+                    const status = appt.status || 'SCHEDULED';
+                    const isPast = dayjs(`${appt.date} ${appt.time}`).isBefore(dayjs());
+
+                    // Só permite cancelar se: não está cancelado, não está completo e não passou
+                    const canCancel = status !== 'CANCELLED' &&
+                      status !== 'CANCELED' &&
+                      status !== 'COMPLETED' &&
+                      !isPast;
+
+                    return canCancel ? (
+                      <button
+                        onClick={() => handleCancelAppointment(appt)}
+                        className="text-red-primary hover:text-red-secondary transition-colors text-[10px] font-bold cursor-pointer"
+                        title="Cancelar agendamento"
+                      >
+                        Cancelar
+                      </button>
+                    ) : null;
+                  })()}
                 </div>
               </div>
             ))
           ) : (
             <div className="text-center py-6 text-gray-muted">
               <Calendar className="mx-auto h-12 w-12 text-gray-300 mb-2" />
-              <p>Nenhum agendamento encontrado</p>
+              <p>Nenhum agendamento encontrado para o filtro "{filter === 'proximos' ? 'próximos' : filter === 'todos' ? 'todos' : filter === 'cancelados' ? 'cancelados' : filter === 'completados' ? 'concluídos' : 'passados'}"</p>
             </div>
           )}
         </div>
+
+        {/* Componente de Paginação */}
+        {filteredAppointments.length > 0 && totalPages > 1 && (
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              totalItems={filteredAppointments.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+              showCounts={true}
+              className=""
+            />
+          </div>
+        )}
       </div>
 
       {/* Legenda */}

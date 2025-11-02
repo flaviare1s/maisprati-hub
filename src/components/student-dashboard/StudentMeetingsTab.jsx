@@ -44,15 +44,13 @@ export const StudentMeetingsTab = () => {
   const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
   const currentAppointments = filteredAppointments
     .sort((a, b) => {
-      // Ordenação diferente baseada no filtro
       if (filter === 'passados') {
-        return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time); // Mais recentes primeiro
+        return dayjs(b.date + " " + b.time) - dayjs(a.date + " " + a.time);
       }
-      return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time); // Mais próximos primeiro
+      return dayjs(a.date + " " + a.time) - dayjs(b.date + " " + b.time);
     })
     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  // Reset página quando filtro muda
   useEffect(() => {
     setCurrentPage(1);
   }, [filter]);
