@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { fetchActiveTeams, getTeamWithMembers, checkUserTeamStatus } from "../api.js/teams";
+import { fetchTeams, getTeamWithMembers } from "../api.js/teams";
 import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
 import { MdManageAccounts } from "react-icons/md";
@@ -38,22 +38,20 @@ export const StudentDashboardPage = () => {
       }
 
       try {
-        // Verifica se o usuário está em algum time ativo
-        const teamStatus = await checkUserTeamStatus(userId);
+        // Busca TODOS os times (não apenas ativos) para encontrar o time do usuário
+        const teams = await fetchTeams();
 
-        if (teamStatus && teamStatus.isInActiveTeam) {
-          // Se está em um time, busca todos os times ativos para encontrar o dele
-          const teams = await fetchActiveTeams();
-          const userTeamData = teams.find((team) =>
-            team.members && team.members.some(
-              (member) => member.userId === userId
-            )
+        const userTeamData = teams.find((team) => {
+          return team.members && team.members.some(
+            (member) => {
+              return member.userId === userId;
+            }
           );
+        });
 
-          if (userTeamData) {
-            const teamWithDetails = await getTeamWithMembers(userTeamData.id);
-            setUserTeam(teamWithDetails);
-          }
+        if (userTeamData) {
+          const teamWithDetails = await getTeamWithMembers(userTeamData.id);
+          setUserTeam(teamWithDetails);
         }
       } catch (error) {
         console.error("Erro ao carregar time do usuário:", error);
