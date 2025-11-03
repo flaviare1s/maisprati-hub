@@ -7,12 +7,12 @@ import * as authApi from '../../../api.js/auth';
 import toast from 'react-hot-toast';
 import { CustomLoader } from '../../../components/CustomLoader';
 
-// 🔹 Declara os mocks AQUI fora
+// Declara os mocks AQUI fora
 const mockLogin = vi.fn();
 const mockNavigate = vi.fn();
 const mockLocation = { state: null };
 
-// 🔹 Mocks globais
+// Mocks globais
 vi.mock('../../../hooks/useAuth');
 vi.mock('../../../api.js/auth');
 vi.mock('react-hot-toast');
@@ -42,7 +42,7 @@ vi.mock('../../../components/SubmitButton', () => ({
   ),
 }));
 
-// 🔹 beforeEach global — garante que o estado sempre seja resetado
+// beforeEach global — garante que o estado sempre seja resetado
 beforeEach(() => {
   vi.clearAllMocks();
 
