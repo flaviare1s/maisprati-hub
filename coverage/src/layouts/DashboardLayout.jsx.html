@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.19% </span>
+                <span class="strong">67.91% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>135/187</span>
+                <span class='fraction'>127/187</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.14% </span>
+                <span class="strong">35.13% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/35</span>
+                <span class='fraction'>13/37</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.19% </span>
+                <span class="strong">67.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>135/187</span>
+                <span class='fraction'>127/187</span>
             </div>
         
             
@@ -321,9 +321,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -362,7 +362,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -374,10 +374,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -541,10 +541,10 @@ export const DashboardLayout = () =&gt; {
           const notifications = await getUserNotifications(userId<span class="branch-0 cbranch-no" title="branch not covered" >);</span>
           setNotificationCount(notifications?.<span class="branch-0 cbranch-no" title="branch not covered" >length || 0)</span>;
         }
-      } catch (error) {
-        console.error("Erro ao buscar notificações:", error);
-        setNotificationCount(0);
-      }
+<span class="branch-0 cbranch-no" title="branch not covered" >      } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error("Erro ao buscar notificações:", error);</span>
+<span class="cstat-no" title="statement not covered" >        setNotificationCount(0);</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
     };
     if (user) fetchNotifications();
   }, [user]);
@@ -582,10 +582,10 @@ export const DashboardLayout = () =&gt; {
     const loadTeams = async () =&gt; {
       try {
         if (user?.role === 'student') {
-          const teams = await fetchActiveTeams();
-          setActiveTeams(teams);
+          const teams = await fetchActiveTeams(<span class="branch-0 cbranch-no" title="branch not covered" >);</span>
+<span class="cstat-no" title="statement not covered" >          setActiveTeams(teams);</span>
 &nbsp;
-          const userId = <span class="branch-0 cbranch-no" title="branch not covered" >user?.<span class="branch-0 cbranch-no" title="branch not covered" >id || u</span>ser?._id;</span>
+          const userId = user?.<span class="branch-0 cbranch-no" title="branch not covered" >id || user?._id;</span>
           if (<span class="branch-0 cbranch-no" title="branch not covered" >userId &amp;&amp; (typeof userId === 'string' || typeof userId === 'number')) <span class="branch-0 cbranch-no" title="branch not covered" >{</span></span>
 <span class="cstat-no" title="statement not covered" >            const userIdString = String(userId);</span>
 <span class="cstat-no" title="statement not covered" >            const userInTeam = await isUserInActiveTeam(userIdString);</span>
@@ -594,11 +594,11 @@ export const DashboardLayout = () =&gt; {
 <span class="cstat-no" title="statement not covered" >            console.warn('ID do usuário não encontrado ou inválido:', user);</span>
 <span class="cstat-no" title="statement not covered" >          }</span>
         }
-      } catch (error) {
-        console.error('Erro ao carregar times:', error);
-      } finally {
-        setLoadingTeams(false);
-      }
+<span class="branch-0 cbranch-no" title="branch not covered" >      } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Erro ao carregar times:', error);</span>
+<span class="cstat-no" title="statement not covered" >      } finally {</span>
+<span class="cstat-no" title="statement not covered" >        setLoadingTeams(false);</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
     };
 &nbsp;
     loadTeams();
@@ -733,7 +733,7 @@ export const DashboardLayout = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-02T10:24:51.623Z
+                at 2025-11-03T11:03:19.275Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

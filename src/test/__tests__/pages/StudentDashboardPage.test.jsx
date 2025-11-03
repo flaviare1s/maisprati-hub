@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { StudentDashboardPage } from "../../../pages/StudentDashboardPage";
 import * as teamsApi from "../../../api.js/teams";

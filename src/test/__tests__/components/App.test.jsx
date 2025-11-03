@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import { render, mockAuthenticatedUser, mockAdminUser } from '../../utils/test-utils';
 import App from '../../../App.jsx';
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 // Mock do hook useAuth - IMPORTANTE: usar o caminho correto

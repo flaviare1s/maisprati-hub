@@ -76,7 +76,7 @@ export const Forum = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="forum">
       {/* Botão para novo post */}
       {!showNewPost && (
         <div className="text-center">
