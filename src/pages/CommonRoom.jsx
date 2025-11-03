@@ -326,7 +326,7 @@ export const CommonRoom = () => {
               {user.type === "student" && !userInTeam && (
                 <button
                   onClick={handleJoinTeam}
-                  className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-light font-bold py-3 px-4 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mb-4"
+                  className="w-full bg-gradient-to-r from-blue-logo to-orange-logo text-light font-bold py-3 px-4 rounded-lg hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mb-4 cursor-pointer"
                 >
                   Entrar em Guilda
                 </button>

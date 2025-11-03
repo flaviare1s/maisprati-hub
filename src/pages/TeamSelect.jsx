@@ -195,7 +195,7 @@ export const TeamSelect = () => {
             <button
               key={team.id}
               onClick={() => handleTeamSelected(team)}
-              className="w-full p-4 bg-blue-logo text-light rounded-lg hover:bg-blue-600 transition-colors font-medium"
+              className="w-full p-4 bg-blue-logo text-light rounded-lg hover:bg-blue-600 transition-colors font-medium cursor-pointer"
             >
               <div className="flex justify-between items-center">
                 <span>{team.name}</span>
