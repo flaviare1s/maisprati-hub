@@ -13,9 +13,9 @@ export const DashboardLayout = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [setActiveTeams] = useState([]);
+  const [_activeTeams, setActiveTeams] = useState([]);
   const [userInTeam] = useState(false);
-  const [setUserInActiveTeam] = useState(false);
+  const [_userInActiveTeam, setUserInActiveTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -27,19 +27,31 @@ export const DashboardLayout = () => {
   }, [user, navigate]);
 
   useEffect(() => {
+    let isMounted = true; // Flag para verificar se componente ainda está montado
+
     const fetchNotifications = async () => {
       try {
         const userId = user?.id || user?._id;
-        if (userId) {
+        if (userId && isMounted) {
           const notifications = await getUserNotifications(userId);
-          setNotificationCount(notifications?.length || 0);
+          if (isMounted) {
+            setNotificationCount(notifications?.length || 0);
+          }
         }
       } catch (error) {
         console.error("Erro ao buscar notificações:", error);
-        setNotificationCount(0);
+        if (isMounted) {
+          setNotificationCount(0);
+        }
       }
     };
+
     if (user) fetchNotifications();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   const refreshNotificationCount = useCallback(async () => {
