@@ -88,6 +88,7 @@ src/
 - React Router
 - Axios
 - Day.js
+- Vitest
 
 **Backend:**
 

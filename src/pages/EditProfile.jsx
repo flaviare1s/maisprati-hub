@@ -36,23 +36,19 @@ export const EditProfile = () => {
         let userData;
 
         if (id) {
-          // Carregando dados de outro usuário (só admin pode fazer isso)
           if (currentUser?.type !== 'admin') {
             navigate('/forbidden');
             return;
           }
           userData = await getUserById(id);
         } else {
-          // Editando próprio perfil
           userData = currentUser;
         }
 
         setUser(userData);
-        // Resetar o formulário com os dados do usuário
         reset({
           name: userData.name || '',
           email: userData.email || '',
-          codename: userData.codename || '',
           whatsapp: userData.whatsapp || '',
           groupClass: userData.groupClass || '',
         });
@@ -76,41 +72,27 @@ export const EditProfile = () => {
     try {
       const targetUserId = id || currentUser.id;
 
-      // Preparar dados para atualização
       const updateData = {
         name: formData.name.trim(),
-        email: formData.email.trim(),
-        codename: formData.codename.trim()
+        email: formData.email.trim()
       };
 
-      // Adicionar campos específicos apenas para estudantes
       if (user?.type === 'student') {
-        if (formData.whatsapp && formData.whatsapp.trim()) {
-          updateData.whatsapp = formData.whatsapp.trim();
-        }
-        if (formData.groupClass) {
-          updateData.groupClass = formData.groupClass;
-        }
+        updateData.whatsapp = formData.whatsapp?.trim() || null;
+        updateData.groupClass = formData.groupClass || null;
       }
 
       const updatedUser = await updateUser(targetUserId, updateData);
 
-      // Se estiver editando o próprio perfil, atualizar contexto
       if (!id || id === currentUser.id) {
         updateUserContext(updatedUser);
-        // Recarregar dados do usuário para garantir sincronização
         await loadUserData();
       }
 
       toast.success('Perfil atualizado com sucesso!');
 
-      // Redirecionar após sucesso
       setTimeout(() => {
-        if (currentUser.type === 'admin' && id) {
-          navigate('/dashboard');
-        } else {
-          navigate('/dashboard');
-        }
+        navigate('/dashboard');
       }, 1500);
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
@@ -177,27 +159,6 @@ export const EditProfile = () => {
           </div>
 
           <div>
-            <label htmlFor="codename" className="block text-sm font-medium text-dark mb-2">
-              Nome de Guerra *
-            </label>
-            <input
-              id="codename"
-              type="text"
-              {...register('codename', {
-                required: 'Nome de Guerra é obrigatório',
-                minLength: {
-                  value: 2,
-                  message: 'Nome de Guerra deve ter pelo menos 2 caracteres'
-                }
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-logo"
-            />
-            {errors.codename && (
-              <p className="mt-1 text-sm text-red-primary">{errors.codename.message}</p>
-            )}
-          </div>
-
-          <div>
             <label htmlFor="email" className="block text-sm font-medium text-dark mb-2">
               Email *
             </label>
@@ -216,6 +177,7 @@ export const EditProfile = () => {
             {errors.email && (
               <p className="mt-1 text-sm text-red-primary">{errors.email.message}</p>
             )}
+            <small className='font-medium text-red-primary'>⚠️ Atenção, ao atualizar seu email, você terá que fazer login novamente!</small>
           </div>
 
           {user?.type === 'student' && (
@@ -252,14 +214,6 @@ export const EditProfile = () => {
           )}
 
           <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors"
-              disabled={saving}
-            >
-              Cancelar
-            </button>
             <SubmitButton
               label={saving ? "Salvando..." : "Salvar"}
               isLoading={saving}

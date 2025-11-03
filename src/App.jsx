@@ -125,11 +125,7 @@ function App() {
           />
           <Route
             path="/warname/"
-            element={
-              <PrivateRoute>
-                <CodenameSelect />
-              </PrivateRoute>
-            }
+            element={<CodenameSelect />}
           />
           <Route
             path="/team-select/"
