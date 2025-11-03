@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  maisprati-hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    container_name: maisprati-hub-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maisprati-hub.rule=Host(`localhost`)"
+      - "traefik.http.services.maisprati-hub.loadbalancer.server.port=80"
+
+  # Opcional: para desenvolvimento com hot reload
+  maisprati-hub-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    container_name: maisprati-hub-dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    profiles:
+      - dev
