@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.52% </span>
+                <span class="strong">30.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>67/206</span>
+                <span class='fraction'>62/206</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.52% </span>
+                <span class="strong">30.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>67/206</span>
+                <span class='fraction'>62/206</span>
             </div>
         
             
@@ -410,27 +410,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -464,10 +453,21 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -616,9 +616,9 @@ export const checkUserTeamStatus = async (userId) =&gt; {
     const response = await api.get(`/teams/user/${userId}/status`);
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return response.data;</span></span>
 <span class="cstat-no" title="statement not covered" >    // eslint-disable-next-line no-unused-vars</span>
-  } catch (error) {
-    return { isInActiveTeam: false };
-  }
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    return { isInActiveTeam: false };</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 };
 &nbsp;
 // Criar um novo time
@@ -672,8 +672,8 @@ export const updateTeam = <span class="fstat-no" title="function not covered" >a
 export const isUserInActiveTeam = async (userId) =&gt; {
   try {
     const result = await checkUserTeamStatus(userId);
-    return result.isInActiveTeam;
-  } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return result.isInActiveTeam;</span></span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error(</span>
 <span class="cstat-no" title="statement not covered" >      "Erro ao verificar se usuário está em algum time ativo:",</span>
 <span class="cstat-no" title="statement not covered" >      error</span>
@@ -688,7 +688,7 @@ export const isUserInActiveTeam = async (userId) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-03T16:15:18.166Z
+                at 2025-11-03T16:22:09.770Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
