@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 import { InputField } from '../components/InputField';
+import { PasswordField } from '../components/PasswordField';
 import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
 
 export const StudentRegister = () => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,16 +21,17 @@ export const StudentRegister = () => {
     if (socialEmail) setValue("email", socialEmail);
   }, [socialName, socialEmail, setValue]);
 
+  const hasGroupValue = watch("hasGroup");
+
   const onSubmit = async (data) => {
-    // Clean the WhatsApp number to contain only digits
+
+    // Limpar WhatsApp
     data.whatsapp = data.whatsapp.replace(/\D/g, '');
 
-    // Convert to boolean
-    data.hasGroup = data.hasGroup === "sim";
-    data.wantsGroup = data.wantsGroup === "sim";
+    // Remover confirmPassword antes de enviar
+    const { confirmPassword: _confirmPassword, ...dataToSend } = data;
 
-    // Send state to the registration page
-    navigate("/warname", { state: { ...data } });
+    navigate("/warname", { state: { ...dataToSend } });
   };
   return (
     <div className='flex flex-col justify-center items-center px-4 w-full sm:w-[500px] mx-auto my-8'>
@@ -65,18 +67,29 @@ export const StudentRegister = () => {
             },
           }}
         />
-        <InputField
+        <PasswordField
           name="password"
-          type="password"
           placeholder="Senha"
           label="Senha *"
           register={register}
           error={errors.password?.message}
+          requireStrong={true}
+        />
+
+        <PasswordField
+          name="confirmPassword"
+          placeholder="Confirme sua senha"
+          label="Confirmar Senha *"
+          register={register}
+          error={errors.confirmPassword?.message}
           validation={{
-            required: "Senha é obrigatória",
-            minLength: {
-              value: 6,
-              message: "A senha deve ter pelo menos 6 caracteres",
+            required: "Confirmação de senha é obrigatória",
+            validate: (value) => {
+              const password = watch("password");
+              if (value !== password) {
+                return "As senhas não coincidem";
+              }
+              return true;
             },
           }}
         />
@@ -123,21 +136,22 @@ export const StudentRegister = () => {
             { value: "nao", label: "Não" }
           ]}
         />
-
-        <InputField
-          name="wantsGroup"
-          type="radio"
-          label="Deseja trabalhar em grupo? *"
-          register={register}
-          error={errors.wantsGroup?.message}
-          validation={{
-            required: "Selecione uma opção"
-          }}
-          options={[
-            { value: "sim", label: "Sim" },
-            { value: "nao", label: "Não, prefiro trabalhar sozinho" }
-          ]}
-        />
+        {hasGroupValue === "nao" && (
+          <InputField
+            name="wantsGroup"
+            type="radio"
+            label="Deseja trabalhar em grupo? *"
+            register={register}
+            error={errors.wantsGroup?.message}
+            validation={{
+              required: "Selecione uma opção"
+            }}
+            options={[
+              { value: "sim", label: "Sim" },
+              { value: "nao", label: "Não, prefiro trabalhar sozinho" }
+            ]}
+          />
+        )}
         <InputField
           name="type"
           type="hidden"

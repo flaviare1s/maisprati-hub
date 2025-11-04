@@ -1,17 +1,20 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { fetchActiveTeams, getTeamWithMembers, checkUserTeamStatus } from "../api.js/teams";
+import { fetchTeams, getTeamWithMembers } from "../api.js/teams";
+import { disableWantsGroup } from "../api.js/users";
 import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
-import { MdManageAccounts } from "react-icons/md";
+import { MdManageAccounts, MdToggleOff } from "react-icons/md";
 import { TeamManagmentModal } from "../components/student-dashboard/TeamManagmentModal";
 import { Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 export const StudentDashboardPage = () => {
-  const { user } = useAuth();
+  const { user, updateUser: updateUserContext } = useAuth();
   const [userTeam, setUserTeam] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+  const [changingPreference, setChangingPreference] = useState(false);
 
   // Memoiza o userId para evitar re-execuções desnecessárias
   const userId = useMemo(() => {
@@ -38,22 +41,20 @@ export const StudentDashboardPage = () => {
       }
 
       try {
-        // Verifica se o usuário está em algum time ativo
-        const teamStatus = await checkUserTeamStatus(userId);
+        // Busca TODOS os times (não apenas ativos) para encontrar o time do usuário
+        const teams = await fetchTeams();
 
-        if (teamStatus && teamStatus.isInActiveTeam) {
-          // Se está em um time, busca todos os times ativos para encontrar o dele
-          const teams = await fetchActiveTeams();
-          const userTeamData = teams.find((team) =>
-            team.members && team.members.some(
-              (member) => member.userId === userId
-            )
+        const userTeamData = teams.find((team) => {
+          return team.members && team.members.some(
+            (member) => {
+              return member.userId === userId;
+            }
           );
+        });
 
-          if (userTeamData) {
-            const teamWithDetails = await getTeamWithMembers(userTeamData.id);
-            setUserTeam(teamWithDetails);
-          }
+        if (userTeamData) {
+          const teamWithDetails = await getTeamWithMembers(userTeamData.id);
+          setUserTeam(teamWithDetails);
         }
       } catch (error) {
         console.error("Erro ao carregar time do usuário:", error);
@@ -64,6 +65,22 @@ export const StudentDashboardPage = () => {
 
     loadUserTeam();
   }, [userId, user]); // Agora depende do userId estável e user
+
+  const handleDisableWantsGroup = async () => {
+    if (!user || !userId) return;
+
+    setChangingPreference(true);
+    try {
+      const updatedUser = await disableWantsGroup(userId);
+      updateUserContext(updatedUser);
+      toast.success("Preferência alterada! Agora você está trabalhando individualmente.");
+    } catch (error) {
+      console.error("Erro ao alterar preferência:", error);
+      toast.error("Erro ao alterar preferência. Tente novamente.");
+    } finally {
+      setChangingPreference(false);
+    }
+  };
 
   if (loading) {
     return <CustomLoader />;
@@ -143,12 +160,32 @@ export const StudentDashboardPage = () => {
         </div>
       ) : user.wantsGroup ? (
         <div className="rounded-lg shadow-md p-4">
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 mb-4">
             Você ainda não faz parte de nenhum grupo.{" "}
             <Link to="/common-room" className="text-blue-logo hover:underline">
               Acesse a Sala Comum para encontrar e entrar em um grupo.
             </Link>
           </p>
+          <div className="text-center pt-3 border-t border-gray-200">
+            <p className="text-sm text-gray-500 mb-3">Mudou de ideia?</p>
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-sm text-gray-600">
+                Prefiro trabalhar individualmente
+              </span>
+              <button
+                onClick={handleDisableWantsGroup}
+                disabled={changingPreference}
+                    className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                title="Clique para alterar para trabalho individual"
+              >
+                {changingPreference ? (
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-logo"></div>
+                ) : (
+                  <MdToggleOff className="text-2xl" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="rounded-lg shadow-md p-4">

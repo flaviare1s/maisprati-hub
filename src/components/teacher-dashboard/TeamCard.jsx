@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { toggleTeamStatus } from '../../api.js/teams';
 import toast from 'react-hot-toast';
 
-export const TeamCard = ({ team, onSelect, onUpdate }) => {
+export const TeamCard = ({ team, onSelect }) => {
   const [copiedCode, setCopiedCode] = useState(null);
   const [localTeam, setLocalTeam] = useState(team);
   const [isToggling, setIsToggling] = useState(false);
@@ -31,10 +31,6 @@ export const TeamCard = ({ team, onSelect, onUpdate }) => {
       setLocalTeam(updatedTeam);
 
       toast.success(`Time ${originalStatus ? 'inativado' : 'ativado'} com sucesso!`);
-
-      if (onUpdate) {
-        setTimeout(() => onUpdate(), 100);
-      }
 
     } catch (error) {
       setLocalTeam(prev => ({ ...prev, isActive: originalStatus }));
