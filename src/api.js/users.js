@@ -40,6 +40,16 @@ export const deleteUser = async (userId) => {
   return response.data;
 };
 
+export const disableWantsGroup = async (userId) => {
+  try {
+    const response = await api.patch(`/users/${userId}/wants-group`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao alterar preferência de grupo:", error);
+    throw error;
+  }
+};
+
 // Função para buscar dados completos do usuário atual
 export const getCurrentUserData = async () => {
   try {
