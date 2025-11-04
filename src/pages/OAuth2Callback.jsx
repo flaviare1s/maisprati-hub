@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import { CustomLoader } from "../components/CustomLoader";
 
 export const OAuth2Callback = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { loadUserData } = useAuth();
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -15,22 +17,30 @@ export const OAuth2Callback = () => {
     const refreshToken = searchParams.get("refreshToken");
 
     if (accessToken && refreshToken) {
-      try {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+      const processOAuth2Login = async () => {
+        try {
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
 
-        setTimeout(() => {
-          navigate("/dashboard", { replace: true });
-        }, 100);
-      } catch (error) {
-        console.error("Erro ao salvar tokens:", error);
-        navigate("/login", { replace: true });
-      }
+          await new Promise(resolve => setTimeout(resolve, 200));
+
+          const userData = await loadUserData();
+          if (userData) {
+            navigate("/dashboard", { replace: true });
+          } else {
+            navigate("/login", { replace: true });
+          }
+
+        } catch (error) {
+          console.error("Erro no processo de OAuth2:", error);
+          navigate("/login", { replace: true });
+        }
+      };
+      processOAuth2Login();
     } else {
-      console.error("Tokens não encontrados na URL");
       navigate("/login", { replace: true });
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, loadUserData]);
 
   return (
     <CustomLoader />
