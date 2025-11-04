@@ -4,7 +4,7 @@ import { TeamCard } from './TeamCard';
 import { useState } from 'react';
 import { Pagination } from '../Pagination';
 
-export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
+export const TeacherTeamsTab = ({ teams }) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20; // quantos times você quer mostrar por página
@@ -33,7 +33,6 @@ export const TeacherTeamsTab = ({ teams, onTeamUpdate }) => {
             key={team.id}
             team={team}
             onSelect={() => navigate(`/teams/${team.id}/board`)}
-            onUpdate={onTeamUpdate}
           />
         ))}
       </div>

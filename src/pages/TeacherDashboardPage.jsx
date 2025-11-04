@@ -77,6 +77,32 @@ export const TeacherDashboardPage = () => {
     };
   }, [user]);
 
+  // Pooling para atualizar times quando estiver na aba times
+  useEffect(() => {
+    let teamsIntervalId;
+
+    const fetchTeamsData = async () => {
+      try {
+        const allTeams = await fetchTeams();
+        setTeams(allTeams);
+      } catch (error) {
+        console.error("Erro ao carregar times:", error);
+      }
+    };
+
+    if (activeTab === "times") {
+      teamsIntervalId = setInterval(() => {
+        fetchTeamsData();
+      }, 500); // 500ms = meio segundo
+    }
+
+    return () => {
+      if (teamsIntervalId) {
+        clearInterval(teamsIntervalId);
+      }
+    };
+  }, [activeTab]);
+
   if (loading) return <CustomLoader />;
 
   if (!user) {
@@ -158,7 +184,7 @@ export const TeacherDashboardPage = () => {
           <TeacherProfileTab user={user} teams={teams} totalUsers={totalUsers} />
         )}
         {activeTab === "times" && (
-          <TeacherTeamsTab teams={teams} setTeams={setTeams} />
+          <TeacherTeamsTab teams={teams} />
         )}
         {activeTab === "usuários" && <UsersManagementTab />}
         {activeTab === "reuniões" && <TeacherMeetingsTab adminId={user.id} />}
