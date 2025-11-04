@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "../assets/images/logo.png";
-import { InputField } from "../components/InputField";
+import { PasswordField } from "../components/PasswordField";
 import { SubmitButton } from "../components/SubmitButton";
 import toast from "react-hot-toast";
 import { resetPassword } from "../api.js/auth";
@@ -65,24 +65,15 @@ export const NewPassword = () => {
             </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center w-full">
-              <InputField
+              <PasswordField
                 name="password"
-                type="password"
                 placeholder="Digite sua nova senha"
                 register={register}
                 error={errors.password?.message}
-                validation={{
-                  required: "A senha é obrigatória",
-                  minLength: {
-                    value: 6,
-                    message: "A senha deve ter pelo menos 6 caracteres",
-                  },
-                }}
-                autoComplete="new-password"
+                requireStrong={true}
               />
-              <InputField
+              <PasswordField
                 name="confirmPassword"
-                type="password"
                 placeholder="Confirme sua senha"
                 register={register}
                 error={errors.confirmPassword?.message}
@@ -91,7 +82,6 @@ export const NewPassword = () => {
                   validate: (value) =>
                     value === password || "As senhas não coincidem",
                 }}
-                autoComplete="new-password"
               />
               <SubmitButton label="Alterar senha" />
             </form>
@@ -125,24 +115,15 @@ export const NewPassword = () => {
               </h2>
 
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center w-full">
-                <InputField
+                <PasswordField
                   name="password"
-                  type="password"
                   placeholder="Digite sua nova senha"
                   register={register}
                   error={errors.password?.message}
-                  validation={{
-                    required: "A senha é obrigatória",
-                    minLength: {
-                      value: 6,
-                      message: "A senha deve ter pelo menos 6 caracteres",
-                    },
-                  }}
-                  autoComplete="new-password"
+                  requireStrong={true}
                 />
-                <InputField
+                <PasswordField
                   name="confirmPassword"
-                  type="password"
                   placeholder="Confirme sua senha"
                   register={register}
                   error={errors.confirmPassword?.message}
@@ -151,7 +132,6 @@ export const NewPassword = () => {
                     validate: (value) =>
                       value === password || "As senhas não coincidem",
                   }}
-                  autoComplete="new-password"
                 />
                 <SubmitButton label="Alterar senha" />
               </form>
