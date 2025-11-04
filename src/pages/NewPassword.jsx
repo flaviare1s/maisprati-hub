@@ -139,7 +139,6 @@ export const NewPassword = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
