@@ -7,7 +7,7 @@ import { SelectField } from '../components/SelectField';
 import { SubmitButton } from '../components/SubmitButton';
 
 export const StudentRegister = () => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,15 +20,13 @@ export const StudentRegister = () => {
     if (socialEmail) setValue("email", socialEmail);
   }, [socialName, socialEmail, setValue]);
 
-  const onSubmit = async (data) => {
-    // Clean the WhatsApp number to contain only digits
-    data.whatsapp = data.whatsapp.replace(/\D/g, '');
+  const hasGroupValue = watch("hasGroup");
 
-    // Convert to boolean
+  const onSubmit = async (data) => {
+    data.whatsapp = data.whatsapp.replace(/\D/g, '');
     data.hasGroup = data.hasGroup === "sim";
     data.wantsGroup = data.wantsGroup === "sim";
 
-    // Send state to the registration page
     navigate("/warname", { state: { ...data } });
   };
   return (
@@ -123,8 +121,8 @@ export const StudentRegister = () => {
             { value: "nao", label: "Não" }
           ]}
         />
-
-        <InputField
+        { hasGroupValue === "nao" && (
+          <InputField
           name="wantsGroup"
           type="radio"
           label="Deseja trabalhar em grupo? *"
@@ -137,7 +135,8 @@ export const StudentRegister = () => {
             { value: "sim", label: "Sim" },
             { value: "nao", label: "Não, prefiro trabalhar sozinho" }
           ]}
-        />
+          />
+        )}
         <InputField
           name="type"
           type="hidden"
