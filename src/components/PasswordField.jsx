@@ -11,7 +11,6 @@ export const PasswordField = ({
   requireStrong = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [setIsFocused] = useState(false);
 
   const defaultValidation = {
     required: "Senha é obrigatória",
@@ -57,8 +56,6 @@ export const PasswordField = ({
           id={name}
           name={name}
           placeholder={placeholder}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           {...register(name, finalValidation)}
           className="border border-border-input rounded-md px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-logo placeholder:text-sm placeholder:text-gray-muted bg-bg-input text-gray-muted w-full"
         />
