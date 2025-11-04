@@ -151,9 +151,7 @@ export const StudentDashboardPage = () => {
       ) : (
         <div className="rounded-lg shadow-md p-4">
           <p className="text-center text-gray-700 dark:text-gray-300">
-            <Link to="/common-room" className="text-blue-logo hover:underline">
-              Acesse a Sala Comum para encontrar e entrar em um grupo.
-            </Link>
+            Você optou por trabalhar individualmente.
           </p>
         </div>
       )}
