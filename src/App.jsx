@@ -26,6 +26,7 @@ import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetin
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 import { EditProfile } from "./pages/EditProfile";
 import { FAQ } from "./pages/FAQ";
+import { OAuth2Callback } from "./pages/OAuth2Callback";
 
 function App() {
   const { user, loading } = useAuth();
@@ -157,6 +158,7 @@ function App() {
           <Route path="/401" element={<Forbidden />} />
           <Route path="/forbidden" element={<Forbidden />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/oauth2/callback" element={<OAuth2Callback />} />
         </Routes>
       </main>
       <Footer />
