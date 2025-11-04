@@ -139,7 +139,7 @@ export const StudentMeetingsTab = () => {
       `}</style>
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold">Minhas Reuniões</h3>
+          <h3 className="text-lg font-semibold">Reuniões</h3>
           {filteredAppointments.length > 0 && (
             <span className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-logo dark:text-blue-300 px-2 py-1 rounded-full font-bold">
               {filteredAppointments.length}
@@ -147,7 +147,7 @@ export const StudentMeetingsTab = () => {
           )}
         </div>
         {/* Filtro Select */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <label className="text-xs md:text-sm text-gray-800 dark:text-gray-300 font-medium">Filtrar:</label>
           <select
             value={filter}
