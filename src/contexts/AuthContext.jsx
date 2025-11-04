@@ -13,10 +13,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const userRef = useRef(user);
+
   useEffect(() => {
     userRef.current = user;
   }, [user]);
-
 
   const loadUserData = useCallback(async () => {
     try {
@@ -42,14 +42,27 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error("Erro ao fazer logout:", err);
     }
+
+    // ✅ NOVA LINHA: Remove os tokens do localStorage
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
     setUser(null);
     setUserTeam(null);
     navigate("/login");
-  }, [navigate]); // ✅ Apenas navigate
+  }, [navigate]);
 
   const login = useCallback(async ({ email, password }) => {
     try {
-      await loginUser({ email, password });
+      // ✅ MODIFICADO: Agora recebe os tokens do backend
+      const response = await loginUser({ email, password });
+
+      // ✅ NOVA LINHA: Salva os tokens no localStorage
+      if (response.accessToken && response.refreshToken) {
+        localStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem("refreshToken", response.refreshToken);
+      }
+
       const userData = await getCurrentUserData();
       setUser(userData);
       navigate("/dashboard");
