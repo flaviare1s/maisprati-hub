@@ -83,7 +83,7 @@ export const Login = () => {
         <Link
           to="/register"
           aria-label="Cadastrar"
-          className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
+          className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-orange-logo text-text-secondary shadow hover:bg-orange-400 uppercase hover:text-light"
         >
           Cadastre-se
         </Link>

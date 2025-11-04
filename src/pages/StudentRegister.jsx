@@ -73,13 +73,7 @@ export const StudentRegister = () => {
           label="Senha *"
           register={register}
           error={errors.password?.message}
-          validation={{
-            required: "Senha é obrigatória",
-            minLength: {
-              value: 6,
-              message: "A senha deve ter pelo menos 6 caracteres",
-            },
-          }}
+          requireStrong={true}
         />
 
         <PasswordField
