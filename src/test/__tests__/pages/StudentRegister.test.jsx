@@ -20,6 +20,11 @@ vi.mock('react-router-dom', async () => {
 // Configuração padrão para o handleSubmit
 const mockRegister = vi.fn();
 const mockSetValue = vi.fn();
+const mockWatch = vi.fn((field) => {
+  if (field === "hasGroup") return "nao";
+  if (field === "password") return "password123";
+  return undefined;
+});
 const mockFormState = { errors: {} };
 const mockHandleSubmit = vi.fn((callback) => (e) => {
   e?.preventDefault?.();
@@ -27,6 +32,7 @@ const mockHandleSubmit = vi.fn((callback) => (e) => {
     name: 'Nome Teste',
     email: 'email@teste.com',
     password: 'password123',
+    confirmPassword: 'password123',
     whatsapp: '(11) 98765-4321',
     groupClass: 'T1',
     hasGroup: 'sim',
@@ -41,10 +47,27 @@ vi.mock('react-hook-form', () => ({
     handleSubmit: mockHandleSubmit,
     formState: mockFormState,
     setValue: mockSetValue,
+    watch: mockWatch,
   }),
 }));
 
 // Mock dos componentes
+vi.mock('../../../components/PasswordField', () => ({
+  PasswordField: ({ label, name, register, error, validation, placeholder }) => (
+    <div data-testid={`password-${name}`}>
+      <label htmlFor={name}>{label}</label>
+      <input
+        id={name}
+        type="password"
+        {...(register ? register(name, validation) : {})}
+        data-testid={`password-field-${name}`}
+        placeholder={placeholder}
+      />
+      {error && <small data-testid={`error-${name}`}>{error}</small>}
+    </div>
+  )
+}));
+
 vi.mock('../../../components/InputField', () => ({
   InputField: ({ label, name, register, error, validation, placeholder, type, disabled = false, options = [] }) => {
     if (type === 'radio') {
@@ -143,6 +166,7 @@ describe('StudentRegister Component', () => {
       expect(screen.getByText('Nome Completo *')).toBeInTheDocument();
       expect(screen.getByText('E-mail *')).toBeInTheDocument();
       expect(screen.getByText('Senha *')).toBeInTheDocument();
+      expect(screen.getByText('Confirmar Senha *')).toBeInTheDocument();
       expect(screen.getByText('WhatsApp *')).toBeInTheDocument();
       expect(screen.getByText('Turma')).toBeInTheDocument();
       expect(screen.getByText('Já possui grupo? *')).toBeInTheDocument();
@@ -191,8 +215,8 @@ describe('StudentRegister Component', () => {
           password: 'password123',
           whatsapp: '11987654321',
           groupClass: 'T1',
-          hasGroup: true,
-          wantsGroup: false,
+          hasGroup: 'sim',
+          wantsGroup: 'nao',
           type: 'STUDENT',
         },
       });
@@ -205,6 +229,7 @@ describe('StudentRegister Component', () => {
           name: 'Nome',
           email: 'e@mail.com',
           password: 'pass',
+          confirmPassword: 'pass',
           whatsapp: ' +55 (21) 9999-0000 ',
           groupClass: 'T2',
           hasGroup: 'nao',
@@ -222,8 +247,8 @@ describe('StudentRegister Component', () => {
           expect.objectContaining({
             state: expect.objectContaining({
               whatsapp: '552199990000',
-              hasGroup: false,
-              wantsGroup: true,
+              hasGroup: 'nao',
+              wantsGroup: 'sim',
             }),
           })
         );
