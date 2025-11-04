@@ -7,6 +7,7 @@ import logo from "../assets/images/logo.png";
 import bg from "../assets/images/about-img1.png";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import { PasswordField } from "../components/PasswordField";
 
 export const Login = () => {
   const { login } = useAuth();
@@ -58,18 +59,15 @@ export const Login = () => {
               },
             }}
           />
-          <InputField
+          <PasswordField
             name="password"
-            type="password"
             placeholder="Senha"
+            label="Senha *"
             register={register}
             error={errors.password?.message}
+            requireStrong={false}
             validation={{
-              required: "Senha é obrigatória",
-              minLength: {
-                value: 6,
-                message: "A senha deve ter pelo menos 6 caracteres",
-              },
+              required: "Senha é obrigatória"
             }}
           />
           <div className="mt-5">
@@ -83,7 +81,7 @@ export const Login = () => {
         <Link
           to="/register"
           aria-label="Cadastrar"
-          className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-bg-input text-text-secondary shadow hover:bg-orange-logo uppercase hover:text-light"
+          className="block text-center font-medium text-sm py-2 px-4 rounded-md transition-colors duration-75 font-montserrat focus:outline-none focus:shadow-outline w-full cursor-pointer mt-5 bg-orange-logo text-text-secondary shadow hover:bg-orange-400 uppercase hover:text-light"
         >
           Cadastre-se
         </Link>

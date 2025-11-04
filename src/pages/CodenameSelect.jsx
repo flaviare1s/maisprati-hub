@@ -131,7 +131,7 @@ export const CodenameSelect = () => {
         whatsapp: formData.whatsapp,
         groupClass: formData.groupClass,
         hasGroup: formData.hasGroup === "sim",
-        wantsGroup: formData.wantsGroup === "sim",
+        wantsGroup: formData.hasGroup === "sim" ? true : formData.wantsGroup === "sim",
         codename,
         avatar: selectedAvatar,
         type: "STUDENT",
