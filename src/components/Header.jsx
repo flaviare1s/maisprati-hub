@@ -34,10 +34,10 @@ export const Header = () => {
             <MenuDesktop user={null} onLogout={handleLogout} />
           )}
         </div>
+        <ThemeToggle />
         <div className='md:hidden'>
           <MenuMobile user={user} onLogout={handleLogout} />
         </div>
-        <ThemeToggle />
       </div>
     </header>
   )
