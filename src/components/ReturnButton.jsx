@@ -6,7 +6,7 @@ export const ReturnButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
-      className="text-blue-logo hover:underline cursor-pointer"
+      className="text-blue-logo hover:underline cursor-pointer font-medium"
     >
       &larr; Voltar
     </button>
