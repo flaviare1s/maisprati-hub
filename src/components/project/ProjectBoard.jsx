@@ -14,6 +14,7 @@ import { CustomLoader } from "../CustomLoader";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import toast from "react-hot-toast";
 import { useParams, useSearchParams } from "react-router-dom";
+import { ReturnButton } from "../ReturnButton";
 
 const COLUMN_STATUSES = [
   { key: "todo", title: "A Fazer", color: "#6B7280" },
@@ -209,7 +210,10 @@ export const ProjectBoard = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-full p-2">
+      <div className="m-4">
+        <ReturnButton />
+      </div>
+      <div className="flex flex-col h-full p-3 mt-5">
         <div className="mb-6 flex items-center gap-3 flex-shrink-0">
           <HiOutlineUserGroup className="text-orange-logo text-2xl" />
           <h2 className="text-2xl font-bold text-blue-logo">{userTeam.name}</h2>
