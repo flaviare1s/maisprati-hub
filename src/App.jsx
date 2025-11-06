@@ -22,6 +22,7 @@ import { StudentDashboardPage } from "./pages/StudentDashboardPage";
 import { TeacherDashboardPage } from "./pages/TeacherDashboardPage";
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { ProjectBoard } from "./components/project/ProjectBoard";
+import { ProjectBoardWithLayout } from "./components/project/ProjectBoardWithLayout";
 import { StudentMeetingsTab } from "./components/student-dashboard/StudentMeetingsTab";
 import { StudentNotificationsPanel } from "./components/student-dashboard/StudentNotificationsPanel";
 import { EditProfile } from "./pages/EditProfile";
@@ -139,7 +140,7 @@ function App() {
             path="/teams/:teamId/board"
             element={
               <PrivateRoute>
-                <ProjectBoard />
+                <ProjectBoardWithLayout />
               </PrivateRoute>
             }
           />

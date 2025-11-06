@@ -52,6 +52,7 @@ export const ProjectBoard = () => {
 
   useEffect(() => {
     const loadProject = async () => {
+
       try {
         let team = null;
         let progress = null;
@@ -236,7 +237,7 @@ export const ProjectBoard = () => {
           ))}
         </div>
 
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg flex-shrink-0">
+        <div className="mt-4 p-2 bg-gray-50 rounded-lg flex-shrink-0">
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
               className="bg-blue-logo h-3 rounded-full transition-all duration-300"
