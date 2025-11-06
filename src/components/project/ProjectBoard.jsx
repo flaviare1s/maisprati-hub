@@ -4,6 +4,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from "../../hooks/useAuth";
 import { fetchTeams, getTeamWithMembers } from "../../api.js/teams";
+import { getUserById } from "../../api.js/users";
 import {
   fetchProjectProgress,
   createProjectProgress,
@@ -12,7 +13,8 @@ import {
 import { CustomLoader } from "../CustomLoader";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import { ReturnButton } from "../ReturnButton";
 
 const COLUMN_STATUSES = [
   { key: "todo", title: "A Fazer", color: "#6B7280" },
@@ -41,6 +43,8 @@ const mapStatusToFrontend = (backendStatus) => {
 export const ProjectBoard = () => {
   const { user } = useAuth();
   const { teamId } = useParams();
+  const [searchParams] = useSearchParams();
+  const viewUserId = searchParams.get('viewUser'); // Para admin visualizar projeto de usuário específico
   const [userTeam, setUserTeam] = useState(null);
   const [projectPhases, setProjectPhases] = useState([]);
   const [projectProgress, setProjectProgress] = useState(null);
@@ -48,11 +52,53 @@ export const ProjectBoard = () => {
 
   useEffect(() => {
     const loadProject = async () => {
+
       try {
         let team = null;
         let progress = null;
 
-        if (teamId) {
+        if (teamId && teamId.startsWith('solo-')) {
+          // É um projeto solo sendo visualizado por admin
+          const soloUserId = teamId.replace('solo-', '');
+          team = {
+            id: teamId,
+            name: `Projeto Solo (ID: ${soloUserId})`,
+            members: [{ id: soloUserId, codename: `Usuário ${soloUserId}` }],
+          };
+          progress = await fetchProjectProgress(teamId);
+          if (!progress) progress = await createProjectProgress(teamId);
+        } else if (viewUserId && user.type === 'admin') {
+          // Admin visualizando projeto de usuário específico
+          try {
+            // Buscar dados do usuário
+            const userData = await getUserById(viewUserId);
+            team = {
+              id: `solo-${viewUserId}`,
+              name: `Projeto Solo - ${userData.name || 'Usuário'}`,
+              members: [userData],
+            };
+          } catch (error) {
+            console.warn("Erro ao buscar dados do usuário, usando dados padrão:", error);
+            team = {
+              id: `solo-${viewUserId}`,
+              name: `Projeto Solo - Usuário ${viewUserId}`,
+              members: [{ id: viewUserId, codename: `Usuário ${viewUserId}` }],
+            };
+          }
+
+          try {
+            progress = await fetchProjectProgress(`solo-${viewUserId}`);
+            if (!progress) progress = await createProjectProgress(`solo-${viewUserId}`);
+          } catch (error) {
+            console.warn("Erro ao carregar projeto solo, criando um novo:", error);
+            // Se falhar, cria um progresso vazio
+            progress = {
+              id: `solo-${viewUserId}`,
+              teamId: `solo-${viewUserId}`,
+              phases: []
+            };
+          }
+        } else if (teamId) {
           team = await getTeamWithMembers(teamId);
           progress = await fetchProjectProgress(teamId);
           if (!progress) progress = await createProjectProgress(teamId);
@@ -73,8 +119,18 @@ export const ProjectBoard = () => {
             name: `${user.codename} (Trabalho Solo)`,
             members: [user],
           };
-          progress = await fetchProjectProgress(team.id);
-          if (!progress) progress = await createProjectProgress(team.id);
+          try {
+            progress = await fetchProjectProgress(team.id);
+            if (!progress) progress = await createProjectProgress(team.id);
+          } catch (error) {
+            console.warn("Erro ao carregar projeto solo, criando um novo:", error);
+            // Se falhar, cria um progresso vazio
+            progress = {
+              id: team.id,
+              teamId: team.id,
+              phases: []
+            };
+          }
         }
 
         setUserTeam(team);
@@ -88,6 +144,13 @@ export const ProjectBoard = () => {
         setProjectPhases(mappedPhases);
       } catch (error) {
         console.error("Erro ao carregar projeto:", error);
+
+        // Se é um erro de autenticação e estamos visualizando como admin
+        if (error.response?.status === 401 && viewUserId) {
+          toast.error("Erro de autenticação ao visualizar projeto do aluno");
+          return;
+        }
+
         toast.error("Erro ao carregar dados do projeto");
       } finally {
         setLoading(false);
@@ -95,7 +158,7 @@ export const ProjectBoard = () => {
     };
 
     loadProject();
-  }, [teamId, user]);
+  }, [teamId, user, viewUserId]);
 
   const handleDropPhase = async (phaseId, newStatus) => {
     if (!projectProgress || !userTeam) return;
@@ -148,7 +211,10 @@ export const ProjectBoard = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-full p-2">
+      <div className="m-4">
+        <ReturnButton />
+      </div>
+      <div className="flex flex-col h-full p-3 mt-5">
         <div className="mb-6 flex items-center gap-3 flex-shrink-0">
           <HiOutlineUserGroup className="text-orange-logo text-2xl" />
           <h2 className="text-2xl font-bold text-blue-logo">{userTeam.name}</h2>
@@ -171,7 +237,7 @@ export const ProjectBoard = () => {
           ))}
         </div>
 
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg flex-shrink-0">
+        <div className="mt-4 p-2 bg-gray-50 rounded-lg flex-shrink-0">
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
               className="bg-blue-logo h-3 rounded-full transition-all duration-300"
