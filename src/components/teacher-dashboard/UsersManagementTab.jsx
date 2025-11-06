@@ -151,9 +151,9 @@ export const UsersManagementTab = () => {
                   <div className='flex'>
                     {!user.hasGroup && (
                       <Link
-                        to={`/dashboard/project/solo-${user.id}`}
+                        to={`/dashboard/project?viewUser=${user.id}`}
                         className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
-                        title="Visualizar progresso do projeto"
+                        title="Visualizar progresso do projeto (nova aba)"
                       >
                         <FaEye className="text-lg" />
                       </Link>
@@ -162,7 +162,7 @@ export const UsersManagementTab = () => {
                       <div className="text-right">
                         <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
                       </div>
-                  </div>
+                    </div>
                   </div>
                 </div>
               </div>
