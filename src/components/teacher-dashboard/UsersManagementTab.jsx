@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchUsers } from '../../api.js/users';
 import { MdPerson } from 'react-icons/md';
+import { FaEye } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
 
@@ -129,7 +131,7 @@ export const UsersManagementTab = () => {
             </div>
           ) : (
             currentUsers.map((user) => (
-              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1">
+              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1 text-sm">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img
@@ -138,14 +140,29 @@ export const UsersManagementTab = () => {
                       className="w-12 h-12 rounded-full border-2 border-blue-logo"
                     />
                     <div>
-                      <h4 className="font-semibold">{user.name}</h4>
+                      <h4 className="font-semibold">{user.name} {!user.hasGroup && (
+                        <span className="text-xs text-orange-logo">- Solo</span>
+                      )}</h4>
                       <p className="text-sm text-gray-muted">{user.codename}</p>
-                      <p className="text-sm text-gray-muted">{user.email}</p>
+                      <p className="text-xs text-gray-muted">{user.email}</p>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
+                  <div className='flex'>
+                    {!user.hasGroup && (
+                      <Link
+                        to={`/dashboard/project/solo-${user.id}`}
+                        className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
+                        title="Visualizar progresso do projeto"
+                      >
+                        <FaEye className="text-lg" />
+                      </Link>
+                    )}
+                    <div className="flex items-center space-x-3">
+                      <div className="text-right">
+                        <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
+                      </div>
+                  </div>
                   </div>
                 </div>
               </div>
