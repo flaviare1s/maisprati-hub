@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchUsers } from '../../api.js/users';
 import { MdPerson } from 'react-icons/md';
+import { FaEye } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
 
@@ -11,6 +13,7 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showSoloOnly, setShowSoloOnly] = useState(false);
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -59,12 +62,16 @@ export const UsersManagementTab = () => {
     );
   }
 
-  // Lógica de filtro para a busca
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Lógica de filtro para a busca e filtro de solo
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesSoloFilter = showSoloOnly ? !user.hasGroup : true;
+
+    return matchesSearch && matchesSoloFilter;
+  });
 
   // Paginação agora usa a lista filtrada
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -82,7 +89,11 @@ export const UsersManagementTab = () => {
 
         {/* 🔹 Contador de usuários */}
         <div className="mb-4 text-sm text-gray-500">
-          Total de usuários: <span className="font-semibold">{filteredUsers.length}</span>
+          {showSoloOnly ? (
+            <>Alunos solo: <span className="font-semibold">{filteredUsers.length}</span></>
+          ) : (
+            <>Total de usuários: <span className="font-semibold">{filteredUsers.length}</span></>
+          )}
         </div>
 
         {/* 🔹 Campo de busca */}
@@ -97,6 +108,21 @@ export const UsersManagementTab = () => {
               setCurrentPage(1); // Reseta a página ao buscar
             }}
           />
+        </div>
+
+        {/* 🔹 Filtro de tipo de aluno */}
+        <div className="mb-4">
+          <select
+            value={showSoloOnly ? 'solo' : 'all'}
+            onChange={(e) => {
+              setShowSoloOnly(e.target.value === 'solo');
+              setCurrentPage(1);
+            }}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Todos os alunos</option>
+            <option value="solo">Alunos solo</option>
+          </select>
         </div>
 
         {/* 🔹 Botões de ordenação */}
@@ -125,11 +151,16 @@ export const UsersManagementTab = () => {
           {filteredUsers.length === 0 ? (
             <div className="text-center py-8">
               <MdPerson className="mx-auto text-2xl md:text-4xl text-gray-muted mb-4" />
-              <p className="text-gray-muted">Nenhum estudante encontrado com o termo de busca.</p>
+              <p className="text-gray-muted">
+                {showSoloOnly
+                  ? 'Nenhum aluno solo encontrado.'
+                  : 'Nenhum estudante encontrado com o termo de busca.'
+                }
+              </p>
             </div>
           ) : (
             currentUsers.map((user) => (
-              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1">
+              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1 text-sm">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img
@@ -138,14 +169,29 @@ export const UsersManagementTab = () => {
                       className="w-12 h-12 rounded-full border-2 border-blue-logo"
                     />
                     <div>
-                      <h4 className="font-semibold">{user.name}</h4>
+                      <h4 className="font-semibold">{user.name} {!user.hasGroup && (
+                        <span className="text-xs text-orange-logo">- Solo</span>
+                      )}</h4>
                       <p className="text-sm text-gray-muted">{user.codename}</p>
-                      <p className="text-sm text-gray-muted">{user.email}</p>
+                      <p className="text-xs text-gray-muted">{user.email}</p>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
+                  <div className='flex'>
+                    {!user.hasGroup && (
+                      <Link
+                        to={`/dashboard/project?viewUser=${user.id}`}
+                        className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
+                        title="Visualizar progresso do projeto (nova aba)"
+                      >
+                        <FaEye className="text-lg" />
+                      </Link>
+                    )}
+                    <div className="flex items-center space-x-3">
+                      <div className="text-right">
+                        <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

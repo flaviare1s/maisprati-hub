@@ -27,6 +27,7 @@ import { StudentNotificationsPanel } from "./components/student-dashboard/Studen
 import { EditProfile } from "./pages/EditProfile";
 import { FAQ } from "./pages/FAQ";
 import { OAuth2Callback } from "./pages/OAuth2Callback";
+import { ProjectBoardWithLayout } from "./components/project/ProjectBoardWithLayout";
 
 function App() {
   const { user, loading } = useAuth();
@@ -140,7 +141,7 @@ function App() {
             path="/teams/:teamId/board"
             element={
               <PrivateRoute>
-                <ProjectBoard />
+                <ProjectBoardWithLayout />
               </PrivateRoute>
             }
           />
