@@ -13,6 +13,7 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showSoloOnly, setShowSoloOnly] = useState(false);
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -61,12 +62,16 @@ export const UsersManagementTab = () => {
     );
   }
 
-  // Lógica de filtro para a busca
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Lógica de filtro para a busca e filtro de solo
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesSoloFilter = showSoloOnly ? !user.hasGroup : true;
+
+    return matchesSearch && matchesSoloFilter;
+  });
 
   // Paginação agora usa a lista filtrada
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -84,7 +89,11 @@ export const UsersManagementTab = () => {
 
         {/* 🔹 Contador de usuários */}
         <div className="mb-4 text-sm text-gray-500">
-          Total de usuários: <span className="font-semibold">{filteredUsers.length}</span>
+          {showSoloOnly ? (
+            <>Alunos solo: <span className="font-semibold">{filteredUsers.length}</span></>
+          ) : (
+            <>Total de usuários: <span className="font-semibold">{filteredUsers.length}</span></>
+          )}
         </div>
 
         {/* 🔹 Campo de busca */}
@@ -99,6 +108,21 @@ export const UsersManagementTab = () => {
               setCurrentPage(1); // Reseta a página ao buscar
             }}
           />
+        </div>
+
+        {/* 🔹 Filtro de tipo de aluno */}
+        <div className="mb-4">
+          <select
+            value={showSoloOnly ? 'solo' : 'all'}
+            onChange={(e) => {
+              setShowSoloOnly(e.target.value === 'solo');
+              setCurrentPage(1);
+            }}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Todos os alunos</option>
+            <option value="solo">Alunos solo</option>
+          </select>
         </div>
 
         {/* 🔹 Botões de ordenação */}
@@ -127,7 +151,12 @@ export const UsersManagementTab = () => {
           {filteredUsers.length === 0 ? (
             <div className="text-center py-8">
               <MdPerson className="mx-auto text-2xl md:text-4xl text-gray-muted mb-4" />
-              <p className="text-gray-muted">Nenhum estudante encontrado com o termo de busca.</p>
+              <p className="text-gray-muted">
+                {showSoloOnly
+                  ? 'Nenhum aluno solo encontrado.'
+                  : 'Nenhum estudante encontrado com o termo de busca.'
+                }
+              </p>
             </div>
           ) : (
             currentUsers.map((user) => (
