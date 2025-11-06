@@ -18,7 +18,7 @@ export const fetchProjectProgress = async (teamId) => {
 
 export const createProjectProgress = async (teamId) => {
   try {
-    const response = await api.post(`/projectProgress/create/${teamId}`);
+    const response = await api.post(`/progress?teamId=${teamId}`, {});
     return response.data;
   } catch (error) {
     console.error("Erro ao criar progresso do projeto:", error);
@@ -29,7 +29,7 @@ export const createProjectProgress = async (teamId) => {
 // Atualizar progresso do projeto
 export const updateProjectProgress = async (progressId, phases) => {
   try {
-    const response = await api.put(`/projectProgress/${progressId}`, {
+    const response = await api.patch(`/projectProgress/${progressId}`, {
       phases,
       lastUpdated: new Date().toISOString(),
     });
@@ -41,11 +41,7 @@ export const updateProjectProgress = async (progressId, phases) => {
 };
 
 // Atualizar status de uma fase específica
-export const updatePhaseStatus = async (
-  teamId,
-  phaseTitle,
-  newStatus
-) => {
+export const updatePhaseStatus = async (teamId, phaseTitle, newStatus) => {
   try {
     const response = await api.put(
       `/projectProgress/${teamId}/phase?title=${phaseTitle}&status=${newStatus.toUpperCase()}`

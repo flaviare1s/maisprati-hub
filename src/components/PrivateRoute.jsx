@@ -1,18 +1,10 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
-import { useEffect } from 'react';
 
 export const PrivateRoute = ({ children, requiredType = null, requireGroup = false }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
-
-  // Log para debug (sempre executado)
-  useEffect(() => {
-    if (!user && !loading) {
-      console.log(`PrivateRoute: Usuário não autenticado em ${location.pathname}`);
-    }
-  }, [user, loading, location.pathname]);
 
   // Verifica se ainda está carregando
   if (loading) {
