@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchUsers } from '../../api.js/users';
 import { MdPerson } from 'react-icons/md';
-import { FaEye } from 'react-icons/fa';
+import { BsKanban } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
@@ -13,7 +13,7 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showSoloOnly, setShowSoloOnly] = useState('all'); // 'all', 'solo', 'seeking'
+  const [showSoloOnly, setShowSoloOnly] = useState('all');
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -204,7 +204,7 @@ export const UsersManagementTab = () => {
                         className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
                         title="Visualizar progresso do projeto"
                       >
-                        <FaEye className="text-lg" />
+                        <BsKanban className='text-lg' />
                       </Link>
                     )}
                     <div className="flex items-center space-x-3">
