@@ -13,7 +13,7 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showSoloOnly, setShowSoloOnly] = useState(false);
+  const [showSoloOnly, setShowSoloOnly] = useState('all'); // 'all', 'solo', 'seeking'
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -68,9 +68,18 @@ export const UsersManagementTab = () => {
       user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesSoloFilter = showSoloOnly ? !user.hasGroup : true;
+    // Filtro por tipo de usuário
+    let matchesTypeFilter = true;
+    if (showSoloOnly === 'solo') {
+      // Alunos solo: não tem grupo E não está procurando grupo
+      matchesTypeFilter = !user.hasGroup && !user.wantsGroup;
+    } else if (showSoloOnly === 'seeking') {
+      // Procurando grupo: não tem grupo MAS está procurando grupo
+      matchesTypeFilter = !user.hasGroup && user.wantsGroup;
+    }
+    // 'all' não aplica filtro adicional
 
-    return matchesSearch && matchesSoloFilter;
+    return matchesSearch && matchesTypeFilter;
   });
 
   // Paginação agora usa a lista filtrada
@@ -89,8 +98,10 @@ export const UsersManagementTab = () => {
 
         {/* 🔹 Contador de usuários */}
         <div className="mb-4 text-sm text-gray-500">
-          {showSoloOnly ? (
+          {showSoloOnly === 'solo' ? (
             <>Alunos solo: <span className="font-semibold">{filteredUsers.length}</span></>
+          ) : showSoloOnly === 'seeking' ? (
+            <>Sem guilda: <span className="font-semibold">{filteredUsers.length}</span></>
           ) : (
             <>Total de usuários: <span className="font-semibold">{filteredUsers.length}</span></>
           )}
@@ -113,15 +124,16 @@ export const UsersManagementTab = () => {
         {/* 🔹 Filtro de tipo de aluno */}
         <div className="mb-4">
           <select
-            value={showSoloOnly ? 'solo' : 'all'}
+            value={showSoloOnly}
             onChange={(e) => {
-              setShowSoloOnly(e.target.value === 'solo');
+              setShowSoloOnly(e.target.value);
               setCurrentPage(1);
             }}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">Todos os alunos</option>
             <option value="solo">Alunos solo</option>
+            <option value="seeking">Heróis sem guilda</option>
           </select>
         </div>
 
@@ -152,9 +164,11 @@ export const UsersManagementTab = () => {
             <div className="text-center py-8">
               <MdPerson className="mx-auto text-2xl md:text-4xl text-gray-muted mb-4" />
               <p className="text-gray-muted">
-                {showSoloOnly
+                {showSoloOnly === 'solo'
                   ? 'Nenhum aluno solo encontrado.'
-                  : 'Nenhum estudante encontrado com o termo de busca.'
+                  : showSoloOnly === 'seeking'
+                    ? 'Nenhum aluno procurando grupo encontrado.'
+                    : 'Nenhum estudante encontrado com o termo de busca.'
                 }
               </p>
             </div>
@@ -169,20 +183,26 @@ export const UsersManagementTab = () => {
                       className="w-12 h-12 rounded-full border-2 border-blue-logo"
                     />
                     <div>
-                      <h4 className="font-semibold">{user.name} {!user.hasGroup && (
-                        <span className="text-xs text-orange-logo">- Solo</span>
-                      )}</h4>
+                      <h4 className="font-semibold">
+                        {user.name}
+                        {!user.hasGroup && !user.wantsGroup && (
+                          <span className="text-xs text-blue-logo"> - Solo</span>
+                        )}
+                        {!user.hasGroup && user.wantsGroup && (
+                          <span className="text-xs text-orange-logo"> - Sem guilda</span>
+                        )}
+                      </h4>
                       <p className="text-sm text-gray-muted">{user.codename}</p>
                       <p className="text-xs text-gray-muted">{user.email}</p>
                     </div>
                   </div>
 
                   <div className='flex'>
-                    {!user.hasGroup && (
+                    {!user.hasGroup && !user.wantsGroup && (
                       <Link
                         to={`/dashboard/project?viewUser=${user.id}`}
                         className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
-                        title="Visualizar progresso do projeto (nova aba)"
+                        title="Visualizar progresso do projeto"
                       >
                         <FaEye className="text-lg" />
                       </Link>
