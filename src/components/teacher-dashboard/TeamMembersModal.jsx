@@ -118,7 +118,7 @@ export const TeamMembersModal = ({ team, onClose }) => {
                       </p>
                     </div>
                     <div>
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${member.role?.toLowerCase() === "leader"
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap ${member.role?.toLowerCase() === "leader"
                         ? "bg-purple-100 text-purple-800"
                         : member.role?.toLowerCase() === "subleader"
                           ? "bg-blue-100 text-blue-800"
