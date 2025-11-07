@@ -1,12 +1,16 @@
-import { FaEye, FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
+import { FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
+import { BsKanban } from "react-icons/bs";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { useState, useEffect } from 'react';
 import { toggleTeamStatus } from '../../api.js/teams';
+import { TeamMembersModal } from './TeamMembersModal';
 import toast from 'react-hot-toast';
 
 export const TeamCard = ({ team, onSelect }) => {
   const [copiedCode, setCopiedCode] = useState(null);
   const [localTeam, setLocalTeam] = useState(team);
   const [isToggling, setIsToggling] = useState(false);
+  const [showMembersModal, setShowMembersModal] = useState(false);
 
   // Sincronizar estado local quando o prop team mudar
   useEffect(() => {
@@ -53,13 +57,20 @@ export const TeamCard = ({ team, onSelect }) => {
             </span>
           )}
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-0">
+          <button
+            onClick={() => setShowMembersModal(true)}
+            className="p-2 text-green-600 hover:bg-blue-50 cursor-pointer rounded-md"
+            title="Visualizar Membros"
+          >
+            <HiOutlineUserGroup />
+          </button>
           <button
             onClick={onSelect}
             className="p-2 text-blue-logo hover:bg-blue-50 cursor-pointer rounded-md"
             title="Visualizar Time"
           >
-            <FaEye />
+            <BsKanban />
           </button>
           <button
             onClick={handleToggleStatus}
@@ -94,6 +105,14 @@ export const TeamCard = ({ team, onSelect }) => {
           </button>
         </div>
       </div>
+
+      {/* Team Members Modal */}
+      {showMembersModal && (
+        <TeamMembersModal
+          team={localTeam}
+          onClose={() => setShowMembersModal(false)}
+        />
+      )}
     </div>
   );
 };
