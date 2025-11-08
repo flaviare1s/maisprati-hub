@@ -20,61 +20,61 @@ export const UsersManagementTab = () => {
   const [togglingUsers, setTogglingUsers] = useState(new Set());
   const itemsPerPage = 30;
 
+  const loadUsers = async () => {
+    try {
+      const [usersData, teamsData] = await Promise.all([
+        fetchUsers(),
+        fetchTeams()
+      ]);
+
+      const students = usersData.filter(user => user.type === 'student');
+
+      // Criar mapeamento de usuários com times
+      const studentsWithTeams = students.map(student => {
+        // Encontrar o time do usuário
+        const userTeam = teamsData.find(team =>
+          team.members && team.members.some(member =>
+            member.userId === student.id || member.id === student.id
+          )
+        );
+
+        return {
+          ...student,
+          teamName: userTeam ? userTeam.name : null
+        };
+      });
+
+      setUsers(studentsWithTeams);
+    } catch (error) {
+      console.error('Erro ao carregar usuários:', error);
+      setError('Erro ao carregar lista de usuários');
+    }
+  };
+
   useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const [usersData, teamsData] = await Promise.all([
-          fetchUsers(),
-          fetchTeams()
-        ]);
-
-        const students = usersData.filter(user => user.type === 'student');
-
-        // Criar mapeamento de usuários com times
-        const studentsWithTeams = students.map(student => {
-          // Encontrar o time do usuário
-          const userTeam = teamsData.find(team =>
-            team.members && team.members.some(member =>
-              member.userId === student.id || member.id === student.id
-            )
-          );
-
-          return {
-            ...student,
-            teamName: userTeam ? userTeam.name : null
-          };
-        });
-
-        setUsers(studentsWithTeams);
-      } catch (error) {
-        console.error('Erro ao carregar usuários:', error);
-        setError('Erro ao carregar lista de usuários');
-      } finally {
-        setLoading(false);
-      }
+    const initializeData = async () => {
+      setLoading(true);
+      await loadUsers();
+      setLoading(false);
     };
-    loadUsers();
+    initializeData();
   }, []);
 
   const handleToggleUserStatus = async (userId, currentIsActive) => {
     setTogglingUsers(prev => new Set([...prev, userId]));
 
     try {
-      let updatedUser;
       if (currentIsActive) {
-        updatedUser = await deactivateUser(userId);
+        await deactivateUser(userId);
         toast.success('Usuário inativado com sucesso!');
       } else {
-        updatedUser = await activateUser(userId);
+        await activateUser(userId);
         toast.success('Usuário reativado com sucesso!');
       }
 
-      // Atualizar a lista de usuários
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.id === userId ? { ...user, isActive: updatedUser.isActive } : user
-        )
-      );
+      // Recarregar os dados para garantir que o estado esteja sincronizado
+      await loadUsers();
+
     } catch (error) {
       console.error('Erro ao alterar status do usuário:', error);
       toast.error('Erro ao alterar status do usuário');
