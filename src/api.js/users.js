@@ -72,3 +72,25 @@ export const getCurrentUserData = async () => {
     throw error;
   }
 };
+
+// Inativar usuário (próprio usuário ou admin)
+export const deactivateUser = async (userId) => {
+  try {
+    const response = await api.patch(`/users/${userId}/deactivate`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao inativar usuário:", error);
+    throw error;
+  }
+};
+
+// Reativar usuário (apenas admin)
+export const activateUser = async (userId) => {
+  try {
+    const response = await api.patch(`/users/${userId}/activate`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao reativar usuário:", error);
+    throw error;
+  }
+};
