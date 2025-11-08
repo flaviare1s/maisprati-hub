@@ -75,6 +75,9 @@ export const UsersManagementTab = () => {
       // Recarregar os dados para garantir que o estado esteja sincronizado
       await loadUsers();
 
+      // Disparar evento customizado para atualizar dashboard
+      window.dispatchEvent(new CustomEvent('userStatusChanged'));
+
     } catch (error) {
       console.error('Erro ao alterar status do usuário:', error);
       toast.error('Erro ao alterar status do usuário');
