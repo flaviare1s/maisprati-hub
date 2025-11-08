@@ -1,12 +1,16 @@
-import { FaEye, FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
+import { FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
+import { BsKanban } from "react-icons/bs";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { useState, useEffect } from 'react';
 import { toggleTeamStatus } from '../../api.js/teams';
+import { TeamMembersModal } from './TeamMembersModal';
 import toast from 'react-hot-toast';
 
 export const TeamCard = ({ team, onSelect }) => {
   const [copiedCode, setCopiedCode] = useState(null);
   const [localTeam, setLocalTeam] = useState(team);
   const [isToggling, setIsToggling] = useState(false);
+  const [showMembersModal, setShowMembersModal] = useState(false);
 
   // Sincronizar estado local quando o prop team mudar
   useEffect(() => {
@@ -53,22 +57,29 @@ export const TeamCard = ({ team, onSelect }) => {
             </span>
           )}
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-0">
+          <button
+            onClick={() => setShowMembersModal(true)}
+            className="p-2 text-green-600 hover:text-green-800 cursor-pointer rounded-md"
+            title="Visualizar membros"
+          >
+            <HiOutlineUserGroup />
+          </button>
           <button
             onClick={onSelect}
-            className="p-2 text-blue-logo hover:bg-blue-50 cursor-pointer rounded-md"
-            title="Visualizar Time"
+            className="p-2 text-blue-logo hover:text-blue-600 transition-colors cursor-pointer rounded-md"
+            title="Visualizar progresso do time"
           >
-            <FaEye />
+            <BsKanban />
           </button>
           <button
             onClick={handleToggleStatus}
             disabled={isToggling}
             className={`p-2 cursor-pointer rounded-md transition-colors ${isToggling
               ? 'text-gray-400 cursor-not-allowed'
-              : 'text-orange-logo hover:bg-orange-50'
+              : 'text-orange-logo hover:text-orange-600'
               }`}
-            title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar Time" : "Ativar Time")}
+            title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar time" : "Ativar time")}
           >
             {isToggling ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
@@ -94,6 +105,14 @@ export const TeamCard = ({ team, onSelect }) => {
           </button>
         </div>
       </div>
+
+      {/* Team Members Modal */}
+      {showMembersModal && (
+        <TeamMembersModal
+          team={localTeam}
+          onClose={() => setShowMembersModal(false)}
+        />
+      )}
     </div>
   );
 };

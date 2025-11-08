@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { fetchUsers } from '../../api.js/users';
+import { fetchUsers, deactivateUser, activateUser } from '../../api.js/users';
+import { fetchTeams } from '../../api.js/teams';
 import { MdPerson } from 'react-icons/md';
-import { FaEye } from 'react-icons/fa';
+import { BsKanban } from "react-icons/bs";
+import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
+import toast from 'react-hot-toast';
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);
@@ -13,42 +16,79 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showSoloOnly, setShowSoloOnly] = useState(false);
+  const [filterOption, setFilterOption] = useState('active'); // Filtro simplificado
+  const [togglingUsers, setTogglingUsers] = useState(new Set());
   const itemsPerPage = 30;
 
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const usersData = await fetchUsers();
-        const students = usersData.filter(user => user.type === 'student');
-        students.sort((a, b) => a.name.localeCompare(b.name));
-        setUsers(students);
-      } catch (error) {
-        console.error('Erro ao carregar usuários:', error);
-        setError('Erro ao carregar lista de usuários');
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadUsers();
-  }, []);
+  const loadUsers = async () => {
+    try {
+      const [usersData, teamsData] = await Promise.all([
+        fetchUsers(),
+        fetchTeams()
+      ]);
+
+      const students = usersData.filter(user => user.type === 'student');
+
+      // Criar mapeamento de usuários com times
+      const studentsWithTeams = students.map(student => {
+        // Encontrar o time do usuário
+        const userTeam = teamsData.find(team =>
+          team.members && team.members.some(member =>
+            member.userId === student.id || member.id === student.id
+          )
+        );
+
+        return {
+          ...student,
+          teamName: userTeam ? userTeam.name : null
+        };
+      });
+
+      setUsers(studentsWithTeams);
+    } catch (error) {
+      console.error('Erro ao carregar usuários:', error);
+      setError('Erro ao carregar lista de usuários');
+    }
+  };
 
   useEffect(() => {
-    if (sortOption) {
-      const sortedUsers = [...users];
-      if (sortOption === 'name') {
-        sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (sortOption === 'groupClass') {
-        sortedUsers.sort((a, b) => {
-          if (!a.groupClass) return 1;
-          if (!b.groupClass) return -1;
-          return a.groupClass.localeCompare(b.groupClass);
-        });
+    const initializeData = async () => {
+      setLoading(true);
+      await loadUsers();
+      setLoading(false);
+    };
+    initializeData();
+  }, []);
+
+  const handleToggleUserStatus = async (userId, currentIsActive) => {
+    setTogglingUsers(prev => new Set([...prev, userId]));
+
+    try {
+      if (currentIsActive) {
+        await deactivateUser(userId);
+        toast.success('Usuário inativado com sucesso!');
+      } else {
+        await activateUser(userId);
+        toast.success('Usuário reativado com sucesso!');
       }
-      setUsers(sortedUsers);
-      setCurrentPage(1);
+
+      // Recarregar os dados para garantir que o estado esteja sincronizado
+      await loadUsers();
+
+      // Disparar evento customizado para atualizar dashboard
+      window.dispatchEvent(new CustomEvent('userStatusChanged'));
+
+    } catch (error) {
+      console.error('Erro ao alterar status do usuário:', error);
+      toast.error('Erro ao alterar status do usuário');
+    } finally {
+      setTogglingUsers(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
     }
-  }, [sortOption]);
+  };
 
   if (loading) {
     return <CustomLoader />;
@@ -62,22 +102,58 @@ export const UsersManagementTab = () => {
     );
   }
 
-  // Lógica de filtro para a busca e filtro de solo
+  // Lógica de filtro para a busca e filtro unificado
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.codename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.teamName && user.teamName.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    const matchesSoloFilter = showSoloOnly ? !user.hasGroup : true;
+    // Filtro simplificado
+    let matchesFilter = true;
+    switch (filterOption) {
+      case 'active':
+        matchesFilter = user.isActive !== false; // Todos os ativos (padrão)
+        break;
+      case 'solo':
+        matchesFilter = (user.isActive !== false) && (!user.hasGroup && !user.wantsGroup); // Solo ativos
+        break;
+      case 'seeking':
+        matchesFilter = (user.isActive !== false) && (!user.hasGroup && user.wantsGroup); // Sem guilda ativos
+        break;
+      case 'grouped':
+        matchesFilter = (user.isActive !== false) && user.hasGroup; // Com guilda ativos
+        break;
+      case 'inactive':
+        matchesFilter = user.isActive === false; // Apenas inativos
+        break;
+      case 'all':
+        matchesFilter = true; // Todos (ativos e inativos)
+        break;
+      default:
+        matchesFilter = user.isActive !== false;
+    }
 
-    return matchesSearch && matchesSoloFilter;
+    return matchesSearch && matchesFilter;
   });
 
-  // Paginação agora usa a lista filtrada
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  // Aplicar ordenação
+  const sortedUsers = [...filteredUsers];
+  if (sortOption === 'name') {
+    sortedUsers.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortOption === 'groupClass') {
+    sortedUsers.sort((a, b) => {
+      if (!a.groupClass) return 1;
+      if (!b.groupClass) return -1;
+      return a.groupClass.localeCompare(b.groupClass);
+    });
+  }
+
+  // Paginação agora usa a lista filtrada e ordenada
+  const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentUsers = filteredUsers.slice(startIndex, endIndex);
+  const currentUsers = sortedUsers.slice(startIndex, endIndex);
 
   return (
     <div className="w-full p-0 text-dark">
@@ -89,18 +165,14 @@ export const UsersManagementTab = () => {
 
         {/* 🔹 Contador de usuários */}
         <div className="mb-4 text-sm text-gray-500">
-          {showSoloOnly ? (
-            <>Alunos solo: <span className="font-semibold">{filteredUsers.length}</span></>
-          ) : (
-            <>Total de usuários: <span className="font-semibold">{filteredUsers.length}</span></>
-          )}
+          Total de usuários: <span className="font-semibold">{sortedUsers.length}</span>
         </div>
 
         {/* 🔹 Campo de busca */}
         <div className="mb-4">
           <input
             type="text"
-            placeholder="Buscar por nome, codinome ou email..."
+            placeholder="Buscar por nome, codinome, email ou guilda..."
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => {
@@ -110,18 +182,22 @@ export const UsersManagementTab = () => {
           />
         </div>
 
-        {/* 🔹 Filtro de tipo de aluno */}
+        {/* 🔹 Filtro simplificado */}
         <div className="mb-4">
           <select
-            value={showSoloOnly ? 'solo' : 'all'}
+            value={filterOption}
             onChange={(e) => {
-              setShowSoloOnly(e.target.value === 'solo');
+              setFilterOption(e.target.value);
               setCurrentPage(1);
             }}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">Todos os alunos</option>
-            <option value="solo">Alunos solo</option>
+            <option value="active">Ativos</option>
+            <option value="solo">Solo</option>
+            <option value="seeking">Sem guilda</option>
+            <option value="grouped">Com guilda</option>
+            <option value="inactive">Inativos</option>
+            <option value="all">Todos</option>
           </select>
         </div>
 
@@ -148,45 +224,80 @@ export const UsersManagementTab = () => {
         </div>
 
         <div className="grid gap-4">
-          {filteredUsers.length === 0 ? (
+          {sortedUsers.length === 0 ? (
             <div className="text-center py-8">
               <MdPerson className="mx-auto text-2xl md:text-4xl text-gray-muted mb-4" />
               <p className="text-gray-muted">
-                {showSoloOnly
-                  ? 'Nenhum aluno solo encontrado.'
-                  : 'Nenhum estudante encontrado com o termo de busca.'
-                }
+                Nenhum estudante encontrado com os filtros aplicados.
               </p>
             </div>
           ) : (
             currentUsers.map((user) => (
-              <div key={user.id} className="user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1 text-sm">
+              <div key={user.id} className={`user-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg px-2 sm:px-4 py-1 text-sm ${!user.isActive ? 'opacity-60' : ''
+                }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img
                       src={user.avatar || '/images/avatar/avatares 1.png'}
                       alt={`Avatar de ${user.name}`}
-                      className="w-12 h-12 rounded-full border-2 border-blue-logo"
+                      className={`hidden sm:block w-12 h-12 rounded-full border-2 border-blue-logo ${!user.isActive ? 'grayscale' : ''
+                        }`}
                     />
                     <div>
-                      <h4 className="font-semibold">{user.name} {!user.hasGroup && (
-                        <span className="text-xs text-orange-logo">- Solo</span>
-                      )}</h4>
-                      <p className="text-sm text-gray-muted">{user.codename}</p>
-                      <p className="text-xs text-gray-muted">{user.email}</p>
+                      <h4 className={`font-semibold ${!user.isActive ? 'line-through' : ''}`}>
+                        {user.name}
+                        {!user.hasGroup && !user.wantsGroup && (
+                          <span className="text-xs text-blue-logo"> - Solo</span>
+                        )}
+                        {!user.hasGroup && user.wantsGroup && (
+                          <span className="text-xs text-orange-logo"> - Sem guilda</span>
+                        )}
+                        {!user.isActive && (
+                          <span className="text-xs text-red-500 ml-2">(Inativo)</span>
+                        )}
+                      </h4>
+                      <p className={`text-xs sm:text-sm text-gray-muted ${!user.isActive ? 'line-through' : ''}`}>
+                        {user.codename}
+                      </p>
+                      <p className={`text-xs text-gray-muted ${!user.isActive ? 'line-through' : ''}`}>
+                        {user.email}
+                      </p>
+                      {user.teamName && (
+                        <p className={`text-xs font-medium text-blue-logo ${!user.isActive ? 'line-through' : ''}`}>
+                          {user.teamName}
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <div className='flex'>
-                    {!user.hasGroup && (
+                  <div className='flex items-center'>
+                    {!user.hasGroup && !user.wantsGroup && user.isActive !== false && (
                       <Link
                         to={`/dashboard/project?viewUser=${user.id}`}
                         className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
-                        title="Visualizar progresso do projeto (nova aba)"
+                        title="Visualizar progresso do projeto"
                       >
-                        <FaEye className="text-lg" />
+                        <BsKanban className='text-lg' />
                       </Link>
                     )}
+
+                    {/* Toggle de ativar/inativar usuário */}
+                    <button
+                      onClick={() => handleToggleUserStatus(user.id, user.isActive)}
+                      disabled={togglingUsers.has(user.id)}
+                      className={`p-2 transition-colors ${togglingUsers.has(user.id)
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-orange-logo hover:text-orange-600 cursor-pointer'
+                        }`}
+                      title={togglingUsers.has(user.id) ? 'Alterando...' : (user.isActive ? "Inativar usuário" : "Ativar usuário")}
+                    >
+                      {togglingUsers.has(user.id) ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
+                      ) : (
+                        user.isActive ? <FaToggleOn className="text-lg" /> : <FaToggleOff className="text-lg" />
+                      )}
+                    </button>
+
                     <div className="flex items-center space-x-3">
                       <div className="text-right">
                         <p className="font-semibold text-blue-logo">{user.groupClass || 'Não definida'}</p>
@@ -200,10 +311,10 @@ export const UsersManagementTab = () => {
         </div>
 
         {/* Paginação */}
-        {filteredUsers.length > 0 && totalPages > 1 && (
+        {sortedUsers.length > 0 && totalPages > 1 && (
           <div className="mt-4 flex justify-center">
             <Pagination
-              totalItems={filteredUsers.length}
+              totalItems={sortedUsers.length}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={(page) => setCurrentPage(page)}
