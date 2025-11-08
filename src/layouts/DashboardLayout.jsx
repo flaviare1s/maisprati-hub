@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Calendar } from "../components/Calendar";
 import { useAuth } from "../hooks/useAuth";
@@ -13,9 +14,8 @@ export const DashboardLayout = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [setActiveTeams] = useState([]);
-  const [userInTeam] = useState(false);
-  const [setUserInActiveTeam] = useState(false);
+  const [activeTeams, setActiveTeams] = useState([]);
+  const [userInTeam, setUserInActiveTeam] = useState(false);
   const [loadingTeams, setLoadingTeams] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -74,7 +74,7 @@ export const DashboardLayout = () => {
 
     const loadTeams = async () => {
       try {
-        if (user?.role === 'student') {
+        if (user?.type === 'student') {
           const teams = await fetchActiveTeams();
           setActiveTeams(teams);
 
@@ -85,6 +85,7 @@ export const DashboardLayout = () => {
             setUserInActiveTeam(userInTeam);
           } else {
             console.warn('ID do usuário não encontrado ou inválido:', user);
+            setUserInActiveTeam(false);
           }
         }
       } catch (error) {
@@ -95,7 +96,7 @@ export const DashboardLayout = () => {
     };
 
     loadTeams();
-  }, [user]);
+  }, [user, user?.hasGroup, setActiveTeams]); // Adicionei user?.hasGroup como dependência
 
   const handleTabClick = (tabName) => {
     switch (tabName) {
@@ -198,8 +199,19 @@ export const DashboardLayout = () => {
       <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[240px] order-2 md:order-1">
           <Calendar disabled={
-            (user?.wantsGroup && !user?.hasGroup) || // Quer grupo mas não tem
-            (user?.hasGroup && !userInTeam) // Indicou que tem grupo mas não está em nenhum time ativo
+            (() => {
+              // Se ainda está carregando e o usuário tem grupo, não desabilitar ainda
+              if (loadingTeams && user?.hasGroup) {
+                return false;
+              }
+
+              // Lógica normal após carregamento
+              const condition1 = user?.wantsGroup && !user?.hasGroup; // Quer grupo mas não tem
+              const condition2 = user?.hasGroup && !userInTeam; // Tem grupo mas não está em time ativo
+              const disabled = condition1 || condition2;
+
+              return disabled;
+            })()
           } />
         </div>
         <div className="dashboard-main w-full md:flex-1 rounded-lg py-6 px-3 sm:px-6 shadow-lg order-1 md:order-2">
