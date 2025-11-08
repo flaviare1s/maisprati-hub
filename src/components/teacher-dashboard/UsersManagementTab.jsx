@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
 import toast from 'react-hot-toast';
+import { IoIosTimer } from "react-icons/io";
 
 export const UsersManagementTab = () => {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,7 @@ export const UsersManagementTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterOption, setFilterOption] = useState('active'); // Filtro simplificado
+  const [filterOption, setFilterOption] = useState('active');
   const [togglingUsers, setTogglingUsers] = useState(new Set());
   const itemsPerPage = 30;
 
@@ -265,6 +266,12 @@ export const UsersManagementTab = () => {
                       {user.teamName && (
                         <p className={`text-xs font-medium text-blue-logo ${!user.isActive ? 'line-through' : ''}`}>
                           {user.teamName}
+                        </p>
+                      )}
+                      {!user.teamName && user.hasGroup && (
+                        <p className={`text-xs font-medium text-orange-logo flex items-center gap-1 ${!user.isActive ? 'line-through' : ''}`}>
+                          <IoIosTimer />
+                          Aguardando entrada no time
                         </p>
                       )}
                     </div>
