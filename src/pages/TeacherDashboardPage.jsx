@@ -185,14 +185,14 @@ export const TeacherDashboardPage = () => {
             setActiveTab={setActiveTab}
           />
           <DashboardTab
-            icon={<FaUsers />}
-            title="Times"
+            icon={<FaUserCog />}
+            title="Usuários"
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
           <DashboardTab
-            icon={<FaUserCog />}
-            title="Usuários"
+            icon={<FaUsers />}
+            title="Times"
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
