@@ -127,7 +127,13 @@ export const StudentDashboardPage = () => {
           <div>
             <p className="text-sm">Grupo:</p>
             <p className="text-lg font-semibold text-blue-logo">
-              {userTeam?.name || (user.hasGroup ? "Carregando..." : "Nenhum")}
+              {userTeam?.name || (
+                loading && user.hasGroup
+                  ? "Verificando..."
+                  : user.hasGroup
+                    ? "Aguardando entrada"
+                    : "Nenhum"
+              )}
             </p>
           </div>
         </div>
@@ -175,7 +181,7 @@ export const StudentDashboardPage = () => {
               <button
                 onClick={handleDisableWantsGroup}
                 disabled={changingPreference}
-                    className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 title="Clique para alterar para trabalho individual"
               >
                 {changingPreference ? (
