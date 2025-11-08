@@ -268,7 +268,7 @@ export const UsersManagementTab = () => {
                   </div>
 
                   <div className='flex items-center'>
-                    {!user.hasGroup && !user.wantsGroup && (
+                    {!user.hasGroup && !user.wantsGroup && user.isActive !== false && (
                       <Link
                         to={`/dashboard/project?viewUser=${user.id}`}
                         className="p-2 text-blue-logo hover:text-blue-600 transition-colors"
