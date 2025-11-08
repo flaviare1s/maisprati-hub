@@ -7,6 +7,7 @@ import { FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { CustomLoader } from '../CustomLoader';
 import { Pagination } from '../Pagination';
+import { ConfirmationModal } from '../ConfirmationModal';
 import toast from 'react-hot-toast';
 import { IoIosTimer } from "react-icons/io";
 
@@ -19,6 +20,12 @@ export const UsersManagementTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('active');
   const [togglingUsers, setTogglingUsers] = useState(new Set());
+  const [confirmationModal, setConfirmationModal] = useState({
+    open: false,
+    userId: null,
+    userName: '',
+    isActive: false
+  });
   const itemsPerPage = 30;
 
   const loadUsers = async () => {
@@ -61,7 +68,23 @@ export const UsersManagementTab = () => {
     initializeData();
   }, []);
 
-  const handleToggleUserStatus = async (userId, currentIsActive) => {
+  const handleToggleUserStatus = async (userId, currentIsActive, userName = '') => {
+    // Se está inativando, mostra modal de confirmação
+    if (currentIsActive) {
+      setConfirmationModal({
+        open: true,
+        userId,
+        userName,
+        isActive: currentIsActive
+      });
+      return;
+    }
+
+    // Se está reativando, executa diretamente (sem confirmação)
+    await executeToggleUserStatus(userId, currentIsActive);
+  };
+
+  const executeToggleUserStatus = async (userId, currentIsActive) => {
     setTogglingUsers(prev => new Set([...prev, userId]));
 
     try {
@@ -89,6 +112,15 @@ export const UsersManagementTab = () => {
         return newSet;
       });
     }
+  };
+
+  const handleConfirmToggle = async () => {
+    await executeToggleUserStatus(confirmationModal.userId, confirmationModal.isActive);
+    setConfirmationModal({ open: false, userId: null, userName: '', isActive: false });
+  };
+
+  const handleCancelToggle = () => {
+    setConfirmationModal({ open: false, userId: null, userName: '', isActive: false });
   };
 
   if (loading) {
@@ -290,7 +322,7 @@ export const UsersManagementTab = () => {
 
                     {/* Toggle de ativar/inativar usuário */}
                     <button
-                      onClick={() => handleToggleUserStatus(user.id, user.isActive)}
+                      onClick={() => handleToggleUserStatus(user.id, user.isActive, user.name)}
                       disabled={togglingUsers.has(user.id)}
                       className={`p-2 transition-colors ${togglingUsers.has(user.id)
                         ? 'text-gray-400 cursor-not-allowed'
@@ -330,6 +362,14 @@ export const UsersManagementTab = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de confirmação */}
+      <ConfirmationModal
+        open={confirmationModal.open}
+        message={`Tem certeza que deseja inativar o usuário "${confirmationModal.userName}"?\n\nEsta ação irá:\n• Remover o aluno de seu time (se houver)\n• Impedir que o aluno faça login na plataforma\n\nO usuário pode ser reativado posteriormente.`}
+        onClose={handleCancelToggle}
+        onConfirm={handleConfirmToggle}
+      />
     </div>
   );
 };
