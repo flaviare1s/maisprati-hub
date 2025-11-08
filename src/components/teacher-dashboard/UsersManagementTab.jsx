@@ -237,7 +237,7 @@ export const UsersManagementTab = () => {
                     <img
                       src={user.avatar || '/images/avatar/avatares 1.png'}
                       alt={`Avatar de ${user.name}`}
-                      className={`w-12 h-12 rounded-full border-2 border-blue-logo ${!user.isActive ? 'grayscale' : ''
+                      className={`hidden sm:block w-12 h-12 rounded-full border-2 border-blue-logo ${!user.isActive ? 'grayscale' : ''
                         }`}
                     />
                     <div>
@@ -253,7 +253,7 @@ export const UsersManagementTab = () => {
                           <span className="text-xs text-red-500 ml-2">(Inativo)</span>
                         )}
                       </h4>
-                      <p className={`text-sm text-gray-muted ${!user.isActive ? 'line-through' : ''}`}>
+                      <p className={`text-xs sm:text-sm text-gray-muted ${!user.isActive ? 'line-through' : ''}`}>
                         {user.codename}
                       </p>
                       <p className={`text-xs text-gray-muted ${!user.isActive ? 'line-through' : ''}`}>
