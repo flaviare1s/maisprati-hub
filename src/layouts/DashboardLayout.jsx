@@ -209,7 +209,10 @@ export const DashboardLayout = () => {
     <div className="px-2 py-4 md:px-6 my-auto overflow-x-hidden text-dark dark:text-gray-100">
       <div className="flex flex-col-reverse md:flex-row gap-6 justify-center items-start">
         <div className="w-full md:w-[240px] order-2 md:order-1">
-          <Calendar disabled={user?.wantsGroup && !user?.hasGroup} />
+          <Calendar disabled={
+            (user?.wantsGroup && !user?.hasGroup) || // Quer grupo mas não tem
+            (user?.hasGroup && !userInTeam) // Indicou que tem grupo mas não está em nenhum time ativo
+          } />
         </div>
         <div className="dashboard-main w-full md:flex-1 rounded-lg py-6 px-3 sm:px-6 shadow-lg order-1 md:order-2">
           <h1 className="text-2xl font-bold mb-4 text-dark dark:text-gray-100">
