@@ -1,5 +1,3 @@
-import { CustomLoader } from "./CustomLoader";
-
 export const SubmitButton = ({ label, isLoading = false, disabled = false, ...props }) => {
   return (
     <button
@@ -11,7 +9,7 @@ export const SubmitButton = ({ label, isLoading = false, disabled = false, ...pr
         }`}
         {...props}
     >
-      {isLoading ? <CustomLoader /> : label}
+      {isLoading ? "Carregando..." : label}
     </button>
   );
 };
