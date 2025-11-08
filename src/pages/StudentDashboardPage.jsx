@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { fetchTeams, getTeamWithMembers } from "../api.js/teams";
-import { disableWantsGroup } from "../api.js/users";
+import { disableWantsGroup, resetGroupPreferences } from "../api.js/users";
 import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
 import { MdManageAccounts, MdToggleOff } from "react-icons/md";
@@ -82,6 +82,23 @@ export const StudentDashboardPage = () => {
     }
   };
 
+  // Função para usuários que têm hasGroup = true
+  const handleResetGroupPreferences = async () => {
+    if (!user || !userId) return;
+
+    setChangingPreference(true);
+    try {
+      const updatedUser = await resetGroupPreferences(userId);
+      updateUserContext(updatedUser);
+      toast.success("Preferência alterada! Agora você está trabalhando individualmente.");
+    } catch (error) {
+      console.error("Erro ao alterar preferência:", error);
+      toast.error("Erro ao alterar preferência. Tente novamente.");
+    } finally {
+      setChangingPreference(false);
+    }
+  };
+
   if (loading) {
     return <CustomLoader />;
   }
@@ -127,7 +144,13 @@ export const StudentDashboardPage = () => {
           <div>
             <p className="text-sm">Grupo:</p>
             <p className="text-lg font-semibold text-blue-logo">
-              {userTeam?.name || (user.hasGroup ? "Carregando..." : "Nenhum")}
+              {userTeam?.name || (
+                loading && user.hasGroup
+                  ? "Verificando..."
+                  : user.hasGroup
+                    ? "Aguardando entrada"
+                    : "Nenhum"
+              )}
             </p>
           </div>
         </div>
@@ -154,9 +177,29 @@ export const StudentDashboardPage = () => {
           <p className="text-center text-gray-600">
             Você indicou que possui grupo, mas ainda não foi encontrado nenhum time ativo.
           </p>
-          <Link to="/common-room" className="text-blue-logo hover:underline text-center block">
+          <Link to="/common-room" className="text-blue-logo hover:underline text-center block mb-2">
             Acesse a Sala Comum para entrar no seu grupo.
           </Link>
+          <div className="text-center pt-3 border-t border-gray-200">
+            <p className="text-sm text-gray-500 mb-3">Mudou de ideia?</p>
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-sm text-gray-600">
+                Prefiro trabalhar individualmente
+              </span>
+              <button
+                onClick={handleResetGroupPreferences}
+                disabled={changingPreference}
+                className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                title="Clique para alterar para trabalho individual"
+              >
+                {changingPreference ? (
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-logo"></div>
+                ) : (
+                  <MdToggleOff className="text-2xl" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       ) : user.wantsGroup ? (
         <div className="rounded-lg shadow-md p-4">
@@ -175,7 +218,7 @@ export const StudentDashboardPage = () => {
               <button
                 onClick={handleDisableWantsGroup}
                 disabled={changingPreference}
-                    className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="text-orange-logo hover:text-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 title="Clique para alterar para trabalho individual"
               >
                 {changingPreference ? (

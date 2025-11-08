@@ -50,6 +50,19 @@ export const disableWantsGroup = async (userId) => {
   }
 };
 
+// Função para resetar completamente as preferências de grupo (hasGroup e wantsGroup para false)
+export const resetGroupPreferences = async (userId) => {
+  try {
+    const response = await api.patch(
+      `/users/${userId}/reset-group-preferences`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao resetar preferências de grupo:", error);
+    throw error;
+  }
+};
+
 // Função para buscar dados completos do usuário atual
 export const getCurrentUserData = async () => {
   try {
@@ -69,6 +82,28 @@ export const getCurrentUserData = async () => {
 
     // Outros erros (rede, timeout, etc.)
     console.error("Erro ao buscar dados do usuário atual:", error);
+    throw error;
+  }
+};
+
+// Inativar usuário (próprio usuário ou admin)
+export const deactivateUser = async (userId) => {
+  try {
+    const response = await api.patch(`/users/${userId}/deactivate`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao inativar usuário:", error);
+    throw error;
+  }
+};
+
+// Reativar usuário (apenas admin)
+export const activateUser = async (userId) => {
+  try {
+    const response = await api.patch(`/users/${userId}/activate`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao reativar usuário:", error);
     throw error;
   }
 };
