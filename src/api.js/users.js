@@ -50,6 +50,19 @@ export const disableWantsGroup = async (userId) => {
   }
 };
 
+// Função para resetar completamente as preferências de grupo (hasGroup e wantsGroup para false)
+export const resetGroupPreferences = async (userId) => {
+  try {
+    const response = await api.patch(
+      `/users/${userId}/reset-group-preferences`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao resetar preferências de grupo:", error);
+    throw error;
+  }
+};
+
 // Função para buscar dados completos do usuário atual
 export const getCurrentUserData = async () => {
   try {

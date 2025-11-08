@@ -4,6 +4,7 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { useState, useEffect } from 'react';
 import { toggleTeamStatus } from '../../api.js/teams';
 import { TeamMembersModal } from './TeamMembersModal';
+import { ConfirmationModal } from '../ConfirmationModal';
 import toast from 'react-hot-toast';
 
 export const TeamCard = ({ team, onSelect }) => {
@@ -11,6 +12,7 @@ export const TeamCard = ({ team, onSelect }) => {
   const [localTeam, setLocalTeam] = useState(team);
   const [isToggling, setIsToggling] = useState(false);
   const [showMembersModal, setShowMembersModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   // Sincronizar estado local quando o prop team mudar
   useEffect(() => {
@@ -24,6 +26,17 @@ export const TeamCard = ({ team, onSelect }) => {
   };
 
   const handleToggleStatus = async () => {
+    // Se está inativando (team está ativo), mostra confirmação
+    if (localTeam.isActive) {
+      setShowConfirmationModal(true);
+      return;
+    }
+
+    // Se está ativando, executa diretamente
+    await executeToggleStatus();
+  };
+
+  const executeToggleStatus = async () => {
     const originalStatus = localTeam.isActive;
     setIsToggling(true);
 
@@ -43,6 +56,15 @@ export const TeamCard = ({ team, onSelect }) => {
     } finally {
       setIsToggling(false);
     }
+  };
+
+  const handleConfirmToggle = async () => {
+    setShowConfirmationModal(false);
+    await executeToggleStatus();
+  };
+
+  const handleCancelToggle = () => {
+    setShowConfirmationModal(false);
   };
 
   return (
@@ -113,6 +135,14 @@ export const TeamCard = ({ team, onSelect }) => {
           onClose={() => setShowMembersModal(false)}
         />
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        open={showConfirmationModal}
+        message={`Tem certeza que deseja inativar o time "${localTeam.name}"?`}
+        onClose={handleCancelToggle}
+        onConfirm={handleConfirmToggle}
+      />
     </div>
   );
 };
