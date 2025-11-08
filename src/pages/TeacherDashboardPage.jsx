@@ -23,20 +23,34 @@ export const TeacherDashboardPage = () => {
   const [activeTab, setActiveTab] = useState("perfil");
   const [teams, setTeams] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [activeUsers, setActiveUsers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
+
+  // Função para atualizar dados de usuários e times
+  const updateDashboardData = async () => {
+    try {
+      const allTeams = await fetchTeams();
+      setTeams(allTeams);
+
+      const allUsers = await fetchUsers();
+      const studentsOnly = allUsers.filter(user => user.type === "student");
+
+      // Lógica simples: só é inativo se isActive for explicitamente false
+      const activeStudents = studentsOnly.filter(user => user.isActive !== false);
+
+      setTotalUsers(studentsOnly.length);
+      setActiveUsers(activeStudents.length);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
       try {
         await loadUserData();
-
-        const allTeams = await fetchTeams();
-        setTeams(allTeams);
-
-        const allUsers = await fetchUsers();
-        const studentsOnly = allUsers.filter(user => user.type === "student");
-        setTotalUsers(studentsOnly.length);
+        await updateDashboardData();
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
@@ -46,6 +60,37 @@ export const TeacherDashboardPage = () => {
 
     loadData();
   }, [loadUserData]);
+
+  // Polling para atualizar dados do dashboard
+  useEffect(() => {
+    let intervalId;
+
+    if (user) {
+      // Atualiza a cada 3 segundos para resposta mais rápida
+      intervalId = setInterval(() => {
+        updateDashboardData();
+      }, 3000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [user]);
+
+  // Listener para atualizações imediatas quando status de usuário mudar
+  useEffect(() => {
+    const handleUserStatusChange = () => {
+      updateDashboardData();
+    };
+
+    window.addEventListener('userStatusChanged', handleUserStatusChange);
+
+    return () => {
+      window.removeEventListener('userStatusChanged', handleUserStatusChange);
+    };
+  }, []);
 
   useEffect(() => {
     let intervalId;
@@ -140,14 +185,14 @@ export const TeacherDashboardPage = () => {
             setActiveTab={setActiveTab}
           />
           <DashboardTab
-            icon={<FaUsers />}
-            title="Times"
+            icon={<FaUserCog />}
+            title="Usuários"
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
           <DashboardTab
-            icon={<FaUserCog />}
-            title="Usuários"
+            icon={<FaUsers />}
+            title="Times"
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
@@ -181,7 +226,7 @@ export const TeacherDashboardPage = () => {
 
       <div>
         {activeTab === "perfil" && (
-          <TeacherProfileTab user={user} teams={teams} totalUsers={totalUsers} />
+          <TeacherProfileTab user={user} teams={teams} totalUsers={totalUsers} activeUsers={activeUsers} />
         )}
         {activeTab === "times" && (
           <TeacherTeamsTab teams={teams} />
