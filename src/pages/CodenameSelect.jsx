@@ -184,7 +184,7 @@ export const CodenameSelect = () => {
         </div>
 
         <form onSubmit={handleCodenameSubmit} className="space-y-8">
-          <div className="bg-light rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-2 sm:p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Primeiro Nome
             </h2>
@@ -205,7 +205,7 @@ export const CodenameSelect = () => {
             </div>
           </div>
 
-          <div className="bg-light rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-2 sm:p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Sobrenome
             </h2>
@@ -226,7 +226,7 @@ export const CodenameSelect = () => {
             </div>
           </div>
 
-          <div className="bg-light rounded-lg shadow-md p-6">
+          <div className="bg-light rounded-lg shadow-md p-2 sm:p-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-logo">
               Avatar
             </h2>
