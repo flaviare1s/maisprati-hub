@@ -60,15 +60,15 @@ export const TeamCard = ({ team, onSelect }) => {
         <div className="flex gap-0">
           <button
             onClick={() => setShowMembersModal(true)}
-            className="p-2 text-green-600 hover:bg-blue-50 cursor-pointer rounded-md"
-            title="Visualizar Membros"
+            className="p-2 text-green-600 hover:text-green-800 cursor-pointer rounded-md"
+            title="Visualizar membros"
           >
             <HiOutlineUserGroup />
           </button>
           <button
             onClick={onSelect}
-            className="p-2 text-blue-logo hover:bg-blue-50 cursor-pointer rounded-md"
-            title="Visualizar Time"
+            className="p-2 text-blue-logo hover:text-blue-600 transition-colors cursor-pointer rounded-md"
+            title="Visualizar progresso do time"
           >
             <BsKanban />
           </button>
@@ -77,9 +77,9 @@ export const TeamCard = ({ team, onSelect }) => {
             disabled={isToggling}
             className={`p-2 cursor-pointer rounded-md transition-colors ${isToggling
               ? 'text-gray-400 cursor-not-allowed'
-              : 'text-orange-logo hover:bg-orange-50'
+              : 'text-orange-logo hover:text-orange-600'
               }`}
-            title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar Time" : "Ativar Time")}
+            title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar time" : "Ativar time")}
           >
             {isToggling ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>

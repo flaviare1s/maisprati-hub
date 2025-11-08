@@ -10,12 +10,29 @@ import api from "../services/api";
 
 dayjs.locale("pt-br");
 
-export const Calendar = () => {
+export const Calendar = ({ disabled = false }) => {
   const { user } = useAuth();
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [modalOpen, setModalOpen] = useState(false);
   const [monthSlots, setMonthSlots] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const startOfMonth = currentMonth.startOf("month");
   const endOfMonth = currentMonth.endOf("month");
@@ -35,11 +52,12 @@ export const Calendar = () => {
 
   const handleDateClick = useCallback(
     (date) => {
+      if (disabled) return;
       if (date.isBefore(dayjs(), "day")) return;
       setSelectedDate(dayjs(date));
       setModalOpen(true);
     },
-    [setSelectedDate, setModalOpen]
+    [setSelectedDate, setModalOpen, disabled]
   );
 
   const loadMonthSlots = useCallback(async () => {
@@ -51,7 +69,6 @@ export const Calendar = () => {
 
       let adminId = user.id;
 
-      // Se é student, buscar o admin (professor)
       if (!isAdmin) {
         const usersRes = await api.get("/users");
         const admin = usersRes.data.find(u => u.type === 'admin');
@@ -86,13 +103,14 @@ export const Calendar = () => {
         <button
           key={currentDay.format("YYYY-MM-DD")}
           onClick={() => handleDateClick(currentDay)}
-          disabled={isPast}
+          disabled={isPast || disabled}
           className={`
             w-8 h-8 flex items-center justify-center text-sm rounded-lg transition-all duration-200
+            ${disabled ? "opacity-50 cursor-not-allowed" : ""}
             ${!isCurrentMonth ? "text-gray-300" : ""}
             ${isToday ? "bg-blue-100 text-blue-600 font-semibold" : ""}
             ${isSelected && !isToday ? "bg-blue-logo text-white" : ""}
-            ${isPast ? "text-gray-300 cursor-not-allowed" : hasSlotsAvailable ? "text-blue-600 font-bold" : ""}
+            ${isPast ? "text-gray-300 cursor-not-allowed" : hasSlotsAvailable && !disabled ? "text-blue-600 font-bold" : ""}
             ${hasSlotsAvailable && isPast ? "text-gray-300 cursor-not-allowed" : ""}
           `}
         >
@@ -115,15 +133,48 @@ export const Calendar = () => {
   };
 
   return (
-    <div className="calendar-container w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+    <div className="calendar-container w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 relative">
+      {disabled && (
+        <div
+          className="absolute inset-0 rounded-lg flex items-center justify-center z-10 backdrop-blur-sm"
+          style={{
+            backgroundColor: isDarkMode
+              ? 'rgba(45, 45, 45, 0.9)'  // --dark-bg-secondary com opacidade
+              : 'rgba(243, 244, 246, 0.95)' // --color-light com opacidade
+          }}
+        >
+          <div className="text-center p-4">
+            <p className="text-gray-600 dark:text-gray-300 font-medium">
+              Calendário indisponível
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Entre em uma guilda para acessar
+            </p>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-4">
-        <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <button
+          onClick={handlePrevMonth}
+          disabled={disabled}
+          className={`p-2 rounded-lg transition-colors ${disabled
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
+        >
           <ChevronLeft size={16} />
         </button>
         <h2 className="font-semibold text-dark dark:text-gray-100">
           {capitalize(currentMonth.format("MMMM"))} {currentMonth.format("YYYY")}
         </h2>
-        <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <button
+          onClick={handleNextMonth}
+          disabled={disabled}
+          className={`p-2 rounded-lg transition-colors ${disabled
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
+        >
           <ChevronRight size={16} />
         </button>
       </div>
