@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchUsers, deactivateUser, activateUser } from '../../api.js/users';
+import { fetchUsers, deactivateUser, activateUser, fetchEmotionalStatuses } from '../../api.js/users';
 import { fetchTeams } from '../../api.js/teams';
 import { MdPerson } from 'react-icons/md';
 import { BsKanban } from "react-icons/bs";
@@ -26,7 +26,34 @@ export const UsersManagementTab = () => {
     userName: '',
     isActive: false
   });
+  const [emotionalStatuses, setEmotionalStatuses] = useState([]);
+  const [emotionalFilter, setEmotionalFilter] = useState('all');
   const itemsPerPage = 30;
+
+  const statusToEmoji = {
+    CALM: '😌',
+    HAPPY: '😊',
+    ANXIOUS: '😰',
+    CONFUSED: '😕',
+    LOST: '🧭',
+    ANGRY: '😠',
+    SAD: '😢',
+    OVERWHELMED: '😵',
+    FOCUSED: '🎯'
+  };
+
+  // Rótulos em português para mostrar no select e tooltips
+  const statusLabelsPT = {
+    CALM: 'Calmo',
+    HAPPY: 'Feliz',
+    ANXIOUS: 'Ansioso',
+    CONFUSED: 'Confuso',
+    LOST: 'Perdido',
+    ANGRY: 'Irritado',
+    SAD: 'Triste',
+    OVERWHELMED: 'Sobrecarregado',
+    FOCUSED: 'Focado'
+  };
 
   const loadUsers = async () => {
     try {
@@ -66,6 +93,17 @@ export const UsersManagementTab = () => {
       setLoading(false);
     };
     initializeData();
+    // carregar estados emocionais disponíveis (para filtro)
+    const loadStatuses = async () => {
+      try {
+        const list = await fetchEmotionalStatuses();
+        const normalized = list.map(item => (typeof item === 'string' ? item : item.name || item.code)).filter(Boolean);
+        setEmotionalStatuses(normalized);
+      } catch (err) {
+        console.error('Erro ao carregar estados emocionais:', err);
+      }
+    };
+    loadStatuses();
   }, []);
 
   const handleToggleUserStatus = async (userId, currentIsActive, userName = '') => {
@@ -167,6 +205,11 @@ export const UsersManagementTab = () => {
         matchesFilter = user.isActive !== false;
     }
 
+    // filtro por estado emocional
+    if (emotionalFilter && emotionalFilter !== 'all') {
+      matchesFilter = matchesFilter && ((user.emotionalStatus || '').toUpperCase() === (emotionalFilter || '').toUpperCase());
+    }
+
     return matchesSearch && matchesFilter;
   });
 
@@ -234,6 +277,20 @@ export const UsersManagementTab = () => {
           </select>
         </div>
 
+        {/* 🔹 Filtro por estado emocional */}
+        <div className="mb-4">
+          <select
+            value={emotionalFilter}
+            onChange={(e) => { setEmotionalFilter(e.target.value); setCurrentPage(1); }}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Filtrar por estado emocional</option>
+            {emotionalStatuses.map(s => (
+              <option key={s} value={s}>{statusLabelsPT[s] || (s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())}</option>
+            ))}
+          </select>
+        </div>
+
         {/* 🔹 Botões de ordenação */}
         <div className="flex space-x-2 mb-4">
           <button
@@ -279,6 +336,11 @@ export const UsersManagementTab = () => {
                     <div>
                       <h4 className={`font-semibold ${!user.isActive ? 'line-through' : ''}`}>
                         {user.name}
+                        {user.emotionalStatus && (
+                          <span className="ml-2" title={statusLabelsPT[(user.emotionalStatus || '').toUpperCase()] || user.emotionalStatus}>
+                            {statusToEmoji[(user.emotionalStatus || '').toUpperCase()] || '💭'}
+                          </span>
+                        )}
                         {!user.hasGroup && !user.wantsGroup && (
                           <span className="text-xs text-blue-logo"> - Solo</span>
                         )}

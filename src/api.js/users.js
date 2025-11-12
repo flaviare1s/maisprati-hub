@@ -107,3 +107,26 @@ export const activateUser = async (userId) => {
     throw error;
   }
 };
+
+// Buscar lista de estados emocionais possíveis
+export const fetchEmotionalStatuses = async () => {
+  try {
+    const response = await api.get("/users/emotional-status");
+    return response.data; // esperado: array de strings ou objetos
+  } catch (error) {
+    console.error("Erro ao buscar estados emocionais:", error);
+    return [];
+  }
+};
+
+// Atualizar estado emocional do usuário (pode ser null para limpar)
+export const updateEmotionalStatus = async (userId, emotionalStatus) => {
+  try {
+    const body = { emotionalStatus: emotionalStatus || "" };
+    const response = await api.patch(`/users/${userId}/emotional-status`, body);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar estado emocional:", error);
+    throw error;
+  }
+};
