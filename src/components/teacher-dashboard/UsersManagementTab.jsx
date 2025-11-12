@@ -284,7 +284,7 @@ export const UsersManagementTab = () => {
             onChange={(e) => { setEmotionalFilter(e.target.value); setCurrentPage(1); }}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">Filtrar por emoção: todos</option>
+            <option value="all">Filtrar por estado emocional</option>
             {emotionalStatuses.map(s => (
               <option key={s} value={s}>{statusLabelsPT[s] || (s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())}</option>
             ))}
