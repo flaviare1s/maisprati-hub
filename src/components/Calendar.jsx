@@ -132,6 +132,16 @@ export const Calendar = ({ disabled = false }) => {
     loadMonthSlots();
   };
 
+  useEffect(() => {
+    if (disabled || isAdmin || !user?.id) return;
+
+    const pollInterval = setInterval(() => {
+      loadMonthSlots();
+    }, 3000);
+
+    return () => clearInterval(pollInterval);
+  }, [disabled, isAdmin, user?.id, loadMonthSlots]);
+
   return (
     <div className="calendar-container w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 relative">
       {disabled && (
