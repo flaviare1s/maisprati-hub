@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { fetchTeams, getTeamWithMembers } from "../api.js/teams";
-import { disableWantsGroup, resetGroupPreferences } from "../api.js/users";
+import { disableWantsGroup, resetGroupPreferences, fetchEmotionalStatuses, updateEmotionalStatus } from "../api.js/users";
 import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
 import { MdManageAccounts, MdToggleOff } from "react-icons/md";
@@ -15,6 +15,9 @@ export const StudentDashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
   const [changingPreference, setChangingPreference] = useState(false);
+  const [emotionalStatuses, setEmotionalStatuses] = useState([]);
+  const [selectedEmotionalStatus, setSelectedEmotionalStatus] = useState(null);
+  const [savingStatus, setSavingStatus] = useState(false);
 
   // Memoiza o userId para evitar re-execuções desnecessárias
   const userId = useMemo(() => {
@@ -64,7 +67,29 @@ export const StudentDashboardPage = () => {
     };
 
     loadUserTeam();
-  }, [userId, user]); // Agora depende do userId estável e user
+  }, [userId, user]);
+
+  // Carregar opções de estados emocionais
+  useEffect(() => {
+    const loadStatuses = async () => {
+      try {
+        const list = await fetchEmotionalStatuses();
+        // API pode devolver objetos; normalizar para array de strings
+        const normalized = list.map(item => (typeof item === 'string' ? item : item.name || item.code)).filter(Boolean);
+        setEmotionalStatuses(normalized);
+      } catch (err) {
+        console.error('Erro ao carregar estados emocionais:', err);
+      }
+    };
+    loadStatuses();
+  }, []);
+
+  // Sincronizar seleção com user quando user carregar
+  useEffect(() => {
+    if (user) {
+      setSelectedEmotionalStatus(user.emotionalStatus || '');
+    }
+  }, [user]);
 
   const handleDisableWantsGroup = async () => {
     if (!user || !userId) return;
@@ -96,6 +121,24 @@ export const StudentDashboardPage = () => {
       toast.error("Erro ao alterar preferência. Tente novamente.");
     } finally {
       setChangingPreference(false);
+    }
+  };
+
+  const handleEmotionalStatusChange = async (e) => {
+    const newStatus = e.target.value || null;
+    setSelectedEmotionalStatus(newStatus || '');
+    if (!user || !userId) return;
+
+    setSavingStatus(true);
+    try {
+      const updatedUser = await updateEmotionalStatus(userId, newStatus);
+      updateUserContext(updatedUser);
+      toast.success('Estado emocional atualizado.');
+    } catch (err) {
+      console.error('Erro ao atualizar estado emocional:', err);
+      toast.error('Erro ao atualizar estado emocional.');
+    } finally {
+      setSavingStatus(false);
     }
   };
 
@@ -141,6 +184,35 @@ export const StudentDashboardPage = () => {
               <p className="font-semibold">{user.groupClass}</p>
             </div>
           )}
+          <div>
+            <p className="text-sm mb-1">Estado emocional (opcional):</p>
+            <select
+              value={selectedEmotionalStatus || ''}
+              onChange={handleEmotionalStatusChange}
+              disabled={savingStatus}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Nenhum</option>
+              {emotionalStatuses.map((s) => (
+                <option key={s} value={s}>{
+                  (function () {
+                    const map = {
+                      CALM: 'Calmo',
+                      HAPPY: 'Feliz',
+                      ANXIOUS: 'Ansioso',
+                      CONFUSED: 'Confuso',
+                      LOST: 'Perdido',
+                      ANGRY: 'Irritado',
+                      SAD: 'Triste',
+                      OVERWHELMED: 'Sobrecarregado',
+                      FOCUSED: 'Focado'
+                    };
+                    return map[s] || (s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+                  })()
+                }</option>
+              ))}
+            </select>
+          </div>
           <div>
             <p className="text-sm">Grupo:</p>
             <p className="text-lg font-semibold text-blue-logo">
