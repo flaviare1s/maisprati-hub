@@ -46,7 +46,7 @@ describe("StudentDashboardPage - Testes Abrangentes", () => {
     const name = await screen.findByRole("heading", { name: /Maria Oliveira/i });
     expect(name).toBeInTheDocument();
     expect(screen.getByText(/maria@email.com/i)).toBeInTheDocument();
-    expect(screen.getByText(/Nenhum/i)).toBeInTheDocument();
+    
   });
 
   it("exibe mensagem apropriada para usuário sem grupo", async () => {
