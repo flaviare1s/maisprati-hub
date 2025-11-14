@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.95% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/94</span>
+                <span class='fraction'>15/90</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.95% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/94</span>
+                <span class='fraction'>15/90</span>
             </div>
         
             
@@ -153,11 +153,7 @@
 <a name='L88'></a><a href='#L88'>88</a>
 <a name='L89'></a><a href='#L89'>89</a>
 <a name='L90'></a><a href='#L90'>90</a>
-<a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -201,10 +197,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -271,7 +263,7 @@ export const fetchProjectProgress = <span class="fstat-no" title="function not c
 &nbsp;
 export const createProjectProgress = <span class="fstat-no" title="function not covered" >async (teamId) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const response = await api.post(`/projectProgress/create/${teamId}`);</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.post(`/progress?teamId=${teamId}`, {});</span>
 <span class="cstat-no" title="statement not covered" >    return response.data;</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    console.error("Erro ao criar progresso do projeto:", error);</span>
@@ -282,7 +274,7 @@ export const createProjectProgress = <span class="fstat-no" title="function not 
 // Atualizar progresso do projeto
 export const updateProjectProgress = <span class="fstat-no" title="function not covered" >async (progressId, phases) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const response = await api.put(`/projectProgress/${progressId}`, {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.patch(`/projectProgress/${progressId}`, {</span>
 <span class="cstat-no" title="statement not covered" >      phases,</span>
 <span class="cstat-no" title="statement not covered" >      lastUpdated: new Date().toISOString(),</span>
 <span class="cstat-no" title="statement not covered" >    });</span>
@@ -294,11 +286,7 @@ export const updateProjectProgress = <span class="fstat-no" title="function not 
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;
 // Atualizar status de uma fase específica
-export const updatePhaseStatus = <span class="fstat-no" title="function not covered" >async (</span>
-<span class="cstat-no" title="statement not covered" >  teamId,</span>
-<span class="cstat-no" title="statement not covered" >  phaseTitle,</span>
-<span class="cstat-no" title="statement not covered" >  newStatus</span>
-<span class="cstat-no" title="statement not covered" >) =&gt; {</span>
+export const updatePhaseStatus = <span class="fstat-no" title="function not covered" >async (teamId, phaseTitle, newStatus) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    const response = await api.put(</span>
 <span class="cstat-no" title="statement not covered" >      `/projectProgress/${teamId}/phase?title=${phaseTitle}&amp;status=${newStatus.toUpperCase()}`</span>
@@ -352,7 +340,7 @@ export const getProjectStatistics = <span class="fstat-no" title="function not c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-04T08:38:17.482Z
+                at 2025-11-14T12:23:55.222Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
