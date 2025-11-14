@@ -3,7 +3,7 @@ import img from "../assets/images/not_found.png";
 
 export const Forbidden = () => {
   return (
- <div className="flex flex-col items-center justify-center min-h-screen p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen p-6" data-testid="forbidden-page">
       
       {/* Título 1 */}
       <h2 className="text-5xl font-extrabold text-orange-logo mb-6">
