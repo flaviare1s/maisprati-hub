@@ -97,6 +97,7 @@ export const TeacherNotificationsTab = () => {
           >
             <button
               onClick={() => handleDelete(notification.id)}
+              aria-label="Excluir notificação"
               className="absolute top-2 right-2 text-gray-400 hover:text-red-primary cursor-pointer"
             >
               <MdClose size={18} />
@@ -124,6 +125,7 @@ export const TeacherNotificationsTab = () => {
             <button
               onClick={goToPrevPage}
               disabled={currentPage === 1}
+              aria-label="Página Anterior"
               className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors border-r border-gray-200 ${currentPage === 1
                 ? 'text-gray-400 cursor-not-allowed bg-gray-50'
                 : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'
@@ -141,6 +143,7 @@ export const TeacherNotificationsTab = () => {
             <button
               onClick={goToNextPage}
               disabled={currentPage === totalPages}
+              aria-label="Próxima Página"
               className={`px-4 py-2 text-sm font-medium cursor-pointer transition-colors ${currentPage === totalPages
                 ? 'text-gray-400 cursor-not-allowed bg-gray-50'
                 : 'text-gray-700 hover:bg-blue-50 hover:text-blue-logo'

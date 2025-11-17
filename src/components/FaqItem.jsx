@@ -11,6 +11,8 @@ export const FaqItem = ({ question, answer, icon }) => {
       <button
         className="flex justify-between items-center w-full p-4 text-left font-bold bg-orange-logo rounded-lg shadow-md"
         onClick={toggleAccordion}
+        aria-expanded={isOpen}
+        aria-controls={`faq-content-${question.replace(/\s/g, '-')}`}
       >
         <div className="flex items-center gap-4">
           {icon}
@@ -22,7 +24,10 @@ export const FaqItem = ({ question, answer, icon }) => {
       </button>
 
       {isOpen && (
-        <div className="py-2 text-gray-muted">
+        <div
+          className="py-2 text-gray-muted"
+          id={`faq-content-${question.replace(/\s/g, '-')}`}
+        >
           <p>{answer}</p>
         </div>
       )}
