@@ -119,6 +119,7 @@ export const StudentNotificationsPanel = ({ refreshNotificationCount }) => {
           >
             <button
               onClick={() => handleDelete(notification.id)}
+              aria-label="Deletar notificação"
               className="absolute top-2 right-2 text-gray-muted hover:text-red-primary cursor-pointer"
             >
               <MdClose size={18} />
