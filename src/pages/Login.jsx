@@ -76,7 +76,7 @@ export const Login = () => {
         </form>
         <div className="w-full mt-4">
           <SocialLoginButton provider="google" aria-label="Entrar com Google" />
-          <SocialLoginButton provider="github" aria-label="Entrar com GitHub" />
+          {/* <SocialLoginButton provider="github" aria-label="Entrar com GitHub" /> */}
         </div>
         <Link
           to="/register"
@@ -85,13 +85,13 @@ export const Login = () => {
         >
           Cadastre-se
         </Link>
-        <Link
+        {/* <Link
           to="/reset-password"
           aria-label="Esqueci minha senha"
           className="text-center text-sm text-red-primary font-bold hover:text-red-secondary mt-5 block"
         >
           Esqueci minha senha
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
