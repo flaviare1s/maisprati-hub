@@ -18,19 +18,19 @@ export const Footer = () => {
             </p>
           </div>
           <div className="flex justify-start sm:justify-center px-4 sm:px-0 items-center gap-3 md:col-span-2">
-            <a href="mailto:maisprati.hub@gmail.com" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+            <a href="mailto:maisprati.hub@gmail.com" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition" aria-label="Enviar E-mail para +praTiHub">
               <MdOutlineMail size={20} />
             </a>
-            <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=true&heroEntityKey=urn%3Ali%3Aorganization%3A66592074&keywords=%2Bprati&origin=RICH_QUERY_SUGGESTION&position=0&searchId=d54022d3-ac8a-40cd-b1d9-be6089d50c46&sid=VaF&spellCorrectionEnabled=false" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+            <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=true&heroEntityKey=urn%3Ali%3Aorganization%3A66592074&keywords=%2Bprati&origin=RICH_QUERY_SUGGESTION&position=0&searchId=d54022d3-ac8a-40cd-b1d9-be6089d50c46&sid=VaF&spellCorrectionEnabled=false" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition" aria-label="LinkedIn +praTi">
               <FaLinkedin size={20} />
             </a>
-            <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+            <a href="https://www.instagram.com/maisprati?igsh=MWxsa25vc3ZoemZvMA==" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition" aria-label="Instagram +praTi">
               <FaInstagram size={20} />
             </a>
-            <a href="https://www.facebook.com/maispratioficial/" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+            <a href="https://www.facebook.com/maispratioficial/" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition" aria-label="Facebook +praTi">
               <FaFacebook size={20} />
             </a>
-            <a href="https://www.youtube.com/@maispraTI" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition">
+            <a href="https://www.youtube.com/@maispraTI" target='_blank' rel="noopener noreferrer" className="bg-white text-blue-logo rounded-full p-2 h-10 w-10 flex items-center justify-center hover:scale-3d transition" aria-label="YouTube +praTi">
               <FaYoutube size={20} />
             </a>
           </div>
