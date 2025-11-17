@@ -76,7 +76,7 @@ export const Login = () => {
         </form>
         <div className="w-full mt-4">
           <SocialLoginButton provider="google" aria-label="Entrar com Google" />
-          <SocialLoginButton provider="github" aria-label="Entrar com GitHub" />
+          {/* <SocialLoginButton provider="github" aria-label="Entrar com GitHub" /> */}
         </div>
         <Link
           to="/register"
