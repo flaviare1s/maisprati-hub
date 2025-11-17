@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -81,33 +81,33 @@
 <a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link } from "react-router-dom"
 &nbsp;
-export const MenuDesktop = <span class="fstat-no" title="function not covered" >({ user, onLogout }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;nav className="flex items-center gap-4 md:gap-8 lg:gap-10"&gt;</span>
-<span class="cstat-no" title="statement not covered" >      {!user &amp;&amp; &lt;Link to='/' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Home&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {!user &amp;&amp; &lt;Link to='/about' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Sobre&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {!user &amp;&amp;&lt;Link to='/faq' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Faq&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {!user &amp;&amp; &lt;Link to='/register' className="uppercase font-lg text-light font-bold bg-orange-logo hover:bg-orange-400 py-2 px-6 rounded-lg" &gt;Cadastrar&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {user &amp;&amp; &lt;Link to='/dashboard' className='uppercase font-lg text-blue-logo font-bold link-nav' &gt;Dashboard&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {user &amp;&amp; &lt;Link to='/common-room' className='uppercase font-lg text-blue-logo font-bold link-nav' &gt;Taverna dos Heróis&lt;/Link&gt;}</span>
-<span class="cstat-no" title="statement not covered" >      {!user ? &lt;Link to='/login' className="uppercase font-lg text-light font-bold bg-blue-logo py-2 px-6 rounded-lg hover:bg-blue-600"&gt;Entrar&lt;/Link&gt; : &lt;button onClick={onLogout} className="uppercase font-lg text-light font-bold bg-blue-logo hover:bg-blue-600 py-2 px-6 rounded-lg cursor-pointer"&gt;LOGOUT&lt;/button&gt;}</span>
-<span class="cstat-no" title="statement not covered" >    &lt;/nav&gt;</span>
+export const MenuDesktop = ({ user, onLogout }) =&gt; {
+  return (
+    &lt;nav className="flex items-center gap-4 md:gap-8 lg:gap-10"&gt;
+      {!user &amp;&amp; &lt;Link to='/' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Home&lt;/Link&gt;}
+      {!user &amp;&amp; &lt;Link to='/about' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Sobre&lt;/Link&gt;}
+      {!user &amp;&amp;&lt;Link to='/faq' className='uppercase font-lg text-blue-logo font-bold link-nav'&gt;Faq&lt;/Link&gt;}
+      {!user &amp;&amp; &lt;Link to='/register' className="uppercase font-lg text-light font-bold bg-orange-logo hover:bg-orange-400 py-2 px-6 rounded-lg" &gt;Cadastrar&lt;/Link&gt;}
+      {user &amp;&amp; &lt;Link to='/dashboard' className='uppercase font-lg text-blue-logo font-bold link-nav' &gt;Dashboard&lt;/Link&gt;}
+      {user &amp;&amp; &lt;Link to='/common-room' className='uppercase font-lg text-blue-logo font-bold link-nav' &gt;Taverna dos Heróis&lt;/Link&gt;}
+      {!user ? &lt;Link to='/login' className="uppercase font-lg text-light font-bold bg-blue-logo py-2 px-6 rounded-lg hover:bg-blue-600"&gt;Entrar&lt;/Link&gt; : &lt;button onClick={onLogout} className="uppercase font-lg text-light font-bold bg-blue-logo hover:bg-blue-600 py-2 px-6 rounded-lg cursor-pointer"&gt;LOGOUT&lt;/button&gt;}
+    &lt;/nav&gt;
   )
-<span class="cstat-no" title="statement not covered" >}</span>
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -115,7 +115,7 @@ export const MenuDesktop = <span class="fstat-no" title="function not covered" >
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-17T18:01:22.045Z
+                at 2025-11-17T18:03:45.005Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
