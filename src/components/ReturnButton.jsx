@@ -6,6 +6,7 @@ export const ReturnButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
+      aria-label="Voltar"
       className="text-blue-logo hover:underline cursor-pointer font-medium"
     >
       &larr; Voltar
