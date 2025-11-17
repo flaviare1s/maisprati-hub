@@ -136,6 +136,7 @@ export const TeamSelect = () => {
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
           onClick={handleBackdropClick}
+          data-testid="backdrop-desktop"
         >
           <div
             className="bg-light rounded-2xl shadow-2xl p-8 w-[600px] animate-drop flex flex-row gap-8 h-[300px]"
