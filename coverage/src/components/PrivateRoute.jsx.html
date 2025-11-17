@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.39% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/23</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.39% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/23</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -102,69 +102,69 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { isAdmin } from '../utils/permissions';
 &nbsp;
-export const PrivateRoute = <span class="fstat-no" title="function not covered" >({ children, requiredType = null, requireGroup = false }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const { user, loading } = useAuth();</span>
-<span class="cstat-no" title="statement not covered" >  const location = useLocation();</span>
+export const PrivateRoute = ({ children, requiredType = null, requireGroup = false }) =&gt; {
+  const { user, loading } = useAuth();
+  const location = useLocation();
 &nbsp;
   // Verifica se ainda está carregando
-<span class="cstat-no" title="statement not covered" >  if (loading) {</span>
-<span class="cstat-no" title="statement not covered" >    return (</span>
-<span class="cstat-no" title="statement not covered" >      &lt;div className="flex items-center justify-center min-h-screen"&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-logo"&gt;&lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >      &lt;/div&gt;</span>
+  if (loading) {
+    return (
+      &lt;div className="flex items-center justify-center min-h-screen"&gt;
+        &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-logo"&gt;&lt;/div&gt;
+      &lt;/div&gt;
     );
-<span class="cstat-no" title="statement not covered" >  }</span>
+  }
 &nbsp;
   // Redireciona para login se não está autenticado
-<span class="cstat-no" title="statement not covered" >  if (!user) {</span>
-<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/login" state={{ from: location }} replace /&gt;;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (!user) {
+    return &lt;Navigate to="/login" state={{ from: location }} replace /&gt;;
+  }
 &nbsp;
   // Verifica se precisa de grupo
-<span class="cstat-no" title="statement not covered" >  if (requireGroup &amp;&amp; !isAdmin(user) &amp;&amp; !(user.type === 'student' &amp;&amp; user.hasGroup)) {</span>
-<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/" replace /&gt;;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (requireGroup &amp;&amp; !isAdmin(user) &amp;&amp; !(user.type === 'student' &amp;&amp; user.hasGroup)) {
+    return &lt;Navigate to="/" replace /&gt;;
+  }
 &nbsp;
   // Verifica tipo de usuário
-<span class="cstat-no" title="statement not covered" >  if (requiredType &amp;&amp; user.type !== requiredType) {</span>
-<span class="cstat-no" title="statement not covered" >    return &lt;Navigate to="/401" replace /&gt;;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (requiredType &amp;&amp; user.type !== requiredType) {
+    return &lt;Navigate to="/401" replace /&gt;;
+  }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return children;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+  return children;
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -172,7 +172,7 @@ export const PrivateRoute = <span class="fstat-no" title="function not covered" 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-17T17:28:58.627Z
+                at 2025-11-17T17:45:43.167Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
