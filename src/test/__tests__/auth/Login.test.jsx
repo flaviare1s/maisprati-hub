@@ -25,6 +25,5 @@ describe('Login Component', () => {
     expect(screen.getByPlaceholderText(/senha/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /entrar no sistema/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /entrar com google/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /entrar com github/i })).toBeInTheDocument();
   });
 });

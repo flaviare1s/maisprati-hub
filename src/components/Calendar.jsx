@@ -68,7 +68,7 @@ export const Calendar = ({ disabled = false }) => {
       const month = currentMonth.month() + 1;
 
       let adminId = user.id;
-      
+
       if (!isAdmin) {
         const usersRes = await api.get("/users");
         const admin = usersRes.data.find(u => u.type === 'admin');
@@ -126,6 +126,16 @@ export const Calendar = ({ disabled = false }) => {
   useEffect(() => {
     loadMonthSlots();
   }, [loadMonthSlots]);
+
+  useEffect(() => {
+    if (disabled || isAdmin || !user?.id) return;
+
+    const pollInterval = setInterval(() => {
+      loadMonthSlots();
+    }, 3000);
+
+    return () => clearInterval(pollInterval);
+  }, [disabled, isAdmin, user?.id, loadMonthSlots]);
 
   const handleModalClose = () => {
     setModalOpen(false);
