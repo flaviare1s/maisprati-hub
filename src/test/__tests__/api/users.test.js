@@ -2,17 +2,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mockUsers } from "../../utils/mock-data";
 
 // Mock das funções da API diretamente
-vi.mock("../../../api.js/users", () => ({
+vi.mock("../../../api/users", () => ({
   getAllUsers: vi.fn(),
   getUserById: vi.fn(),
   updateUser: vi.fn(),
   deleteUser: vi.fn(),
 }));
 
-import {
-  getAllUsers,
-  getUserById,
-} from "../../../api.js/users";
+import { getAllUsers, getUserById } from "../../../api/users";
 
 describe("Users API", () => {
   beforeEach(() => {

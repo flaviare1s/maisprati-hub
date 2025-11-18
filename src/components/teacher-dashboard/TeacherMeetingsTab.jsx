@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
-import { fetchAppointments } from "../../api.js/schedule";
+import { fetchAppointments } from "../../api/schedule";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "../ConfirmationModal";

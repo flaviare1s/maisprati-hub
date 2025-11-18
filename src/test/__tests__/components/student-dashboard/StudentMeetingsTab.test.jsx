@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { StudentMeetingsTab } from "../../../../components/student-dashboard/StudentMeetingsTab.jsx";
-import * as scheduleApi from "../../../../api.js/schedule";
-import * as teamsApi from "../../../../api.js/teams";
+import * as scheduleApi from "../../../../api/schedule";
+import * as teamsApi from "../../../../api/teams";
 import api from "../../../../services/api";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { AuthContext } from "../../../../contexts/AuthContext";
@@ -19,11 +19,11 @@ const MockAuthProvider = ({ children, user }) => {
 };
 
 // Mock das APIs
-vi.mock("../../../../api.js/schedule", () => ({
+vi.mock("../../../../api/schedule", () => ({
   fetchAppointments: vi.fn(),
 }));
 
-vi.mock("../../../../api.js/teams", () => ({
+vi.mock("../../../../api/teams", () => ({
   fetchTeams: vi.fn(),
 }));
 
@@ -65,7 +65,7 @@ describe("StudentMeetingsTab - Testes Abrangentes", () => {
     if (unmountFn) {
       try {
         unmountFn();
-      // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         // Ignora erros no unmount
       }

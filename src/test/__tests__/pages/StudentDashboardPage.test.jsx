@@ -1,8 +1,8 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { StudentDashboardPage } from "../../../pages/StudentDashboardPage";
-import * as teamsApi from "../../../api.js/teams";
-import * as usersApi from "../../../api.js/users";
+import * as teamsApi from "../../../api/teams";
+import * as usersApi from "../../../api/users";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { AuthContext } from "../../../contexts/AuthContext";
 import userEvent from "@testing-library/user-event";
@@ -18,13 +18,13 @@ const MockAuthProvider = ({ children, user, updateUser = vi.fn() }) => {
 };
 
 // Mock das funções de API de times
-vi.mock("../../../api.js/teams", () => ({
+vi.mock("../../../api/teams", () => ({
   fetchTeams: vi.fn(),
   getTeamWithMembers: vi.fn(),
 }));
 
 // Mock das funções de API de usuários
-vi.mock("../../../api.js/users", () => ({
+vi.mock("../../../api/users", () => ({
   disableWantsGroup: vi.fn(),
   resetGroupPreferences: vi.fn(),
   fetchEmotionalStatuses: vi.fn(),

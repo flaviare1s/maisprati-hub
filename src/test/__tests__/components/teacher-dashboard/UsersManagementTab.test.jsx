@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { render, screen, waitFor } from "@testing-library/react";
 import { UsersManagementTab } from "../../../../components/teacher-dashboard/UsersManagementTab.jsx";
-import * as usersApi from "../../../../api.js/users";
-import * as teamsApi from "../../../../api.js/teams";
+import * as usersApi from "../../../../api/users";
+import * as teamsApi from "../../../../api/teams";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
@@ -12,14 +12,14 @@ import toast from "react-hot-toast";
 vi.mock("react-hot-toast");
 
 // Mock das APIs
-vi.mock("../../../../api.js/users", () => ({
+vi.mock("../../../../api/users", () => ({
   fetchUsers: vi.fn(),
   deactivateUser: vi.fn(),
   activateUser: vi.fn(),
   fetchEmotionalStatuses: vi.fn(),
 }));
 
-vi.mock("../../../../api.js/teams", () => ({
+vi.mock("../../../../api/teams", () => ({
   fetchTeams: vi.fn(),
 }));
 

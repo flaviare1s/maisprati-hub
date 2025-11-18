@@ -4,17 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import { CommonRoom } from '../../../pages/CommonRoom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTeam } from '../../../contexts/TeamContext';
-import * as usersApi from '../../../api.js/users';
-import * as forumApi from '../../../api.js/forum';
-import * as notificationsApi from '../../../api.js/notifications';
+import * as usersApi from '../../../api/users';
+import * as forumApi from '../../../api/forum';
+import * as notificationsApi from '../../../api/notifications';
 import toast from 'react-hot-toast';
 
 // Mocks
 vi.mock('../../../hooks/useAuth');
 vi.mock('../../../contexts/TeamContext');
-vi.mock('../../../api.js/users');
-vi.mock('../../../api.js/forum');
-vi.mock('../../../api.js/notifications');
+vi.mock('../../../api/users');
+vi.mock('../../../api/forum');
+vi.mock('../../../api/notifications');
 vi.mock('react-hot-toast');
 
 const mockNavigate = vi.fn();
@@ -251,7 +251,7 @@ describe('CommonRoom Page', () => {
 
       expect(loadingSpinner).toBeInTheDocument();
     });
- 
+
   });
 
   describe('Funcionalidades do Fórum', () => {

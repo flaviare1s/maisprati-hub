@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchUsers, deactivateUser, activateUser, fetchEmotionalStatuses } from '../../api.js/users';
-import { fetchTeams } from '../../api.js/teams';
+import { fetchUsers, deactivateUser, activateUser, fetchEmotionalStatuses } from '../../api/users';
+import { fetchTeams } from '../../api/teams';
 import { MdPerson } from 'react-icons/md';
 import { BsKanban } from "react-icons/bs";
 import { FaToggleOn, FaToggleOff } from 'react-icons/fa';

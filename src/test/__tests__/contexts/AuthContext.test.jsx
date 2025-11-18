@@ -14,11 +14,11 @@ let mockNavigate = vi.fn();
 
 // --- MOCKS DE API ---
 // CORREÇÃO: Usando getters para evitar o erro de hoisting (ReferenceError)
-vi.mock('../../../api.js/teams', () => ({
+vi.mock('../../../api/teams', () => ({
   get getTeamWithMembers() { return mockGetTeamWithMembers; } // Acesso adiado
 }));
 
-vi.mock('../../../api.js/auth', () => ({
+vi.mock('../../../api/auth', () => ({
   get loginUser() { return mockLoginUser; }, // Acesso adiado
   get registerUser() { return mockRegisterUser; }, // Acesso adiado
   get logoutUser() { return mockLogoutUser; }, // Acesso adiado
@@ -26,7 +26,7 @@ vi.mock('../../../api.js/auth', () => ({
   resetPassword: vi.fn(),
 }));
 
-vi.mock('../../../api.js/users', () => ({
+vi.mock('../../../api/users', () => ({
   get getCurrentUserData() { return mockGetCurrentUserData; } // Acesso adiado
 }));
 

@@ -1,7 +1,7 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { TeamSelect } from "../../../pages/TeamSelect";
-import * as teamsApi from "../../../api.js/teams";
+import * as teamsApi from "../../../api/teams";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { AuthContext } from "../../../contexts/AuthContext";
 import userEvent from "@testing-library/user-event";
@@ -34,7 +34,7 @@ const MockAuthProvider = ({ children }) => {
 };
 
 // Mock das funções de API de times
-vi.mock("../../../api.js/teams", () => ({
+vi.mock("../../../api/teams", () => ({
   fetchTeams: vi.fn(),
   validateTeamCode: vi.fn(),
   addMemberToTeam: vi.fn(),

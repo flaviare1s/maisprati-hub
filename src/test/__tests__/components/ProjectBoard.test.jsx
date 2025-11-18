@@ -3,17 +3,17 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ProjectBoard } from '../../../components/project/ProjectBoard';
 import * as authHooks from '../../../hooks/useAuth';
 import * as reactRouterDom from 'react-router-dom';
-import * as usersApi from '../../../api.js/users';
-import * as teamsApi from '../../../api.js/teams';
-import * as projectProgressApi from '../../../api.js/projectProgress';
+import * as usersApi from '../../../api/users';
+import * as teamsApi from '../../../api/teams';
+import * as projectProgressApi from '../../../api/projectProgress';
 import toast from 'react-hot-toast';
 
 // Mock das dependências
 vi.mock('../../../hooks/useAuth');
 vi.mock('react-router-dom');
-vi.mock('../../../api.js/users');
-vi.mock('../../../api.js/teams');
-vi.mock('../../../api.js/projectProgress');
+vi.mock('../../../api/users');
+vi.mock('../../../api/teams');
+vi.mock('../../../api/projectProgress');
 vi.mock('react-hot-toast');
 vi.mock('../../../components/CustomLoader', () => ({
   CustomLoader: () => <div data-testid="custom-loader">Loading...</div>

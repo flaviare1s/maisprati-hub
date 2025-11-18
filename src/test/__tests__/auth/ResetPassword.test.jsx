@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 import { render } from '../../utils/test-utils';
 
-vi.mock('../../../api.js/auth', () => ({
+vi.mock('../../../api/auth', () => ({
   forgotPassword: vi.fn(),
   loginUser: vi.fn(),
   registerUser: vi.fn(),

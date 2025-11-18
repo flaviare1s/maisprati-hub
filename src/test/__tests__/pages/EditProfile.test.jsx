@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { EditProfile } from '../../../pages/EditProfile';
-import * as usersApi from '../../../api.js/users';
+import * as usersApi from '../../../api/users';
 import toast from 'react-hot-toast';
 
 // Mock do useNavigate
@@ -37,7 +37,7 @@ vi.mock('../../../hooks/useAuth', () => ({
 }));
 
 // Mock da API
-vi.mock('../../../api.js/users', () => ({
+vi.mock('../../../api/users', () => ({
   updateUser: vi.fn(),
   getUserById: vi.fn(),
 }));

@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { CodenameSelect } from '../../../pages/CodenameSelect';
 import { useAuth } from '../../../hooks/useAuth';
-import * as authApi from '../../../api.js/auth';
+import * as authApi from '../../../api/auth';
 import toast from 'react-hot-toast';
 import { CustomLoader } from '../../../components/CustomLoader';
 
@@ -14,7 +14,7 @@ const mockLocation = { state: null };
 
 // Mocks globais
 vi.mock('../../../hooks/useAuth');
-vi.mock('../../../api.js/auth');
+vi.mock('../../../api/auth');
 vi.mock('react-hot-toast');
 
 vi.mock('react-router-dom', async () => {

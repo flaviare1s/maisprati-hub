@@ -1,4 +1,4 @@
-import api from "../services/api.js";
+import api from "../services/api";
 
 // Buscar todos os times
 export const fetchTeams = async () => {

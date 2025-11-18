@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { TeacherNotificationsTab } from "../../../../components/teacher-dashboard/TeacherNotificationTab.jsx";
-import * as notificationsApi from "../../../../api.js/notifications";
+import * as notificationsApi from "../../../../api/notifications";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import userEvent from "@testing-library/user-event";
 
 // Mock das funções de API de notificações
-vi.mock("../../../../api.js/notifications", () => ({
+vi.mock("../../../../api/notifications", () => ({
   getUserNotifications: vi.fn(),
   deleteNotification: vi.fn(),
 }));

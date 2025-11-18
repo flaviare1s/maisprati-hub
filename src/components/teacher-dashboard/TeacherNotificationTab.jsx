@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MdClose, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useAuth } from "../../hooks/useAuth";
-import { getUserNotifications, deleteNotification } from "../../api.js/notifications";
+import { getUserNotifications, deleteNotification } from "../../api/notifications";
 
 export const TeacherNotificationsTab = () => {
   const { user } = useAuth();

@@ -17,7 +17,7 @@ vi.mock('../../../utils/permissions', () => ({
 
 // Mock da API
 const mockCreateTeam = vi.fn();
-vi.mock('../../../api.js/teams', () => ({
+vi.mock('../../../api/teams', () => ({
   createTeam: (...args) => mockCreateTeam(...args)
 }));
 

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../SubmitButton"
-import { updateMemberRole, updateTeam, fetchTeamById } from "../../api.js/teams";
+import { updateMemberRole, updateTeam, fetchTeamById } from "../../api/teams";
 import toast from "react-hot-toast";
 
 export const TeamManagmentModal = ({ team, onClose, setUserTeam }) => {

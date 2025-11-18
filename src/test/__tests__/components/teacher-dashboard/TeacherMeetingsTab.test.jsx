@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { TeacherMeetingsTab } from "../../../../components/teacher-dashboard/TeacherMeetingsTab.jsx";
-import * as scheduleApi from "../../../../api.js/schedule";
+import * as scheduleApi from "../../../../api/schedule";
 import api from "../../../../services/api";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 vi.mock("react-hot-toast");
 
 // Mock das APIs
-vi.mock("../../../../api.js/schedule", () => ({
+vi.mock("../../../../api/schedule", () => ({
   fetchAppointments: vi.fn(),
 }));
 
@@ -46,7 +46,7 @@ describe("TeacherMeetingsTab - Testes Abrangentes", () => {
     if (unmountFn) {
       try {
         unmountFn();
-      // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         // Ignora erros no unmount
       }

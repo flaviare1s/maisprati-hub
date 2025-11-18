@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../hooks/useAuth';
-import { updateUser, getUserById } from '../api.js/users';
+import { updateUser, getUserById } from '../api/users';
 import { CustomLoader } from '../components/CustomLoader';
 import { ReturnButton } from '../components/ReturnButton';
 import { SelectField } from '../components/SelectField';
