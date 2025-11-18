@@ -58,6 +58,11 @@ beforeEach(() => {
   vi.spyOn(window, 'removeEventListener').mockImplementation(() => { });
   vi.spyOn(document, 'addEventListener').mockImplementation(() => { });
   vi.spyOn(document, 'removeEventListener').mockImplementation(() => { });
+  vi.spyOn(console, 'error').mockImplementation((msg) => {
+    if (!msg.includes('Erro ao fazer login')) {
+      console.warn('Erro não esperado:', msg);
+    }
+  });
 
   // Configuração de mocks iniciais para evitar erros na montagem
   mockGetCurrentUserData.mockResolvedValue(null);
@@ -153,6 +158,51 @@ describe('AuthContext', () => {
       expect(mockLogoutUser).toHaveBeenCalled();
       expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
       expect(mockNavigate).toHaveBeenCalledWith('/login');
+    });
+  });
+
+  // --- TESTES ADICIONAIS PARA AMPLIAR COBERTURA ---
+
+  // 1. Falha no login (deve manter usuário desautenticado e não navegar)
+  it('não deve autenticar nem navegar se loginUser falhar', async () => {
+    mockLoginUser.mockRejectedValue(new Error('invalid credentials'));
+    mockGetCurrentUserData.mockResolvedValue(null);
+
+    const { getByText } = render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    fireEvent.click(getByText('Login Button'));
+
+    await waitFor(() => {
+      expect(mockLoginUser).toHaveBeenCalled();
+      expect(mockNavigate).not.toHaveBeenCalled();
+      expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+    });
+  });
+
+  // 2. Sucesso no registerUser (deve registrar, carregar usuário e autenticar)
+  it('deve registrar um usuário, carregar seus dados e autenticar', async () => {
+    const novoUsuario = { id: '999', name: 'Novo', type: 'student' };
+
+    mockRegisterUser.mockResolvedValue({});
+    mockGetCurrentUserData.mockResolvedValue(novoUsuario);
+
+    const { getByText } = render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    fireEvent.click(getByText('Register Button'));
+
+    await waitFor(() => {
+      expect(mockRegisterUser).toHaveBeenCalledWith({ email: 'new@mail.com', password: '123' });
+      expect(mockGetCurrentUserData).toHaveBeenCalled();
+      expect(screen.getByTestId('authenticated')).toHaveTextContent('true');
+      expect(screen.getByTestId('user')).toHaveTextContent('"id":"999"');
     });
   });
 });
