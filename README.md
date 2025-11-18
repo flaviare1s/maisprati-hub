@@ -1,4 +1,4 @@
-# +PraTi Hub - Frontend
+# +praTiHub - Frontend
 
 [![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite)](https://vitejs.dev/)
