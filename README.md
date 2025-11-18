@@ -1,98 +1,128 @@
-# +praTiHub
+# +praTiHub - Frontend
 
-## Visão Geral do Projeto
+[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-cyan?logo=tailwindcss)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
+
+Aplicação web construída com **React + Vite** e **Tailwind CSS**, integrada com backend Spring Boot.
+
+🌐 **Deploy em produção:** [maisprati-hub.vercel.app](https://maisprati-hub.vercel.app/)
+
+---
+
+## 🚀 Quick Start
 
 ### Pré-requisitos
+- [Node.js 18+](https://nodejs.org/)
+- Backend rodando ([maisprati-hub-server](https://github.com/flaviare1s/maisprati-hub-server))
 
-- Node.js 18+
-- Java 17+ (para o backend Spring Boot)
-- MongoDB
+### Configuração Inicial
 
-### Configuração do Projeto
-
-#### 1. Clonar o repositório
-
+1. **Clone o repositório**
 ```bash
 git clone https://github.com/flaviare1s/maisprati-hub.git
 cd maisprati-hub
 ```
 
-#### 2. Configurar o Frontend
-
+2. **Instale as dependências**
 ```bash
-# Instalar dependências do frontend
 npm install
 ```
 
-#### 3. Configurar o .env
+3. **Configure as variáveis de ambiente**
 
-- Copie o arquivo .env.example e renomeie para .env
-
-#### 4. Configurar o Backend
-
-- Clonar o repositório do backend: https://github.com/flaviare1s/maisprati-hub-server
-- O backend é uma aplicação Spring Boot
-- Certifique-se de que o MongoDB está rodando
-- Configure as variáveis de ambiente necessárias no backend
-- Execute o projeto pelo IntelliJ IDEA ou a IDE de sua preferência (porta 8080)
-
-#### 5. Executar o Frontend
-
+Copie o arquivo `.env.example` para `.env`:
 ```bash
-# Na pasta raiz do projeto frontend
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com suas configurações:
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+4. **Execute a aplicação**
+```bash
 npm run dev
 ```
 
-#### 6. Deploy
+A aplicação estará disponível em `http://localhost:5173`
 
-**Aplicação em produção:** https://maisprati-hub.vercel.app/
+---
 
-#### 7. Acessar a aplicação
-
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8080/api`
-
-### 8. Estrutura de pastas
+## 🏗️ Estrutura do Projeto
 
 ```
 src/
-├── assets/          → imagens, ícones e outros arquivos
-├── components/      → componentes reutilizáveis (botões, menus, etc)
-├── pages/          → páginas do aplicativo, possuem rota (Home, Login, About, etc)
-├── contexts/       → contextos de estado global do React
-├── hooks/          → hooks customizados
-├── services/       → configurações de API e serviços
-├── api/         → funções de API organizadas por funcionalidade
-├── App.jsx         → onde ficam as rotas que conectam as páginas
-├── main.jsx        → ponto de entrada do React
-└── index.css       → variáveis de cores, fontes e configurações dos temas
+├── assets/          # Imagens, ícones e arquivos estáticos
+├── components/      # Componentes reutilizáveis (botões, cards, etc)
+├── pages/          # Páginas com rotas (Home, Login, Dashboard, etc)
+├── contexts/       # Contextos de estado global (Auth, Theme, etc)
+├── hooks/          # Hooks customizados
+├── services/       # Configuração de APIs e serviços
+├── api/            # Funções de API organizadas por domínio
+├── App.jsx         # Configuração de rotas
+├── main.jsx        # Ponto de entrada da aplicação
+└── index.css       # Estilos globais e configuração de temas
 ```
 
-### 9. Funcionalidades Principais
+---
 
-- **Autenticação**: Login e registro de usuários
-- **Dashboard**: Painéis diferentes para students e admins
-- **Teams**: Sistema de equipes/guildas
-- **Calendário**: Agendamento de reuniões
-- **Fórum**: Sistema de posts e comentários
-- **Notificações**: Sistema de notificações em tempo real
-- **Perfil**: Gerenciamento de perfil de usuário
+## ✨ Funcionalidades
 
-### 10. Tecnologias Utilizadas
+- 🔐 **Autenticação** - Login, registro e autenticação social (Google)
+- 📊 **Dashboard** - Painéis personalizados para estudantes e admins
+- 👥 **Teams** - Sistema de equipes/guildas
+- 📅 **Calendário** - Agendamento e gestão de reuniões
+- 💬 **Fórum** - Sistema de posts e comentários
+- 🔔 **Notificações** - Notificações em tempo real
+- 👤 **Perfil** - Gerenciamento completo de perfil de usuário
 
-**Frontend:**
+---
 
-- React 18
-- Vite
-- Tailwind CSS
-- React Router
-- Axios
-- Day.js
-- Vitest
+## 🛠️ Tecnologias
 
-**Backend:**
+- **React 18** - Biblioteca JavaScript para interfaces
+- **Vite 5** - Build tool rápido e moderno
+- **Tailwind CSS 3** - Framework CSS utilitário
+- **React Router 6** - Roteamento client-side
+- **Axios** - Cliente HTTP
+- **Day.js** - Manipulação de datas
+- **Vitest** - Framework de testes
 
-- Spring Boot
-- MongoDB
-- JWT Authentication
-- Spring Security
+---
+
+## 📝 Scripts Disponíveis
+
+```bash
+# Desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview do build de produção
+npm run preview
+
+# Executar testes
+npm run test # (Disponível apenas na branch test)
+
+# Lint do código
+npm run lint
+```
+
+---
+
+## 🔗 Integração com Backend
+
+Este frontend se conecta com a API Spring Boot. Certifique-se de:
+
+1. Clonar e configurar o [backend](https://github.com/flaviare1s/maisprati-hub-server)
+2. Iniciar o MongoDB
+3. Executar o backend na porta 8080
+4. Configurar a variável `VITE_API_BASE_URL` no `.env`
+
+**Endpoints principais:**
+- Backend API: `http://localhost:8080/api`
+- Swagger Docs: `http://localhost:8080/swagger-ui/index.html`
