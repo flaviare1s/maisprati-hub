@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import logo from "../assets/images/logo.png";
 import { InputField } from "../components/InputField";
 import { SubmitButton } from "../components/SubmitButton";
-import { forgotPassword } from "../api.js/auth";
+import { forgotPassword } from "../api/auth";
 import toast from "react-hot-toast";
 
 export const ResetPassword = () => {

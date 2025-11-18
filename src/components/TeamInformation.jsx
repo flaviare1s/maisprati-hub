@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { removeMemberFromTeam } from "../api.js/teams";
+import { removeMemberFromTeam } from "../api/teams";
 import toast from "react-hot-toast";
 import { LeaveTeamModal } from "./student-dashboard/LeaveTeamModal";
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { fetchTeams, getTeamWithMembers } from "../api.js/teams";
-import { disableWantsGroup, resetGroupPreferences, fetchEmotionalStatuses, updateEmotionalStatus } from "../api.js/users";
+import { fetchTeams, getTeamWithMembers } from "../api/teams";
+import { disableWantsGroup, resetGroupPreferences, fetchEmotionalStatuses, updateEmotionalStatus } from "../api/users";
 import { CustomLoader } from "../components/CustomLoader";
 import { TeamInformation } from "../components/TeamInformation";
 import { MdManageAccounts, MdToggleOff } from "react-icons/md";

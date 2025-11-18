@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AdminTimeSlotModal } from "./teacher-dashboard/AdminTimeSlotModal";
 import { StudentTimeSlotModal } from "./student-dashboard/StudentTimeSlotModal";
 import { useAuth } from "../hooks/useAuth";
-import { fetchMonthSlots } from "../api.js/schedule";
+import { fetchMonthSlots } from "../api/schedule";
 import api from "../services/api";
 
 dayjs.locale("pt-br");

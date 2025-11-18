@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import dayjs from "dayjs";
-import { fetchAppointments } from "../../api.js/schedule";
-import { fetchTeams } from "../../api.js/teams";
+import { fetchAppointments } from "../../api/schedule";
+import { fetchTeams } from "../../api/teams";
 import { useAuth } from "../../hooks/useAuth";
 import api from "../../services/api";
 import toast from "react-hot-toast";

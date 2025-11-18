@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import logo from '../assets/images/logo.png';
 import { InputField } from '../components/InputField';
 import { SubmitButton } from '../components/SubmitButton';
-import { fetchTeams, validateTeamCode, addMemberToTeam } from '../api.js/teams';
+import { fetchTeams, validateTeamCode, addMemberToTeam } from '../api/teams';
 import toast from 'react-hot-toast';
 
 export const TeamSelect = () => {

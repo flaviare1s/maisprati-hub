@@ -5,7 +5,7 @@ import logo from "../assets/images/logo.png";
 import { PasswordField } from "../components/PasswordField";
 import { SubmitButton } from "../components/SubmitButton";
 import toast from "react-hot-toast";
-import { resetPassword } from "../api.js/auth";
+import { resetPassword } from "../api/auth";
 
 export const NewPassword = () => {
   const {

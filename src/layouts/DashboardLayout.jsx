@@ -6,9 +6,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { TbLayoutKanban } from 'react-icons/tb';
 import { FaRegCalendarAlt, FaRegUser, FaBell } from 'react-icons/fa';
 import { DashboardTab } from '../components/DashboardTab';
-import { fetchActiveTeams, isUserInActiveTeam } from '../api.js/teams';
+import { fetchActiveTeams, isUserInActiveTeam } from '../api/teams';
 import { isAdmin } from '../utils/permissions';
-import { getUserNotifications } from "../api.js/notifications";
+import { getUserNotifications } from "../api/notifications";
 
 export const DashboardLayout = () => {
   const { user } = useAuth();

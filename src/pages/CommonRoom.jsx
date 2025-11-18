@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaCrown, FaComments } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { fetchUsers } from "../api.js/users";
+import { fetchUsers } from "../api/users";
 import { NoTeamList } from "../components/NoTeamList";
 import {
   fetchComments,
@@ -15,10 +15,10 @@ import {
   deleteComment,
   addComment,
   updateComment
-} from "../api.js/forum";
+} from "../api/forum";
 import { Forum } from "../components/Forum";
 import { useTeam } from "../contexts/TeamContext";
-import { createNotification } from "../api.js/notifications";
+import { createNotification } from "../api/notifications";
 
 export const CommonRoom = () => {
   const { userInTeam } = useTeam();

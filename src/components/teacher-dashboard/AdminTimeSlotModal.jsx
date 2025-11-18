@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
-import { fetchTimeSlots, createTimeSlots } from "../../api.js/schedule";
+import { fetchTimeSlots, createTimeSlots } from "../../api/schedule";
 
 const generateDaySlots = (existingSlots = [], interval = 30, selectedDate) => {
   const startHour = 6;

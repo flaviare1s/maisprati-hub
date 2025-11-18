@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
-import { sendNotificationToTeacher } from "../../api.js/notifications";
+import { sendNotificationToTeacher } from "../../api/notifications";
 import toast from "react-hot-toast";
 import { CustomLoader } from "../CustomLoader";
 import { useAuth } from "../../hooks/useAuth";
