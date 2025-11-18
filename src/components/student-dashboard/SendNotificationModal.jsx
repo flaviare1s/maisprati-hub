@@ -35,7 +35,7 @@ export const SendNotificationModal = ({ open, onClose }) => {
       <div className="relative bg-light rounded-xl shadow-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Enviar mensagem ao professor</h2>
-          <button onClick={onClose} className="text-gray-muted hover:text-gray-700">
+          <button onClick={onClose} aria-label="Fechar" className="text-gray-muted hover:text-gray-700">
             <MdClose size={20} />
           </button>
         </div>
@@ -51,6 +51,8 @@ export const SendNotificationModal = ({ open, onClose }) => {
           disabled={loading}
           className={`w-full py-2 rounded text-white cursor-pointer ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-logo hover:bg-blue-600"
             }`}
+            aria-label="Enviar notificação ao professor"
+            title="Enviar notificação ao professor"
         >
           {loading ? <CustomLoader /> : "Enviar"}
         </button>
