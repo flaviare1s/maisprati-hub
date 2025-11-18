@@ -62,7 +62,7 @@ src/
 ├── contexts/       → contextos de estado global do React
 ├── hooks/          → hooks customizados
 ├── services/       → configurações de API e serviços
-├── api.js/         → funções de API organizadas por funcionalidade
+├── api/         → funções de API organizadas por funcionalidade
 ├── App.jsx         → onde ficam as rotas que conectam as páginas
 ├── main.jsx        → ponto de entrada do React
 └── index.css       → variáveis de cores, fontes e configurações dos temas

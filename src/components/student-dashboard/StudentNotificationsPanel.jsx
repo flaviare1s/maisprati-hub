@@ -6,7 +6,7 @@ import {
   getUserNotifications,
   deleteNotification,
   createNotification,
-} from "../../api.js/notifications";
+} from "../../api/notifications";
 import { SendNotificationModal } from "./SendNotificationModal";
 import { Pagination } from "../Pagination";
 

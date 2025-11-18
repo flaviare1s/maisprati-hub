@@ -2,7 +2,7 @@ import { FaCopy, FaCheck, FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { BsKanban } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { useState, useEffect } from 'react';
-import { toggleTeamStatus } from '../../api.js/teams';
+import { toggleTeamStatus } from '../../api/teams';
 import { TeamMembersModal } from './TeamMembersModal';
 import { ConfirmationModal } from '../ConfirmationModal';
 import toast from 'react-hot-toast';
@@ -84,6 +84,7 @@ export const TeamCard = ({ team, onSelect }) => {
             onClick={() => setShowMembersModal(true)}
             className="p-2 text-green-600 hover:text-green-800 cursor-pointer rounded-md"
             title="Visualizar membros"
+            aria-label='Visualizar membros do time'
           >
             <HiOutlineUserGroup />
           </button>
@@ -91,6 +92,7 @@ export const TeamCard = ({ team, onSelect }) => {
             onClick={onSelect}
             className="p-2 text-blue-logo hover:text-blue-600 transition-colors cursor-pointer rounded-md"
             title="Visualizar progresso do time"
+            aria-label='Visualizar progresso do time'
           >
             <BsKanban />
           </button>
@@ -102,6 +104,7 @@ export const TeamCard = ({ team, onSelect }) => {
               : 'text-orange-logo hover:text-orange-600'
               }`}
             title={isToggling ? 'Alterando...' : (localTeam.isActive ? "Inativar time" : "Ativar time")}
+            aria-label="Alternar status do time"
           >
             {isToggling ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
@@ -121,6 +124,8 @@ export const TeamCard = ({ team, onSelect }) => {
           <button
             onClick={() => copySecurityCode(localTeam.securityCode)}
             className="ml-1 px-2 py-1 bg-gray-100 rounded text-xs hover:bg-gray-200 inline-flex items-center gap-1 transition-colors"
+            title="Copiar código"
+            aria-label="Copiar código do time"
           >
             {localTeam.securityCode}
             {copiedCode === localTeam.securityCode ? <FaCheck className="text-green-600" /> : <FaCopy />}

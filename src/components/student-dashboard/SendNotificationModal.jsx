@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
-import { sendNotificationToTeacher } from "../../api.js/notifications";
+import { sendNotificationToTeacher } from "../../api/notifications";
 import toast from "react-hot-toast";
 import { CustomLoader } from "../CustomLoader";
 import { useAuth } from "../../hooks/useAuth";
@@ -35,7 +35,7 @@ export const SendNotificationModal = ({ open, onClose }) => {
       <div className="relative bg-light rounded-xl shadow-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Enviar mensagem ao professor</h2>
-          <button onClick={onClose} className="text-gray-muted hover:text-gray-700">
+          <button onClick={onClose} className="text-gray-muted hover:text-gray-700" aria-label="Fechar modal" title="Fechar modal">
             <MdClose size={20} />
           </button>
         </div>
@@ -49,6 +49,8 @@ export const SendNotificationModal = ({ open, onClose }) => {
         <button
           onClick={handleSend}
           disabled={loading}
+          aria-label="Enviar notificação ao professor"
+          title="Enviar notificação ao professor"
           className={`w-full py-2 rounded text-white cursor-pointer ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-logo hover:bg-blue-600"
             }`}
         >

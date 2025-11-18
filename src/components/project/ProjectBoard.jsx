@@ -3,13 +3,13 @@ import { ProjectColumn } from "./ProjectColumn";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from "../../hooks/useAuth";
-import { fetchTeams, getTeamWithMembers } from "../../api.js/teams";
-import { getUserById } from "../../api.js/users";
+import { fetchTeams, getTeamWithMembers } from "../../api/teams";
+import { getUserById } from "../../api/users";
 import {
   fetchProjectProgress,
   createProjectProgress,
   updatePhaseStatus,
-} from "../../api.js/projectProgress";
+} from "../../api/projectProgress";
 import { CustomLoader } from "../CustomLoader";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import toast from "react-hot-toast";

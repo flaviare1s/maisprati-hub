@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { SubmitButton } from "../components/SubmitButton";
 import logo from '../assets/images/logo.png';
 import toast from 'react-hot-toast';
-import { registerUser } from "../api.js/auth";
+import { registerUser } from "../api/auth";
 
 const importAvatars = () => {
   const avatars = [];

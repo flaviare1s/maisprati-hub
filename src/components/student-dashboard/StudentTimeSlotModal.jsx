@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-import { fetchTimeSlots } from "../../api.js/schedule";
+import { fetchTimeSlots } from "../../api/schedule";
 import api from "../../services/api";
 
 const generateDaySlots = (existingSlots = []) => {
