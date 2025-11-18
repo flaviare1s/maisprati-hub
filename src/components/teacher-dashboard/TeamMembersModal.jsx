@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaTimes, FaUserFriends } from 'react-icons/fa';
-import { fetchTeamById } from '../../api.js/teams';
+import { fetchTeamById } from '../../api/teams';
 import { CustomLoader } from '../CustomLoader';
 
 export const TeamMembersModal = ({ team, onClose }) => {

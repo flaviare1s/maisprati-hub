@@ -6,7 +6,7 @@ import { isAdmin } from '../utils/permissions';
 import { InputField } from '../components/InputField';
 import { SubmitButton } from '../components/SubmitButton';
 import { FaArrowLeft, FaRandom, FaEye, FaEyeSlash } from 'react-icons/fa';
-import { createTeam } from '../api.js/teams';
+import { createTeam } from '../api/teams';
 
 export const CreateTeam = () => {
   const { user } = useAuth();

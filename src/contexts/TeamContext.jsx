@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
-import { isUserInActiveTeam } from "../api.js/teams";
+import { isUserInActiveTeam } from "../api/teams";
 import { useAuth } from "../hooks/useAuth";
 
 const TeamContext = createContext();

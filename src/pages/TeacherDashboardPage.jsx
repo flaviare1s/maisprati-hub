@@ -9,14 +9,14 @@ import {
   FaBell,
   FaUserCog,
 } from "react-icons/fa";
-import { fetchTeams } from "../api.js/teams";
-import { fetchUsers } from "../api.js/users";
+import { fetchTeams } from "../api/teams";
+import { fetchUsers } from "../api/users";
 import { TeacherProfileTab } from "../components/teacher-dashboard/TeacherProfileTab";
 import { TeacherTeamsTab } from "../components/teacher-dashboard/TeacherTeamsTab";
 import { TeacherMeetingsTab } from "../components/teacher-dashboard/TeacherMeetingsTab";
 import { TeacherNotificationsTab } from "../components/teacher-dashboard/TeacherNotificationTab";
 import { UsersManagementTab } from "../components/teacher-dashboard/UsersManagementTab";
-import { getUserNotifications } from "../api.js/notifications";
+import { getUserNotifications } from "../api/notifications";
 
 export const TeacherDashboardPage = () => {
   const { user, loadUserData } = useAuth();

@@ -1,4 +1,4 @@
-import api from "../services/api.js";
+import api from "../services/api";
 
 export const loginUser = async (credentials) => {
   try {
@@ -25,7 +25,6 @@ export const forgotPassword = async (email) => {
   const response = await api.post("/auth/forgot-password", { email });
   return response.data;
 };
-
 
 // Função para redefinição de senha
 export const resetPassword = async (token, newPassword) => {

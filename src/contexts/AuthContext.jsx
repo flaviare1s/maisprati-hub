@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTeamWithMembers } from "../api.js/teams";
-import { loginUser, registerUser, logoutUser } from "../api.js/auth";
-import { getCurrentUserData } from "../api.js/users";
+import { getTeamWithMembers } from "../api/teams";
+import { loginUser, registerUser, logoutUser } from "../api/auth";
+import { getCurrentUserData } from "../api/users";
 
 const AuthContext = createContext();
 export { AuthContext };
