@@ -75,10 +75,10 @@ export const TeamInformation = ({ userTeam, setUserTeam }) => {
                 <div className="text-right">
                   <span
                     className={`inline-block px-2 py-1 rounded-full text-[9px] font-medium ${member.role?.toLowerCase() === "leader"
-                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 whitespace-nowrap"
                       : member.role?.toLowerCase() === "subleader"
-                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
-                        : "bg-gray-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 whitespace-nowrap"
+                        : "bg-gray-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 whitespace-nowrap"
                       }`}
                   >
                     {member.role?.toLowerCase() === "leader"
