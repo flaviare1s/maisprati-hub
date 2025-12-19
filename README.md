@@ -1,5 +1,8 @@
 # +praTiHub - Frontend
 
+[![Português](https://img.shields.io/badge/lang-pt--BR-green)](README.md)
+[![English](https://img.shields.io/badge/lang-en-blue)](README.en.md)
+
 [![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-cyan?logo=tailwindcss)](https://tailwindcss.com/)
